@@ -1,0 +1,153 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('searchvocins'); ?>> << Back to Vocational Institute </a> 
+
+<?php endif; ?>
+
+
+
+
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="page-header position-relative">
+
+            <h1>
+                Organisation		
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    View Vocational Institute
+                </small>			
+            </h1>
+
+        </div>
+
+
+
+       
+        <form name='search' action="<?php echo url('searchvocinsID'); ?>" method='get'>
+
+            Search Using Institute ID <input type='text' name="serachkey"/>  
+            <input type='submit' value='Search'/>
+			
+            <a href=<?php echo url('createvocins'); ?>><input type='button' value='Add Vocational Institute' /></a>
+			
+
+
+        </form>
+       
+        <form name='search1' action="<?php echo url('searchvocinsIDD'); ?>" method='get'>
+
+            
+            Search Using Institute Name <input type='text' name="serachkey"/>  
+            <input type='submit' value='Search'/>
+            
+            
+           
+
+
+
+        </form>
+
+
+        <br/>
+
+
+
+
+
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+
+
+
+
+            <table class="table">
+
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Institute Name</th>
+                    <th>Type</th>
+                    <th>Active</th>
+                    <th>Remove</th>
+
+
+                </tr>
+                <?php if(isset ($vocins)): ?>
+
+                <?php foreach ($vocins as $c): ?>
+
+                <tr>
+
+
+
+                    <td><a    href="<?php echo url('editvocins?id='.$c->id); ?>"><?php echo $c->id; ?></a></td>
+                    <td><?php echo $c->InstituteName; ?></td>
+                    <td><?php echo $c->Type; ?></td>
+                    <td><?php echo $c->Active; ?></td>
+                    
+                    <td>
+	
+                        <form id="deleteform"  action=<?php echo url('deletevocins'); ?> method="POST" onsubmit="return doConfirm('<?php echo $c->id; ?>', this)">
+
+                            <input type="hidden" name='id' value="<?php echo $c->id; ?>" />
+                            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+
+                        </form>
+					
+                    </td>
+
+                </tr>
+
+
+                <?php endforeach; ?>
+
+                <?php endif; ?>
+
+            </table>
+
+
+
+
+
+
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+
+
+            function doConfirm(course, formobj)
+            {
+
+
+            bootbox.confirm("Are you sure you want to remove " + course, function(result)
+            {
+            if (result)
+            {
+            formobj.submit();
+            }
+
+
+            });
+                    return false; // by default do nothing hack :D
+            }
+
+
+
+
+
+
+
+</script>

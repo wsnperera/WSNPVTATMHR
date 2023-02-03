@@ -1,0 +1,278 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+
+
+
+
+
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+
+
+
+
+        <div class="span12">
+
+            <!--PAGE CONTENT BEGINS-->
+
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Course Started			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+
+
+            <!--Write your code here start-->
+
+
+
+            <form class="form-horizontal" action="<?php echo url('editCoursestarted'); ?>" method="POST"/>
+
+
+
+
+            <input type="hidden" name="CS_ID" value=<?php echo Request::get('cid'); ?> />
+
+
+
+
+
+
+
+
+
+           
+            <div class="control-group">
+
+                <label class="control-label" for="CourseListCode">Course List Code</label>
+
+                <div class="controls">
+                    <input type="text" name="CourseListCode" readonly="readonly" value=<?php echo $coursestarted->CourseListCode; ?>  />
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="CourseCode">Course Code</label>
+
+                <div class="controls">
+                    <input type="text" name="CourseCode" readonly="readonly" value=<?php echo $coursestarted->CourseCode; ?>  />
+                </div>
+                <br>
+
+                <div class="control-group">
+
+                    <label class="control-label" for="group">Group</label>
+
+                    <div class="controls">
+                        <input type="text" name="group" readonly="readonly" value=<?php echo $coursestarted->group; ?>  />
+                    </div>
+                </div>
+                <div class="control-group">
+                        <label class="control-label" for="Nvq">Is NVQ</label>
+                        <div class="controls">
+                            <select name="Nvq" id="Nvq">
+                            <?php if($coursestarted->Nvq=='NVQ'): ?>
+                                <option value=""></option>
+                                <option value="NVQ" selected>Yes</option>
+                                <option value="NON-NVQ">No</option>
+                             <?php else: ?>
+                                 <option value=""></option>
+                                <option value="NVQ">Yes</option>
+                                <option value="NON-NVQ" selected>No</option>
+                             <?php endif; ?>   
+                            </select>
+                        </div>
+                </div>
+                <div class="control-group">
+                        <label class="control-label" for="Medium">Course Level</label>
+                        <div class="controls">
+                            <select name="CourseLevel" id="CourseLevel"> 
+                            </select>
+                        </div>
+                        <div class="controls">
+                            <input type="text" id="courseLevelStatus" name="courseLevelStatus"  readonly value=<?php echo $coursestarted->CourseLevel; ?> />
+                        </div>
+                </div>
+
+
+                <br>
+               
+
+                <div class="control-group">
+                  
+                    <label class="control-label" for="StartDate" >Start Date</label>
+                   
+                    <div class="controls">
+                        <input type="date" name="StartDate" id="StartDate" required="true" value=<?php echo $coursestarted->StartDate; ?>  />
+                    </div>
+				
+                </div>
+               
+                <!--  
+                    <div class="control-group">
+                         
+                             <label class="control-label" for="Completed">Completed</label>
+
+                             <div class="controls">
+                                     <input type="text" name="StartDate" value=<?php echo $coursestarted->Completed; ?>  />
+                                     </div>   
+                    </div>
+                             
+                    <div class="control-group">
+                         
+                             <label class="control-label" for="CompletedDate">Completed Date</label>
+
+                             <div class="controls">
+                                     <input type="text" name="StartDate" value=<?php echo $coursestarted->CompletedDate; ?>  />
+                                     </div>   
+                    </div>
+                       <div class="control-group">
+                         
+                             <label class="control-label" for="FinalExamHeld">Final Exam Held</label>
+
+                             <div class="controls">
+                                     <input type="text" name="StartDate" value=<?php echo $coursestarted->FinalExamHeld; ?>  />
+                                     </div> 
+                       </div>
+                       <label class="control-label" for="InplantPlaced">Inplant Placed</label>
+
+                             <div class="controls">
+                                     <input type="text" name="StartDate" value=<?php echo $coursestarted->InplantPlaced; ?>  />
+                                     </div>  
+                   </div>
+                       <label class="control-label" for="InplantCompleted">Inplant Completed</label>
+
+                             <div class="controls">
+                                     <input type="text" name="StartDate" value=<?php echo $coursestarted->InplantCompleted; ?>  />
+                                     </div> 
+                    </div>
+                        <label class="control-label" for="YearStart">Year Start</label>
+
+                             <div class="controls">
+                                     <input type="text" name="StartDate" value=<?php echo $coursestarted->YearStart; ?>  />
+                                     </div>  
+                    
+                -->      
+
+                <br>  
+
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Update</button>
+
+                </div>
+            </div>
+
+
+            <!-- Submit Button --!>
+
+
+          
+           </form>
+         
+         
+         
+
+
+            <!--Write your code here end-->
+
+
+            <!--PAGE CONTENT ENDS-->
+
+
+        </div><!--/.span-->
+
+
+
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+
+
+
+	$(document).ready(function(){
+		
+		$("#StartDate").parent().parent().hide();
+		
+		var currentTime = new Date();
+		var month = currentTime.getMonth() + 1;
+		var day = currentTime.getDate();
+		var year = currentTime.getFullYear();
+		var now = year + "-" + month + "-" + day;
+		var startdate = $("#StartDate").val();
+		
+		now = Date.parse(now);
+		startdate = Date.parse(startdate);
+		
+		
+		
+		if(startdate > now || isNaN(startdate)==true)
+		{
+		   
+			
+			$("#StartDate").parent().parent().show();
+		
+        }
+		
+	});
+
+ $('#Nvq').change(function ()
+        {
+            if ($(this).val() == 'NVQ')
+            {
+                $("#CourseLevel").html('');
+                $("#courseLevelStatus").show();
+                for (var i = 1; i <= 7; i++)
+                {
+                    $("#CourseLevel").append('<option  value=' + i + '>Level ' + i + '</option>');
+                }
+                setLevel();
+            }
+            if ($(this).val() == 'NON-NVQ')
+            {
+                $("#CourseLevel").html('');
+                $("#courseLevelStatus").val('');
+                $("#courseLevelStatus").hide();
+                $("#CourseLevel").append('<option  value="Diploma">Diploma</option><option value="Certificate">Certificate</option>');
+            }
+        });
+       function setLevel() {
+            if (1 <= $("#CourseLevel").val() <= 4) {
+                $("#courseLevelStatus").val('Certificate')
+            }
+            if ($("#CourseLevel").val() == 5 || $("#CourseLevel").val() == 6) {
+                $("#courseLevelStatus").val('Diploma')
+            }
+            if ($("#CourseLevel").val() == 7) {
+                $("#courseLevelStatus").val('Degree')
+            }
+        }
+        $("#CourseLevel").change(function () {
+            if ($("#Nvq").val() == 'NVQ')
+            {
+                setLevel()
+            }
+        })
+
+
+</script>

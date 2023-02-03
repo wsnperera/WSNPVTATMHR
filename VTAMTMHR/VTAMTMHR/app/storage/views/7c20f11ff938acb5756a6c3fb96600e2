@@ -1,0 +1,166 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+<div class="page-content">
+    <div class="row-fluid">
+
+        <div class="span8">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        Assessment			
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            Approve Assessment Results
+                        </small>			
+                    </h1>
+                </div>
+            </div>
+            <!--PAGE CONTENT BEGINS-->
+            <form action="<?php echo url('loadAssResApprove'); ?>" method='post' id="my_form">
+                <table>
+                    <tr>
+                        <td>Course Code :</td>
+                        <td>
+                            <select class="chzn-select"  name="CourseCode" id="CourseCode" data-placeholder="Choose Course Code">
+                                <option id="dale" value=""></option>
+                                <?php foreach ($coursestarted_p as $c): ?>
+                                <option value="<?php echo $c->CourseCode; ?>"><?php echo $c->CourseCode; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <span id="ajax_img1"></span>
+                            &nbsp;&nbsp;
+                        </td>
+                        <td id="Assessment">
+
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <h5 style="color: #777777;"><?php if(isset($CourseCode)): ?>Course Code:&nbsp;&nbsp;<?php echo $CourseCode; ?><?php endif; ?></h5>
+            <h5 style="color: #777777;"><?php if(isset($AssName)): ?>Assessment Name:&nbsp;&nbsp;<?php echo $AssName; ?><?php endif; ?></h5>
+            <form action="<?php echo url('ConformAssResApprove'); ?>" method="post">
+                <?php if(isset($CourseCode)): ?><input type="hidden" name="CourseCode" value="<?php echo $CourseCode; ?>"/><?php endif; ?>
+                <?php if(isset($assID)): ?><input type="hidden" name="AssessmentName" value="<?php echo $assID; ?>"/><?php endif; ?>
+                <button type="submit" class="btn btn-large pull-right"><i class="icon-user"></i>Conform</button>
+            <div class="row-fluid span12" style="margin: 0px" overflow="auto">
+                <div class="table-header">
+                </div>
+                <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr><th class="center">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span class="lbl"></span>
+                                </label>
+                            </th>
+                            <th>Trainee No</th>
+                            <th>Mark</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <?php if(isset($trainee)): ?>
+                        <?php foreach($trainee as $students): ?>
+                        <tr><td class="center">
+                                <label>
+                                    <input type="checkbox" name="activityid[]" id="activityid" value="<?php echo $students->id; ?>"/>
+                                    <span class="lbl"></span>
+                                </label>
+                            </td>
+                            <td><?php echo $students->trainee_no; ?></td>
+                            <td><?php echo $students->marks; ?></td>
+                        </tr>             
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+            </form>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+
+function doConfirm(applicant, formobj) {
+
+    bootbox.confirm("Are you sure you want to remove " + applicant, function(result)
+    {
+        if (result)
+        {
+            formobj.submit();
+        }
+    });
+    return false;
+}
+
+$('#sample-table-2').dataTable({
+    "aoColumns": [
+        null, {"bSortable": false}, {"bSortable": false}
+    ]});
+$('table th input:checkbox').on('click', function() {
+    var that = this;
+    $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function() {
+                this.checked = that.checked;
+                $(this).closest('tr').toggleClass('selected');
+            });
+});
+$('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+function tooltip_placement(context, source) {
+    var $source = $(source);
+    var $parent = $source.closest('table');
+    var off1 = $parent.offset();
+    var w1 = $parent.width();
+    var off2 = $source.offset();
+    var w2 = $source.width();
+    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+        return 'right';
+    return 'left';
+}
+
+
+</script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+
+<script type="text/javascript">
+
+$(function() {
+    $(".chzn-select").chosen();
+    $("#CourseCode").change(function() {
+        document.getElementById('Assessment').innerHTML = '';
+        var ccode = document.getElementById('CourseCode').value;
+        $.ajax({
+            url: "<?php echo url::to('AssessmentNameAjax'); ?>",
+            data: {ccode: ccode},
+            beforeSend: function() {
+                document.getElementById('ajax_img1').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+            },
+            success: function(result) {
+                document.getElementById('Assessment').innerHTML = result;
+            },
+            complete: function() {
+                document.getElementById('ajax_img1').innerHTML = "";
+            }
+        });
+    });
+    $("#Assessment").on('click', '#btn_search', function() {
+        var ccode = document.getElementById('AssessmentName').value;
+        if (ccode != '') {
+            $("#my_form").submit();
+        } else {
+            alert('Plz Select Assessment Name!');
+        }
+    });
+});
+</script>

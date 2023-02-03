@@ -1,0 +1,515 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<!--ace styles-->
+
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <!--<a href=<?php echo url('ViewAndDownloadAssessor'); ?>> << Back to Assessor View</a>-->
+            <h1>Monitoring<small><i class="icon-double-angle-right"></i>Course Monitoring Form</small></h1>
+                
+            </div>
+            <div class="control-group">
+                   
+                    <div class="controls">
+
+                    <?php if(Session::has('done')): ?>
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-ok"></i>
+                                 Added Successfully 
+                            </strong>
+                            <br>
+                        </div>
+                    <?php endif; ?>
+                     </div>
+                   
+                </div>
+            <form class="form-horizontal" action='' method="POST"  id='NewModule'>
+                <input type="hidden" name="CenterMoniPlan" id="CenterMoniPlan" value="<?php echo $CenterMoniPlan; ?>">
+            <?php
+            $centerID = MOCenterMonitoringPlan::where('id','=',$CenterMoniPlan)->pluck('CenterID');
+            $districtCode = Organisation::where('id','=',$centerID)->pluck('DistrictCode');
+            $districtName = District::where('DistrictCode','=',$districtCode)->pluck('DistrictName');
+            $DOMoniDate = MOCenterMonitoringPlan::where('id','=',$CenterMoniPlan)->pluck('DatePlanned');
+            $centerName = Organisation::where('id','=',$centerID)->pluck('OrgaName');
+            $YearPlanID = MOCenterMonitoringPlan::where('id','=',$CenterMoniPlan)->pluck('CourseYearPlanID');
+            $CourseListCode = CourseYearPlan::where('id','=',$YearPlanID)->pluck('CourseListCode');
+            $CourseName = Course::where('CourseListCode','=',$CourseListCode)->where('Deleted','=',0)->pluck('CourseName');
+           // $InstructorName = CourseYearPlan::where('id','=',$YearPlanID)->pluck('InstructorName');
+			$ppp = "select moinstructor.id,moinstructor.Name,moinstructor.EPFNo
+						  from moinstructorcourse
+						  left join moinstructor
+						  on moinstructorcourse.InstructorID=moinstructor.id
+						  where moinstructorcourse.CourseYearPlanID='".$YearPlanID."'
+						  and moinstructorcourse.Active='Yes'";
+            $InstructorName =DB::select(DB::raw($ppp));
+            $Duration = Course::where('CourseListCode','=',$CourseListCode)->where('Deleted','=',0)->pluck('Duration');
+            $NVQL = Course::where('CourseListCode','=',$CourseListCode)->where('Deleted','=',0)->pluck('CourseLevel');
+            $StartDate = CourseYearPlan::where('id','=',$YearPlanID)->pluck('RealstartDate');
+            $duration = substr( $Duration, 0, -2);
+            $sql78 = "SELECT DATE_ADD('$StartDate', INTERVAL '$duration' MONTH) AS dd";
+            $newdu = DB::select(DB::raw($sql78));
+            $newdata =  json_decode(json_encode((array)$newdu),true);
+            $expectedcom = $newdata[0]["dd"];
+            $TCount = CourseYearPlan::where('id','=',$YearPlanID)->pluck('NoOfTrainees');
+            $DCount = CourseYearPlan::where('id','=',$YearPlanID)->pluck('Dropout');
+            ?>
+           <table  style="padding-top: 20px;padding-bottom: 20px;margin-right: 200px;margin-left: 100px;margin-top:25px;margin-bottom:25px; border: 2px solid #009ceb;width:500px;">
+            <tr>
+                <td class="center">
+                     <div class="control-group">
+                        <label class="control-label" >District</label>
+                            <div class="controls" id="Trade">
+                                <input type="text" name="District" id="District" value="<?php echo $districtName; ?>" readonly="true">
+                               
+                            </div>  
+
+                     </div>
+                 </td>
+                 <td class="center"> 
+                     <div class="control-group">
+                        <label class="control-label" >Centre Name</label>
+                            <div class="controls" id="Trade">
+                                <input type="text" name="CentreName" id="CentreName" value="<?php echo $centerName; ?>" readonly="true">
+                               
+                            </div>         
+                     </div>
+                </td>
+         </tr>
+         <tr>
+            <td class="center">
+                 <div class="control-group">
+                    <label class="control-label" >Course</label>
+                        <div class="controls" id="Trade">
+                            <input type="text" name="CourseName" id="CourseName" value="<?php echo $CourseName; ?>" readonly="true">
+                           
+                        </div>         
+                 </div>
+             </td>
+             <td class="center">
+
+                 <div class="control-group">
+                    <label class="control-label" >Course Duration</label>
+                        <div class="controls" id="Trade">
+                            <input type="text" name="Duration" id="Duration" value="<?php echo $Duration; ?>" readonly="true">
+                           
+                        </div>         
+                 </div>
+             </td>
+         </tr>
+         <tr>
+            <td class="center">
+                  <div class="control-group">
+                    <label class="control-label" >NVQ Level</label>
+                        <div class="controls" id="Trade">
+                            <input type="text" name="NVQL" id="NVQL" value="<?php echo $NVQL; ?>" readonly="true">
+                           
+                        </div>         
+                 </div>
+            </td>
+            <td class="center">
+                 <div class="control-group">
+                    <label class="control-label" >Start Date</label>
+                        <div class="controls" id="Trade">
+                            <input type="text" name="StartDate" id="StartDate" value="<?php echo $StartDate; ?>" readonly="true">
+                           
+                        </div>         
+                 </div>
+             </td>
+         </tr>
+         <tr>
+            <td class="center">
+                 <div class="control-group">
+                    <label class="control-label" >End Date</label>
+                        <div class="controls" id="Trade">
+                            <input type="text" name="expectedcom" id="expectedcom" value="<?php echo $expectedcom; ?>" readonly="true">
+                           
+                        </div>         
+                 </div>
+            </td>
+            <td class="left">
+                 <div class="control-group">
+                    <label class="control-label" >Instructor</label>
+                        <div class="controls" id="Trade">
+                     
+						  <?php foreach($InstructorName as $i): ?>
+						<span><?php echo $i->Name; ?>(<?php echo $i->EPFNo; ?>)</br></span>
+						<?php endforeach; ?>
+                           
+                        </div>         
+                 </div> 
+             </td>
+         </tr>
+         <tr>
+             <td class="center">
+                 <div class="control-group">
+                    <label class="control-label" >Registered Trainee Count</label>
+                        <div class="controls" id="Trade">
+                            <input type="text" name="TCount" id="TCount" value="<?php echo $TCount; ?>" readonly="true">
+                           
+                        </div>         
+                 </div>  
+             </td>
+             <td class="center">
+                <div class="control-group">
+                    <label class="control-label" >Dropout Count</label>
+                        <div class="controls" id="Trade">
+                            <input type="text" name="DCount" id="DCount" value="<?php echo $DCount; ?>" readonly="true">
+                           
+                        </div>         
+                 </div>
+             </td>
+            </tr>  
+            <tr>
+                <td class="center">
+                 <div class="control-group">
+                    <label class="control-label" >Trainee Count On the monitoring day</label>
+                        <div class="controls" id="Trade">
+                            <input type="text" name="MCount" id="MCount" required="true"/>
+                           
+                        </div>         
+                 </div>  
+             </td>
+            <td class="center">
+                 <div class="control-group">
+                    <label class="control-label" >Date Supervised </label>
+                        <div class="controls" id="Trade">
+                            <input type="date" name="DateS" id="DateS" value="<?php echo $DOMoniDate; ?>" required="true" readonly="true"/>
+                           
+                        </div>         
+                 </div>  
+             </td>
+            </tr>  
+        </table> 
+			<?php  $RR = 1; ?>
+    
+            <?php foreach($Category as $c): ?>
+            <div class="control-group">
+            <div class="controls">
+                <pre bgcolor="REBECCAPURPLE"><h5><b><font color="REBECCAPURPLE"> <?php echo $RR++; ?>. <?php echo $c->TypeInSinhala; ?><h6>(<?php echo $c->TypeInEnglish; ?>)</h6></font></b></h5></pre>
+               
+                        <?php
+
+                        $GetAllCriterias = MOCriteria::where('CategoryId','=',$c->id)->where('Active','=',1)->where('Deleted','=',0)->orderBy('Order')->get();
+
+                        
+
+                        ?>
+                        <table id="sample-table-1" class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class='center'>Question</th>
+                                    <th class='center'>Answer</th>
+                                </tr>
+                                <?php foreach($GetAllCriterias as $g): ?>
+                                <?php
+                                //$getClassweight = MOClassCriteriaWeight::where('Deleted','=',0)->where('CriteriaId','=',$g->id)->get();
+                                $sql = "select moclasscriteriaweight.id,moclasscriteriaweight.Weight,moclass.PercentageGap
+                                          from moclasscriteriaweight
+                                          left join moclass
+                                          on moclasscriteriaweight.ClassId=moclass.id
+                                          where moclasscriteriaweight.Deleted=0
+                                          and moclasscriteriaweight.CriteriaId='".$g->id."'";
+                                $getClassweight = DB::select(DB::raw($sql));
+
+                                ?>
+                                <tr>
+                                    <input type="hidden" name="SubQCetagoryID[]" id="SubQCetagoryID[]" value="<?php echo $g->id; ?>">
+                                    <td ><?php echo $g->CriteriaNameInSinhala; ?><br/><?php echo $g->CriteriaNameInEnglish; ?></td>
+                                    <?php if($g->CalculationType == 'P'): ?>
+                                    <td>
+                                        <select name="AnswerClassWeight[]" id="AnswerClassWeight[]" required="true">
+                                            <option value="">--- Select---</option>
+                                            <?php foreach($getClassweight as $d): ?>
+                                            <option value="<?php echo $d->id; ?>"><?php echo $d->Weight; ?> - (<?php echo $d->PercentageGap; ?>)</option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </td>
+                                    <?php elseif($g->CalculationType == 'YN'): ?>
+                                    <td>
+                                        <select name="AnswerClassWeight[]" id="AnswerClassWeight[]" required="true">
+                                            <option value="">--- Select---</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                            
+                                        </select>
+                                    </td>
+                                    <?php else: ?>
+                                    <td>
+                                        <input type="number" name="AnswerClassWeight[]" id="AnswerClassWeight[]" required="true" />
+                                            
+                                            
+                                        
+                                    </td>
+                                    <?php endif; ?>
+
+                                    
+                                </tr>
+                                <?php endforeach; ?>
+                            </thead>
+                        </table>
+             
+            </div>
+        </div>
+             <?php endforeach; ?>
+			 
+			 <?php if(isset($TimeTablePro)): ?>
+				 <?php if(count($TimeTablePro) != '0'): ?>
+              <div class="control-group">
+            <div class="controls">
+                <pre bgcolor="REBECCAPURPLE"><h5><b><font color="REBECCAPURPLE">Time Table Acheivements</font></b></h5></pre>
+                <div id="table"> 
+                
+                <table id="sample-table-3" class="table table-striped table-bordered table-hover">
+                <thead>
+                        <th class='center'>No</th>
+                        <th class='center'>Date</th>
+                        <th class='center'>Session</th>
+                        <th class='center'>Module Name</th>
+                        <th class='center'>Task Name</th>
+                         
+                         <th class='center'>
+                                  <label>(Select All)
+                                    <input name='select_all[]' value='' type='checkbox' required>
+                                    <span class='lbl'> &nbsp;</span>
+                                    </label></th>
+                        </th>
+                        
+                        
+                </tr>
+                </thead>
+                    <tbody>
+
+                  <?php $SerialNo=1;
+                  ?>
+                
+                <?php foreach($TimeTablePro as $t): ?>
+                <tr>
+
+                     <td class="center"><?php echo $SerialNo++; ?></td>
+                     <td class="center"><?php echo $t->Date; ?></td>
+                     <td class="center"><?php echo $t->Session; ?></td> 
+                    <?php if($t->TaskSeqID == '999997'): ?>
+                     <td class="center">Orientation Program</td>
+                     <td class="center">Orientation Program</td>
+                    <?php elseif($t->TaskSeqID == '999998'): ?>
+                     <td class="center">English</td>
+                     <td class="center">English</td>
+                     <?php elseif($t->TaskSeqID == '999999'): ?>
+                     <td class="center">Revision</td>
+                     <td class="center">Revision</td>
+                     <?php else: ?>
+                     <td class="center"><?php echo $t->ModuleName; ?>(<?php echo $t->ModuleCode; ?>)</td>
+                     <td class="center"><?php echo $t->TaskName; ?>(<?php echo $t->TaskCode; ?>)</td>
+                     <?php endif; ?>
+                    
+                    <td class="center"><label>
+                      <input type="hidden" name="ModateTaskIDs[]" id="ModateTaskIDs[]" value="<?php echo $t->id; ?>">
+                        <input name="trainee_ids[]" class="abc" value="<?php echo $t->id; ?>" type="checkbox" />
+                        <span class="lbl"> &nbsp;</span>
+                        </label>
+                    </td>
+                    
+                    
+                    
+                </tr>
+                <?php endforeach; ?>
+
+               
+                
+            </tbody>
+            </table>                
+                </div>
+              </div>
+            </div>
+			<?php endif; ?>
+<?php endif; ?>
+
+       <div class="control-group">
+		   <label class="control-label" >Reasons for time table progress delays or Other Comments: </label>
+            <div class="controls">
+				 <textarea style="width:470px; height:170px;" placeholder="Enter Reason..............." id="Dreason" name="Dreason"></textarea>
+			</div>
+		</div>
+
+       
+
+               
+                
+                
+                
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-block btn-success">Save</button>
+                </div>
+            </div>         
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+       
+        <div class="span4" id="ajaxerror">
+            
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+
+        </div>
+             </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+  <script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+  <script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script>
+
+    <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+	
+	
+	$('#DateS').change(function(){
+
+        //alert('dg');
+       var DatePlanned = document.getElementById('DateS').value;
+       var CenterMoniPlan = document.getElementById('CenterMoniPlan').value;
+	   var CourseEndDAte =  document.getElementById('expectedcom').value;
+       var CourseStartDate =  document.getElementById('StartDate').value;
+     // alert(CenterMoniPlan);
+        $("#table").html('');
+		
+		
+        var myDate = new Date(DatePlanned);
+        var today = new Date();
+        if ( (myDate > today) || ( myDate>CourseEndDAte || myDate<CourseStartDate)) { 
+			document.getElementById('DateS').value='';
+            bootbox.alert('Please Enter Correct Monitoring Date with In the Course Duration & less than Current Date!!!!!');
+            return false;
+        }
+		else{
+			
+			 $.ajax  ({
+                    url: "<?php echo url::to('UpdateTimetabletaskList'); ?>",
+                    data: {DatePlanned: DatePlanned,CenterMoniPlan: CenterMoniPlan},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                       
+                             //document.getElementById('DatePlanned').value = "";
+                             $('#table').html(result);
+							  table();
+							
+                   }
+
+
+                    
+                });
+		}
+        //return true;
+      
+        
+
+
+       
+    });
+	
+						
+ function table() {
+                    var oTable1 = $('#sample-table-2').dataTable({
+                        "bPaginate": false,
+                        "aoColumns": [
+                            null, null,null,null,null,null
+                        ]});
+                    $('table th input:checkbox').on('click', function() {
+                        var that = this;
+						
+                        $(this).closest('table').find('tr td:nth-child(6) input:checkbox')
+                                .each(function() {
+                                    this.checked = that.checked;
+                                    $(this).closest('tr').toggleClass('selected');
+                                });
+                    });
+
+                }
+
+    $("#table").on("click", "#actall", function() {
+                        var that = this;
+						//alert(that);
+                        $(this).closest('table').find('tr td:nth-child(6) input:checkbox')
+                                .each(function() {
+                                    this.checked = that.checked;
+                                    $(this).closest('tr').toggleClass('selected');
+                                });
+                    });
+    
+
+    
+  
+    
+  
+
+  
+    </script>
+    <script type="text/javascript">
+
+                                function tableModify() {
+                                    $('#sample-table-3').dataTable({
+                                        "bPaginate": false,
+                                        "aaSorting": [],
+                                        "aoColumns": [
+                                            {"bSortable": false},
+                                            null,                                           
+                                            null,
+                                            null,
+                                            null,
+                                            {"bSortable": false}
+                                        ]});
+                                }
+
+
+                                 $('#sample-table-3 th input:checkbox').on('click', function() {
+                                var a = this;
+                                $(this).closest('table').find('tr td:nth-child(6) input:checkbox')
+                                        .each(function() {
+                                            this.checked = a.checked;
+                                            //$(this).closest('tr').troggleClass('selected');
+                                        });
+
+                            });
+							
+							
+</script>
+
+

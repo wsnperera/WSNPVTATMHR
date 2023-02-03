@@ -1,0 +1,84 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<a href=<?php echo url('ViewHRExperienceDesignation'); ?>> << Back to Experience Designation </a> 
+
+<div class="page-content">
+
+ <div class="row-fluid">
+<div class="span8">
+
+    <!--PAGE CONTENT BEGINS-->
+    <!--/.page-header-->
+
+    <div class="page-header position-relative">
+
+        <h1>
+   Designation		
+        <small>
+                <i class="icon-double-angle-right"></i>
+                Create
+        </small>			
+        </h1>
+
+</div><!--/.page-header-->
+<form class="form-horizontal" action="<?php echo url('CreateHRExperienceDesignation'); ?>" method="POST" />
+   <div class="controls">
+
+                <?php if(Session::has('done')): ?>
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-ok"></i>
+                               Designation Added Successfully 
+                            </strong>
+                            <br>
+                        </div>
+                    <?php endif; ?>
+                     </div>
+    
+	 <div class="control-group">
+                    <label class="control-label">Company Name:</label>
+                    <div class="controls">
+                        <input id="Designation" name="Designation" type="text" required="true">
+                    </div>
+                </div>
+     
+  
+<div class="controls">
+    <input type="submit" class="btn btn-small btn-primary"  value="Save" />
+</div>
+</form>
+    <!--PAGE CONTENT ENDS-->
+</div><!--/.span-->
+<div class="span4">
+    <?php if($errors->has()): ?>
+        <?php foreach($errors->all() as $msg): ?>
+         <!-- Error Message -->
+
+         <div class="alert alert-error">
+
+         <button type="button" class="close" data-dismiss="alert">
+          <i class="icon-remove"></i>
+            </button>
+
+             <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+              </div>
+
+                 <!-- Error Message -->
+
+          <?php endforeach; ?>
+
+           <?php endif; ?>
+</div>
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+
+
+

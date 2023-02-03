@@ -1,0 +1,119 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('promotion'); ?>> << Back to Promotion </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="page-header position-relative">
+
+        <h1>
+            Promotion		
+            <small>
+                <i class="icon-double-angle-right"></i>
+                View
+            </small>			
+        </h1>
+
+    </div><!--/.page-header-->
+    <div class="row-fluid">
+
+        <form name='search' action="<?php echo url('findPromotion'); ?>" method='get'>
+            Search Promotions<input type='text' name="searchKey" placeholder="Search by NIC..."/>   <input type='submit' value='Search'/> &nbsp;
+           <?php if($user->hasPermission(array('createPromotion','visitingEmpView'))): ?>
+            <a href="<?php echo url('createPromotion'); ?>"><input type="button" value="Create Promotion"/></a>
+            <a href="<?php echo url('visitingEmpView'); ?>"><input type='button' value='View of Visiting Employee' /></a>
+            <?php endif; ?>
+        </form>
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table class="table" >
+                <tr>
+
+                    <th>Employee Reference No</th>
+                    <th>Transfer ID</th>
+                    <th>Institute Name</th>
+                    <th>Employee Name</th>
+                    <th>N.I.C</th>
+                    <th>Effective Date</th>
+                    <th>To Organisation</th>
+                    <th>To Department</th>
+                    <th>Transfer Type</th>
+                    <th>New Post</th>
+                    <th>Employee Type</th>
+                    <th>Grade</th>
+                    <th>Salary Scale</th>
+                    <th>Salary Step</th>
+                    <th>Salary Code</th>
+                    <th>Increment Month</th>
+                    <th>Increment Day</th>
+                    <?php if($user->hasPermission('deletePromotion')): ?>
+                    <th>Remove</th>
+                    <?php endif; ?>
+                </tr>
+                <?php if(isset ($promotion)): ?>
+                <?php foreach ($promotion as $pr): ?>
+<?php if ($userOrgId ==  $pr->ToOrganisation || $userOrgType == "HO"): ?>
+                <tr>
+<?php if($user->hasPermission('editPromotion')): ?>
+                    <td><a href="<?php echo url('editPromotion?id='.$pr->P_ID); ?>"><?php echo $pr->EPF; ?></a></td>
+                    <?php else: ?> 
+                    <td><?php echo $pr->EPF; ?></td>
+                    <?php endif; ?>
+                    <td><?php echo $pr->P_ID; ?></td>
+                    <td><?php if(!is_null($pr->getInstitute)): ?><?php echo $pr->getInstitute->InstituteName; ?><?php endif; ?></td>
+                    <td><?php if(!is_null($pr->getEmp)): ?><?php echo $pr->getEmp->Name; ?><?php endif; ?></td>
+                    <td><?php echo $pr->NIC; ?></td>
+                    <td ><?php echo $pr->StartDate; ?></td>
+                    <td><?php if(!is_null($pr->getOrga)): ?><?php echo $pr->getOrga->OrgaName; ?><?php endif; ?></td>
+                    <td><?php echo $pr->getDepartment->DepartmentName; ?></td>
+                    <td><?php if(!is_null($pr->getTransferType)): ?><?php echo $pr->getTransferType->TransferType; ?><?php endif; ?></td>
+                    <td><?php if(!is_null($pr->getPost)): ?><?php echo $pr->getPost->Designation; ?><?php endif; ?></td>
+                    <td><?php echo $pr->EmpType; ?></td>
+                    <td><?php echo $pr->Grade; ?></td>
+                    <td><?php if(!is_null($pr->getSalaryScale)): ?><?php echo $pr->getSalaryScale->SalaryScale; ?><?php endif; ?></td>
+                    <td><?php echo $pr->SalaryStep; ?></td>
+                    <td><?php echo $pr->SalaryCode; ?></td>
+                    <td><?php echo $pr->IncrementMonth; ?></td>
+                    <td><?php echo $pr->IncrementDay; ?></td>
+                    <?php if($user->hasPermission('deletePromotion')): ?>
+                    <td>
+                        <form id="deleteform"  action="<?php echo url('deletePromotion'); ?>" method="POST" onsubmit="return doConfirm('<?php echo $pr->NIC; ?>', this)">
+                            <input type="hidden" name='pid' value="<?php echo $pr->P_ID; ?>" />
+                            <button type="submit" class="btn btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                        </form>
+                    </td>
+                    <?php endif; ?>
+                </tr>
+                <?php endif; ?>
+                <?php endforeach; ?>
+                <?php endif; ?>
+
+            </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+
+
+            function doConfirm(promotion, formobj)
+            {
+
+
+            bootbox.confirm("Are you sure you want to remove promotion record of" + promotion, function(result)
+            {
+            if (result)
+            {
+            formobj.submit();
+            }
+
+
+            });
+                    return false; // by default do nothing hack :D
+            }
+
+
+
+</script>

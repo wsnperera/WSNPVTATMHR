@@ -1,0 +1,349 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<a href=<?php echo url('ViewTimeTable'); ?>> << Back to TimeTable </a> 
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                   TimeTable	
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+
+
+
+            <form class="form-horizontal" action="<?php echo url('createTimeTable'); ?>" method="POST"/>
+
+
+
+            <!-- NVQ -->
+			 <div class="control-group">
+
+                <label class="control-label" for="NoofSlot">Course Code</label>
+
+                <div class="controls">
+
+                 
+				  <input type='text' name="CourseCode" id="CourseCode" value="<?php echo $CourseCode; ?>" readonly />
+
+                </div>
+
+            </div>
+			  <div class="control-group">
+
+                <label class="control-label" for="Day">Day</label>
+
+                <div class="controls">
+
+                    <select id="Day" name="Day" >
+						<option value="">--- select Day ---</option>
+							
+							
+						<?php if($Day == '1'): ?>
+						<option value="1" selected >Monday</option>
+						<?php elseif($Day == '2'): ?>
+						<option value="2" selected >Tuesday</option>
+						<?php elseif($Day == '3'): ?>
+						<option value="3" selected >Wednesday</option>
+						<?php elseif($Day == '4'): ?>
+						<option value="4" selected >Thursday</option>
+						<?php elseif($Day == '5'): ?>
+						<option value="5" selected >Friday</option>
+						<?php elseif($Day == '6'): ?>
+						<option value="6" selected >Saturday</option>
+						<?php elseif($Day == '7'): ?>
+						<option value="7" selected >Sunday</option>
+						<?php endif; ?>
+					</select>
+
+                </div>
+
+            </div>
+			 <!--<div class="control-group">
+
+                <label class="control-label" for="SlotNoID">Slot</label>
+
+                <div class="controls">
+
+                    <select id="SlotNoID[]" name="SlotNoID[]">
+						<option value="">---select Slot---</option>
+						<?php foreach($slot as $s): ?>
+						<option value="<?php echo $s->id; ?>"><?php echo $s->Name; ?></option>
+						<?php endforeach; ?>
+					</select>
+					<input type="button" name="total" id="total" value="Add New" />
+
+                </div>
+
+            </div>-->
+			<div class="control-group">
+
+                        <label class="control-label" for="nofGroups" >Slot</label>
+
+                        <div class="controls">
+
+                            
+									<!--<input type='text' name="nofGroups" id="nofGroups"/>
+									<input type="button" name="total" id="total" value="Add" />-->
+									<select id="SlotNoID" name="SlotNoID" >
+									
+									<option value="">---Select Slot---</option>
+									
+									<?php if(isset($slot)): ?>
+									
+									<?php foreach($slot as $s): ?>
+										<option value="<?php echo $s->id; ?>" selected><?php echo $s->Name; ?></option>
+									
+									<?php endforeach; ?>
+
+									<?php endif; ?>
+									</select>
+
+                        </div>
+						</div>
+			<div class="control-group">
+
+               
+			<div  class="controls" id="table" name="table">
+
+                        
+            </div>
+			</div>
+			<div class="control-group">
+
+                <label class="control-label" for="ModuleID">Module</label>
+
+                <div class="controls">
+
+                    <select id="ModuleID" name="ModuleID">
+					
+						<option value="">---select Module---</option>
+						<?php foreach($Module as $s): ?>
+						<option value="<?php echo $s->MC_ID; ?>"><?php echo $s->ModuleName; ?>(<?php echo $s->Type; ?>)</option>
+						<?php endforeach; ?>
+				
+					
+						
+					</select>
+
+                </div>
+
+            </div>
+
+            
+           
+            
+
+
+
+
+
+
+
+
+
+            <!-- Submit Button -->
+
+            <div class="control-group">
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Save</button>
+
+                </div>
+            </div>
+
+
+            <!-- Submit Button -->
+
+
+
+
+
+
+        
+
+        </form>
+
+
+
+
+
+
+
+    </div><!--/.span-->
+
+
+
+
+    <!--/span 4 for error handling -->
+
+    <div class="span4">
+
+        <!-- Error Handling -->
+
+        <?php if($errors->has()): ?>
+
+        <?php foreach($errors->all() as $msg): ?>
+
+        <!-- Error Message -->
+
+        <div class="alert alert-error">
+
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="icon-remove"></i>
+            </button>
+
+            <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+        </div>
+
+        <!-- Error Message -->
+
+        <?php endforeach; ?>
+
+        <?php endif; ?>
+
+        <!-- Error Handling -->
+
+
+
+
+
+
+    </div>
+    <!--/span 4-->
+
+
+
+
+
+    <!--PAGE CONTENT ENDS-->
+
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script>
+
+    <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "TimeTable Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+	
+	
+	 $("#CourseCode").change(function()
+                    {
+
+                        var cid = $("#CourseCode").val();
+						 
+						 
+						//alert(cid);
+                       $("#ModuleID").html('');
+
+
+                        $.ajax
+                                ({
+                                    type: "GET",
+                                    url: "<?php echo Url('TimeTableModule'); ?>",
+                                    data: {corseid: cid},
+                                    dataType: "json",
+                                    success: function(result)
+                                    {
+											//alert('dddddddddd');
+											
+										 $("#ModuleID").append("<option>---select module---</option>");
+                                        $.each(result, function(i, item)
+                                        {
+
+											//alert('dis');
+
+                                            $("#ModuleID").append("<option value=" + item.ModuleId + ">" +item.ModuleName + "</option>");
+
+
+
+                                        });
+
+
+                                    }
+                                });
+
+
+
+
+                    });
+					
+					
+					////////////////////////////////////////////////
+					
+					
+					$("#total").click(function()
+                {
+
+                        
+						
+						 
+						
+						 var nofGroups = $("#nofGroups").val(); 
+						 
+                       $("#table").html('');
+					   
+
+					
+					
+                        $.ajax
+                                ({
+                                    type: "GET",
+                                    url: "<?php echo Url('GetSlotView'); ?>",
+                                    data: {nofGroups: nofGroups},
+                                    
+                                    success: function(result)
+                                    {
+										
+											$('#table').html(result);
+
+
+                                        
+
+
+                                    }
+                                });
+
+
+
+
+					
+					
+					
+				});
+
+</script>
+
+
+
+
+
+
+
+
+
+

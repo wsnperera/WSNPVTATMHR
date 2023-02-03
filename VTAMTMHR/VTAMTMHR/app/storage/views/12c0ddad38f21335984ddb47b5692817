@@ -1,0 +1,397 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+
+    <div class="row-fluid">
+
+
+
+
+
+        <div class="span12">
+
+            <!--PAGE CONTENT BEGINS-->
+
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Employee		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+
+
+            <!--Write your code here start-->
+
+
+            <form class="form-horizontal" action="<?php echo url('editEmpPro'); ?>" method="POST"/>
+
+            <input type="hidden" name="id" value="<?php echo $Event->id; ?> "/>
+
+
+
+            <br/>
+
+
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="NIC">NIC</label>
+
+                <div class="controls">
+
+                    <input type="text" name="NIC" value="<?php echo $Event->NIC; ?>"/>
+
+                </div>
+
+            </div>
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="InstituteId">Institute Name</label>
+
+                <div class="controls">
+
+                    <input type="text"  disabled="true" value="<?php echo $institute; ?>"/>
+                    <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>"/>
+
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="OrgId">organization Name</label>
+
+                <div class="controls">
+
+                    <input type="text" disabled="true" value="<?php echo $organization; ?>"/>
+                    <input type="hidden" name="OrgId" value="<?php echo $og_id; ?>"/>
+
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="EPFNo">EPF No</label>
+
+                <div class="controls">
+
+                    <input type="text" name="EPFNo" value="<?php echo $Event->EPFNo; ?>"/>
+
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="LastName">Last Name</label>
+
+                <div class="controls">
+
+                    <input type="text" name="LastName" value="<?php echo $Event->LastName; ?>"/>
+
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="Initials">Initials</label>
+
+                <div class="controls">
+
+                    <input type="text" name="Initials" value="<?php echo $Event->Initials; ?>"/>
+
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="Name">Name</label>
+
+                <div class="controls">
+
+                    <input type="text" name="Name" value="<?php echo $Event->Name; ?>"/>
+
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="Sex">Sex</label>
+
+                <div class="controls">
+
+
+                    <select name="Sex">
+
+                        <option <?php if($Event->Sex == "Male"): ?> selected value="<?php echo $Event->Sex; ?>" <?php endif; ?>>Male</option>
+                        <option <?php if($Event->Sex == "Female"): ?> selected value="<?php echo $Event->Sex; ?>" <?php endif; ?>>Female</option>
+
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="DOB">DOB</label>
+
+                <div class="controls">
+
+                    <input type="text" name="DOB" value="<?php echo $Event->DOB; ?>"/>
+
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="CivilStatus">Civil Status</label>
+
+                <div class="controls">
+
+                    <select name="CivilStatus">
+
+                        <option <?php if($Event->CivilStatus == "Married"): ?> selected value="<?php echo $Event->CivilStatus; ?>" <?php endif; ?>>Married</option>
+                        <option <?php if($Event->CivilStatus == "Unmarried"): ?> selected value="<?php echo $Event->CivilStatus; ?>" <?php endif; ?>>Unmarried</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="PAddress">Address</label>
+
+                <div class="controls">
+
+
+                    <textarea  name="PAddress" value=""><?php echo $Event->PAddress; ?></textarea>
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="DistrictName">District Name</label>
+
+                <div class="controls">
+
+                    <select name="DistrictName" id="DistrictName">
+
+                        <?php foreach ($holidaytypes as $i): ?>
+
+                        <option <?php if($i->DistrictName==$Event->DistrictName): ?> selected <?php endif; ?> name="DistrictName" value="<?php echo $i->DistrictName; ?>"><?php echo $i->DistrictName; ?></option>
+
+                        <?php endforeach; ?>
+
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="DSDivision">DS Division</label>
+
+                <div class="controls" id="dis_load">
+
+
+                    <select name="DSDivision"  id="DSDivision"> 
+                        <option value="<?php echo $Event->DSDivision; ?>"><?php echo $Event->DSDivision; ?></option>
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="Contact">Contact</label>
+
+                <div class="controls">
+
+                    <input type="text" name="Contact" value="<?php echo $Event->Contact; ?>"/>
+
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="Mobile">Mobile</label>
+
+                <div class="controls">
+
+                    <input type="text" name="Mobile" value="<?php echo $Event->Mobile; ?>"/>
+
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="Email">Email</label>
+
+                <div class="controls">
+
+                    <input type="text" name="Email" value="<?php echo $Event->Email; ?>"/>
+
+                </div>
+
+            </div>
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="Trade">Trade</label>
+
+                <div class="controls">
+
+                    <input type="text" name="Trade" value="<?php echo $Event->Trade; ?>"/>
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+            <br/>
+
+
+
+
+
+            <div class="control-group">
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Update</button>
+
+                </div>
+
+            </div>
+
+
+            </form>
+
+        </div>
+        <!--/span 4 for error handling -->
+
+        <div class="span4">
+
+
+
+            <?php if($errors->has()): ?>
+
+            <?php foreach($errors->all() as $msg): ?>
+
+
+
+            <div class="alert alert-error">
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+            </div>
+
+
+
+            <?php endforeach; ?>
+
+            <?php endif; ?>
+
+
+
+
+
+
+
+        </div></div></div>
+
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+
+
+
+<script type="text/javascript">
+    $("#DistrictName").change(function() {
+
+        var epf = document.getElementById('DistrictName').value;
+        //alert(epf);
+        $.ajax({
+            url: "<?php echo url::to('employeeajax'); ?>",
+            data: {DistrictName: epf},
+            success: function(result)
+            {
+                //                alert(result);
+                document.getElementById('dis_load').innerHTML = result;
+            }
+        });
+
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

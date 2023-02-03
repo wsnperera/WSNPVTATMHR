@@ -1,0 +1,59 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href=<?php echo url('ViewAccreditRequest'); ?>> << Back to View </a>
+                <h1>Analise Accreditation Request<small><i class="icon-double-angle-right"></i>Analise</small></h1>
+            </div>
+            <form class="form-horizontal" action='' method="POST"/>
+                <input type="hidden" name="id" value="<?php echo $ca->id; ?>" />
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Assessed : </label>
+                        <div class="controls">
+                            <select name="assessed">
+                                <?php if($ca->assessed=='Yes'): ?>
+                                    <option selected>Yes</option>
+                                    <option>No</option>
+                                <?php else: ?>
+                                    <option >Yes</option>
+                                    <option selected>No</option>
+                                <?php endif; ?>
+                            <select>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Done</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+    <?php if(isset($error)): ?>
+        $.gritter.add({ title: "", text: "Request Editing Error", class_name: "gritter-info gritter-center" });
+    <?php endif; ?>
+</script>
+      
+           
+               
+               
+               
+      
+        
+        
+
+    

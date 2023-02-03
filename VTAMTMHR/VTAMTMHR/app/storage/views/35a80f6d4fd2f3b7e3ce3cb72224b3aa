@@ -1,0 +1,186 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<link rel="stylesheet" href="assets/css/bootstrap-timepicker.css" />
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/colorpicker.css" />
+
+<a href="<?php echo url('empAttendanceReport'); ?>">
+    Back to Attendance Home
+</a>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Student Attendance			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Student Daily Attendance
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+            <form class="form-horizontal" name="attendance" action="<?php echo url('traineeDailyAttendance'); ?>" method="get">
+                <div class="control-group">
+                    <label class="control-label">Center Name</label>
+
+                    <div class="controls">
+                        <?php if($orgType == "HO"): ?>
+                        <select name="centername" id="center">
+                            <option value="" selected="">Select Center</option>
+                            <?php foreach($centers as $c): ?>
+                            <option value="<?php echo $c->id; ?>"><?php echo $c->CenterCode.'-'.$c->OrgaName; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php else: ?>
+                        <input type="hidden" name="centername" id="center" value="<?php echo $centers->id; ?>" /><input type="text" value="<?php echo $centers->OrgaName; ?>"/>
+                        <?php endif; ?>
+                    </div>
+                </div>
+				<div class="control-group">
+                    <label class="control-label">Course Type</label>
+
+                    <div class="controls">
+                        <select name="coursetype" id="coursetype">
+                            <option value="">Select Course Type</option>
+							<option value="Ongoing">Ongoing Courses</option>
+							<option value="Completed">Completed Courses </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Course Code</label>
+
+                    <div class="controls">
+                        <select name="batchcode" id="batchcode">
+                            <option value="">Select Batch</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group" >
+                    <label class="control-label">Report Type</label>
+
+                    <div class="controls">
+                        <select name="reporttype" id="reporttype">
+                            <option value="">Select Report Type </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group" id="type">
+                </div>
+                <div class="control-group" id="submit" hidden="">
+                    <div class = "form-actions" style="width:200px">
+                        <button class = "btn btn-info btn-small" type = "submit">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+        <div class="span4">
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error">
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    var center = $("#center").val();
+	var coursetype = $("#coursetype").val();
+    if (center !== "") {
+        $.ajax
+                ({
+                    url: "<?php echo url::to('loadBatchit'); ?>",
+                    data: {center: center,coursetype: coursetype},
+                    dataType: 'json',
+                    success: function(result)
+                    {
+                        document.getElementById('batchcode').innerHTML = result.html1;
+                        document.getElementById('reporttype').innerHTML = result.html2;
+                        document.getElementById('type').innerHTML = '';
+                        $('#submit').hide();
+                    }
+                });
+    }
+});
+
+
+$("#coursetype").change(function() {
+    var center = document.getElementById('center').value;
+	var coursetype = document.getElementById('coursetype').value;
+
+    $.ajax
+            ({
+                url: "<?php echo url::to('loadBatchit'); ?>",
+                data: {center: center,coursetype: coursetype},
+                dataType: 'json',
+                success: function(result)
+                {
+                    document.getElementById('batchcode').innerHTML = result.html1;
+                    document.getElementById('reporttype').innerHTML = result.html2;
+                    document.getElementById('type').innerHTML = '';
+                    $('#submit').hide();
+                }
+            });
+
+});
+
+$("#batchcode").change(function() {
+    document.getElementById('type').innerHTML = '';
+    document.getElementById('reporttype').value = '';
+    $('#submit').hide();
+});
+
+$("#center").change(function() {
+	
+	document.getElementById('batchcode').innerHTML = '';
+    document.getElementById('type').innerHTML = '';
+    document.getElementById('reporttype').value = '';
+    $('#submit').hide();
+});
+
+$("#reporttype").change(function() {
+    var reporttype = document.getElementById('reporttype').value;
+    var batchcode = document.getElementById('batchcode').value;
+    var center = document.getElementById('center').value;
+
+    $.ajax
+            ({
+                url: "<?php echo url::to('loadReportit'); ?>",
+                data: {reporttype: reporttype, batchcode: batchcode, center: center},
+                success: function(result)
+                {
+                    document.getElementById('type').innerHTML = result;
+                    if (result !== "") {
+                        $('#submit').show();
+                    }
+                    abc();
+                }
+            });
+
+});
+
+function abc() {
+    $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function() {
+        $(this).next().focus();
+    });
+}
+</script>

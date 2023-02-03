@@ -1,0 +1,231 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<a href=<?php echo url('eventplanned'); ?>> << Back to Event Planned </a> 
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Event Planned			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+            <form class="form-horizontal" action="<?php echo url('createEventplanned'); ?>" method="POST" id="my_form"/>
+
+            <div class="control-group">
+                <label class="control-label" for="InstituteId">Institute Name</label>
+                <div class="controls">
+                    <input type="text"  readonly="readonly" value="<?php echo $institute; ?>"/>
+                    <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="OrganisationId"> Organization Name</label>
+                <div class="controls">
+                    <input type="text" readonly="readonly" value="<?php echo $organization; ?>"/>
+                    <input type="hidden" name="OrganisationId" value="<?php echo $og_id; ?>"/>
+                </div>
+            </div>
+
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-2">Event Name</label>
+                <div class="controls">
+                    <select name="EventId" required="required">
+                        <option></option>
+                        <?php foreach ($event as $e): ?>
+                        <option value="<?php echo $e->EventId; ?>"><?php echo $e->EventName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-14">Scheduled Date</label>
+                <div class="controls">
+                    <input type="date" name="ScheduledDate" id="ScheduledDate" onblur="dates()" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-5">From</label>
+                <div class="controls">
+                    <input type="time" name="From" id="From"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-6">To</label>
+                <div class="controls">
+                    <input type="time" name="To" id="To" onblur="checktime()"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-7">Description</label>
+                <div class="controls">
+                    <textarea rows="4" cols="5" name="Description"  ></textarea>
+                </div>
+            </div>
+  <div class="control-group">
+                            <label class="control-label" for="form-field-8">Course List Code</label>
+                    <div class="controls"id="courseCode">
+                        <select  name="CourseListCode" id="CourseListCode">
+                               <option>-Select--</option>
+                            <?php foreach ($course as $c): ?>
+                            <option value="<?php echo $c->CourseListCode; ?>"><?php echo $c->CourseListCode; ?></option>
+                            <?php endforeach; ?>
+                            </select>
+                    </div>
+                    </div>
+            
+                     <div class="control-group">
+                            <label class="control-label" for="form-field-8">Event held Place</label>
+                    <div class="controls">
+                        <select  name="CenterId" id="CenterId">
+                        <option>--Select--</option>
+                        <?php foreach ($organisation as $o): ?>
+                        <option value="<?php echo $o->id; ?>"><?php echo $o->OrgaName; ?></option>
+                        <?php endforeach; ?>
+                            </select>
+                    </div>
+                    </div>
+            
+
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <!-- Error Message -->
+
+            <div class="alert alert-error">
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+            </div>
+
+            <!-- Error Message -->
+            <?php endforeach; ?>
+            <?php endif; ?>
+            
+            <div class="control-group">
+            <div class="controls">
+                <input type="submit" class="btn btn-small btn-primary " value="Submit"  />
+                 <input type="reset" value="Clear" class="btn btn-small btn-grey"/>
+            </div>
+            </div>
+            </form>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+
+    function checktime() {
+        //start time
+        var From = document.getElementById('From').value;
+        //end time
+        var To = $("#To").val();
+
+        if (From < To)
+        {
+            return true;
+        }
+        else if (From > To) {
+            $("#From").after('<span class="error" ><br><h5 style="color:red" >*Start-time must be smaller then End-time.</h5></span>');
+            $("#To").after('<span class="error"><br><h5 style="color:red" >*End-time must be bigger then Start-time.</h5></span>');
+            return false;
+        }
+    }
+    $("#CourseListCode").change(function() {
+
+        var co_li_code = document.getElementById('CourseListCode').value;
+
+        $.ajax({
+            url: "<?php echo url::to('clcLoadajax'); ?>",
+            data: {co_li_code: co_li_code},
+            success: function(res) {
+                document.getElementById('courseCode').innerHTML = res;
+
+            }
+
+        });
+
+    });
+
+    function dates()
+    {
+        var d = new Date(); //creates a new date
+        var d1 = d.getDate(); //retrieves the date from the system
+        var m1 = d.getMonth() + 1; //retrieves the month JS starts counting at zero, so add a 1 to start January at 1
+        var y1 = d.getFullYear(); //retrieves the year
+//var now = y1 + "-" + m1 + "-" + d1; //formats the date*/
+        var sd = document.getElementById('ScheduledDate').value;
+
+        var a = sd.split('-');
+
+        var d2 = a[2]; //retrieves the date from the system
+        var m2 = a[1]; //retrieves the month JS starts counting at zero, so add a 1 to start January at 1
+        var y2 = a[0];
+        if (y2 - y1 >= 0 && m2 - m1 >= 0 && d2 - d1 >= 0)
+        {
+            return true;
+        }
+        else if (y2 - y1 >= 0 && m2 - m1 > 0)
+        {
+            return true;
+        }
+        else if (y2 - y1 > 0)
+        {
+            return true;
+        }
+        else
+        {
+            alert('You cannot select a day earlier than today!');
+        }
+    }
+    $(document).change(function(){
+        var na=document.getElementById('CourseListCode').value;
+        $.ajax({
+            url: "<?php echo url::to('nameLoadajax'); ?>",
+            data: {na: na},
+            success: function(res) {
+                document.getElementById('CourseName').innerHTML = res;
+
+            }
+
+        });
+        
+    } );
+     $(function() {
+    $(".chzn-select").chosen();
+});
+
+//var mytextbox1 = document.getElementById('CourseListCode');
+//var mytextbox2 = document.getElementById('CenterId');
+//    var mydropdown1 = document.getElementById('dropdown1');
+//    var mydropdown2 = document.getElementById('dropdown2');
+//    mydropdown1.onchange = function(){
+//          mytextbox1.value = mytextbox1.value + this.value +','; //to appened
+//         //mytextbox.innerHTML = this.value;
+//     };
+//     mydropdown2.onchange = function(){
+//          mytextbox2.value = mytextbox2.value + this.value +','; //to appened
+//         //mytextbox.innerHTML = this.value;
+//     };
+    
+</script>
+

@@ -1,0 +1,778 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+         
+                <div class="page-header position-relative">
+                    <h1>
+                       Actual Time Table       
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            Create Actual TimeTable
+                        </small>            
+                    </h1>
+                </div>
+            </div>
+            <!--PAGE CONTENT BEGINS-->
+            <form action="" method='POST' class='form-horizontal'>
+		
+                   
+                   
+               
+             <div class="control-group">
+                    <label class="control-label" for="centers">Year</label>
+                    <?php  $year = date("Y"); ?>
+                    <div class="controls">
+                      <select name="Year" id="Year" required>
+                            <option value="" required>--- Select Year ---</option>
+							 <option value="<?php echo $year-2; ?>"><?php echo $year-2; ?></option>
+							 <option value="<?php echo $year-1; ?>"><?php echo $year-1; ?></option>
+                            <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                            <option value="<?php echo $year+1; ?>"><?php echo $year+1; ?></option>
+                            <option value="<?php echo $year+2; ?>"><?php echo $year+2; ?></option>
+                            <option value="<?php echo $year+3; ?>"><?php echo $year+3; ?></option>
+                           
+                          
+                        </select> 
+                    </div>
+                </div>
+                 <div class="control-group">
+                    <label class="control-label" for="centers">Batch:</label>
+                    <div class="controls">
+                        <select name="Batch" id="Batch" required>
+                            <option value="" >--- Select Batch ---</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+							 <option value="1.2">1.2</option>
+							  <option value="2.2">2.2</option>
+                          
+                        </select>
+                        <span id='img4'></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="centers">CourseListCode:</label>
+                    <div class="controls">
+                        <select name="Course" id="Course" required>
+                            <option value="" >--- Select Course ---</option>
+                           
+                          
+                        </select>
+
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="centers">Actual Start date:</label>
+                    <div class="controls">
+                       <input type="date" name="StartDate" id="StartDate" required="true" />
+                    </div>
+                </div>
+                <br/> 
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit"  id="upload11" class="btn btn-small btn-pink">
+                                <i class="icon-eye-open bigger-100"></i>Submit</button>
+                                <span id='upld' hidden>
+                                
+                              
+                                </span>
+                    </div>
+                </div>
+				<?php if(Session::has('done')): ?>
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-ok"></i>
+                               Time Table Loaded Successfully !!!!
+                            </strong>
+                            <br>
+                        </div>
+                    <?php endif; ?>
+                     				
+            </form>
+			<div id="rest">
+			<?php if(isset($DistinctNoOFSesssions)): ?>
+			  <form action="<?php echo url('SecondRevGetOrmit'); ?>" method='POST' class='form-horizontal'>
+		  <div class="control-group">
+							<label class="control-label" for="centers">Note</label>
+								<div class="controls">
+					<span style="color: red"><b>* First check the action type of the course.<br/>* Change the Session to be values until total achived session count equal to no of session count we are going to collect.<br/>* Don't Enter 0.5 as a session value.<br/> </b></span>
+					</div>
+					</div>
+						<?php  $h = 0; ?>
+						<input type="hidden" name="YearD" id="YearD" value="<?php echo $Year; ?>" />
+						<input type="hidden" name="BatchD" id="BatchD" value="<?php echo $Batch; ?>" />
+						<input type="hidden" name="YearPlanIDD" id="YearPlanIDD" value="<?php echo $YearPlanID; ?>" />
+						<input type="hidden" name="StartDateD" id="StartDateD" value="<?php echo $StartDate; ?>" />
+						<input type="hidden" name="Acct" id="Acct" value="<?php echo $ActinStatus; ?>" />
+						<?php if($ActinStatus == 'CalenderGreater'): ?>
+						<div class="control-group">
+							<label class="control-label" for="centers">Action</label>
+								<div class="controls">
+								   <input type="text" name="action" id="action" value="Increase No of Session Value" style="color:#E5260F;" readonly="true" />
+								</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="centers">No of Sessions Available in working calender:</label>
+								<div class="controls">
+									<input type="text" name="y" id="y" value="<?php echo $y; ?>" readonly="true"/>
+								</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="centers">No of sessions reqired:</label>
+								<div class="controls">
+									<input type="text" name="x" id="x" value="<?php echo $x; ?>" readonly="true"/>
+								</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="centers">Total No of Sessions to Increase:</label>
+								<div class="controls">
+									<input type="text" name="totseschange" id="totseschange" value="<?php echo $GapDifference; ?>" readonly="true"/>
+								</div>
+						</div>
+						<hr/>
+						<div class="control-group">
+									
+										<div class="controls">
+											<table border="1">
+												<thead>
+													<tr>
+														<th>Session</th>
+														<th>No of Occurences</th>
+														<th>Session To be..</th>
+														<th>Total Sessions Achived</th>
+													</tr>
+												</thead>
+												<tbody>
+							<?php foreach($DistinctNoOFSesssions as $d): ?>
+								
+												
+												<tr>
+													<td>
+														<input type="text" name="TaskSeqSession[]" id="TaskSeqSession[]" value="<?php echo $d->noofsessions; ?>" readonly="true"/>
+													</td>
+													<td>
+														<input type="text" name="Occurences[]" id="Occurences[]" value="<?php echo $d->Occurences; ?>" readonly="true"/>
+													</td>
+													<td>
+														<input type="text" name="ActualSeqSession[]" id="ActualSeqSession[]" value="0"  required="true"/>
+													</td>
+													<td>
+													
+													<input type="text" name="<?php echo $h; ?>" id="<?php echo $h; ?>"  value="0" readonly="true"/>
+													</td>
+													<?php  $h++; ?>
+													</tr>
+												
+							
+							<?php endforeach; ?>
+							<tr>
+							<td></td>
+							<td></td>
+							<td><center>Total Achived</center></td>
+							<td><input type="text" name="TotalAchived" id="TotalAchived" value="0" readonly="true" style="color:#E5260F;bold;"/></td>
+							</tr>
+							</tbody>
+											</table>
+										</div>
+									
+							</div>
+						<?php elseif($ActinStatus == 'TaskSeqGreater'): ?>
+						<div class="control-group">
+							<label class="control-label" for="centers" >Action</label>
+								<div class="controls">
+								   <input type="text" name="action" id="action" value="Decrease No of Session Value" readonly="true" style="color:#E5260F;"/>
+								</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="centers">No of Sessions Available in working calender:</label>
+								<div class="controls">
+									<input type="text" name="y" id="y" value="<?php echo $y; ?>" readonly="true"/>
+								</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="centers">No of sessions reqired:</label>
+								<div class="controls">
+									<input type="text" name="x" id="x" value="<?php echo $x; ?>" readonly="true"/>
+								</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="centers">Total No of Sessions to Decrease:</label>
+								<div class="controls">
+									<input type="text" name="totseschange" id="totseschange" value="<?php echo $GapDifference; ?>" readonly="true"/>
+								</div>
+						</div>
+						
+						<hr/>
+						<div class="control-group">
+									
+										<div class="controls">
+											<table border="1">
+												<thead>
+													<tr>
+														<th>Session</th>
+														<th>No of Occurences</th>
+														<th>Session To be..</th>
+														<th>Total Sessions Achived</th>
+													</tr>
+												</thead>
+												<tbody>
+						<?php foreach($DistinctNoOFSesssions as $d): ?>
+							
+												<tr>
+													<td>
+														<input type="text" name="TaskSeqSession[]" id="TaskSeqSession[]" value="<?php echo $d->noofsessions; ?>" readonly="true"/>
+													</td>
+													<td>
+														<input type="text" name="Occurences[]" id="Occurences[]" value="<?php echo $d->Occurences; ?>" readonly="true"/>
+													</td>
+													<td>
+														<input type="text" name="ActualSeqSession[]" id="ActualSeqSession[]"   value="0" required="true"/>
+													</td>
+													<td>
+													<input type="text" name="<?php echo $h; ?>" id="<?php echo $h; ?>" value="0" readonly="true"/>
+													</td>
+													<?php  $h++; ?>
+													</tr>
+												
+							
+							
+							<?php endforeach; ?>
+							<tr>
+							<td></td>
+							<td></td>
+						<td><center>Total Achived</center></td>
+							<td><input type="text" name="TotalAchived" id="TotalAchived" value="0" readonly="true" style="color:#E5260F;bold;"/></td>
+							</tr>
+							</tbody>
+											</table>
+										</div>
+									
+							</div>
+						<?php else: ?>
+						<div class="control-group">
+							<label class="control-label" for="centers">Action</label>
+								<div class="controls">
+								   <input type="text" name="action" id="action" value="Keep as it is :)" readonly="true" style="color:#E5260F;" />
+								</div>
+						</div>	
+						<div class="control-group">
+							<label class="control-label" for="centers">No of Sessions Available in working calender:</label>
+								<div class="controls">
+									<input type="text" name="y" id="y" value="<?php echo $y; ?>" readonly="true"/>
+								</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="centers">No of sessions reqired:</label>
+								<div class="controls">
+									<input type="text" name="x" id="x" value="<?php echo $x; ?>" readonly="true"/>
+								</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="centers">Total No of Sessions to Change:</label>
+								<div class="controls">
+									<input type="text" name="totseschange" id="totseschange" value="0" readonly="true"/>
+								</div>
+						</div>
+						<hr/>
+						<div class="control-group">
+									
+										<div class="controls">
+											<table border="1">
+												<thead>
+													<tr>
+														<th>Session</th>
+														<th>No of Occurences</th>
+														<th>Session To be..</th>
+														<th>Total Sessions Achived</th>
+													</tr>
+												</thead>
+												<tbody>
+						<?php foreach($DistinctNoOFSesssions as $d): ?>
+								
+								
+												<tr>
+													<td>
+														<input type="text" name="TaskSeqSession[]" id="TaskSeqSession[]" value="<?php echo $d->noofsessions; ?>" readonly="true"/>
+													</td>
+													<td>
+														<input type="text" name="Occurences[]" id="Occurences[]" value="<?php echo $d->Occurences; ?>" readonly="true"/>
+													</td>
+													<td>
+														<input type="text" name="ActualSeqSession[]" id="ActualSeqSession[]"  value="<?php echo $d->noofsessions; ?>" readonly="true"/>
+													</td>
+													<td>
+													<?php
+													$totraw = $d->noofsessions*$d->Occurences;
+													?>
+													<input type="text" name="<?php echo $h; ?>" id="<?php echo $h; ?>" value="<?php echo $totraw; ?>" readonly="true" style="color:#E5260F;"/>
+													</td>
+													<?php  $h++; ?>
+												</tr>
+							
+							
+							<?php endforeach; ?>
+								<tr>
+							<td></td>
+							<td></td>
+							<td><center>Total Achived</center></td>
+							<td><input type="text" name="TotalAchived" id="TotalAchived" value="0" readonly="true"/></td>
+							</tr>
+												</tbody>
+											</table>
+										</div>
+									
+							</div>
+			            <?php endif; ?>
+						<div class="control-group">
+                    <div class="controls">
+                        <button type="submit" id="upload2" class="btn btn-block btn-danger">
+                                <i class="icon-eye-open bigger-100"></i>Genarate Time Table </button>
+                                
+                    </div>
+                </div>  
+			  </form>
+			  
+				  
+			<?php endif; ?>
+			</div>
+             <span id='img5'></span>
+             <div id="bbb">
+                
+             </div>
+            <div id="aaaa">
+           
+           <!-- <h5 style="color: #777777;"><?php if(isset($CourseCode)): ?>CourseCode:&nbsp;&nbsp;<?php echo $CourseCode; ?><?php endif; ?></h5>
+            <h5 style="color: #777777;"><?php if(isset($BatchCode)): ?>BatchCode:&nbsp;&nbsp;<?php echo $BatchCode; ?><?php endif; ?></h5>-->
+            
+          
+            <!--PAGE CONTENT ENDS-->
+            </div>
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
+<script type="text/javascript">
+
+   
+$('#rest').on('change', 'input', function(){
+
+         
+     
+      var TaskSeqSession = [];
+	  var Occurences = [];
+	  var ActualSeqSession = [];
+      var TaskSeqSession  = $('input[name="TaskSeqSession[]"]').serializeArray();
+	  var Occurences  = $('input[name="Occurences[]"]').serializeArray();
+	  var ActualSeqSession  = $('input[name="ActualSeqSession[]"]').serializeArray();
+	  var count = TaskSeqSession.length;
+	  var Acct = document.getElementById('Acct').value;
+	  var i=0;
+	  var tot=0;
+	  if(Acct == 'CalenderGreater')
+	  {
+		  for(i=0;i<count;i++)
+			{
+			  
+			  if(ActualSeqSession[i].value == 0)
+			  {
+				  document.getElementById(i).value = 0;
+			  }
+			  else{
+					var calculate = (ActualSeqSession[i].value-TaskSeqSession[i].value)*Occurences[i].value;
+					tot = tot+calculate;
+					document.getElementById(i).value = calculate;
+			  }
+			 
+			 //alert(calculate);
+			 document.getElementById('TotalAchived').value = tot;
+			  
+		  }
+	  }
+	  else if(Acct == 'TaskSeqGreater')
+	  {
+			 for(i=0;i<count;i++)
+			{
+			  
+			  if(ActualSeqSession[i].value == 0)
+			  {
+				  document.getElementById(i).value = 0;
+			  }
+			  else{
+					var calculate = (TaskSeqSession[i].value-ActualSeqSession[i].value)*Occurences[i].value;
+					tot = tot+calculate;
+					document.getElementById(i).value = calculate;
+			  }
+			 
+			 //alert(calculate);
+			 document.getElementById('TotalAchived').value = tot;
+			  
+		  }
+	  }
+	  else{
+	  }
+	 
+	 
+	//  alert(count);
+
+     // alert(dates);
+     // alert(Year);
+ /*     $.ajax  ({    
+                    url: "<?php echo url::to('CheckRevisionDate'); ?>",
+                    data: { Year: Year,Batch: Batch,Course: Course,StartDate: StartDate,dates: dates},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       //location.reload();  
+                      
+                       $('#bbb').html(result);      
+                        
+                        }
+
+
+                    
+                }); */
+    
+});
+</script>
+<script type="text/javascript">
+    function doConfirm(applicant, formobj)
+    {
+        bootbox.confirm("Are you sure you want to remove " + applicant, function(result)
+        {
+        if (result)
+        {
+        formobj.submit();
+        }
+        });
+                return false;
+    }
+    
+    $('#sample-table-2').dataTable({
+    "aoColumns": [
+            {"bSortable": false},
+           null,
+            null,
+            null,
+           null,
+            null,
+            null,
+            null,
+            null,
+            null,
+           
+           
+    ]});
+            $('table th input:checkbox').on('click', function() {
+    var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function() {
+            this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+            });
+    });
+            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+            function tooltip_placement(context, source) {
+            var $source = $(source);
+                    var $parent = $source.closest('table')
+                    var off1 = $parent.offset();
+                    var w1 = $parent.width();
+                    var off2 = $source.offset();
+                    var w2 = $source.width();
+                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                    return 'right';
+                    return 'left';
+            }
+
+
+</script>
+
+<script>
+
+  
+    
+$('#Batch').change(function(){
+
+        //alert('dg');
+       var Batch = document.getElementById('Batch').value; 
+       var Year = document.getElementById('Year').value; 
+      
+       var msg = '--- Select Course ---';
+        $("#Course").html('');
+       $.ajax  ({
+                    beforeSend: function()
+                        {
+                            
+                            document.getElementById('img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+                    url: "<?php echo url::to('GetMOCourselistCodes'); ?>",
+                    data: { Batch: Batch,Year: Year},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        $("#Course").append("<option value=''>" + msg + "</option>");
+                         $.each(result, function(i, item)
+                        {
+
+
+
+                            $("#Course").append("<option value=" + item.id + ">" + item.CourseListCode + " (" + item.CourseName + ")-" +item.Duration+ "-" +item.CourseType+ "-" +item.Nvq+ "-" +item.CourseLevel+ "</option>");
+
+
+
+                        });
+                                        
+                        
+                        },
+                        complete: function() {
+                            document.getElementById('img4').innerHTML ="";
+
+                        }
+
+
+                    
+                });
+        
+
+
+       
+    });
+  
+
+
+    $('#upload').click(function()
+    {
+     // alert('dfgh');
+        var Year = document.getElementById('YearD').value;
+        var Batch = document.getElementById('BatchD').value; 
+        var YearPlanID = document.getElementById('YearPlanIDD').value;
+        var StartDate = document.getElementById('StartDateD').value;
+		var TaskSeqSession = [];
+	    var ActualSeqSession = [];
+        // var TaskSeqSession  = $('input[name="TaskSeqSession[]"]').serializeArray();
+	    // var ActualSeqSession  = $('input[name="ActualSeqSession[]"]').serializeArray();
+		        var TaskSeqSession  = document.getElementById('TaskSeqSession[]').value;
+	    var ActualSeqSession  = document.getElementById('ActualSeqSession[]').value;
+     // alert(Year);
+      $.ajax  ({    /* beforeSend: function()
+                        {
+                            
+                            document.getElementById('img5').innerHTML = "<img src=\"<?php echo Url('assets/images/ajax-loader.gif'); ?>\"/>";
+                        }, */
+                    url: "<?php echo url::to('SecondRevGetOrmit'); ?>",
+                    data: { Year: Year,Batch: Batch,YearPlanID: YearPlanID,StartDate: StartDate,TaskSeqSession: TaskSeqSession,ActualSeqSession: ActualSeqSession},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       //location.reload();  
+                      
+                       $('#aaaa').html(result);      
+                        
+                        }/* ,
+                        complete: function() {
+                            document.getElementById('img5').innerHTML ="";
+
+                        } */
+
+
+                    
+                });
+      
+           /* $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            
+                            document.getElementById('img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+                        type: "POST",
+                        url: "<?php echo Url('PrintAssessorAssignedLetter'); ?>",
+                        data: {CS_ID: CS_ID},
+                        success:function response(responseText, statusText, xhr, $form)
+                        {
+       
+                               var printWin = window.open("","printSpecial");
+                                printWin.document.open();
+                                printWin.document.write(responseText);
+                                printWin.document.close();
+                                printWin.print();
+       
+   
+                         
+
+                        },
+                        complete: function() {
+                            document.getElementById('img4').innerHTML ="";
+
+                        }
+                    });*/
+        
+    }
+    );
+    $('#aaaa').on('click', 'button', function(){
+
+         var Year = $("#Year").val(); 
+        var Batch = $("#Batch").val(); 
+        var Course = $("#Course").val();
+        var StartDate = $("#StartDate").val(); 
+        var dates = [];
+      var dates  = $('input[name="Datelist[]"]').serializeArray();
+
+       // alert(dates);
+     // alert(Year);
+      $.ajax  ({    beforeSend: function()
+                        {
+                            
+                            document.getElementById('img5').innerHTML = "<img src=\"<?php echo Url('assets/images/ajax-loader.gif'); ?>\"/>";
+                        },
+                    url: "<?php echo url::to('SaveDatesOrmit'); ?>",
+                    data: { Year: Year,Batch: Batch,Course: Course,StartDate: StartDate,dates: dates},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       //location.reload();  
+                      
+                       $('#aaaa').html(result);      
+                        
+                        },
+                        complete: function() {
+                            document.getElementById('img5').innerHTML ="";
+
+                        }
+
+
+                    
+                });
+    
+});
+     $('#aaaa').on('change', 'input', function(){
+
+         
+      var Year = $("#Year").val(); 
+        var Batch = $("#Batch").val(); 
+        var Course = $("#Course").val();
+        var StartDate = $("#StartDate").val(); 
+        var dates = [];
+      var dates  = $('input[name="Datelist[]"]').serializeArray();
+
+      // alert(dates);
+     // alert(Year);
+     $.ajax  ({    
+                    url: "<?php echo url::to('CheckRevisionDate'); ?>",
+                    data: { Year: Year,Batch: Batch,Course: Course,StartDate: StartDate,dates: dates},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       //location.reload();  
+                      
+                       $('#bbb').html(result);      
+                        
+                        }
+
+
+                    
+                });
+    
+});
+
+    
+    /*$('#reject').click(function()
+    {
+     
+       var TID = document.getElementById('reject').value; 
+       alert(TID);
+
+
+      
+          
+        
+    }
+    );
+    $('#reject1').click(function()
+    {
+     
+       var TID = document.getElementById('reject1').value; 
+       alert(TID);
+
+
+      
+          
+        
+    }
+    );*/
+     /* function addModule() {
+
+        var TID = document.getElementById('reject').value; 
+       alert(TID);
+
+        /*$.ajax  ({
+                    url: "<?php echo url::to(''); ?>",
+                    success: function(result) {
+                        if ($('#addModule').is(':hidden')) {
+                            $('#addModule').show();
+                        } else {
+                            $('#addModule').hide();
+                        }
+                    }
+                });*/
+ //   }
+ $(".red").click(function(){
+
+     var id = this.id;
+     //alert(id);
+bootbox.confirm("<form id='infos' action=''><div class='control-group'><div class='controls'>\
+    Reason:<textarea cols='1000' rows='6' name='Reason' id='Reason'></textarea></div></div></form>", function(result) {
+        if(result)
+        {
+            //$('#infos').submit();
+           // alert(result);
+
+         var reason = $("#Reason").val();
+        // var g = $("#editComment").val();
+         //alert(reason);
+
+
+        doStuffWithResults(id,reason);
+        }
+});
+  
+});
+    
+function doStuffWithResults(id,reason) 
+{
+
+     $.ajax  ({
+                    url: "<?php echo url::to('DORejectAssignedAssessor'); ?>",
+                    data: { id: id,reason: reason},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       location.reload();          
+                        
+                        }
+
+
+                    
+                });
+   
+}
+    
+
+
+</script>

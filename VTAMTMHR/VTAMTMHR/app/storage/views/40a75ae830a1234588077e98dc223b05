@@ -1,0 +1,79 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>Implant Placement<small><i class="icon-double-angle-right"></i>Edit</small></h1>
+            </div>
+            <form class="form-horizontal" action='editIP' method="POST"/>
+                <input type="hidden" name="ID" value="<?php echo $implantPlacement->ID; ?>" />
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Student ID : </label>
+                    <div class="controls">
+                    <input type="text" name="StudentId"  value="<?php echo $implantPlacement->StudentId; ?>" readonly/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course Code : </label>
+                    <div class="controls">
+                        <input type="text" name='CourseCode' value='<?php echo $implantPlacement->CourseCode; ?>' readonly /> 
+                    </div>
+                </div>                 
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Type : </label>
+                    <div class="controls">
+                        <select name='Type'>
+                            <option <?php if($implantPlacement->Type == 'Local Employment'): ?> selected  <?php endif; ?>>Local Employment</option>
+                            <option <?php if($implantPlacement->Type == 'Foreign Employment'): ?> selected  <?php endif; ?>>Foreign Employment</option>
+                            <option <?php if($implantPlacement->Type == 'Self Employment'): ?> selected  <?php endif; ?>>Self Employment</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Salary : </label>
+                    <div class="controls">
+                        <input type="text" name="Salary"  value="<?php echo $implantPlacement->Salary; ?>"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Date Of Placed : </label>
+                    <div class="controls">
+                        <input type="date" name="DateOfPlaced"  value="<?php echo $implantPlacement->DateOfPlaced; ?>"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Duration : </label>
+                    <div class="controls">
+                        <input type="text" name="Duration" value="<?php echo $implantPlacement->Duration; ?>" /> Months 
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+            <div class="span4">
+                <?php if($errors->has()): ?>
+                    <?php foreach($errors->all() as $msg): ?>
+                        <div class="alert alert-error">
+                            <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                            <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+    
+    <?php if(isset($done)): ?>
+        
+    $.gritter.add({ title: "", text: "Test Center Added Successfully", class_name: "gritter-info gritter-center" });
+
+    <?php endif; ?>
+    
+</script>

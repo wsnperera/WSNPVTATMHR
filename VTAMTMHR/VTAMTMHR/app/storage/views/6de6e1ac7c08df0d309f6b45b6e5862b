@@ -1,0 +1,203 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<!--page specific plugin styles-->
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<!--ace styles-->
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    On The Job Training			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Student Placement
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+            <form class="form-horizontal" id="form-placement">
+                <div class="span4">
+                 
+                    <div class="control-group">
+                        <label class="control-label">District</label>
+                        <div class="controls">
+                            <select name="District" id="District" class="chzn-select">
+                                <option value=""></option>
+                                <?php foreach($DistrictAll as $dis): ?>
+                                <option value="<?php echo $dis->DistrictCode; ?>" > <?php echo $dis->DistrictName; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="District" value="<?php echo $District; ?>"/>
+                  
+                                   
+
+                </div>
+            </form>
+            <div class="span3" style="margin-right: 0;padding-right: 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="<?php echo url('OJTviewPlacedStudents'); ?>"><button type="button" class="btn btn-large btn-primary pull-right">View Placed Students</button></a>
+            </div>
+        </div>          
+        <div class="span5" id="error">
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-ok"></i>
+                    <?php echo Session::get('done'); ?>
+                </strong>
+                <br>
+            </div>
+            <?php endif; ?>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div> 
+    </div>
+    <div id="loding">                    
+    </div>  
+    <div id="table">
+    </div>
+    </br>
+
+
+
+    <!--Write your code here end-->
+    <!--PAGE CONTENT ENDS-->
+</div><!--/.span-->
+<!--/.row-fluid-->
+<!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+$(".chzn-select").chosen();
+//$(function() {
+//    var oTable1 = $('#sample-table-2').dataTable({
+//        "bPaginate": false,
+//        "aoColumns": [
+//            null,
+//            {"bSortable": false},
+//            null, 
+//            {"bSortable": false}, 
+//            {"bSortable": false}, 
+//            {"bSortable": false}
+//        ]});
+//});
+
+function modify_table() {
+    $('#sample-table-2').dataTable({
+        "aoColumns": [
+            {"bSortable": false},
+            null,
+            null,
+            null,
+            {"bSortable": false},
+            {"bSortable": false},
+            null,
+            {"bSortable": false},
+            {"bSortable": false}
+
+        ]});
+}
+
+$("#District").change(function() {
+    $("#table").html('');
+    var District = $("#District").val();
+   // alert(District);
+    if (true) {
+        $.ajax({
+            beforeSend: function()
+            {
+                $("#loding").html('<br><br><img height="40%" width="20%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+            },
+            url: "<?php echo url('OJTgetOJTPlacementStudent'); ?>",
+            type: "GET",
+            data: {District: District},
+            success: function(result) {
+                $("#table").html(result);
+                //$("#plcestdtable").html(result);
+                //$('#sample-table-2').dataTable().reload;
+                modify_table();
+            },
+            complete: function() {
+                $("#loding").html('');
+            }
+        });
+    }
+
+});
+$("#District1").change(function()
+{
+    var cid = $("#District1").val();
+   // alert(cid);
+    $("#course_name").html('');
+    $("#course_name").html('<option value="0" selected></option>');
+    $("#sample-table-2").html('');
+    $('#search').css("display", "");
+
+    if (cid != '0') {
+        $.ajax
+                ({
+                    beforeSend: function()
+                    {
+                        $("#loding").html('<br><br><img height="40%" width="20%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                    },
+                    type: "GET",
+                    url: "<?php echo Url('getojtplacementcoursename'); ?>",
+                    data: {orga_id: cid},
+                    dataType: "json",
+                    success: function(result)
+                    {
+                        //alert('dddddddddd');
+
+                        $("#course_name").html("<option value=\"0\" selected>--Select Course--</option>");
+                        $.each(result, function(i, item)
+                        {
+                            //  alert('dis');
+                            $("#course_name").append("<option value=" + item.CourseListCode + ">" + item.CourseListCode + "-" + item.CourseName + "</option>");
+
+                        });
+                        $("#course_name.chzn-select").trigger("liszt:updated");
+
+
+                    },
+                    complete: function() {
+                        $("#loding").html('');
+                    }
+                });
+    }
+
+})
+        ;
+</script>

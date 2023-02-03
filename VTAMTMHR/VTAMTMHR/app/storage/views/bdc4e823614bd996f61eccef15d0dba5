@@ -1,0 +1,114 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>    
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Employee			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Training View
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+            <!-- body -->
+            <div>
+                <form name='search' action="<?php echo url('empTrainingSearch'); ?>" method='post'>
+                    <table>
+                        <tr>
+                            <td>Employee ID:&nbsp;&nbsp;<input type="text" name="empid" placeholder="Emp ID" style="width: 100px; margin: 0"/></td>
+                            <td>&nbsp;&nbsp;Training Name :&nbsp;&nbsp;
+                                <select class="chzn-select" style="margin: 0" name="triningname" placeholder="Training Name">
+                                    <option value=""></option>
+                                    <?php if(isset($ipName)): ?>
+                                    <?php foreach ($ipName as $ipn): ?>
+                                    <option value="<?php echo $ipn->trainingName; ?>"><?php echo $ipn->trainingName; ?></option>
+                                    <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </td>
+                            <td style="text-align: center;"><input type='submit' value='Search' style="height: 30px;"/></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            
+            <table class="table">
+                <tr>
+                    <th>EMP ID</th>
+                    <th>TP ID</th>
+                    <th>From</th>
+                    <th>To</th>
+                </tr>
+                <?php if(isset($empresults)): ?>
+                <?php foreach($empresults as $er): ?>
+                <tr>
+                    <td><?php echo $er->empid; ?></td>
+                    <td><?php echo $er->Emptrainingprograme->trainingName; ?></td>
+                    <td><?php echo $er->from; ?></td>
+                    <td><?php echo $er->to; ?></td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </table>
+            <!-- /body -->
+        </div>
+
+        <div class="span4">
+
+            <?php if($errors->has()): ?>
+
+            <?php foreach($errors->all() as $msg): ?>
+
+
+
+            <div class="alert alert-error">
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+            </div>
+
+
+
+            <?php endforeach; ?>
+
+            <?php endif; ?>
+
+
+
+        </div>
+
+    </div>
+</div>
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+
+   
+</script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+
+<script type="text/javascript">
+$(function() {
+     $(".chzn-select").chosen();
+});
+</script>

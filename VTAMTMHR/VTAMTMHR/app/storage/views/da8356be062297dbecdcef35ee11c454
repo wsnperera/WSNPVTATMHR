@@ -1,0 +1,99 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+
+
+
+
+                
+
+
+<div class="page-content">
+                                    
+	<div class="row-fluid">
+                                            
+            <form method="POST" action="<?php echo @url('email'); ?>">                     
+                                        
+                                            
+                                            
+                                    <div class="span12">
+							
+                                        <!--PAGE CONTENT BEGINS-->
+
+                                        
+                                        <!--/.page-header-->
+                                        
+                                        <div class="page-header position-relative">
+                                            
+				<h1>
+				Email			
+				<small>
+					<i class="icon-double-angle-right"></i>
+					Play with your mail
+				</small>			
+				</h1>
+		</div>
+                                        
+                            <div class="control-group">
+                                                    
+                                    <label class="control-label" for="mail">Mail Address</label>
+
+                                    <div class="controls">
+                                            <input type="text" name="mail" value="<?php echo $applicent->email; ?>" />
+                                    </div>
+
+                            </div>
+
+                                  <br/> 
+                                                        
+                            <div class="control-group">
+                                                    
+                                    <label class="control-label" for="subject">Subject</label>
+
+                                    <div class="controls">
+                                            <input type="text" name="subject"  />
+                                    </div>
+
+                            </div>
+
+                                  <br/>     
+                                  
+                                  
+                            <div class="control-group">
+                                                    
+                                    <label class="control-label" for="message">Message</label>
+
+                                    <div class="controls">
+                                            <input type="text" name="message"  />
+                                    </div>
+
+                            </div>
+
+                                  <br/>
+                                        
+                                  <input type="submit" value="send"/>       
+                                        
+                                        
+                                 
+                                        
+                                        
+                                  </div>
+
+            </form>			
+						
+	</div>
+</div>
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+    
+  
+         
+         
+        
+
+    
+</script>

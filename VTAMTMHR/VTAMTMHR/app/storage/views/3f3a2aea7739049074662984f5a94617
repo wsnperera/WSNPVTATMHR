@@ -1,0 +1,260 @@
+
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+
+<div class="page-content">
+    <div class="row-fluid">
+        
+            <div class="page-header position-relative">
+                <h1>VTA<small><i class="icon-double-angle-right"></i> SMS Report</small></h1>
+                <!--<a href=<?php echo url('viewEnterAssignmentMarks_COT'); ?>> << Enter Assignments Marks </a>   -->
+                <!--form-->
+                <!--view form load messages-->
+                <div id="ReturnMessages">
+                    <?php if(Session::has('message')): ?>
+                        <div class="alert alert-error">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <?php echo Session::get('message'); ?>
+                            </strong>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <?php if($user->hasPermission('smsReport')): ?>
+                <!--center's drop down-->
+
+                <form class="form-horizontal" id="main_from" action='' name="fully[]" method="POST" enctype="multipart/form-data">
+                    
+                    <!--given date range-->
+                    <div class="control-group">
+
+                        <label class="control-label" for="id-date-range-picker-1">Date Range : </label>
+
+                        <div class="cntrols">
+                            <span class="add-on">
+                                <i class="icon-calendar"></i>
+                            </span>
+                            <input class="span3" type="text" name="date-range-picker" id="id-date-range-picker-1"/>
+							(mm/dd/yyyy) - (mm/dd/yyyy)
+                        </div>
+						*Started on 06/01/2017
+                    </div>
+					 <!--Report type-->
+					<div class="control-group">
+
+                     <label class="control-label" for="id-date-range-picker-1">Report Type : </label>
+						<div class="controls">
+								<label>
+									<input name="ReportType" type="radio" value="1" checked="checked">
+									<span class="lbl">Summary Report</span>
+								</label>
+								<label>
+									<input name="ReportType" type="radio" value="2">
+									<span class="lbl">Detail Report</span>
+								</label>												
+						</div>
+					</div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="button" class="btn btn-primary" onclick="getTable()"/><i class="icon-eye-open"></i>View</button>
+                            <button type="button" class="btn btn-primary" onclick="downloadReport()"><i class="icon-cloud-download"></i>Download</button>
+                        </div>
+                    </div>
+					<!--set display none-->
+                    <div style="display: none" id="print_btn">
+						<div class="control-group">                        
+                            <button type="button" onclick="Print_Results();" class="btn btn-app btn-purple btn-mini">
+										<i class="icon-print bigger-160"></i>
+										Print
+									</button>
+                        </div>
+                    </div>
+
+                    <!--display loading-->
+                    <div id="loding">
+                    </div>
+					
+					 <!--display messages-->
+                    <div id="message">
+                    </div>
+                    <!--set display none-->
+
+                    <!--Details table-->
+                   
+                    <div id ="table">
+                    </div>
+
+                </form>
+                <?php else: ?>
+				<br/>
+                <div class="alert alert-error">
+                    <strong>
+                        Unauthorized Logging For This Page !!!.
+                    </strong>
+                    <br>
+                </div>
+                <?php endif; ?>
+            </div>
+        
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+
+<script>
+    function getTable() {
+        var dateRange = $("#id-date-range-picker-1").val();
+		var reportType= $('input[name=ReportType]:checked').val();
+		$('#table').html('');
+		$('#message').html('');
+		$('#ReturnMessages').html('');
+		$("#print_btn").css("display", "none");
+        //alert(dateRange);
+
+        if (dateRange == "") {
+            bootbox.alert("Please Enter Date Range!!!");
+        } else {
+			
+            $.ajax
+            ({
+				 beforeSend: function()
+                    {
+                        $("#loding").html('<br><br><img height="50%" width="25%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                    },
+                type: "POST",
+                url: "<?php echo Url('smsReportView'); ?>",
+                data: {dateRange: dateRange, reportType: reportType},
+                dataType: 'json',
+                success: function (result)
+                {
+                    if (result.Count > 0) {
+                        $('#table').html(result.Table);
+						$("#print_btn").css("display", "");
+						if(reportType ==1){
+							table_modify_1()
+						}else if(reportType ==2){
+							table_modify_2();
+						}
+                    }
+                    else {
+                        noDataMessage();
+                    }
+
+                },
+				complete: function() {
+                        $("#loding").html('');
+                    }
+            });
+        }
+    }
+    function downloadReport() {
+        var dateRange = $("#id-date-range-picker-1").val();
+		var reportType= $('input[name=ReportType]:checked').val();
+		$('#table').html('');
+		$('#message').html('');
+		$('#ReturnMessages').html('');
+		$("#print_btn").css("display", "none");
+        //dateRange =1;
+        if (!dateRange) {
+            $('#table').html('');
+            bootbox.alert('Please select date range');
+
+        } else {
+            window.location.replace("smsReportView_downloadExcel?dateRange=" + dateRange + "&reportType=" + reportType + "");
+            bootbox.alert('Please wait few seconds');
+        }
+
+    }
+function noDataMessage() {
+    $("#message").html('<div class="alert alert-error">\n\
+    <button type="button" class="close" data - dismiss="alert">\n\
+        </i></button><strong>\n\
+    </i>No Data Found !</strong></div>');
+}
+
+function table_modify_1(){
+ $('#sample-table-2').dataTable({
+       "bPaginate": false,
+            "bLengthChange": false,
+    "aoColumns": [
+            {"bSortable": false}, 
+            {"bSortable": true}, 
+            {"bSortable": true}
+    ]});
+}
+function table_modify_2(){
+ $('#sample-table-2').dataTable({
+       "bPaginate": false,
+            "bLengthChange": false,
+    "aoColumns": [
+            {"bSortable": false}, 
+            {"bSortable": true}, 
+            {"bSortable": false},
+			{"bSortable": false}, 
+            {"bSortable": false}, 
+            {"bSortable": false},
+            {"bSortable": true}, 
+            {"bSortable": false}, 			
+            {"bSortable": true}
+    ]});
+}
+
+
+</script>
+
+
+<script>
+// printing
+function Print_Results() {
+    var printTime = new Date();
+    var printData = $("#table #sample-table-2").html();
+    var printHTML = "<br/>\n\<center><h2><u>SMS Report</u></h2></center>\n\
+						<table>\n\
+                        <tr>\n\
+                            <td><b>Date Range:</b>\n\
+                            <td>" + $("#id-date-range-picker-1").val() + " (mm/dd/yyyy)</td>\n\
+                        </tr>\n\
+                        <tr>\n\
+                            <td><b>Report Type:</b>\n\
+                            <td>" + $('input[name=ReportType]:checked').next().text() + "</td>\n\
+                        </tr>\n\
+                    </table><br/>\n\
+                    <table border=\"1\" style=\"page-break-inside:auto\">" + printData + "</table>\n\
+                    <br/><font size=\"2\">This is MIS generated report @ " + printTime + ". No needs Signature.</font> ";
+    response(printHTML);
+}
+
+
+// print results
+function response(data)
+{
+    var printWin = window.open("", "printSpecial");
+    printWin.document.open();
+    printWin.document.write(data);
+    printWin.document.close();
+    printWin.print();
+}
+
+</script>
+<script>
+
+	var today = "<?php echo date('m/d/Y'); ?>";
+    $('#id-date-range-picker-1').daterangepicker({
+    minDate: new Date("06/01/2017"),
+    maxDate: new Date(today)
+	}).prev().on(main_from.click_event, function () {
+        $(this).next().focus();
+    });
+	
+</script>

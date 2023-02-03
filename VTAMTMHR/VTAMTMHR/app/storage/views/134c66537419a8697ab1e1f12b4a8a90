@@ -1,0 +1,170 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php if(isset($Issearch)): ?>
+    <a href="<?php echo Url('viewEmployeeAnnouncements?CurrentYear='.date('Y')); ?>"> << Back to Employee Announcements</a>
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>
+                Employee Announcements
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    View
+                </small>
+            </h1>
+            <div class="span4" id="ajaxerror">
+                <?php if(Session::has('done')): ?>
+                    <div class="alert alert-success">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="icon-remove"></i>
+                        </button>
+                        <strong>
+                            <i class="icon-ok"></i>
+                            <?php echo Session::get('done'); ?>
+                        </strong>
+                    </div>
+                <?php endif; ?>
+                <?php if(Session::has('message')): ?>
+                    <div class="alert alert-error" id="error">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="icon-remove"></i>
+                        </button>
+                        <strong><?php echo Session::get('message'); ?></strong>
+                    </div>
+                <?php endif; ?>
+                <?php if($errors->has()): ?>
+                    <?php foreach($errors->all() as $msg): ?>
+                        <div class="alert alert-error" id="error">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-remove"></i>
+                                Error!
+                            </strong><?php echo $msg; ?>
+                            <br>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+            </div>
+        </div>
+
+        <form name='search' action="<?php echo url('searchEmployee'); ?>" method='get'>
+            <!--            Search Employee <input type='text' name="serachkey" placeholder=" Search Employee by NIC/EPF..."/>   <input type='submit' value='Search'/>-->
+            <!--            <?php if($user->hasPermission('createEmployeeAnnouncements')): ?>
+                    <a href="<?php echo url('createEmployeeAnnouncements'); ?>"><input type='button' value='Create Employee Announcements' /></a>
+            <?php endif; ?>-->
+        </form>
+
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>#No#</th>
+                    <th>Institute Name</th>
+                    <th>Organisation Name</th>
+                    <th>Announcement</th>
+                    <th>Document Availability</th>
+                    <th>Send SMS</th>
+                    <th> <?php if($user->hasPermission('editEmployee')): ?> Edit <?php endif; ?></th>
+                    <th> <?php if($user->hasPermission('deleteEmployee')): ?>Remove <?php endif; ?></th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <?php $i = 0; ?>
+                <?php if(isset ($EmployeeAnnouncements)): ?>
+                    <?php foreach ($EmployeeAnnouncements as $e): ?>
+                        <tr>
+                            <td><?php $i++;echo $i; ?></td>
+                            <td><?php if(!is_null($e->Institute)): ?><?php echo $e->Institute->InstituteName; ?><?php endif; ?></td>
+                            <td><?php if(!is_null($e->getOrganisation)): ?><?php echo $e->getOrganisation->OrgaName; ?>
+                                <?php else: ?> All Organisation <?php endif; ?></td>
+                            <td><?php echo $e->Announcement; ?> </td>
+                            <td><?php if($e->Document_1 !== "" ||$e->Document_2 !== ""||$e->Document_3 !== ""||$e->Document_4 !== ""||$e->Document_5 !== ""): ?>
+                                    <a href="<?php echo url('viewEmployeeAnnouncementsDocs?cid='.$e->EmpA_ID); ?>">
+                                        <button class="blue">View Document</button>
+                                    </a>
+                                <?php else: ?>
+                                    No Documents
+                                <?php endif; ?>
+                            </td>
+
+                            <td><?php if($e->send_sms==0): ?>
+
+                                    <a href="<?php echo url('sendSmsToEmployee?id='.$e->EmpA_ID); ?>" name="id" id="id">
+                                        <button class="btn btn-small btn-success">
+                                            <i class="icon-envelope"></i>
+                                            Send
+                                        </button>
+                                    </a>
+                             <?php else: ?>
+
+                                    <a href="<?php echo url('sendSmsToEmployee?id='.$e->EmpA_ID); ?>" name="id" id="id">
+                                        <button class="btn btn-small btn-warning">
+                                            <i class="icon-envelope"></i>
+                                            Resend
+                                        </button>
+                                    </a>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if($user->hasPermission('editEmployee')): ?>
+                                    <a class="green" href="<?php echo url('editEmployeeAnnouncements?cid='.$e->EmpA_ID); ?>"><i
+                                                class="icon-edit icon-2x icon-only"></i></a>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if($user->hasPermission('deleteEmployee')): ?>
+                                    <form id="deleteform"
+                                          action="<?php echo url('deleteEmployeeAnnouncements?id='.$e->EmpA_ID); ?>" method="POST"
+                                          onsubmit="return doConfirm('<?php echo $e->Announcement; ?>', this)">
+                                        <input type="hidden" name='cid' value="<?php echo $e->EmpA_ID; ?>"/>
+                                        <button type="submit"><i class="icon-trash icon-only"></i></button>
+                                    </form>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
+
+            <!--PAGE CONTENT ENDS-->
+    </div><!--/.span-->
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+
+    function doConfirm(Employee, formobj) {
+        bootbox.confirm("Are you sure you want to remove " + Employee, function (result) {
+            if (result) {
+                formobj.submit();
+            }
+        });
+        return false; // by default do nothing hack :D
+    }
+
+
+    var oTable1 = $('#sample-table-2').dataTable({
+        "aaSorting": [],
+        "bPaginate": false,
+        "aoColumns": [
+            {"bSortable": false}, {"bSortable": false}, null, null, null, null, null,null
+        ]
+    });
+    $('table th input:checkbox').on('click', function () {
+        var that = this;
+        $(this).closest('table').find('tr > td:nth-child(4) input:checkbox')
+                .each(function () {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+    });
+</script>

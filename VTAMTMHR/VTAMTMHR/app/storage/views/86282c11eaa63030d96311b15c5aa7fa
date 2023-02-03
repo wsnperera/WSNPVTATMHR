@@ -1,0 +1,201 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span14">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>Aptitude Test Calling Letter<small><i class="icon-double-angle-right"></i>Print</small></h1>
+                </div>
+                <button style="margin-left: 450px;" onclick="addEvent()">Add Event to Event Plan</button>
+                <form class="form-horizontal" action='AptitudeTestLetterPrint' method="POST" id='myform'>
+                    <div class="control-group">
+                        <label class="control-label" for="CourseListCode">Aptitude Test Date And Course List Code :</label>
+                        <div class="controls">
+                            <select name="CourseListCode" onchange="ajaxGetApplicntList(this)">
+                                <option></option>
+                                <?php if(isset($eventPlaned)): ?>
+                                    <?php foreach($eventPlaned as $ep): ?>
+                                        <option value="<?php echo $ep->EP_ID; ?>" ><?php echo $ep->CourseListCode; ?> - Date : <?php echo $ep->ScheduledDate; ?></option>    
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <span id="loding">
+                    </span>
+                    <div id="table" class="row-fluid span20" style="margin: 0px;" overflow="auto">
+                        <table  class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div>
+                                            <label>
+                                                <input name="form-field-checkbox" type="checkbox" onclick="check(this)">
+                                                <span class="lbl">&nbsp;&nbsp;&nbsp;&nbsp;NIC</span>
+                                            </label>
+                                        </div
+                                    </th>
+                                    <th>Course List Code</th>
+                                    <th>Name With Initials</th>
+                                    <th>Address</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $('#table').hide();
+    });
+    function addEvent()
+    {
+        $.ajax
+            ({
+                type: "GET",
+                url: 'ajaxGetCourseListCodeEvent',
+                dataType:'json',
+                success: function(result) 
+                {
+                    bootbox.dialog('<form class="form-horizontal" method="POST" action="createNewEventPlanedForAptitudeTest" id="setform" onsubmit="return validate(this)">' +
+                        '<div class="control-group">' +
+                            '<label class="col-md-4 control-label" for="name">Invigilator : </label> ' +
+                            result[0].empID+' <br><br>' +
+                            '<label class="col-md-4 control-label" for="name">Course List Code : </label> ' +
+                            result[0].courseListCode+' <br><br>' +
+                            '<label class="col-md-4 control-label" for="name">Sheduled Date : </label> ' +
+                            '<input id="ScheduledDate" name="ScheduledDate" type="date" class="form-control input-md"/> <br><br>' +
+                            '<input style="margin-left: 310px;" type="submit" class="btn btn-small btn-primary"/>' +
+                            '<div class="controls">' +
+                            '</div>' +
+                        '</div>' +
+                        '</form>',
+                        [
+                        {
+                        "label": "Cancel",
+                        "class": "btn btn-small btn-primary",
+                        "callback": function() {
+                                        window.location.href = '';
+                                    }
+                        }]);
+                },
+            });
+    }
+    function validate(formobj)
+    {
+        var d = new Date();
+        var month = d.getMonth()+1;
+        var day = d.getDate();
+        var currentDate = d.getFullYear() + '-' +
+                    (month<10 ? '0' : '') + month + '-' +
+                    (day<10 ? '0' : '') + day;
+        if(document.getElementById('empPK').value=='')
+        {
+            alert('Invigilator Field is required');
+            return false;
+        }
+        else if(document.getElementById('yearPlanPK').value=='')
+        {
+            alert('Course List Code Field is required');
+            return false;
+        }
+        else if(document.getElementById('ScheduledDate').value=='')
+        {
+            alert('Scheduled Date Field is required');
+            return false;
+        }
+        else if(document.getElementById('ScheduledDate').value<=currentDate)
+        {
+            alert('Scheduled Date should be greater than current date');
+            return false;
+        }
+        else
+        {
+            formobj.submit();
+        }
+    }
+    
+    var options = { 
+        success:  response 
+    };
+    $('#myform').ajaxForm(options); 
+    function response(responseText, statusText, xhr, $form)
+    {
+        var printWin = window.open("","printSpecial");
+        printWin.document.open();
+        printWin.document.write(responseText);
+        printWin.document.close();
+        printWin.print();
+    }
+    function check(x)
+    {
+        if(x.checked==true)
+        {
+            $(".checkBox").prop('checked',true);
+        }
+        else
+        {
+            $(".checkBox").prop('checked',false);
+        }
+    }
+    function ajaxGetApplicntList(val)
+    {
+        if(val.value=='')
+        {
+            $('#table').hide();
+            document.getElementById('loding').innerHTML = "";
+        }
+        else
+        {
+            $.ajax
+            ({
+                beforeSend: function() 
+                {
+                    document.getElementById('loding').innerHTML = "<br><br><img height='80%' width='50%' src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                },
+                type: "GET",
+                url: 'ajaxGetApplicntListAdmitionLetter',
+                data:{eventID :val.value},
+                success: function(result) 
+                {
+                    if(result!='')
+                    {
+                        document.getElementById('loding').innerHTML ="";
+                        document.getElementById('table-body').innerHTML =result;
+                        $('#table').show();
+                    }
+                    else
+                    {
+                        document.getElementById('table-body').innerHTML ='';
+                        $('#table').hide();
+                        document.getElementById('loding').innerHTML = "<font style='margin-left: 200px;' >----------<b>No Date Found</b>----------</font>";
+                    }
+                },
+            });
+        }
+    }
+    $('#sample-table-2').dataTable({
+       "sScrollX": "100%",
+           "bScrollCollapse": true,
+           "bJQueryUI": true,
+    "aoColumns": [
+            {"bSortable": false}, 
+            {"bSortable": false}, 
+            {"bSortable": false}, 
+            {"bSortable": false}
+    ]});
+</script>

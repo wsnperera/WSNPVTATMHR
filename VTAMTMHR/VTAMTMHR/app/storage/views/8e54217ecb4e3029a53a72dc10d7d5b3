@@ -1,0 +1,307 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>    
+<a href="<?php echo url('promotion'); ?>"> << Back to Promotion </a>
+<div class="page-content">                              
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Promotion		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+
+            <?php if ($errors->has()): ?>
+            <?php foreach ($errors->all() as $error): ?>
+            <div class='bg-danger alert'><?php echo $error; ?></div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+
+
+            <form class="form-horizontal" action="<?php echo url('editPromotion'); ?>" method="POST"/>
+<h4 style="text-align: right"> <b style="color: red">*</b></<b>Required/Mandatory Fields </b></h4>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-2">Institute Name</label>
+                <div class="controls">
+                    <input type="hidden" name="InstituteId" id="InstituteId"  value="<?php echo $InstituteID; ?>"/>
+                    <input type="text"  readonly value="<?php echo $InstituteName; ?>"/>
+                </div>
+            </div>
+
+            <div class="page-header position-relative"></div>
+
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-1">Promotion Id</label>
+                <div class="controls">
+                    <input type="text" style="color:red" name="P_ID" value="<?php echo Request::get('id'); ?>" readonly="readonly"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-2">N.I.C</label>
+                <div class="controls">
+                    <input type="text" name="NIC" value="<?php echo $promotion->NIC; ?>" readonly="readonly"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-3">Employee Reference No</label>
+                <div class="controls">
+                    <input type="text" name="EPF" value="<?php echo $promotion->EPF; ?>"  />
+                </div>
+            </div>
+
+            <div class="control-group">
+<!--                <label class="control-label" for="form-field-3">Employee ID</label>-->
+                <div class="controls">
+                    <input type="hidden" name="Emp_ID" id="Emp_ID" value="<?php echo $promotion->Emp_ID; ?>" readonly="readonly"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-4">Effective Date</label>
+                <div class="controls">
+                    <input type="date" name="StartDate" id="StartDate" value="<?php echo $promotion->StartDate; ?>"/><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-5">Transfer Type</label>
+                <div class="controls">
+                    <select name="TransferType"  onchange="readonly()" id="TransferType">
+                        <?php foreach($transfertype as $tt): ?>
+                        <option <?php if($tt->T_ID == $promotion->TransferType): ?> selected   <?php endif; ?> value=<?php echo $tt->T_ID; ?>><?php echo $tt->TransferType; ?></option>
+                       <?php endforeach; ?>     
+                    </select>
+                    <b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-6">To Organisation</label>
+                <div class="controls">
+                    <select name="ToOrganisation" id="ToOrganisation" >
+                        <?php if($promotion11 != ""): ?>
+                        <?php foreach($organisation as $o): ?>
+                        <option <?php if($o->id == $promotion11): ?> selected   <?php endif; ?> value=<?php echo $o->id; ?>><?php echo $o->OrgaName; ?></option>
+                        <?php endforeach; ?>
+                        <!-- <option <?php if ($promotion->ToOrganisation=="Head Office"): ?> selected <?php endif; ?> value="Head Office">Head Office</option>-->
+                        <?php endif; ?>
+                    </select>
+                    <b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-7">To Department</label>
+                <div class="controls">
+                    <select name="ToDepartment" id="ToDepartment" >
+                        <option></option>
+                        <?php foreach($department as $d): ?>
+                        <option <?php if($d->D_ID == $promotion->ToDepartment): ?> selected   <?php endif; ?> value=<?php echo $d->D_ID; ?>><?php echo $d->DepartmentName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-8">New Post</label>
+                <div class="controls">
+                    <select name="NewPost"  id='NewPost' >
+                        <?php foreach($employmentcode as $ec): ?>
+                        <option <?php if($ec->id == $promotion->NewPost): ?> selected   <?php endif; ?> value=<?php echo $ec->id; ?>><?php echo $ec->Designation; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-9">Employee Type</label>
+                <div class="controls">
+                    <select name="EmpType" id='EmpType'  >
+                        <?php foreach($employeetype as $et): ?>
+                        <option <?php if($et->EmployeeType == $promotion->EmpType): ?> selected   <?php endif; ?> value=<?php echo $et->EmployeeType; ?>><?php echo $et->EmployeeType; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-10">Grade</label>
+                <div class="controls">
+                    <input type="text" name="Grade" value="<?php echo $promotion->Grade; ?>" id='Grade'/><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-11">Salary Scale</label>
+                <div class="controls">
+                    <input type="text"  id="FullSalaryScale" readonly=""/>
+                    <input type="hidden" name="SalaryScale" id='SalaryScale'/><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-12">Salary Step</label>
+                <div class="controls">
+                    <input type="text" name="SalaryStep" value="<?php echo $promotion->SalaryStep; ?>" id='SalaryStep'/><b style="color: red">*</b>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="form-field-13">Increment Day</label>
+                <div class="controls">
+                    <input type="Text" name="IncrementDay" value="<?php echo $promotion->IncrementDay; ?>" id='IncrementDay'/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-14">Increment Month</label>
+                <div class="controls">
+                    <select name="IncrementMonth"  id='IncrementMonth'>
+                        <option <?php if($promotion->IncrementMonth ==""): ?> selected <?php endif; ?> value= "">--Select--</option>
+                        <option <?php if($promotion->IncrementMonth =="January"): ?> selected <?php endif; ?> value="January">January</option>
+                        <option <?php if($promotion->IncrementMonth =="February"): ?>selected <?php endif; ?> value="February">February</option>
+                        <option <?php if($promotion->IncrementMonth =="March"): ?> selected <?php endif; ?> value="March">March</option>
+                        <option <?php if($promotion->IncrementMonth =="April"): ?> selected <?php endif; ?> value="April">April</option>
+                        <option <?php if($promotion->IncrementMonth =="May"): ?> selected <?php endif; ?> value="May">May</option>
+                        <option <?php if($promotion->IncrementMonth =="June"): ?> selected <?php endif; ?> value="June">June</option>
+                        <option <?php if($promotion->IncrementMonth =="July"): ?> selected <?php endif; ?> value="July">July</option>
+                        <option <?php if($promotion->IncrementMonth =="August"): ?> selected <?php endif; ?> value="August">August</option>
+                        <option <?php if($promotion->IncrementMonth =="September"): ?>selected <?php endif; ?> value="September">September</option>
+                        <option <?php if($promotion->IncrementMonth =="October"): ?> selected <?php endif; ?> value="October">October</option>
+                        <option <?php if($promotion->IncrementMonth =="November"): ?> selected <?php endif; ?> value="November">November</option>
+                        <option <?php if($promotion->IncrementMonth =="December"): ?> selected <?php endif; ?> value="December">December</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <input class="btn btn-small btn-primary" type="submit"  value="Update" />
+                </div>
+            </div>
+            
+            </form>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script type="text/javascript">
+    
+ function readonly(){
+     
+     var tt = document.getElementById("TransferType").value;
+        if(tt === "2" || tt === "1" || tt === "8" || tt === "")
+          {     
+            document.getElementById("SalaryScale").readOnly = false; 
+            document.getElementById("IncrementDay").readOnly = false;
+            document.getElementById("IncrementMonth").readOnly = false;
+            document.getElementById("Grade").readOnly = false;
+            document.getElementById("SalaryStep").readOnly = false;
+            document.getElementById("NewPost").readOnly = false;
+           }else if(tt === "5"  || tt === "7") {     
+            document.getElementById("SalaryScale").readOnly = true;
+            document.getElementById("IncrementDay").readOnly = true;
+            document.getElementById("IncrementMonth").readOnly = true;
+            document.getElementById("Grade").readOnly = true;
+            document.getElementById("SalaryStep").readOnly = true;
+            document.getElementById("NewPost").readOnly = true;
+           }else{
+            document.getElementById("SalaryScale").readOnly = true; 
+            document.getElementById("IncrementDay").readOnly = true;
+            document.getElementById("IncrementMonth").readOnly = true;
+            document.getElementById("Grade").readOnly = true;
+            document.getElementById("SalaryStep").readOnly = true;
+            document.getElementById("NewPost").readOnly = true;
+           }
+   
+    }  
+      $('#NewPost').change(function() {
+                        var newPost = document.getElementById('NewPost').value;
+                        $.ajax({
+                            url: "<?php echo url::to('designationSalaryScaleLoadajax'); ?>",
+                            data: {NewPost: newPost},
+                            success: function(re) {
+                                var a = re.split('/n/');
+                                document.getElementById('FullSalaryScale').value = a[0];
+                                document.getElementById('SalaryScale').value = a[1];
+                            }
+                        });
+                    });
+                    $(document).ready(function() {
+                        var newPost = document.getElementById('NewPost').value;
+                        $.ajax({
+                            url: "<?php echo url::to('designationSalaryScaleLoadajax'); ?>",
+                            data: {NewPost: newPost},
+                            success: function(re) {
+                                var a = re.split('/n/');
+                                document.getElementById('FullSalaryScale').value = a[0];
+                                document.getElementById('SalaryScale').value = a[1];
+                            }
+                        });
+                    });
+</script>
+<script>
+
+    function check() {
+//    alert("zxcvbnm");
+        var emp = document.getElementById("Emp_ID").value;
+        var type = document.getElementById("TransferType").value;
+        var role = document.getElementById("NewPost").value;
+        var org = document.getElementById('ToOrganisation').value;
+        var sdate = document.getElementById('StartDate').value;
+        if (type === '1' || type === '2' || type === 'Transfer' && role === 'A213' || role === 'A212') {
+            $.ajax({
+                url: "<?php echo url::to('Org_inch'); ?>",
+                data: {emp: emp, type: type, role: role, org: org},
+                success: function(result) {
+//               alert(result);
+                    bootbox.dialog(result, [{
+                            "label": "Yes",
+                            "class": "btn-small btn-success",
+                            "callback": function() {
+                                $.ajax({
+                                    url: "<?php echo url::to('Org_inch_edit'); ?>",
+                                    data: {org: org, sdate: sdate, emp: emp, type: type, role: role},
+                                    success: function(result) {
+//                                    alert(result);
+                                        bootbox.dialog(result, [{
+                                                "label": "oK",
+                                                "class": "btn-small btn-primary",
+                                            }]);
+
+                                        $("#myform").submit();
+                                    }
+                                });
+                            }
+                        },
+                        {
+                            "label": "No",
+                            "class": "btn-small btn-danger",
+                            "callback": function() {
+                                $("#myform").submit();
+                            }
+                        }]);
+
+                }
+
+
+            });
+        }
+
+    }
+
+
+
+
+</script>

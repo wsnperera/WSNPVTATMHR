@@ -1,0 +1,266 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href=<?php echo url('ViewQuestions'); ?>> << Back to Question Task</a>
+                <h1>Question Bank<small><i class="icon-double-angle-right"></i>Create Question</small></h1>
+            </div>
+
+            <form class="form-horizontal"  action="" method="POST" id='NewModule'/>
+            <div class="control-group">
+                   
+                    <div class="controls">
+
+                <?php if(Session::has('done')): ?>
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-ok"></i>
+                               Question Added Successfully 
+                            </strong>
+                            <br>
+                        </div>
+                    <?php endif; ?>
+                     </div>
+                   
+                </div>
+            <div class="control-group">
+                <label class="control-label" for="CourseListCode">Course : </label>
+                <div class="controls">
+                    <select name="CourseListCode" id="CourseListCode" required="true">
+                        <option value="">--Select--</option>
+                        <?php foreach($listCode as $lc): ?>
+                        <option value="<?php echo $lc->CD_ID; ?>"><?php echo $lc->CourseListCode; ?> - [<?php echo $lc->CourseName; ?>] - <?php echo $lc->Nvq; ?>-<?php echo $lc->CourseLevel; ?>-<?php echo $lc->CourseType; ?>-<?php echo $lc->Duration; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+				<!--	Duration <input id="Duration" placeholder="" type="text"> -->
+                </div>
+            </div> 
+
+           <div class="control-group">
+                <label class="control-label" >Module : </label>
+                <div class="controls" id="ModuleDiv">
+                    <select name="ModuleID" id="ModuleID" required="true">
+                        <option value="">--Select Module--</option>
+                        
+                    </select>
+                   
+                </div>         
+            </div>
+            <div class="control-group">
+                <label class="control-label" >Task : </label>
+                <div class="controls" id="TaskDiv">
+                    <select name="T_Code" id="T_Code" required="true">
+                        <option value="">--Select--</option>
+                        <?php foreach($tasks as $m): ?>
+                        <option value="<?php echo $m->id; ?>"><?php echo $m->TaskCode; ?> - <?php echo $m->TaskName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                   
+                </div>         
+            </div>
+			<div class="control-group">
+                <label class="control-label" >Quesion Medium : </label>
+                <div class="controls" >
+                    <select name="Medium" id="Medium" required="true">
+                        <option value="">--Select Medium--</option>
+                        
+                        <option value="S">Sinhala</option>
+						<option value="E">English</option>
+						<option value="T">Tamil</option>
+                       
+                    </select>
+                   
+                </div>         
+            </div>
+            <div class="control-group">
+                    <label class="control-label" >Question: </label>
+                        <div class="controls" id="Trade">
+                            <textarea name="QSinhala" id="QSinhala" required="true"></textarea> 
+                           
+                        </div>         
+            </div> 
+            <div class="control-group">
+                    <label class="control-label">Correct Answer:</label>
+                    <div class="controls">
+                       
+                        <textarea id="Canswer" name="Canswer" type="text" required></textarea>
+                    </div>
+            </div>
+             <div class="control-group">
+                    <label class="control-label">Wrong Answer 1:</label>
+                    <div class="controls">
+                       
+                        <textarea id="Wanswer1" name="Wanswer1" type="text" required></textarea>
+                    </div>
+            </div>
+            <div class="control-group">
+                    <label class="control-label">Wrong Answer 2:</label>
+                    <div class="controls">
+                       
+                        <textarea id="Wanswer2" name="Wanswer2" type="text" required></textarea>
+                    </div>
+            </div>
+            <div class="control-group">
+                    <label class="control-label">Wrong Answer 3:</label>
+                    <div class="controls">
+                       
+                        <textarea id="Wanswer3" name="Wanswer3" type="text" required></textarea>
+                    </div>
+            </div>
+            
+
+            <div class="control-group">
+                <div class="controls">
+                        <input type="button" value="Save"  id="saveme" class="btn btn-small btn-primary"/> <span id='img4'></span>
+                    </div>
+            </div>  
+        <div class="control-group">
+                <div class="controls" id="msg">
+                       
+                 </div>
+            </div>  			
+
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+       
+    
+             </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+
+    <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+
+    $('#saveme').click(function()
+    {
+      
+        var CD_ID = $("#CourseListCode").val();
+		var ModuleID = $("#ModuleID").val();
+		var T_Code = $("#T_Code").val();
+		var Medium = $("#Medium").val();
+		var QSinhala = $("#QSinhala").val();
+		var Canswer = $("#Canswer").val();
+		var Wanswer1 = $("#Wanswer1").val();
+		var Wanswer2 = $("#Wanswer2").val();
+		var Wanswer3 = $("#Wanswer3").val();
+		
+		if(CD_ID == '' || ModuleID == ''  || T_Code == '' || Medium == '' || QSinhala == '' || Canswer == '' || Wanswer1 == '' || Wanswer2 == '' || Wanswer3 == '')
+		{
+			bootbox.alert("Please Fill all the details required,Otherwise You can't enter this Question.....!!!!!!!");
+		}
+		else
+		{
+			 $.ajax({
+		   
+		   beforeSend: function()
+                        {
+                            
+                            document.getElementById('img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+            type: "POST",
+            url: "<?php echo url::to('QuestionBankSaveAll'); ?>",
+            data: {CD_ID: CD_ID,ModuleID: ModuleID,T_Code: T_Code,Medium: Medium,QSinhala: QSinhala,Canswer: Canswer,Wanswer1: Wanswer1,Wanswer2: Wanswer2,Wanswer3: Wanswer3},
+            dataType: 'json',
+            success: function(result) {
+
+                
+				document.getElementById('QSinhala').value = '';
+				document.getElementById('Canswer').value = '';
+				document.getElementById('Wanswer1').value = '';
+				document.getElementById('Wanswer2').value = '';
+				document.getElementById('Wanswer3').value = '';
+				
+				$('#msg').html(result.done);
+               
+
+            },
+                        complete: function() {
+                            document.getElementById('img4').innerHTML ="";
+
+                        }
+            });
+		}
+		
+       //alert(CD_ID);
+      
+ 
+        
+    });
+       $("#CourseListCode").change(function() {
+        var cid = $("#CourseListCode").val();
+        var msg = '---Select Module---';
+        $("#ModuleID").html('');
+      
+        $.ajax({
+            type: "GET",
+            url: "<?php echo url::to('LoadQuestionModuleCourse'); ?>",
+            data: {CourseListCode: cid},
+            success: function(result) {
+                $("#ModuleID").append("<option value=''>" + msg + "</option>");
+                $.each(result, function(i, item)
+                {
+
+
+
+                    $("#ModuleID").append("<option value=" + item.ModuleId + ">" + item.ModuleCode +  "-" + item.ModuleName + "</option>");
+
+
+
+                });
+
+            }
+        });
+    });
+       $("#ModuleID").change(function() {
+
+        var mid = $("#ModuleID").val();
+       // alert(mid);
+        var cid = $("#CourseListCode").val();
+        var msg = '---Select Task---';
+        $("#T_Code").html('');
+        
+        $.ajax({
+            type: "GET",
+            url: "<?php echo url::to('LoadQuestionModuleTask'); ?>",
+            data: {ModuleId: mid,CD_ID: cid},
+            dataType: 'json',
+            success: function(result) {
+                $("#T_Code").append("<option value=''>" + msg + "</option>");
+                $.each(result, function(i, item)
+                {
+
+
+
+                    $("#T_Code").append("<option value=" + item.id + ">" + item.TaskCode +  "-" + item.TaskName + "</option>");
+
+
+
+                });
+
+            }
+        });
+    });
+        
+    
+       
+
+   
+    
+   
+   
+    
+   
+  
+</script>
+
+

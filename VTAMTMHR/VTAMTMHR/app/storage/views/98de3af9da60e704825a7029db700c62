@@ -1,0 +1,99 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('quorga'); ?>> << Back to Qualification Universities </a> 
+
+<?php endif; ?>
+
+<div class="page-content">
+  <div class="page-header position-relative">
+                                            
+                                            <h1>
+                                           Qualified Universities			
+                                            <small>
+                                                    <i class="icon-double-angle-right"></i>
+                                                    View
+                                            </small>			
+                                            </h1>
+                                            
+		</div><!--/.page-header-->
+
+<div class="row-fluid">
+
+<form name='search' action="<?php echo url('findQuorg'); ?>" method='get'>
+Search Qualified Universities<input type='text' name="searchKey" placeholder="Search by Universities Name..."/>   <input type='submit' value='Search'/> &nbsp;
+ 
+<a href=<?php echo url('createQuaorg'); ?>><input class="btn-small" type="button" value="Create Qualified University"/></a>
+
+</form>
+<div class="span12">
+<!--PAGE CONTENT BEGINS-->
+<table class="table" >
+<tr>
+
+<th>Qualified Universities ID</th>
+<th>Institute Name</th>
+<th >University Name</th>
+
+<th>Remove</th>
+
+</tr>
+<?php if(isset ($quorga)): ?>
+<?php foreach ($quorga as $qo): ?>
+
+<tr>
+
+<td><a href="<?php echo url('editQuorg?id='.$qo->QO_ID); ?>"><?php echo $qo->QO_ID; ?></a></td>
+
+<td><?php echo $qo->getInstitute->InstituteName; ?></td>
+<td ><?php echo $qo->OrgaName; ?></td>
+ 
+<td>
+<form id="deleteform"  action=<?php echo url('deleteQuorg'); ?> method="POST" onsubmit="return doConfirm('<?php echo $qo->OrgaName; ?>',this)">
+ <input type="hidden" name='qoid' value="<?php echo $qo->QO_ID; ?>" />
+<button type="submit" class="btn  btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+
+</form>
+
+</td>
+
+
+</tr>
+<?php endforeach; ?>
+<?php endif; ?>
+
+</table>
+<!--PAGE CONTENT ENDS-->
+</div><!--/.span-->
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+
+
+        function doConfirm(quorga,formobj)
+        {
+
+
+            bootbox.confirm("Are you sure you want to remove Qualified Organisation of"+quorga, function(result) 
+            {
+                   if(result) 
+                   {
+                        formobj.submit();
+
+                    }
+
+
+            });
+
+
+            return false;  // by default do nothing hack :D
+        }
+
+
+
+</script>

@@ -1,0 +1,420 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                       Actual Time Table       
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            View & Create Actual TimeTable
+                        </small>            
+                    </h1>
+                </div>
+            </div>
+            <!--PAGE CONTENT BEGINS-->
+            <form action="" method='POST' class='form-horizontal'>
+             <div class="control-group">
+                    <label class="control-label" for="centers">Year</label>
+                    <?php  $year = date("Y"); ?>
+                    <div class="controls">
+                      <select name="Year" id="Year" required>
+                            <option value="" required>--- Select Year ---</option>
+                            <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                            <option value="<?php echo $year+1; ?>"><?php echo $year+1; ?></option>
+                            <option value="<?php echo $year+2; ?>"><?php echo $year+2; ?></option>
+                            <option value="<?php echo $year+3; ?>"><?php echo $year+3; ?></option>
+                           
+                          
+                        </select> 
+                    </div>
+                </div>
+                 <div class="control-group">
+                    <label class="control-label" for="centers">Batch:</label>
+                    <div class="controls">
+                        <select name="Batch" id="Batch" required>
+                            <option value="" >--- Select Batch ---</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                          
+                        </select>
+                        <span id='img4'></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="centers">CourseListCode:</label>
+                    <div class="controls">
+                        <select name="Course" id="Course" required>
+                            <option value="" >--- Select Course ---</option>
+                           
+                          
+                        </select>
+
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="centers">Actual Start date:</label>
+                    <div class="controls">
+                       <input type="date" name="StartDate" id="StartDate" required="true" />
+                    </div>
+                </div>
+                <br/> 
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="button"  id="upload" class="btn btn-primary">
+                                <i class="icon-eye-open bigger-200"></i>Generate</button>
+                                <span id='upld' hidden>
+                                
+                              
+                                </span>
+                    </div>
+                </div>   
+            </form>
+             <span id='img5'></span>
+             <div id="bbb">
+                
+             </div>
+            <div id="aaaa">
+           
+           <!-- <h5 style="color: #777777;"><?php if(isset($CourseCode)): ?>CourseCode:&nbsp;&nbsp;<?php echo $CourseCode; ?><?php endif; ?></h5>
+            <h5 style="color: #777777;"><?php if(isset($BatchCode)): ?>BatchCode:&nbsp;&nbsp;<?php echo $BatchCode; ?><?php endif; ?></h5>-->
+            
+          
+            <!--PAGE CONTENT ENDS-->
+            </div>
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    function doConfirm(applicant, formobj)
+    {
+        bootbox.confirm("Are you sure you want to remove " + applicant, function(result)
+        {
+        if (result)
+        {
+        formobj.submit();
+        }
+        });
+                return false;
+    }
+    
+    $('#sample-table-2').dataTable({
+    "aoColumns": [
+            {"bSortable": false},
+           null,
+            null,
+            null,
+           null,
+            null,
+            null,
+            null,
+            null,
+            null,
+           
+           
+    ]});
+            $('table th input:checkbox').on('click', function() {
+    var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function() {
+            this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+            });
+    });
+            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+            function tooltip_placement(context, source) {
+            var $source = $(source);
+                    var $parent = $source.closest('table')
+                    var off1 = $parent.offset();
+                    var w1 = $parent.width();
+                    var off2 = $source.offset();
+                    var w2 = $source.width();
+                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                    return 'right';
+                    return 'left';
+            }
+
+
+</script>
+
+<script>
+
+  
+    
+$('#Batch').change(function(){
+
+        //alert('dg');
+       var Batch = document.getElementById('Batch').value; 
+       var Year = document.getElementById('Year').value; 
+      
+       var msg = '--- Select Course ---';
+        $("#Course").html('');
+       $.ajax  ({
+                    beforeSend: function()
+                        {
+                            
+                            document.getElementById('img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+                    url: "<?php echo url::to('GetMOCourselistCodes'); ?>",
+                    data: { Batch: Batch,Year: Year},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        $("#Course").append("<option value=''>" + msg + "</option>");
+                         $.each(result, function(i, item)
+                        {
+
+
+
+                            $("#Course").append("<option value=" + item.id + ">" + item.CourseListCode + " (" + item.CourseName + ")</option>");
+
+
+
+                        });
+                                        
+                        
+                        },
+                        complete: function() {
+                            document.getElementById('img4').innerHTML ="";
+
+                        }
+
+
+                    
+                });
+        
+
+
+       
+    });
+  
+
+
+    $('#upload').click(function()
+    {
+      
+        var Year = $("#Year").val(); 
+        var Batch = $("#Batch").val(); 
+        var Course = $("#Course").val();
+        var StartDate = $("#StartDate").val(); 
+      //alert(Year);
+      $.ajax  ({    beforeSend: function()
+                        {
+                            
+                            document.getElementById('img5').innerHTML = "<img src=\"<?php echo Url('assets/images/ajax-loader.gif'); ?>\"/>";
+                        },
+                    url: "<?php echo url::to('GetOrmit'); ?>",
+                    data: { Year: Year,Batch: Batch,Course: Course,StartDate: StartDate},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       //location.reload();  
+                      
+                       $('#aaaa').html(result);      
+                        
+                        },
+                        complete: function() {
+                            document.getElementById('img5').innerHTML ="";
+
+                        }
+
+
+                    
+                });
+      
+           /* $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            
+                            document.getElementById('img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+                        type: "POST",
+                        url: "<?php echo Url('PrintAssessorAssignedLetter'); ?>",
+                        data: {CS_ID: CS_ID},
+                        success:function response(responseText, statusText, xhr, $form)
+                        {
+       
+                               var printWin = window.open("","printSpecial");
+                                printWin.document.open();
+                                printWin.document.write(responseText);
+                                printWin.document.close();
+                                printWin.print();
+       
+   
+                         
+
+                        },
+                        complete: function() {
+                            document.getElementById('img4').innerHTML ="";
+
+                        }
+                    });*/
+        
+    }
+    );
+    $('#aaaa').on('click', 'button', function(){
+
+         var Year = $("#Year").val(); 
+        var Batch = $("#Batch").val(); 
+        var Course = $("#Course").val();
+        var StartDate = $("#StartDate").val(); 
+        var dates = [];
+      var dates  = $('input[name="Datelist[]"]').serializeArray();
+
+       // alert(dates);
+     // alert(Year);
+      $.ajax  ({    beforeSend: function()
+                        {
+                            
+                            document.getElementById('img5').innerHTML = "<img src=\"<?php echo Url('assets/images/ajax-loader.gif'); ?>\"/>";
+                        },
+                    url: "<?php echo url::to('SaveDatesOrmit'); ?>",
+                    data: { Year: Year,Batch: Batch,Course: Course,StartDate: StartDate,dates: dates},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       //location.reload();  
+                      
+                       $('#aaaa').html(result);      
+                        
+                        },
+                        complete: function() {
+                            document.getElementById('img5').innerHTML ="";
+
+                        }
+
+
+                    
+                });
+    
+});
+     $('#aaaa').on('change', 'input', function(){
+
+         
+      var Year = $("#Year").val(); 
+        var Batch = $("#Batch").val(); 
+        var Course = $("#Course").val();
+        var StartDate = $("#StartDate").val(); 
+        var dates = [];
+      var dates  = $('input[name="Datelist[]"]').serializeArray();
+
+      // alert(dates);
+     // alert(Year);
+     $.ajax  ({    
+                    url: "<?php echo url::to('CheckRevisionDate'); ?>",
+                    data: { Year: Year,Batch: Batch,Course: Course,StartDate: StartDate,dates: dates},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       //location.reload();  
+                      
+                       $('#bbb').html(result);      
+                        
+                        }
+
+
+                    
+                });
+    
+});
+
+    
+    /*$('#reject').click(function()
+    {
+     
+       var TID = document.getElementById('reject').value; 
+       alert(TID);
+
+
+      
+          
+        
+    }
+    );
+    $('#reject1').click(function()
+    {
+     
+       var TID = document.getElementById('reject1').value; 
+       alert(TID);
+
+
+      
+          
+        
+    }
+    );*/
+     /* function addModule() {
+
+        var TID = document.getElementById('reject').value; 
+       alert(TID);
+
+        /*$.ajax  ({
+                    url: "<?php echo url::to(''); ?>",
+                    success: function(result) {
+                        if ($('#addModule').is(':hidden')) {
+                            $('#addModule').show();
+                        } else {
+                            $('#addModule').hide();
+                        }
+                    }
+                });*/
+ //   }
+ $(".red").click(function(){
+
+     var id = this.id;
+     //alert(id);
+bootbox.confirm("<form id='infos' action=''><div class='control-group'><div class='controls'>\
+    Reason:<textarea cols='1000' rows='6' name='Reason' id='Reason'></textarea></div></div></form>", function(result) {
+        if(result)
+        {
+            //$('#infos').submit();
+           // alert(result);
+
+         var reason = $("#Reason").val();
+        // var g = $("#editComment").val();
+         //alert(reason);
+
+
+        doStuffWithResults(id,reason);
+        }
+});
+  
+});
+    
+function doStuffWithResults(id,reason) 
+{
+
+     $.ajax  ({
+                    url: "<?php echo url::to('DORejectAssignedAssessor'); ?>",
+                    data: { id: id,reason: reason},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       location.reload();          
+                        
+                        }
+
+
+                    
+                });
+   
+}
+    
+
+
+</script>

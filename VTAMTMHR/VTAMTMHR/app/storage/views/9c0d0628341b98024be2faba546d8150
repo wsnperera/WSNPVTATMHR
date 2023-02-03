@@ -1,0 +1,70 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+    <?php if(isset($Issearch)): ?>
+        <a href=<?php echo url('trade'); ?>> << Back to Trade </a> 
+    <?php endif; ?>
+    <div class="page-content">
+        <div class="page-header position-relative">
+            <h1>
+            2nd Year Registration  			
+            <small>
+                    <i class="icon-double-angle-right"></i>
+                     View
+            </small>			
+            </h1>
+        </div>
+        <div class="row-fluid">
+            <form name='search' action="<?php echo url('tradesearch'); ?>" method='get'>
+                <table>
+                    <tr>
+                        <td style="text-align: center;">Order By :&nbsp;&nbsp;
+                            <select style="margin: 0" name="order_by">
+                                <option value="">Order By</option>
+                                <option value="id">index</option>
+                                <option value="InstituteId">Institute wise</option>
+                                <option value="OrgaId">Organization wise</option>
+                                <option value="BatchCode">Batch wise</option>
+                            </select>
+                        </td>
+                        <td style="text-align: center;">&nbsp;&nbsp;
+                            Search Student &nbsp;&nbsp;<input type='text' name="serachkey" placeholder="Student Id" style="margin: 0"/>
+                        </td>
+                        <td style="text-align: center;"><input type='submit' value='Search'/></td>
+                        <td style="text-align: center;"><a href=<?php echo url('createtrade'); ?>><input type='button' value='Create'/></a></td>
+                    </tr>
+                </table>
+            </form>
+            <div class="span12">
+		<table class="table">
+                    <tr>
+                        <th>Institute</th>
+                        <th>Organization</th>
+                        <th>Course Code</th>
+                        <th>Batch Code</th>
+                        <th>Student ID</th>
+                        <th>Year</th>
+                        <th>Remove</th>
+                    </tr>
+                    <?php if(isset ($batch)): ?>
+                        <?php foreach($batch as $b): ?>
+                            <tr>
+                                <td><?php if(!is_null($b->getInstitue)): ?> <?php echo $b->getInstitue->InstituteName; ?> <?php endif; ?></td>
+                                <td><?php if(!is_null($b->getorganization)): ?> <?php echo $b->getorganization->OrgaName; ?> <?php endif; ?></td>
+                                <td><?php echo $b->CourseCode; ?></td>
+                                <td><?php echo $b->BatchCode; ?></td>
+                                <td><?php echo $b->StudentID; ?></td>
+                                <td><?php echo $b->Year; ?></td>
+                                <td>
+                                    <form id="deleteform"  action=<?php echo url('deletetrade'); ?> method="POST" onsubmit="return doConfirm('<?php echo $b->StudentID; ?>', this)">
+                                        <input type="hidden" name='bid' value=<?php echo $b->StudentID; ?> />
+                                        <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </table>
+            </div>
+	</div>
+    </div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script type="text/javascript"> </script>

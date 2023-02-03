@@ -1,0 +1,137 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href=<?php echo url('viewExamQuestion'); ?>><< Back to View Exam Question</a>
+                <h1>Exam Question<small><i class="icon-double-angle-right"></i>Create</small></h1>
+            </div>
+            <form class="form-horizontal" action='' method="POST"/>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Subject Name : </label>
+                    <select name="subjectId" onchange="call(this)">
+                        <option></option>
+                        <?php foreach($module as $m): ?>
+                            <option value="<?php echo $m->ModuleId; ?>"><?php echo $m->ModuleName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="control-group" id="assessment" >
+                </div>
+                <div class="control-group" id='q'>
+                    <label class="control-label" for="CourseListCode">Question : </label>
+                    <textarea name="question" rows="6"></textarea>
+                </div>
+                <div class="control-group" id='ra'>
+                    <label class="control-label" for="CourseListCode">Right Answer : </label>
+                    <textarea name="RA" rows="2"></textarea>
+                </div>
+                <div class="control-group" id='w1'>
+                    <label class="control-label" for="CourseListCode">Wrong Answer 1 : </label>
+                    <textarea name="WA1" rows="2"></textarea>
+                </div>
+                <div class="control-group" id='w2'>
+                    <label class="control-label" for="CourseListCode">Wrong Answer 2 : </label>
+                    <textarea name="WA2" rows="2"></textarea>
+                </div>
+                <div class="control-group" id='w3'>
+                    <label class="control-label" for="CourseListCode">Wrong Answer 3 : </label>
+                    <textarea name="WA3" rows="2"></textarea>
+                </div>
+                <div class="control-group" id='w4'>
+                    <label class="control-label" for="CourseListCode">Wrong Answer 4 : <br><b>(Not Compulsory)</b></label>
+                    <textarea name="WA4" rows="2"></textarea>
+                </div>
+                <div class="control-group" id='sub'>
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Create</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+    $(document).ready(function(){
+        $("#q").hide();
+        $("#ra").hide();
+        $("#w1").hide();
+        $("#w2").hide();
+        $("#w3").hide();
+        $("#w4").hide();
+        $("#sub").hide();
+    });
+    
+    function call(x) 
+    {
+        if(x.value=='')
+        {
+            $("#assessment").html(null);
+            $("#q").hide();
+            $("#ra").hide();
+            $("#w1").hide();
+            $("#w2").hide();
+            $("#w3").hide();
+            $("#w4").hide();
+            $("#sub").hide();
+        }
+        else
+        {
+            $.ajax
+            ({
+                type: "GET",
+                url: 'ajaxAssessment',
+                data:{moduleId : x.value},
+                success: function(result)
+                {
+                    if(result!='')
+                    {
+                        $("#assessment").html(result);
+                        $("#q").show();
+                        $("#ra").show();
+                        $("#w1").show();
+                        $("#w2").show();
+                        $("#w3").show();
+                        $("#w4").show();
+                        $("#sub").show();
+                    }
+                    else
+                    {
+                        $("#assessment").html(null);
+                        $("#q").hide();
+                        $("#ra").hide();
+                        $("#w1").hide();
+                        $("#w2").hide();
+                        $("#w3").hide();
+                        $("#w4").hide();
+                        $("#sub").hide();
+                    }
+                }
+            });
+        }
+    }
+    <?php if(isset($done)): ?>
+        $.gritter.add({ title: "", text: "Exam Question Added Successfully", class_name: "gritter-info gritter-center" });
+    <?php endif; ?>
+</script>
+      
+           
+               
+               
+               
+      
+        
+        
+
+    

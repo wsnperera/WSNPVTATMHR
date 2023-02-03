@@ -1,0 +1,389 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        Student Profile
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            Profile
+                        </small>            
+                    </h1>
+                </div>
+
+            </div>
+        </div><!--/.span-->
+
+        <div class="span11" align="right">
+            <form action="" method="POST">
+                <input type="hidden" name="studentData" id="studentData" value="<?php echo $trainee->id; ?>">
+                <button class="btn btn-primary" type="button" name="btn_studentData" id="btn_studentData" >
+                    <i class="icon-download bigger-125"></i>
+                        Print Profile
+                </button>
+            </form>
+        </div>
+
+    </div><!--/.row-fluid-->
+
+    <div class="span12">
+        <div class="well well-small"><b><font face="verdana" color="green">Student Basic Information</font></b></div>
+    </div>
+
+    <div class="span3">   
+        <center>
+            <span class="profile-picture">
+                <?php if($trainee->Gender == "Male"): ?>
+                <img id="avatar" class="editable" alt="Alex's Avatar" src="assets/avatars/profile-pic.jpg" />
+                <?php else: ?>
+                <img id="avatar" class="editable" alt="Alex's Avatar" src="assets/avatars/profile-pic-1.jpg" />
+                <?php endif; ?>
+            </span>
+
+        </br></br>
+
+        <div class="width-60 label label-info label-large arrowed-in arrowed-in-right">
+            <div class="inline position-relative">
+                <center><span class="white middle bigger-120"><?php echo $trainee->NameWithInitials; ?></span></center>
+            </div>
+        </div>
+    </div>
+
+    <div class="span9"> 
+
+        <table style="width:100%">
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Full Name 
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->FullName)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->FullName;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            NIC Number  
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->NIC)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->NIC;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Address
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->Address)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->Address;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Age
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->Age)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->Age;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Date Of Birth
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->DOB)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->DOB;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                    <i class=" icon-check"></i>&emsp;
+                        Gender 
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->Gender)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->Gender;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                    <i class=" icon-check"></i>&emsp;
+                        Province 
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($province)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$province;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            District 
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($district)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$district;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Tel 
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->Tel)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->Tel;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Tel - Mobile 
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->Tel_mob)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->Tel_mob;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Medium 
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->Medium)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->Medium;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Email 
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->email)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->email;; ?></font></b></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="span12">
+        <div class="well well-small"><b><font face="verdana" color="green">Student Academic Information</font></b></div>        
+    </div>
+
+    <div class="span12"> 
+        <table style="width:100%">
+            <tr>
+                <td width="25%">
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Organisation
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($organisation->OrgaName)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$organisation->OrgaName;; ?></font></b></td>
+            </tr>
+            <!--
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Center
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($Center->OrgaName)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$Center->OrgaName;; ?></font></b></td>
+            </tr>
+            -->
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Traning Number  
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->training_no)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->training_no;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Year  
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->Year)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->Year;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Course List Code  
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->CourseListCode)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->CourseListCode;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Course Code  
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->CourseCode)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->CourseCode;; ?> : 
+                (<?php echo (empty($Csestarted->StartDate)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$Csestarted->StartDate;; ?>) - 
+                (<?php echo (empty($Csestarted->ExpectedCompleted)) ? '<font face="verdana" size="2" color="red">No Date Found' : '<font face="verdana" size="2" color="black">'.$Csestarted->ExpectedCompleted;; ?>)</font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Batch
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->Batch)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->Batch;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Dropout
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo (empty($trainee->Dropout)) ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$trainee->Dropout;; ?></font></b></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="span12">
+        <div class="well well-small"><b><font face="verdana" color="green">Student Fee Information</font></b></div>        
+    </div>
+
+    <div class="span12"> 
+        <table style="width:100%">
+            <tr>
+                <td width="25%">
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Fee Amount
+                    </h4>
+                </td>
+                <td width="2%">:-</td> 
+                <td><b><?php echo ($Fee == "null") ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$Fee->AmountPaid;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Type
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo ($Fee == "null") ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$Fee->Type;; ?></font></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <h4 class="blue smaller">
+                        <i class=" icon-check"></i>&emsp;
+                            Receipt Number  
+                    </h4>
+                </td>
+                <td>:-</td> 
+                <td><b><?php echo ($Fee == "null") ? '<font face="verdana" size="2" color="red">No Data Found' : '<font face="verdana" size="2" color="black">'.$Fee->ReceptNo;; ?></font></b></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="span12">
+        <div class="well well-small"><b><font face="verdana" color="green">Student Exam Information</font></b></div>        
+    </div>
+
+    <div class="span12"> 
+        <b><font face="verdana" color="red">No Data Found</font></b>
+    </div>
+
+    <div class="span12"> 
+        </br>
+    </div>
+
+    <div class="span12">
+        <div class="well well-small"><b><font face="verdana" color="green">Student OJT Information</font></b></div>        
+    </div>
+
+    <div class="span12"> 
+        <b><font face="verdana" color="red">No Data Found</font></b>
+    </div>
+
+    <div class="span12"> 
+        <b><hr></b>
+    </div>
+
+    <!--
+    <div class="span9" style="width: color: red; background-color: pink; border: 2px solid blue; padding: 5px;">
+    </div>
+    -->
+
+
+</div><!--/.page-content-->
+
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+    $('#btn_studentData').on('click',function() 
+    {
+        //alert("Plz");
+
+        var studentData = $("#studentData").val();
+
+        //alert(studentData);
+
+        $.ajax
+                ({
+                    url: "<?php echo url::to('ajaxDwnStudentProfile'); ?>",
+                    data: {studentData: studentData},
+                    success: function(result)
+                    {
+                            response(result);
+                    }
+                });
+    });
+     function response(data)
+    {
+        var printWin = window.open("", "printSpecial");
+        printWin.document.open();
+        printWin.document.write(data);
+        printWin.document.close();
+        printWin.print();
+    }
+});
+
+</script>

@@ -1,0 +1,171 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <div class="page-header position-relative">
+                <h1>
+                    Applicant			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Auto Qualified
+                    </small>			
+                </h1>
+            </div>
+
+            <form name='search' action="<?php echo url('SearchAutoQualified'); ?>" method='POST' id='searchfrm'>
+                <table>
+                    <tr>
+                        <td style="text-align: center;">Course Code :&nbsp;&nbsp;
+                            <select style="width: 150px; margin: 0" name="course_code">
+                                <option value="">Course Code</option>
+                                <?php foreach ($nationalCourseCode as $ncc): ?>
+                                <option value="<?php echo $ncc->CourseListCode; ?>"><?php echo $ncc->CourseListCode; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                        <td style="text-align: center;"><input type='button' value='Search' id="searchid" style="height: 30px;"/></td>
+                    </tr>
+                </table>
+                <div id="vara_ol1">
+
+                </div>
+            </form>
+
+            <form action="<?php echo url('AutoQualifiedOL'); ?>" method='POST' id="auto_ol_form">
+                <input type="hidden" name="coursecode" value="<?php echo $coursecode; ?>" id="coursecode1"/>
+                <input type="hidden" name="batch" value="<?php echo $batch; ?>"/>
+                <input type="hidden" name="year" value="<?php echo $year; ?>"/>
+                <?php if(isset($olsub) && isset($alsub)): ?>
+                <input type="hidden" name="olsub" value="<?php echo $olsub[0]; ?>"/>
+                <input type="hidden" name="alsub" value="<?php echo $alsub[0]; ?>"/>
+                <input type="hidden" name="num_stud" value="<?php echo $num_stud; ?>"/>
+                <?php endif; ?>
+                <button id="auto_ol" type="button" class="btn btn-large pull-right"><i class="icon-check"></i>Auto Qualified With O/L</button>
+            </form>
+
+            <form action="<?php echo url('AutoQualifiedOLAL'); ?>" method='POST' id="auto_ol_al_form">
+                <input type="hidden" name="coursecode" value="<?php echo $coursecode; ?>" id="coursecode2"/>
+                <input type="hidden" name="batch" value="<?php echo $batch; ?>"/>
+                <input type="hidden" name="year" value="<?php echo $year; ?>"/>
+                <?php if(isset($olsub) && isset($alsub)): ?>
+                <input type="hidden" name="olsub" value="<?php echo $olsub[0]; ?>"/>
+                <input type="hidden" name="alsub" value="<?php echo $alsub[0]; ?>"/>
+                <input type="hidden" name="num_stud" value="<?php echo $num_stud; ?>"/>
+                <?php endif; ?>
+                <button id="auto_ol_al" type="button" class="btn btn-large pull-right"><i class="icon-check"></i>Auto Qualified With O/L &  A/L</button>
+            </form>
+            <hr/>
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>NIC</th>
+                    <th>Center</th>
+                    <th>District</th>
+                    <th>NCC</th>
+                    <th>Year</th>
+                    <th>Batch</th>
+                    <th>Marks</th>
+                    <th>Qualified</th>
+                </tr>
+                <?php if(isset($applicants)): ?>
+                <?php foreach ($applicants as $applicant): ?>
+                <tr>
+                    <td><?php echo $applicant->NameWithInitials; ?></td>
+                    <td><?php echo $applicant->NIC; ?></td>
+                    <td><?php echo $applicant->Organisation->OrgaName; ?></td>
+                    <td><?php echo $applicant->District; ?></td>
+                    <td><?php echo $applicant->CourseListCode; ?></td>
+                    <td><?php echo $applicant->Year; ?></td>
+                    <td><?php echo $applicant->batch; ?></td>
+                    <td><?php echo $applicant->marks; ?></td>
+                    <td><?php echo $applicant->Qualified; ?></td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </table>
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+$("#searchid").click(function() {
+//        alert();
+    $.ajax({
+        url: "<?php echo url::to('AutoQual_getOlsubject'); ?>",
+        success: function(result) {
+            bootbox.dialog(result, [{
+                    "label": "oK",
+                    "class": "btn btn-small btn-success",
+                    "callback": function() {
+                        var ghi = [];
+                        var ahi = [];
+                        var i = 0;
+                        $("select[name='ol[]']").each(function() {
+                            ghi.push($(this).val());
+                            $("#vara_ol1").append("<input type='hidden' name='olsub[]' value='" + $(this).val() + "'>");
+//                            alert(ghi);
+                        });
+                        $("select[name='al[]']").each(function() {
+                            ahi.push($(this).val());
+                            $("#vara_ol1").append("<input type='hidden' name='alsub[]' value='" + $(this).val() + "'>");
+//                            alert(ahi);
+                        });
+                        $('#selection').each(function (){
+                            $("#vara_ol1").append("<input type='hidden' name='selection' value='" + $(this).val() + "'>");
+                        });
+                        $("#searchfrm").submit();
+
+                    }
+                }, {
+                    "label": "Cancel",
+                    "class": "btn btn-small btn-danger",
+                    "callback": function() {
+
+                    }
+                }]);
+            $(function() {
+                $(".chzn-select").chosen();
+            });
+
+        }
+    });
+});
+
+$('#auto_ol').click(function() {
+    var a = $('#coursecode1').val();
+    if (a !== '') {
+        $('#auto_ol_form').submit();
+    } else {
+        alert('Search Students First!');
+    }
+});
+
+$('#auto_ol_al').click(function() {
+    var a = $('#coursecode2').val();
+    if (a !== '') {
+        $('#auto_ol_al_form').submit();
+    } else {
+        alert('Search Students First!');
+    }
+});
+$(".app_qua").change(function() {
+
+    var nic_res = $(this).val();
+    $.ajax({
+        url: "<?php echo url::to('EditAutoQualifyResults'); ?>",
+        data: {nic_res: nic_res},
+        success: function(result) {
+            var resQua = result.split(".");
+            var id = resQua[0];
+            var val = resQua[1];
+            document.getElementById(id).innerHTML = val;
+        }
+    });
+
+});
+
+</script>

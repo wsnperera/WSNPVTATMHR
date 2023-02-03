@@ -1,0 +1,191 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href=<?php echo url('ViewTMProcessSchedule'); ?>> << Back to Training Material Schedules</a>
+            <h1>Schedule Training Material Distribution<small><i class="icon-double-angle-right"></i>Edit</small></h1>
+            </div>
+
+            <form class="form-horizontal"  action="" method="POST" id='NewModule'/>
+            <div class="control-group">
+                   
+                    <div class="controls">
+
+                <?php if(Session::has('done')): ?>
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-ok"></i>
+                               Training Material Schedule Edited Successfully 
+                            </strong>
+                            <br>
+                        </div>
+                    <?php endif; ?>
+                     </div>
+                   
+                </div>
+                <input type="hidden" name="id" id="id" value="<?php echo $QID; ?>">
+                <?php foreach($cc as $c): ?>
+				
+				 <div class="control-group">
+                    <label class="control-label">Year:</label>
+					 <?php  $year = date("Y"); ?>
+                    <div class="controls">
+                        <select name="Year" id="Year" required>
+                            <option value="" required>--- Select Year ---</option>
+							  <option value="<?php echo $year-2; ?>" <?php if($c->Year == $year-2): ?> selected="true" <?php endif; ?>><?php echo $year-2; ?></option>
+							 <option value="<?php echo $year-1; ?>" <?php if($c->Year == $year-1): ?> selected="true" <?php endif; ?>><?php echo $year-1; ?></option>
+                            <option value="<?php echo $year; ?>" <?php if($c->Year == $year): ?> selected="true" <?php endif; ?>><?php echo $year; ?></option>
+                            <option value="<?php echo $year+1; ?>" <?php if($c->Year == $year+1): ?> selected="true" <?php endif; ?>><?php echo $year+1; ?></option>
+                            <option value="<?php echo $year+2; ?>" <?php if($c->Year == $year+2): ?> selected="true" <?php endif; ?>><?php echo $year+2; ?></option>
+                            <option value="<?php echo $year+3; ?>" <?php if($c->Year == $year+3): ?> selected="true" <?php endif; ?>><?php echo $year+3; ?></option>
+                           
+                          
+                        </select> 
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Batch:</label>
+                    <div class="controls">
+                       <select name="Batch" id="Batch" required="true">
+						<option value="">--- Select Batch---</option>
+						<option value="1" <?php if($c->Batch =='1'): ?> Selected="true" <?php endif; ?>>1</option>
+						<option value="1.2" <?php if($c->Batch =='1.2'): ?> Selected="true" <?php endif; ?>>1.2</option>
+						<option value="2" <?php if($c->Batch =='2'): ?> Selected="true" <?php endif; ?>>2</option>
+						<option value="2.2" <?php if($c->Batch =='2.2'): ?> Selected="true" <?php endif; ?>>2.2</option>
+						</select>
+                    </div>
+                </div>
+				
+                <div class="control-group">
+                    <label class="control-label">Process:</label>
+                    <div class="controls">
+                       <select name="TMPLId" id="TMPLId" required="true">
+						<option value="">--- Select Process ---</option>
+						<?php
+						$i = 1;
+						?>
+						<?php foreach($SalaryScales as $s): ?>
+						<option value="<?php echo $s->id; ?>" <?php if($c->TMPLId == $s->id): ?> Selected="true" <?php endif; ?>><?php echo $i++; ?>) <?php echo $s->TaskNameInSinhala; ?>/<?php echo $s->TaskNameInEnglish; ?></option>
+						<?php endforeach; ?>
+						</select>
+                    </div>
+                </div>
+				<div class="control-group">
+                    <label class="control-label">Start Date:</label>
+                    <div class="controls">
+                        <input id="StartDate" name="StartDate" type="date" required="true" value="<?php echo $c->StartDate; ?>"/>
+                    </div>
+                </div>
+				<div class="control-group">
+                    <label class="control-label">End Date:</label>
+                    <div class="controls">
+                        <input id="EndDate" name="EndDate" type="date" required="true" value="<?php echo $c->EndDate; ?>"/>
+                    </div>
+                </div>
+				<div class="control-group">
+                    <label class="control-label">Description:</label>
+                    <div class="controls">
+                        <textarea id="Description" name="Description"  ><?php echo $c->Description; ?></textarea>
+                    </div>
+                </div>
+				 
+             
+				
+            <div class="control-group">
+                <div class="controls">
+                        <input type="submit" value="Edit"  class="btn btn-small btn-primary"/>
+                    </div>
+            </div> 
+            <?php endforeach; ?>            
+
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+       
+    
+             </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+
+    <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+
+
+       $("#CourseListCode").change(function() {
+        var cid = $("#CourseListCode").val();
+        var msg = '---Select Module---';
+        $("#ModuleID").html('');
+      
+        $.ajax({
+            type: "GET",
+            url: "<?php echo url::to('LoadQuestionModuleCourse'); ?>",
+            data: {CourseListCode: cid},
+            success: function(result) {
+                $("#ModuleID").append("<option value=''>" + msg + "</option>");
+                $.each(result, function(i, item)
+                {
+
+
+
+                    $("#ModuleID").append("<option value=" + item.ModuleId + ">" + item.ModuleCode +  "-" + item.ModuleName + "</option>");
+
+
+
+                });
+
+            }
+        });
+    });
+       $("#ModuleID").change(function() {
+
+        var mid = $("#ModuleID").val();
+       // alert(mid);
+        var cid = $("#CourseListCode").val();
+        var msg = '---Select Task---';
+        $("#T_Code").html('');
+        
+        $.ajax({
+            type: "GET",
+            url: "<?php echo url::to('LoadQuestionModuleTask'); ?>",
+            data: {ModuleId: mid,CD_ID: cid},
+            dataType: 'json',
+            success: function(result) {
+                $("#T_Code").append("<option value=''>" + msg + "</option>");
+                $.each(result, function(i, item)
+                {
+
+
+
+                    $("#T_Code").append("<option value=" + item.id + ">" + item.TaskCode +  "-" + item.TaskName + "</option>");
+
+
+
+                });
+
+            }
+        });
+    });
+        
+    
+       
+
+   
+    
+   
+   
+    
+   
+  
+</script>
+
+

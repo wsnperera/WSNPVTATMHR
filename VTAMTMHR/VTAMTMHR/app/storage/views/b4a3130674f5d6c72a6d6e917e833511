@@ -1,0 +1,104 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href="<?php echo url('viewGNDivisionVTA'); ?>"> << Back to GN Division </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>
+                GN Division		
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    View
+                </small>			
+            </h1>
+        </div>
+        <!--        <form name='search' action="<?php echo url('searchGNDivisionVTA'); ?>" method='get'>
+                    Search GN Division<input type='text' name="serachkey"/>   <input type='submit' value='Search'/>
+                    <a href="<?php echo url('createGNDivisionVTA'); ?>"><input type='button' value='Create GN Division' /></a>
+                </form>-->
+
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#No#</th>
+                        <th>District Name</th>
+                        <th>DS Division Name</th>
+                        <th>GN Division Code</th>
+                        <th>GN Division Name</th>
+                        <th>Remove</th>	
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php $i = 1; ?>
+                    <?php if(isset($GNDivision)): ?>
+                    <?php foreach($GNDivision as $gn): ?>
+                    <tr>
+                        <td><?php echo $i++; ?></td>
+                        <td><?php echo GNDivision::getDistrictName($gn->DSDivisionCode); ?></td>
+                        <td><?php if(!is_null($gn->getDSDivision)): ?><?php echo $gn->getDSDivision->ElectorateName; ?><?php endif; ?> </td>
+                        <td><?php if($user->hasPermission('editGNDivisionVTA')): ?><a href="<?php echo url('editGNDivisionVTA?id='.$gn->GNDivisionCode); ?>"><?php echo $gn->GNDivisionCode; ?></a>
+                            <?php else: ?> <?php echo $gn->GNDivisionCode; ?> <?php endif; ?></td>
+                        <td><?php echo $gn->GNDivisionName; ?> </td>  
+                        <td><?php if($user->hasPermission('deleteGNDivisionVTA')): ?>
+                            <form id="deleteform"  action="<?php echo url('deleteGNDivisionVTA?id='.$gn->GNDivisionCode); ?>" method="POST" onsubmit="return doConfirm('<?php echo $gn->GNDivisionName; ?>', this)">
+                                <input type="hidden" name='id' value="<?php echo $gn->GNDivisionCode; ?>" />
+                                <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                            </form><?php endif; ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
+<script type="text/javascript">
+
+                            function doConfirm(GNDivision, formobj){
+                            bootbox.confirm("Are you sure you want to remove " + GNDivision, function(result)  {
+                            if (result){
+                            formobj.submit();
+                            }
+                            });
+                            return false; // by default do nothing hack :D
+                            }
+
+                            $('#sample-table-2').dataTable({
+                            "bPaginate":false,
+                                    "aaSorting":[],
+                                    "aoColumns": [
+                                    {"bSortable": false}, null, null, null, null, {"bSortable": false}
+                                    ]});
+                            $('table th input:checkbox').on('click', function() {
+                            var that = this;
+                            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                                    .each(function() {
+                                    this.checked = that.checked;
+                                    $(this).closest('tr').toggleClass('selected');
+                                    });
+                            });
+                            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+                            function tooltip_placement(context, source) {
+                            var $source = $(source);
+                            var $parent = $source.closest('table')
+                                    var off1 = $parent.offset();
+                            var w1 = $parent.width();
+                            var off2 = $source.offset();
+                            var w2 = $source.width();
+                            if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                                    return 'right';
+                            return 'left';
+                            }
+
+</script>

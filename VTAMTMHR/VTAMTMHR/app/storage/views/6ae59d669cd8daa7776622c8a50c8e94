@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>VTA MIS</title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="assets/css/chosen.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+        <link rel="stylesheet" href="assets/css/ace.min.css" />
+        <link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+        <link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    </head>
+    <body>
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a href="#" class="brand">
+                        <small>
+                            <i class="icon-leaf"></i>
+                            Hello
+                            <?php echo $user->userName; ?>
+                        </small>
+                    </a>
+                    <a href="generatedNIC" class="brand">
+                        <small>
+                            <i class="icon-tasks"></i>
+                            NIC Number Generator
+                        </small>
+                    </a><!--/.brand-->
+                    <ul class="nav ace-nav pull-right">
+                        <li class="light-blue">
+                            <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                                <img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Jason's Photo" />
+                                <span class="user-info">
+                                    <small>Welcome,</small>
+                                    <?php echo $user->userName; ?>
+                                </span>
+                                <i class="icon-caret-down"></i>
+                            </a>
+                            <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
+                                <li>
+                                    <a href="<?php echo Url('viewEmployeeDetails'); ?>">
+                                        <i class="icon-user"></i>
+                                        Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo Url('changePassword'); ?>">
+                                        <i class="icon-lock"></i>
+                                        Change Password
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo Url('logout'); ?>">
+                                        <i class="icon-off"></i>
+                                        Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul><!--/.ace-nav-->
+                </div><!--/.container-fluid-->
+            </div><!--/.navbar-inner-->
+        </div>
+        <div class="main-container container-fluid">
+            <a class="menu-toggler" id="menu-toggler" href="#">
+                <span class="menu-text"></span>
+            </a>
+            <div class="sidebar" id="sidebar">
+                <ul class="nav nav-list"> 
+                    <?php if($user->hasPermission(array('institute','organisation','Org_View'))): ?>
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text"> Organization </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('institute')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('InstituteController@viewInstitute'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Institute
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('organisation')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OrganisationController@viewOrganisation'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Center
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php /*
+                              <?php if($user->hasPermission('Org_View')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('OrgInchargeController@ViewOrgIn'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Incharge
+                              </a>
+                              </li>
+                              <?php endif; ?> */ ?>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+
+                    <?php if($user->hasPermission(array('courses','viewCourseDetails','ViewAccreditRequest','viewCourseYearPlan','ConfirmCourseYearPlanFirstPage','searchEntry','coursestarted','batchstart','trade','searchInstructor','searchEntry','ViewOfflineStudentAttendence','ViewModule','ViewModuleCourse'))): ?>
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text"> Course </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('viewCourseDetails')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('CourseController@viewCourses'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Course Details
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('ViewAccreditRequest')): ?>
+                            <li>
+                                <a href='ViewAccreditRequest'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Course Accreditation
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+
+                            <?php if($user->hasPermission('viewCourseYearPlan')): ?>
+                            <li>
+                                <a href='viewCourseYearPlan'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Course Year Plan
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('ConfirmCourseYearPlanFirstPage')): ?>
+                            <li>
+                                <a href="ConfirmCourseYearPlanFirstPage" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    Assigned Course Year Plan
+                                    <br><span class="badge badge-primary"><?php echo CourseYearPlan::getNOConfirm(); ?></span>
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('searchEntry')): ?>    
+                            <li>
+                                <a href=<?php echo Url('searchEntry'); ?>>
+                                    <i class="icon-double-angle-right"></i>
+                                    Entry Qualifications
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('viewCourseStartedPage')): ?>
+                            <li>
+                                <a href="<?php echo url('viewCourseStartedPage'); ?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    Course Started View
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php /*
+                              <?php if($user->hasPermission('coursestarted')): ?>
+                              <li>
+                              <a href=<?php echo url('coursestarted'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Course Started
+                              </a>
+                              </li>
+                              <?php endif; ?>
+
+                              <?php if($user->hasPermission(array('batchstart','trade'))): ?>
+                              <li>
+                              <a href="#" class="dropdown-toggle">
+                              <i class="icon-pencil"></i>
+                              Batch
+                              <b class="arrow icon-angle-down"></b>
+                              </a>
+                              <ul class="submenu">
+                              <?php if($user->hasPermission('batchstart')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('BatchstartController@viewbatchstart'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Batch
+                              </a>
+                              </li>
+                              <?php endif; ?>
+
+                              <?php if($user->hasPermission('trade')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('BatchTradeController@viewbatchtrade'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Batch Trade
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              </ul>
+                              </li>
+                              <?php endif; ?>
+
+                              
+                              <li>
+                              <a href="<?php echo Url('searchInstructor'); ?>">
+                              <i class="icon-double-angle-right"></i>
+                              Assign Instructor
+                              </a>
+                              </li>
+                             
+
+
+                              <li>
+                              <a href='ViewTimeSlot'>
+                              <i class="icon-double-angle-right"></i>
+                              Time Slots
+                              </a>
+                              </li>
+                              <li>
+                              <a href='ViewTimeTable'>
+                              <i class="icon-double-angle-right"></i>
+                              Time Table
+                              </a>
+                              </li>
+
+                              <?php if($user->hasPermission('ViewOfflineStudentAttendence')): ?>
+                              <li>
+                              <a href='ViewOfflineStudentAttendence'>
+                              <i class="icon-double-angle-right"></i>
+                              Offline Student Attendence
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                             */ ?>
+
+                            <?php if($user->hasPermission('ViewModule')): ?>
+                            <li>
+                                <a href='ViewModule'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Module
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php /*
+                              <?php if($user->hasPermission('ViewExamDetails')): ?>
+                              <li>
+                              <a href='ViewExamDetails'>
+                              <i class="icon-double-angle-right"></i>
+                              Send Exam
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                             * 
+                             */ ?>
+
+                            <?php if($user->hasPermission('ViewModuleCourse')): ?>
+                            <li>
+                                <a href='ViewModuleCourse'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Module Courses
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            
+                            <?php if($user->hasPermission('ViewCourseRestrict')): ?>
+							<li>
+								<a href='ViewCourseRestrict'>
+									<i class="icon-double-angle-right"></i>
+									Applicant Restrict
+								</a>
+							</li>
+							<?php endif; ?>
+							
+                        </ul>
+                    </li>
+                    <?php endif; ?> 
+
+                    
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text"> Applicant </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('createApplicant')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('ApplicantController@actionCreate'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Add
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('applicants')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('ApplicantController@viewApplicant'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    View
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('ViewAppProgressReport')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('AppProgressReportController@ViewAppProgressReport'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    View Progress
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php /*
+                              <?php if($user->hasPermission('AutoQualified')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('ApplicantQualifiedController@AutoQualified'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Auto Qualified Applicants
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                             */ ?>
+
+                            <?php if($user->hasPermission('applicantQualifyHome')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('ApplicantQualifyController@applicantQualifyHome'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Filter Applicants
+                                </a>
+                            </li> 
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('rejected')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('ApplicantController@viewRejected'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Rejected
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('viewUnregisterdApplicantList')): ?>
+                            <li>
+                                <a href="<?php echo URL::action('ScanController@applicantUnRegisteredHome'); ?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    Unregisterd Applicant
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('OLResultHome')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OLResultController@viewOLResultPage'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Enter O/L Result
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('ALResultHome')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('ALResultController@viewALResultPage'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Enter A/L Result
+                                </a>
+                            </li>
+                            <?php endif; ?>   
+
+                            <?php /*
+                              <?php if($user->hasPermission(array('Results','quota','Result'))): ?>
+                              <li>
+                              <a href="#" class="dropdown-toggle">
+                              <i class="icon-desktop"></i>
+                              <span class="menu-text">  Entry Exam Results </span>
+                              <b class="arrow icon-angle-down"></b>
+                              </a>
+                              <ul class="submenu">
+                              <?php if($user->hasPermission('Results')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('ResultsController@viewResults'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              View
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              <?php if($user->hasPermission('quota')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('TestCenterQuotaController@viewTestCenterQuota'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Intake Level
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              <?php if($user->hasPermission('viewAppitudeTest')): ?>
+                              <li>
+                              <a href='viewAppitudeTest'>
+                              <i class="icon-double-angle-right"></i>
+                              Aptitude Test Mark
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              <?php if($user->hasPermission('Result')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('ResultController@viewResult'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Results
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              </ul>
+                              </li>
+                              <?php endif; ?>
+
+                              <?php if($user->hasPermission(array('ApplituteTestRecords','ViewApplituteResults','editApplituteResults'))): ?>
+                              <li>
+                              <a href="#" class="dropdown-toggle">
+                              <i class="icon-desktop"></i>
+                              <span class="menu-text">  Applitute Test Records </span>
+                              <b class="arrow icon-angle-down"></b>
+                              </a>
+                              <ul class="submenu">
+                              <?php if($user->hasPermission('ApplituteTestRecords')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('ApplitutetestController@actionAddedRecords'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Add Test Records
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              <?php if($user->hasPermission('ViewApplituteResults')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('ApplitutetestController@loadToviewResults'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              View Test Records
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              <?php if($user->hasPermission('editApplituteResults')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('ApplitutetestController@editResults'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Edit Test Records
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              </ul>
+                              </li>
+                              <?php endif; ?>
+                             */ ?>
+
+                            <?php if($user->hasPermission('interviewHome')): ?>
+                            <li>
+                                <a href=<?php echo url('interviewHome'); ?>>
+                                    <i class="icon-double-angle-right"></i>
+                                    Interview
+                                </a>
+                            </li> 
+                            <?php endif; ?>
+
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">Print Letters</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <li>
+                                        <a href=<?php echo URL::action('PrintInterviewLetterController@interviewLetterHome'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Interview Letters
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href=<?php echo URL::action('PrintRegistrationCallingLetterController@registrationCallingLetterHome'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Registration Calling Letter
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+
+                            <?php if($user->hasPermission('unresgisterApplicantHome')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('UnregisterApplicantController@unresgisterApplicantHome'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Send Mail to Applicant
+                                </a>
+                            </li>   
+                            <?php endif; ?>
+
+                            <?php /*
+                              <?php if($user->hasPermission(array('interviewLetterHome','printAptitudeTestLetter'))): ?>
+                              <li>
+                              <a href="#" class="dropdown-toggle">
+                              <i class="icon-desktop"></i>
+                              <span class="menu-text">Print Letters</span>
+                              <b class="arrow icon-angle-down"></b>
+                              </a>
+                              <ul class="submenu">
+                              <?php if($user->hasPermission('printAptitudeTestLetter')): ?>
+                              <li>
+                              <a href='printAptitudeTestLetter'>
+                              <i class="icon-double-angle-right"></i>
+                              Aptitude Test Letter
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              <?php if($user->hasPermission('interviewLetterHome')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('PrintInterviewLetterController@interviewLetterHome'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Interview Letters
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              </ul>
+                              </li>
+                              <?php endif; ?>
+
+                              <?php if($user->hasPermission('StudentRegistration')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('TraineeController@actionCreate'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Student Registration
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                             * 
+                             */ ?>
+                        </ul>
+                    </li>        
+                               
+
+                    <?php if($user->hasPermission(array('StudentRegistrationView','ViewInstructorTimeTable','viewCheckList','TrainingGroup','viewTraininggroup','ViewTradeStudent','TradeRegistration','viewStudent','CTran_actionView'))): ?>
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text"> Student </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+
+                            <?php if($user->hasPermission('viewCheckList')): ?>
+                            <li>
+                                <a href='viewCheckList'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Student Registration
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('StudentRegistrationView')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('TraineeController@actionView'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    View Students
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php /*
+                              <?php if($user->hasPermission('ViewOfflineStudentAttendence')): ?>
+                              <li>
+                              <a href='ViewOfflineStudentAttendence'>
+                              <i class="icon-double-angle-right"></i>
+                              Offiline Attendance
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              <?php if($user->hasPermission('ViewInstructorTimeTable')): ?>
+                              <li>
+                              <a href='ViewInstructorTimeTable'>
+                              <i class="icon-double-angle-right"></i>
+                              Instructor Time Table
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              <?php if($user->hasPermission(array('TrainingGroup','viewTraininggroup'))): ?>
+                              <li>
+                              <a href="#" class="dropdown-toggle">
+                              <i class="icon-desktop"></i>
+                              <span class="menu-text">  Training Group </span>
+                              <b class="arrow icon-angle-down"></b>
+                              </a>
+                              <ul class="submenu">
+                              <?php if($user->hasPermission('TrainingGroup')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('TraininggroupController@actioncreate'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Create Training Group
+                              </a>
+                              </li>
+                              <?php endif; ?>
+
+                              <?php if($user->hasPermission('viewTraininggroup')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('TraininggroupController@viewTraininggroups'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              View Training Group
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              </ul>
+                              </li>
+                              <?php endif; ?>
+
+                              <?php if($user->hasPermission(array('ViewTradeStudent','TradeRegistration','viewStudent'))): ?>
+                              <li>
+                              <a href="#" class="dropdown-toggle">
+                              <i class="icon-desktop"></i>
+                              <span class="menu-text">  Basic Field Selection </span>
+                              <b class="arrow icon-angle-down"></b>
+                              </a>
+                              <ul class="submenu">
+                              <?php if($user->hasPermission('ViewTradeStudent')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('TradestudentController@actionView'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Apply Basic Field
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              <?php if($user->hasPermission('TradeRegistration')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('BasictradeselectionController@actionCreate'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Basic Field Selection
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              <?php if($user->hasPermission('viewStudent')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('BasictradeselectionController@viewStudent'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              View Selected Field
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              </ul>
+                              </li>
+                              <?php endif; ?>
+                             * 
+                             */ ?>
+
+                            <?php if($user->hasPermission('CTran_actionView')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('CourseTransferController@actionView'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Student Transfer
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('viewTraineeAttendanceMarking')): ?>
+                            <li>
+                                <a href="<?php echo URL('viewTraineeAttendanceMarking'); ?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    Attendance Marking
+                                </a>
+                            </li> 
+                            <?php endif; ?>
+                            <?php if($user->hasPermission(array('inplantview','viewIP'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text"> Inplant </span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('inplantview')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('InplantOrganizationController@viewInplant'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Inplant Organization
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                    <?php if($user->hasPermission('viewIP')): ?>                    
+                                    <li>
+                                        <a href='viewIP'>
+                                            <i class="icon-double-angle-right"></i>
+                                            Inplant Placement
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewJobPlacement')): ?>  
+                            <li>
+                                <a href="<?php echo URL::action('RJobPlacementController@viewJobPlacement'); ?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    View Job Placement
+                                </a>
+                            </li>   
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+
+                    <?php if($user->hasPermission(array('ExamType_view','ExAtten_view','tempM_view','ExIndex_SearchView','AddBasicExamResults','ViewBasicExamRecords','editBasicExamResults','Assessment','viewAssessmentResults','ApproveAssResView','viewSubjectAssignment','viewExamQuestion'))): ?>
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">  Exams </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+
+
+                            <?php /*
+                              <?php if($user->hasPermission(array('AddBasicExamResults','ViewBasicExamRecords','editBasicExamResults'))): ?>
+                              <li>
+                              <a href="#" class="dropdown-toggle">
+                              <i class="icon-desktop"></i>
+                              <span class="menu-text">  Basic Exam </span>
+                              <b class="arrow icon-angle-down"></b>
+                              </a>
+                              <ul class="submenu">
+                              <?php if($user->hasPermission('AddBasicExamResults')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('BasicexamController@actionAddedRecords'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Add Test Records
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              <?php if($user->hasPermission('ViewBasicExamRecords')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('BasicexamController@loadToviewResults'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              View Test Records
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              <?php if($user->hasPermission('editBasicExamResults')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('BasicexamController@editResults'); ?>>
+                              <i class="icon-double-angle-right"></i>
+                              Edit Test Records
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              </ul>
+                              </li>
+                              <?php endif; ?>
+                             * 
+                             */ ?>
+
+
+                            <?php if($user->hasPermission('viewSubjectAssignment')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('SubjectAssignmentController@viewSubjectAssignment'); ?>>
+                                   <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Subject Assignment </span>
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission(array('Assessment','viewAssessmentResults','ApproveAssResView'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Assessment</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('Assessment')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('TraineeAssessmentController@assessmentView'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Add Assessment Marks
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                    <?php if($user->hasPermission('viewAssessmentResults')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('TraineeAssessmentController@viewAssessmentResults'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            View Assessment Results
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                    <?php if($user->hasPermission('ApproveAssResView')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('TraineeAssessmentController@ApproveAssResView'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Approve Assessment Results
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+
+			    <?php if($user->hasPermission('ViewExamAssignment')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('ExamAssignmentController@ViewExamAssignment'); ?>>
+                                   <i class="icon-desktop"></i>
+                                    <span class="menu-text"> Assignment Exam (NON-NVQ)</span>
+                                </a>
+                            </li>
+                            <?php endif; ?>
+				<?php if($user->hasPermission('ViewExamAssignmentNVQ')): ?>
+				<li>
+                                <a href=<?php echo URL::action('ExamAssignmentNVQController@ViewExamAssignmentNVQ'); ?>>
+                                   <i class="icon-desktop"></i>
+                                    <span class="menu-text"> Assignment Exam (NVQ)</span>
+                                </a>
+                            </li>	
+		            <?php endif; ?>
+
+                            <?php if($user->hasPermission(array('ExamType_view','ExAtten_view','tempM_view','ExIndex_SearchView'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">New Exam</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('ExamType_view')): ?>
+                                    <li>  <a href=<?php echo URL::action('ExamTypeController@actionView'); ?>>
+                                             <i class="icon-double-angle-right"></i>
+                                            Exam Create
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                    <?php if($user->hasPermission('ExAtten_view')): ?>
+                                    <li>  <a href=<?php echo URL::action('ExamAttendanceController@ViewAttendence'); ?>>
+                                             <i class="icon-double-angle-right"></i>
+                                            Exam Attendance
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                    <?php if($user->hasPermission('tempM_view')): ?>
+                                    <li>  <a href=<?php echo URL::action('TempMController@actionView'); ?>>
+                                             <i class="icon-double-angle-right"></i>
+                                            Add Marks
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                    <?php if($user->hasPermission('ExIndex_SearchView')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('ExamIndexNoController@SearchView'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Exam Index Create
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+                            <?php /*
+                              <?php if($user->hasPermission('viewSubjectAssignment')): ?>
+                              <li>
+                              <a href=<?php echo URL::action('ExamScheduleController@examSchedule'); ?>>
+                              <i class="icon-desktop"></i>
+                              <span class="menu-text">  Exam Schedule </span>
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                              <?php if($user->hasPermission('viewExamQuestion')): ?>
+                              <li>
+                              <a href='viewExamQuestion'>
+                              <i class="icon-desktop"></i>
+                              <span class="menu-text"> MCQ Question </span>
+                              </a>
+                              </li>
+                              <?php endif; ?>
+                             * 
+                             */ ?>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+
+                    <!-- NVQ Kalhara -->
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">NVQ</span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+
+							 <?php if($user->hasPermission('ApplyNvqRplOnline')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('NVQQualificationController@ApplyNvqRpl'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    NVQ RPL Online
+                                </a>
+                            </li>
+							<?php endif; ?>
+						 <?php if($user->hasPermission('ViewNvqRplOnline')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('NVQQualificationSelectController@viewNVQApplicants'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Assess NVQ RPL Online
+                                </a>
+                            </li>
+							<?php endif; ?>
+							<?php if($user->hasPermission('schedulePreAssesment')): ?>			
+                            <li>
+                                <a href=<?php echo URL::action('preAssesmentController@schedulePre'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    NVQ Pre Assesment
+                                </a>
+                            </li>
+							<?php endif; ?>
+							
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-double-angle-right"></i>
+                                    Assign Students
+                                </a>
+                                <ul class="submenu">
+
+                                    <li>
+                                        <a href=<?php echo URL::action('NqvStudentAssignController@assignStudent'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Pre Assessment
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-double-angle-right"></i>
+                                    Letters & SMS
+                                </a>
+                                <ul class="submenu">
+
+                                    <li>
+                                        <a href=<?php echo URL::action('NqvStudentAssignController@viewPreAssesmntAllDetails'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            NVQ Pre Assessment Letters
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href=<?php echo URL::action('NVQQualificationSelectController@viewAssesorsFinal'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            NVQ Final Assessment Letters
+                                        </a>
+                                    </li>
+
+
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-double-angle-right"></i>
+                                    Asses Students
+                                </a>
+
+                                <ul class="submenu">
+
+
+                                    <li>
+                                        <a href=<?php echo URL::action('NqvStudentAssignController@getStudent'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Pre Assessment
+                                        </a>
+                                    </li>
+
+
+                                </ul>
+                            </li>
+
+
+
+
+                            <li>
+                                <a href=<?php echo URL::action('NVQQualificationSelectController@FinalAssLetter'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Create NVQ Final Assesment
+                                </a>
+                            </li>
+
+
+
+
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-double-angle-right"></i>
+                                    Final Assessment Result
+                                </a>
+
+                                <ul class="submenu">
+
+                                    <li>
+                                        <a href=<?php echo URL::action('NqvPackageCalculatorController@viewNVQQualificationTrade'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            NVQ Qualification Trade
+                                        </a>
+                                    </li>
+
+
+                                    <li>
+                                        <a href=<?php echo URL::action('NVQFinalAssesmentController@createunit'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Final Assessment Result
+                                        </a>
+                                    </li>
+
+
+                                    <li>
+                                        <a href=<?php echo URL::action('NvqfinalassesmentresultsheetController@addresults'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Add Student Results
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href=<?php echo URL::action('NqvPackageCalculatorController@getStudentList'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            NQV Package
+                                        </a>
+                                    </li>
+
+
+                                </ul>
+
+                            </li>
+
+                            <!-- <li>
+                              <a href="#" class="dropdown-toggle">
+                                  <i class="icon-double-angle-right"></i>
+                                  NVQ Level
+                              </a>
+                              <ul class="submenu">
+                                  
+                                  <li>
+                                      <a href=<?php echo URL::action('NqvPackageCalculatorController@viewNVQQualificationTrade'); ?>>
+                                         <i class="icon-double-angle-right"></i>
+                                          NVQ Qualification Trade
+                                      </a>
+                                  </li>
+                                  
+                                  <li>
+                                      <a href=<?php echo URL::action('NqvPackageCalculatorController@getStudentList'); ?>>
+                                         <i class="icon-double-angle-right"></i>
+                                          Calculate Level
+                                      </a>
+                                  </li>
+                                  
+                              </ul>
+                          </li> -->
+
+
+
+                        </ul>
+                    </li>
+                    <!--Nvq End-->    
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">On The Job Training</span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+
+                            <?php if($user->hasPermission('viewCompanyVacancyDetail')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OJTController@viewCompanyVacancyDetail'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Vacancy List
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewInstituteCourseDetail')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OJTController@viewInstituteCourseDetail'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Student List
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewPlacementStudentList')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OJTController@viewPlacementStudentList'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Student Placement
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewPlacedStudents')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OJTController@viewPlacedStudents'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    OJT Trainees
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewAssignedInspectorsOJT')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OJTController@viewAssignedInspectorsOJT'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Inspector Assign
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('ojtInspectorView')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OJTController@ojtInspectorView'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Student Monitoring
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewMonitoredReportOfficerOJT')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OJTController@viewMonitoredReportOfficerOJT'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Training Officer View
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('viewOJTConfirmListInspector')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OJTController@viewOJTConfirmListInspector'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Inspector Confirm OJT
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewOJTDropoutList')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OJTController@viewOJTDropoutList'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Dropout List
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewOJTFinishList')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OJTController@viewOJTFinishList'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    OJT Finish List
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('ojtDownloadsView')): ?>
+                            <li>
+                                <a href=<?php echo url('ojtDownloadsView'); ?>>
+                                    <i class="icon-double-angle-right"></i>
+                                    OJT Download List
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('OJTSector_actionView')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OJTSectorController@actionView'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    View Sectors
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewOJTInstitute')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OJTInstituteController@viewOJTInstitute'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    OJT  Institute
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+
+
+
+
+                    <?php if($user->hasPermission('viewFees')): ?>
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">  Fee  </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href='viewFees'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Pay Fee
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+
+                    <?php /*
+                      <?php if($user->hasPermission(array('vocational','searchvocins','vocationalPlacement','vocationalPay'))): ?>
+                      <li>
+                      <a href="#" class="dropdown-toggle">
+                      <i class="icon-desktop"></i>
+                      <span class="menu-text">  Vocational Training</span>
+                      <b class="arrow icon-angle-down"></b>
+                      </a>
+                      <ul class="submenu">
+                      <?php if($user->hasPermission('vocational')): ?>
+                      <li>
+                      <a href=<?php echo URL::action('VocationalController@actionView'); ?>>
+                      <i class="icon-double-angle-right"></i>
+                      Vocational Organization
+                      </a>
+                      </li>
+                      <?php endif; ?>
+                      <?php if($user->hasPermission('searchvocins')): ?>
+                      <li>
+                      <a href="<?php echo Url('searchvocins'); ?>">
+                      <i class="icon-double-angle-right"></i>
+                      Vocational Institution
+                      </a>
+                      </li>
+                      <?php endif; ?>
+                      <?php if($user->hasPermission('vocationalPlacement')): ?>
+                      <li>
+                      <a href='vocationalPlacement'>
+                      <i class="icon-double-angle-right"></i>
+                      Vocational Placement
+                      </a>
+                      </li>
+                      <?php endif; ?>
+                      <?php if($user->hasPermission('vocationalPay')): ?>
+                      <li>
+                      <a href='vocationalPay'>
+                      <i class="icon-double-angle-right"></i>
+                      Vocational Payment
+                      </a>
+                      </li>
+                      <?php endif; ?>
+                      </ul>
+                      </li>
+                      <?php endif; ?>
+                     * 
+                     */ ?>
+
+                    <?php if($user->hasPermission(array('Employment','viewEmployeeVacancies','viewEmployee','promotion','empqua','quorga','employeeexperience','empTraining','empTrainingView','viewScholarship','employeedependence','viewEmployeeDA','viewstaffdevelopment','viewWelfareMS','viewWelfareB'))): ?>
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">  Employee  </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('Employment')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('EmploymentController@viewEmployment'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Employment Code
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('viewEmployeeVacancies')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('EmployeeVacanciesController@viewVacancies'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Employee Vacancies
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('viewEmployee')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('EmployeeController@viewEmployees'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Employee
+                                </a>
+                            </li>
+                            <?php endif; ?>                            
+
+                            <?php if($user->hasPermission('promotion')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('PromotionController@viewPromotion'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Promotion
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('ViewSalaryScale')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('SalaryScaleController@ViewSalaryScale'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Salary Scale
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+
+                            <?php if($user->hasPermission('ViewEPFHistory')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('EPFHistoryController@ViewEPFHistory'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Employee Reference No  History Records
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('empqua')): ?>
+                            <li>
+                                <a href=<?php echo Url('empqua'); ?>>
+                                    <i class="icon-double-angle-right"></i>
+                                    Employee Qualification
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('quorga')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('QualificationorganisationController@viewQuorga'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Qualified Universities
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('employeeexperience')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('EmployeeExperienceController@viewEmployeexperience'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Work Experience
+                                </a>
+                            </li>
+                            <?php endif; ?>
+<?php if($user->hasPermission(array('viewOLResultEmployee','viewALResultEmployee'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Employee A/L & O/L Results </span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('viewOLResultEmployee')): ?>
+                                    <li>
+                                        <a href="<?php echo URL::action('EmployeeOLResultController@viewOLResultPageEmployee'); ?>">
+                                            <i class="icon-double-angle-right"></i>
+                                            Employee O/L Results
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                    <?php if($user->hasPermission('viewALResultEmployee')): ?>
+                                    <li>
+                                        <a href="<?php echo URL::action('EmployeeALResultController@viewALResultPageEmployee'); ?>">
+                                            <i class="icon-double-angle-right"></i>
+                                            Employee A/L Results
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+
+
+
+
+                            <?php if($user->hasPermission(array('empTraining','empTrainingView'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">Employee Training</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('empTraining')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('EmployeeTrainingController@empTraView'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Create
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                    <?php if($user->hasPermission('empTrainingView')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('EmployeeTrainingController@empTraRecView'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            View
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('viewScholarship')): ?>
+                            <li>
+                                <a href=<?php echo Url('viewScholarship'); ?>>
+                                    <i class="icon-double-angle-right"></i>
+                                    Employee Scholarship
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('employeedependence')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('EmployeeDependenceController@viewEmployeedependence'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Employee Dependency
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('viewEmployeeDA')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('EmployeeDisciplinaryActionController@viewEmployeeDA'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Employee Disciplinary Action
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('viewstaffdevelopment')): ?>
+                            <li>  
+                                <a href=<?php echo URL::action('StaffdevelopmentController@viewStaffdevelopment'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Development
+                                </a>
+                            </li>
+                            <?php endif; ?>  
+
+                            <?php if($user->hasPermission(array('viewWelfareMS','viewWelfareB'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">Employee Welfare</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('viewWelfareMS')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('WelfareMembershipController@viewWelfareMS'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Welfare Membership
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+
+                                    <?php if($user->hasPermission('viewWelfareB')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('WelfareBenefitController@viewWelfareB'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Welfare Benefit
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>  
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+
+                    <?php if($user->hasPermission(array('empAttendanceReport','ApplyLeave','viewLeave','approveLeaveHome','applyMovement','viewMovement','approveMovementHome','stdAttendanceReport','addStLeave','viewLeavest','approveLeaveHomest','viewTraineeAttendance'))): ?>
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">  Attendance </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission(array('empAttendanceReport','ApplyLeave','viewLeave','approveLeaveHome','applyMovement','viewMovement','approveMovementHome'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Employee </span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('empAttendanceReport')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('MarkAttendanceController@empSelectReport'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Attendance Reports
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+
+                                    <?php if($user->hasPermission(array('empAttendanceReport','ApplyLeave','viewLeave','approveLeaveHome'))): ?>
+                                    <li>
+                                        <a href="#" class="dropdown-toggle">
+                                            <i class="icon-desktop"></i>
+                                            <span class="menu-text"> Leave </span>
+                                            <b class="arrow icon-angle-down"></b>
+                                        </a>
+                                        <ul class="submenu">
+                                            <?php if($user->hasPermission('ApplyLeave')): ?>
+                                            <li>
+                                                <a href=<?php echo URL::action('EmployeeLeaveApplyController@applyLeave'); ?>>
+                                                   <i class="icon-double-angle-right"></i>
+                                                    Apply Leave
+                                                </a>
+                                            </li>
+                                            <?php endif; ?>
+                                            <?php if($user->hasPermission('viewLeave')): ?>
+                                            <li>
+                                                <a href=<?php echo URL::action('EmployeeLeaveApplyController@viewLeave'); ?>>
+                                                   <i class="icon-double-angle-right"></i>
+                                                    View Leave
+                                                </a>
+                                            </li>
+                                            <?php endif; ?>
+                                            <?php if($user->hasPermission('approveLeaveHome')): ?>
+                                            <li>
+                                                <a href=<?php echo URL::action('EmployeeLeaveApplyController@approveLeaveHome'); ?>>
+                                                   <i class="icon-double-angle-right"></i>
+                                                    Approve Leave
+                                                </a>
+                                            </li>
+                                            <?php endif; ?>
+                                        </ul>
+                                    </li>
+                                    <?php endif; ?>
+
+                                    <?php if($user->hasPermission(array('applyMovement','viewMovement','approveMovementHome'))): ?>
+                                    <li>
+                                        <a href="#" class="dropdown-toggle">
+                                            <i class="icon-desktop"></i>
+                                            <span class="menu-text">  Movement </span>
+                                            <b class="arrow icon-angle-down"></b>
+                                        </a>
+                                        <ul class="submenu">
+                                            <?php if($user->hasPermission('applyMovement')): ?>
+                                            <li>
+                                                <a href=<?php echo URL::action('EmployeeMovementController@applyMovement'); ?>>
+                                                   <i class="icon-double-angle-right"></i>
+                                                    Apply Movement
+                                                </a>
+                                            </li>
+                                            <?php endif; ?>
+                                            <?php if($user->hasPermission('viewMovement')): ?>  
+                                            <li>
+                                                <a href=<?php echo URL::action('EmployeeMovementController@viewMovement'); ?>>
+                                                   <i class="icon-double-angle-right"></i>
+                                                    View Movement
+                                                </a>
+                                            </li>
+                                            <?php endif; ?>
+                                            <?php if($user->hasPermission('approveMovementHome')): ?>
+                                            <li>
+                                                <a href=<?php echo URL::action('EmployeeMovementController@approveMovementHome'); ?>>
+                                                   <i class="icon-double-angle-right"></i>
+                                                    Approve Movement
+                                                </a>
+                                            </li>
+                                            <?php endif; ?>
+                                        </ul>
+                                    </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission(array('stdAttendanceReport','addStLeave','viewLeavest','approveLeaveHomest','viewTraineeAttendance'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Student </span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <li>
+                                        <a href="#" class="dropdown-toggle">
+                                            <i class="icon-desktop"></i>
+                                            <span class="menu-text"> Attendance Reports </span>
+                                            <b class="arrow icon-angle-down"></b>
+                                        </a>
+                                        <ul class="submenu"> 
+                                            <?php if($user->hasPermission('stdAttendanceReport')): ?>
+                                            <li>
+                                                <a href=<?php echo URL::action('MarkAttendanceController@stdSelectReport'); ?>>
+                                                   <i class="icon-double-angle-right"></i>
+                                                    Attendance
+                                                </a>
+                                            </li>
+                                            <?php endif; ?>
+
+                                            <?php if($user->hasPermission('viewTraineeAttendance')): ?>
+                                            <li>
+                                                <a href=<?php echo URL::action('TraineeAttendanceController@viewTraineeAttendance'); ?>>
+                                                   <i class="icon-double-angle-right"></i>
+                                                    Student Daily Report
+                                                </a>
+                                            </li>
+                                            <?php endif; ?>
+                                        </ul>
+                                    </li>
+
+                                    <?php if($user->hasPermission(array('addStLeavest','viewLeavest','approveLeaveHomest'))): ?>
+                                    <li>
+                                        <a href="#" class="dropdown-toggle">
+                                            <i class="icon-desktop"></i>
+                                            <span class="menu-text"> Absenteeism </span>
+                                            <b class="arrow icon-angle-down"></b>
+                                        </a>
+                                        <ul class="submenu">
+                                            <?php if($user->hasPermission('addStLeave')): ?>
+                                            <li>
+                                                <a href=<?php echo URL::action('TraineeLeaveApplyController@addleave'); ?>>
+                                                   <i class="icon-double-angle-right"></i>
+                                                    Add Absenteeism
+                                                </a>
+                                            </li>
+                                            <?php endif; ?>
+                                            <?php if($user->hasPermission('viewLeavest')): ?>
+                                            <li>
+                                                <a href=<?php echo URL::action('TraineeLeaveApplyController@viewLeave'); ?>>
+                                                   <i class="icon-double-angle-right"></i>
+                                                    View Absenteeism
+                                                </a>
+                                            </li>
+                                            <?php endif; ?>
+                                            <?php if($user->hasPermission('approveLeaveHomest')): ?>
+                                            <li>
+                                                <a href=<?php echo URL::action('TraineeLeaveApplyController@approveLeaveHome'); ?>>
+                                                   <i class="icon-double-angle-right"></i>
+                                                    Approve Absenteeism
+                                                </a>
+                                            </li>
+                                            <?php endif; ?>
+                                        </ul>
+                                    </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+
+                    <?php if($user->hasPermission(array('viewDropout12','createDropout1'))): ?>
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">  Dropouts  </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('viewDropout12')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('DropoutViewController@viewDropout12'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Dropouts 
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('createDropout1')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('DropoutViewController@actioncreate'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Add Dropouts
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+
+                    <?php if($user->hasPermission(array('viewUserRoleAssign','ViewUserTypeRole','viewActivity'))): ?>
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">User</span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('viewUserRoleAssign')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('UserRoleController@viewUserRoleAssign'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    User Role Assign
+                                </a>
+                            </li>  
+                            <?php endif; ?>
+                            <li>
+                                <a href=<?php echo URL::action('UserController@viewUsers'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Users
+                                </a>
+                            </li> 
+                            <li>
+                                <a href=<?php echo URL::action('UserTypeController@viewUserType'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    User Type 
+                                </a>
+                            </li> 
+
+                            <?php if($user->hasPermission('ViewUserTypeRole')): ?>
+                            <li>
+                                <a href='ViewUserTypeRole'>
+                                    <i class="icon-double-angle-right"></i>
+                                    User Type Role
+                                </a>
+                            </li> 
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('viewActivity')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('activityController@viewActivity'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Activity
+                                </a>
+                            </li> 
+                            <?php endif; ?>
+                        </ul>
+                    </li> 
+                    <?php endif; ?> 
+
+                    <?php if($user->hasPermission(array('viewTrades','ViewTradeCapacity','holiday','HolidayType','Event','eventplanned','EventAttendanceHome','ViewTestCenter','completecourse','completeExam','completeInplantPlaced','completeInplant','completebatch','PaperAdvertisement','log','calander'))): ?>
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">Other</span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href=<?php echo URL::action('ElectorateController@actionView'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Electorate View
+                                </a>
+                            </li>
+                            <?php if($user->hasPermission(array('viewTrades','ViewTradeCapacity'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Trades  </span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('viewTrades')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('Trade1Controller@viewTrades'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Trades
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+
+                                    <?php if($user->hasPermission('ViewTradeCapacity')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('TradecapacityController@viewTradecapacity'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Trade Capacity
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+
+
+                            <?php if($user->hasPermission('OlSubjects')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OLSubjectController@viewOLSubject'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    OL Subject
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+
+                            <?php if($user->hasPermission('viewALSubject')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('ALSubjectController@viewALSubject'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    AL Subject
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+
+                            <?php if($user->hasPermission(array('holiday','HolidayType'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Holiday</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">                                    
+                                    <?php if($user->hasPermission('holiday')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('HolidayController@viewHoliday'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Holidays
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+
+                                    <?php if($user->hasPermission('HolidayType')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('HolidayTypeController@viewHolidayTypes'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Holiday Types
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission(array('Event','eventplanned','EventAttendanceHome'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Event </span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('Event')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('EventController@viewEvents'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Add Event
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+
+                                    <?php if($user->hasPermission('eventplanned')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('EventplannedController@viewEventplanned'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Event Planned
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+
+                                    <?php if($user->hasPermission('EventAttendanceHome')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('eventAttendanceController@viewEventAttendancePage'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Mark Event Attendance
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('ViewTestCenter')): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Test Center  </span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <li>
+                                        <a href='ViewTestCenter'>
+                                            <i class="icon-double-angle-right"></i>
+                                            Test Center
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission(array('completecourse','completeExam','completeInplantPlaced','completeInplant','completebatch'))): ?> 
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Completed  </span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('completecourse')): ?> 
+                                    <li>
+                                        <a href=<?php echo URL::action('CourseStarteCompleteController@stComplete'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Course Completed
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+
+                                    <?php if($user->hasPermission('completeExam')): ?> 
+                                    <li>
+                                        <a href=<?php echo URL::action('CourseStarteCompleteController@exam'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Final Exam
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+
+                                    <?php if($user->hasPermission('completeInplantPlaced')): ?> 
+                                    <li>
+                                        <a href=<?php echo URL::action('CourseStarteCompleteController@InplantPlaced'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Inplant Placed
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+
+                                    <?php if($user->hasPermission('completeInplant')): ?> 
+                                    <li>
+                                        <a href=<?php echo URL::action('CourseStarteCompleteController@InplantCompleted'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Inplant Completed
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+
+                                    <?php if($user->hasPermission('completebatch')): ?> 
+                                    <li>
+                                        <a href=<?php echo URL::action('CompleteBatchController@CompleteBatch'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Batch Completed
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('ViewApplicantCategory')): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Applicant Category </span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu"> 
+                                    <li>
+                                        <a href=<?php echo URL::action('ApplicantCategoryController@viewApplicantCategory'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            View Applicant Category
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+                            
+                            <?php if($user->hasPermission('PaperAdvertisement')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('PaperAdvertisementController@viewAdvertisements'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Paper Advertisement
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+
+                            <?php if($user->hasPermission('log')): ?> 
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Log Files  </span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <li>
+                                        <a href=<?php echo URL::action('LogDataController@viewLogData'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Log
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('calander')): ?>
+                            <li>
+                                <a href='calander'>
+                                    <i class="icon-double-angle-right"></i>
+                                    View Calander
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+
+                    <?php if($user->hasPermission(array('viewReportType','viewReportToolHome','viewStaticReports','viewDynamicReports'))): ?>
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">Reporting Tool</span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('viewReportType')): ?>
+                            <li>
+                                <a href="<?php echo url('viewReportType'); ?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    Report Type
+                                </a>
+                            </li> 
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewReportToolHome')): ?>
+                            <li>
+                                <a href="<?php echo url('viewReportToolHome'); ?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    Reporting Tool
+                                </a>
+                            </li> 
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewStaticReports')): ?>
+                            <li>
+                                <a href="<?php echo url('viewStaticReports'); ?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    User Static Report
+                                </a>
+                            </li> 
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewDynamicReports')): ?>
+                            <li>
+                                <a href="<?php echo url('viewDynamicReports'); ?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    User Dynamic Report
+                                </a>
+                            </li> 
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+                </ul><!--/.nav-list-->
+                <div class="sidebar-collapse" id="sidebar-collapse">
+                    <i class="icon-double-angle-left"></i>
+                </div>
+            </div>
+            <div class="main-content">    
+                <div class="breadcrumbs" id="breadcrumbs">
+                </div>
+                <?php if(URL::full() == Url('authuser')): ?>
+                <div style="margin-right: auto;margin-top: 0px; margin-bottom: 0px;" class="row-fluid">
+                    <div class="span7 infobox-container">
+                        <div class="infobox infobox-grey  ">
+                            <div class="infobox-icon">
+                                <i class="icon-tasks"></i>
+                            </div>
+                            <div class="infobox-data">
+                                <?php $cyp = CourseYearPlan::getNOConfirm(); ?>
+                                <a href="ConfirmCourseYearPlan">
+                                    <span class="infobox-data-number"><?php echo $cyp; ?></span>
+                                    <div class="infobox-content">Course Year Plan</div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="infobox infobox-green  ">
+                            <div class="infobox-icon">
+                                <i class="icon-group"></i>
+                            </div>
+                            <div class="infobox-data">
+                                <?php if($leaves!=''): ?>   <a href="<?php echo Url('approveLeaveHome'); ?>"><?php endif; ?>
+                                    <span class="infobox-data-number"><?php echo $leaves; ?></span>
+                                    <div class="infobox-content">Employee Leave</div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="infobox infobox-red  ">
+                            <div class="infobox-icon">
+                                <i class="icon-exclamation-sign"></i>
+                            </div>
+                            <div class="infobox-data">
+                                <?php if($dropout!=''): ?><a href="<?php echo Url('viewDropout12'); ?>">  <?php endif; ?>
+                                    <span class="infobox-data-number"><?php echo $dropout; ?></span>
+                                    <div class="infobox-content">Dropouts</div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Transfer Student-->
+                        <div class="infobox infobox-orange  ">
+                            <div class="infobox-icon">
+                                <i class="icon-exchange"></i>
+                            </div>
+                            <div class="infobox-data">
+                                <?php if($Transfer!=''): ?><a href="<?php echo Url('CTran_TransferConfirm'); ?>"><?php endif; ?> 
+                                    <span class="infobox-data-number"><?php echo $Transfer; ?></span>
+                                    <div class="infobox-content">Transfer Student</div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Transfer Student-->
+                    </div> 
+                </div>
+                <?php endif; ?> 

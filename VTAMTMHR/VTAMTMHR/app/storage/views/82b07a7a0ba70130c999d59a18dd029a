@@ -1,0 +1,167 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<a href="<?php echo url('OLResultHome'); ?>">
+    Go Back to Home
+</a>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    O\L Result			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        View Result
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+            <table>
+                <tr>
+                    <td>Name:</td>
+                    <td width="30px"></td>
+                    <td><input style="margin: 0" type="text" name="aplicantNIC" value="<?php echo $name; ?>" readonly/><br/> </td>
+                </tr>
+                <tr>
+                    <td>NIC:</td>
+                    <td width="30px"></td>
+                    <td><input style="margin: 0" type="text" name="aplicantNIC" value="<?php echo $nic; ?>" readonly/><br/> </td>
+                </tr>
+                <tr height="50px"></tr>
+            </table>
+            <?php
+            $year = 0000;
+            $indexx = 0;
+            $b = 1;
+            ?>
+            <?php if(count($currentdata) == 0): ?>
+            <center><h3>Data Not Found</h3></center>
+            <?php else: ?>
+            <table>
+                <tr>
+                    <th class="center" width="100px">Index No</th>
+                    <th class="center" width="120px">Year of Sitting</th>
+                    <th class="center" width="150px">Subject Name</th>
+                    <th class="center" width="50px">Result</th>
+                    <th></th>
+                </tr>
+                <?php foreach($currentdata as $cd): ?>
+
+
+                <?php if($cd->Year != $year && $b>1): ?>
+                <?php
+                $year = $cd->Year;
+                $b++;
+                ?>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <a href="<?php echo url('editOLResult?aplicantnic='.$nic.'&year='.$year); ?>">
+                            <button>Edit</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="<?php echo url('DeleteOLResult?aplicantnic='.$nic.'&year='.$year); ?>">
+                            <button>Delete</button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center"><?php echo $indexx; ?></td>
+                    <td class="center"><?php echo $cd->Year; ?></td>
+                    <?php elseif($cd->Year != $year): ?>
+                    <?php
+                    $year = $cd->Year;
+                    $indexx = $cd->IndexNo;
+                    $b++;
+                    ?>
+                <tr>
+                    <td class="center"><?php echo $indexx; ?></td>
+                    <td class="center"><?php echo $cd->Year; ?></td>
+                    <?php else: ?>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <?php endif; ?>
+                    <td><?php echo $cd->getSubject->SubjectName; ?></td>
+                    <td class="center"><?php echo $cd->Result; ?></td>
+                    <td></td>
+                </tr>
+                <?php
+                $year = $cd->Year;
+                $indexx = $cd->IndexNo;
+                $b++;
+                ?>
+                <?php endforeach; ?>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                    <td>
+                        <a href="<?php echo url('editOLResult?aplicantnic='.$nic.'&year='.$year); ?>">
+                            <button>Edit</button>
+                        </a></td>
+                    <td>
+                        <a href="<?php echo url('DeleteOLResult?aplicantnic='.$nic.'&year='.$year); ?>">
+                            <button>Delete</button>
+                        </a>
+                    </td>
+                </tr>
+
+
+            </table>
+            <?php endif; ?>
+            <hr/>
+
+            <h4>Add another Result</h4>
+            <form name="addanotherresult" action="<?php echo url('viewOLResult'); ?>" method="get">
+                <input type="hidden" name="aplicantnic" value="<?php echo $nic; ?>"/>
+                <div class="controls">
+                    <button type="submit">Add</button>
+                </div>
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+        <div class="span4">  
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-block alert-success">
+
+                <strong>
+                    <i class="icon-ok"></i>
+                    <?php echo Session::get('done'); ?>
+                </strong>
+            </div>
+            <?php endif; ?>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error">
+                <strong> <?php echo Session::get('message'); ?></strong>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error">
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type="text/javascript">
+    function confirmSubmit()
+    {
+        var agree = confirm("Are you sure you wish to continue?");
+        if (agree)
+            return true;
+        else
+            return false;
+    }
+</script>

@@ -1,0 +1,75 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('ViewTradeCapacity'); ?>> << Back to Trade Capacity </a> 
+<?php endif; ?>
+<div class="page-content">
+<div class="row-fluid">
+    <div class="page-header position-relative">
+
+                <h1>
+                    Trade Capacity			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        View Trade Capacity
+                    </small>			
+                </h1>
+            </div>
+    <div>
+    <form name='search' action="<?php echo url('SearchTradeCapacity'); ?>" method='get'>
+        Search Trade Code <input type='text' name="serachkey" placeholder="Trade Code" style="margin: 0"/>   <input type='submit' value='Search' style="margin: 0; height: 30px;"/>
+        <a href=<?php echo url('CreateTradeCapacity'); ?>><input type='button' value='Add Trade Limit' style="height: 30px;"/></a>
+    </form>
+    </div>    
+<div class="span12">
+<!--PAGE CONTENT BEGINS-->
+            <table class="table">
+            <tr>
+            <th>ID</th>
+            <th>Institute Name</th>
+            <th>Organisation Name</th>
+            <th>Trade</th>
+            <th>Max Limit</th>
+            <th>Remove</th>
+            </tr>
+            <?php if(isset($trade)): ?>
+            <?php foreach ($trade as $t): ?>
+            <tr>
+            <td>
+                <a href="<?php echo url('EditTradeCapacity?id='.$t->id); ?>"><?php echo $t->id; ?></a>
+            </td>
+            <td><?php echo $t->Institue->InstituteName; ?></td>
+            <td><?php echo $t->Organisation->OrgaName; ?></td>
+            <td><?php echo $t->Trade->TradeCode; ?></td>
+            <td><?php echo $t->maxLimit; ?></td>
+            <td>
+            <form id="deleteform"  action="<?php echo url('DeleteTradeCapacity'); ?>" method="POST" onsubmit="return doConfirm('<?php echo $t->Trade->TradeCode; ?>',this)">
+            <input type="hidden" name='tid' value="<?php echo $t->id; ?>" />
+            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+            </form>
+            </td>
+            </tr>
+            <?php endforeach; ?>
+            <?php endif; ?>
+            
+    </table>
+<!--PAGE CONTENT ENDS-->
+</div><!--/.span-->
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+    <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+    
+<script type="text/javascript">
+    
+function doConfirm(applicant,formobj){
+    
+    bootbox.confirm("Are you sure you want to remove "+applicant, function(result) 
+        {
+            if(result) 
+               {
+                   formobj.submit();
+                }
+            });
+        return false;
+        }
+</script>

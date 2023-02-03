@@ -1,0 +1,142 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('viewstaffdevelopment'); ?>> << Back to Employee Development </a> 
+
+<?php endif; ?>
+
+
+
+
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+		<div class="page-header position-relative">
+
+                <h1>
+                    Employee		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                         Development
+                         <i class="icon-double-angle-right"></i>
+                        View
+                    </small>			
+                </h1>
+            </div>
+
+        <form name='search' action="<?php echo url('searchstaffdevelopment'); ?>" method='get'>
+
+            Search Employee <input type='text' name="serachkey" placeholder="Search By Employee Name...!"/>   <input type='submit' value='Search'/>
+
+            <a href=<?php echo url('createStaffdevelopment'); ?>><input type='button' value='Create Employee Development' /></a>
+
+
+
+        </form>
+
+
+
+
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+
+
+
+
+            <table class="table">
+
+
+                <tr>
+
+                    <th rowspan="2">ID</th>	
+                    <th rowspan="2">Institute Name</th>
+                    <th rowspan="2">Organization Name</th>
+                    <th rowspan="2">Education Program Name</th>
+                    <th rowspan="2">EPF No</th>
+                    <th rowspan="2">Employee Name</th>
+                    <th colspan="2">Time Period of the Education Program</th>
+                    <th rowspan="2">Sponsered Amount</th>
+                    <th rowspan="2">Reimbursement Completing Date</th>
+                    <th rowspan="2">Remove</th>	
+                </tr>
+                <tr>
+                    <th>From</th>
+                    <th>To</th>
+                </tr>
+                <?php if(isset ($staffdevelopment)): ?>
+
+                <?php foreach ($staffdevelopment as $sd): ?>
+
+                <tr>
+                    
+                    <td><a href="<?php echo url('editStaffdevelopment?id='.$sd->SD_ID); ?>"><?php echo $sd->SD_ID; ?></a></td>
+                    <td><?php if(!is_null($sd->Institute)): ?><?php echo $sd->Institute->InstituteName; ?><?php endif; ?> </td>
+                    <td><?php if(!is_null($sd->Organisation)): ?><?php echo $sd->Organisation->OrgaName; ?> <?php endif; ?></td>
+                    <td><?php echo $sd->EduProName; ?></td>
+                    <td><?php echo $sd->EPF; ?> </td>
+                    <td><?php if(!is_null($sd->getEmployee)): ?><?php echo $sd->getEmployee->Name; ?><?php endif; ?></td>  
+                    <td><?php echo $sd->EduPro_From; ?> </td>  
+                    <td><?php echo $sd->EduPro_To; ?> </td>  
+                    <td><?php echo $sd->Spon_Amount; ?> </td> 
+                    <td><?php echo $sd->Reimburse_Date; ?></td>
+                    <td>
+                        <form id="deleteform"  action="<?php echo url('deleteStaffdevelopment?id='.$sd->SD_ID); ?>" method="POST" onsubmit="return doConfirm('<?php echo $sd->SD_ID; ?>', this)">
+
+                            <input type="hidden" name='sdid' value=<?php echo $sd->SD_ID; ?> />
+                            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+
+                <?php endforeach; ?>
+
+                <?php endif; ?>
+
+            </table>
+
+
+
+
+
+
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+
+
+            function doConfirm(staffdevelopment, formobj)
+            {
+
+
+            bootbox.confirm("Are you sure you want to remove " + staffdevelopment, function(result)
+            {
+            if (result)
+            {
+            formobj.submit();
+            }
+
+
+            });
+                    return false; // by default do nothing hack :D
+            }
+
+
+
+
+
+
+
+</script>

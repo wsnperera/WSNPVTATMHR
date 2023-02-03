@@ -1,0 +1,617 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<a href="<?php echo url('promotion'); ?>"> << Back to Promotion </a> 
+<div class="page-content">
+    <div class="row-fluid"> 
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Promotion		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <form class="form-horizontal" action="<?php echo url('createPromotion'); ?>" method="POST" name="form1"  id="myform">
+                <h4 style="text-align: right"> <b style="color: red">*</b></<b>Required/Mandatory Fields </b></h4>
+
+                <div class="control-group">
+                    <label class="control-label" for="form-field-2">Institute Name</label>
+                    <div class="controls">
+                        <input type="hidden" name="InstituteId" id="InstituteId"  value="<?php echo $InstituteID; ?>"/>
+                        <input type="text"  readonly value="<?php echo $InstituteName; ?>"/>
+                    </div>
+                </div>
+
+                <div class="page-header position-relative"></div>
+                <div class="control-group">
+                    <label class="control-label" for="form-field-2">Employee Reference No</label>
+                    <div class="controls">
+                        <input type="text" name="EPF" id="EPF"/><b style="color: red">*</b>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="form-field-1">N.I.C</label>
+                    <div class="controls">
+                        <input type="text" name="NIC" id="NIC"  readonly="readonly" >
+                        <input type="button" name="btn" id="btn" value="Check" /><i class="icon-2x icon-user"></i>
+                        <span id="ajax_img_PromoExist"></span>
+                    </div>
+                </div>
+
+                <div class="controls" id='table'></div>
+
+                <div class="control-group">
+                    <!--                    <label class="control-label" for="form-field-1">Employee ID</label>-->
+                    <div class="controls">
+                        <input type="hidden" name="Emp_ID" id="Emp_ID"  readonly="readonly"  >
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="form-field-3">Effective Date</label>
+                    <div class="controls">
+                        <input type="date" name="StartDate" id="StartDate"/><b style="color: red">*</b>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="form-field-4">Appointment Type</label>
+                    <div class="controls">
+                        <select name="TransferType" onchange="disable()" id="TransferType">
+                            <option value="">--Select--</option>
+                            <?php foreach($transfertype as $tt): ?>
+                            <option value="<?php echo $tt->T_ID; ?>"><?php echo $tt->TransferType; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <b style="color: red">*</b><span id="ajax_img_TransferTypeName"></span>
+                    </div>
+                </div>
+  
+                <div class="control-group" id="TransferCategory1" hidden>
+                    <label class="control-label" for="form-field-4">Transfer Category</label>
+                    <div class="controls">
+                        <select id="TransferCategory" >
+                            <option value="">--Select--</option>
+                            <option value="DO">To DO</option>
+                            <option value="NVTI">To NVTI</option>
+                        </select>
+                        <b style="color: red">*</b>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="form-field-7">New Post</label>
+                    <div class="controls" id="new_post" >
+                        <select name="NewPost" id="NewPost">
+                            <option value="">--Select--</option>
+                        </select>
+                        <b style="color: red">*</b>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="form-field-5">To Organisation</label>
+                    <div class="controls" id='to_org'>
+                        <select name="ToOrganisation" id="ToOrganisation">
+                            <option value="">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group" hidden="" id='ViewDept'>
+                    <label class="control-label" for="form-field-6">To Department</label>
+                    <div class="controls" id='to_dept'>
+                        <select name="ToDepartment" id="ToDepartment" >
+                            <option value="">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="form-field-8">Employee Type</label>
+                    <div class="controls" id="emp_type" >
+                        <select name="EmpType" id="EmpType" >
+                            <option value="">--Select--</option>
+                        </select>
+                        <b style="color: red">*</b>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="form-field-9">Grade</label>
+                    <div class="controls">
+                        <input type="text" name="Grade" id="Grade"/>
+                        <b style="color: red">*</b>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="form-field-10">Salary Scale</label>
+                    <div class="controls"> 
+                        <input type="text"  id="FullSalaryScale" readonly=""/>
+                        <input type="hidden" name="SalaryScale" id="SalaryScale" readonly/><b style="color: red">*</b>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="form-field-11">Salary Step</label>
+                    <div class="controls">
+                        <input type="text" name="SalaryStep" id="SalaryStep"/>
+                        <b style="color: red">*</b>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="form-field-11">Salary Code</label>
+                    <div class="controls">
+                        <input type="text" name="SalaryCode" id="SalaryCode"/>
+                        <b style="color: red">*</b>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="form-field-13">Increment Month</label>
+                    <div class="controls" id="In_Mo" >
+                        <select name="IncrementMonth" id="IncrementMonth" >
+                            <option value="">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="form-field-12">Increment Day</label>
+                    <div class="controls">
+                        <input type="text" name="IncrementDay" id="IncrementDay"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="hidden" name="CurrentRecord" id="CurrentRecord" >
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" class="btn btn-small btn-primary"  value="Save" onclick="che()" >
+                    </div>
+                </div>
+
+            </form>
+            <!--PAGE CONTENT ENDS-->
+
+        </div><!--/.span-->
+        <div class="span4">
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <!-- Error Message -->
+
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+            </div>
+            <!-- Error Message -->
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script type="text/javascript">
+    function disable() {
+        var tt = document.getElementById("TransferType").value;
+        if (tt === "2" || tt === "1" || tt === "8" || tt === "") {
+            document.getElementById("SalaryScale").readOnly = false;
+            document.getElementById("IncrementDay").readOnly = false;
+            document.getElementById("Grade").readOnly = false;
+            document.getElementById("SalaryStep").readOnly = false;
+        } else if (tt === "5" || tt === "7") {
+            document.getElementById("SalaryScale").readOnly = true;
+            document.getElementById("IncrementDay").readOnly = true;
+            document.getElementById("Grade").readOnly = true;
+            document.getElementById("SalaryStep").readOnly = true;
+        } else {
+            document.getElementById("SalaryScale").readOnly = true;
+            document.getElementById("IncrementDay").readOnly = true;
+            document.getElementById("Grade").readOnly = true;
+            document.getElementById("SalaryStep").readOnly = true;
+        }
+
+    }
+    function che() {
+        var n = document.getElementById("NIC").value.length;
+        var t = document.getElementById("TransferType").value;
+        if (n === 10 && t === "2") {
+            alert("Congratulation for your success in your career");
+
+        } else if (n === 10 && t === "1") {
+            alert("WEL COME");
+        }
+    }
+
+
+    $("#EPF").change(function() {
+
+        var epf = document.getElementById('EPF').value;
+
+        $.ajax({
+            url: "<?php echo url::to('nicLoadajax'); ?>",
+            data: {epf: epf},
+            success: function(re) {
+                document.getElementById('NIC').value = re;
+
+            }
+        });
+        $.ajax({
+            url: "<?php echo url::to('idLoadajax'); ?>",
+            data: {epf: epf},
+            success: function(resu) {
+                document.getElementById('Emp_ID').value = resu;
+            }
+        });
+    });
+
+
+    $("#TransferType").change(function() {
+        var transferType = $("#TransferType").val();
+        var NIC_NO = document.getElementById('NIC').value;
+
+        $.ajax({
+            url: "<?php echo url::to('CheckTransferTypeName'); ?>",
+            data: {TransferType: transferType},
+            beforeSend: function() {
+                document.getElementById('ajax_img_TransferTypeName').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+            },
+            success: function(TransferTypeNameResults) {
+                var TransferTypeName = TransferTypeNameResults;
+
+                $.ajax({
+                    url: "<?php echo url::to('ChecktransferType'); ?>",
+                    data: {TransferType: transferType, NIC: NIC_NO},
+                    success: function(results) {
+                        if (TransferTypeName.match(/^First App.*$/)) {
+                            if (results === '1') {
+                                alert('This Employee already have the First Appointment');
+                            }
+                        }
+                    }
+
+                });
+
+                var x = "<select name=\"NewPost\" id=\"NewPost\">\n" +
+                        "<option value=\"\">--Select--</option>\n" +
+                        "<?php foreach ($employmentcode as $ec): ?>\n" +
+                        "<option value=\"<?php echo $ec->id; ?>\"><?php echo $ec->Designation; ?></option>\n" +
+                        "<?php endforeach; ?>\n" +
+                        "</select>\n" +
+                        "<b style=\"color: red\">*</b><span id='ajax_img_SalaryScale'></span>";
+                document.getElementById('new_post').innerHTML = x;
+
+                var y = "<select name=\"EmpType\" id=\"EmpType\">\n" +
+                        "<option value=\"\">--Select--</option>\n" +
+                        " <?php foreach ($employeetype as $et): ?>\n" +
+                        " <option value=\"<?php echo $et->EmployeeType; ?>\"><?php echo $et->EmployeeType; ?></option>\n" +
+                        " <?php endforeach; ?>\n" +
+                        "</select>\n" +
+                        "<b style=\"color: red\">*</b>";
+                document.getElementById('emp_type').innerHTML = y;
+
+                var z = "<select name=\"IncrementMonth\" id=\"IncrementMonth\" >\n" +
+                        "<option value=\"\">--Select--</option>\n" +
+                        "<option>January</option>\n" +
+                        "<option>February</option>\n" +
+                        "<option>March</option>\n" +
+                        "<option>April</option>\n" +
+                        "<option>May</option>\n" +
+                        "<option>June</option>\n" +
+                        "<option>July</option>\n" +
+                        "<option>August</option>\n" +
+                        "<option>September</option>\n" +
+                        "<option>October</option>\n" +
+                        "<option>November</option>\n" +
+                        "<option>December</option>\n" +
+                        "</select>";
+                document.getElementById('In_Mo').innerHTML = z;
+
+                var to = "<select name=\"ToOrganisation\" id=\"ToOrganisation\">\n" +
+                        "<option value=\"\">--Select--</option>\n" +
+                        "<?php foreach ($organisation as $o): ?>\n" +
+                        "<option value=\"<?php echo $o->id; ?>\"><?php echo $o->OrgaName; ?></option>\n" +
+                        "<?php endforeach; ?>\n" +
+                        "</select>\n" +
+                        "<b style=\"color: red\">*</b>";
+                document.getElementById('to_org').innerHTML = to;
+
+                var de = "<select name=\"ToDepartment\" id=\"ToDepartment\">\n" +
+                        "<option value=\"\">--Select--</option>\n" +
+                        " <?php foreach ($department as $d): ?>\n" +
+                        " <option value=\"<?php echo $d->D_ID; ?>\"><?php echo $d->DepartmentName; ?></option>\n" +
+                        " <?php endforeach; ?>\n" +
+                        "</select>";
+                document.getElementById('to_dept').innerHTML = de;
+                $('#ToOrganisation').change(function() {
+                    if (document.getElementById('ToOrganisation').value === '1014001' && $('#ViewDept').is(':hidden')) {
+                        $('#ViewDept').show();
+                    } else {
+                        $('#ViewDept').hide();
+                    }
+                });
+
+                var tt = document.getElementById('TransferType').value;
+                var nic = document.getElementById('NIC').value;
+                var effDate = document.getElementById('StartDate').value;
+
+                $.ajax({
+                    url: "<?php echo url::to('promLoadajax'); ?>",
+                    data: {nic: nic, tt: TransferTypeName, effDate: effDate},
+                    success: function(resu) {
+                        var tt = document.getElementById('TransferType').value;
+
+                        var a = resu.split('/n/');
+                        var post = a[0];
+                        var scale = a[1];
+                        var emptype = a[2];
+                        var grade = a[3];
+                        var step = a[4];
+                        var day = a[5];
+                        var month = a[6];
+                        var valuescale = a[7];
+                        var code = a[8];
+                        var toorg = a[9];
+                        var todept = a[10];
+                        var designation = a[11];
+                        var orgname = a[12];
+                        var deptname = a[13];
+                        if (TransferTypeName.match(/^Resign.*$/) || TransferTypeName.match(/^Retir.*$/)) {
+//                if (tt === "7" || tt === "5") {
+                            if (post !== "" && emptype !== "" && toorg !== "") {
+                                document.getElementById('new_post').innerHTML = "<input type='text'  readonly='true' value=" + designation + ">\n" +
+                                        "<input type='hidden' name='NewPost' readonly='true' value=" + post + ">\n" +
+                                        "<b style=\"color: red\">*</b>";
+                                document.getElementById('emp_type').innerHTML = "<input type='text' name='EmpType' readonly='true' value=" + emptype + ">\n" +
+                                        "<b style=\"color: red\">*</b>";
+                                document.getElementById('In_Mo').innerHTML = "<input type='text' name='IncrementMonth' readonly='true' value=" + month + ">";
+                                document.getElementById('to_org').innerHTML = "<input type='text'  readonly='true' value=" + orgname + ">\n" +
+                                        "<input type='hidden' name='ToOrganisation' readonly='true' value=" + toorg + ">\n" +
+                                        "<b style=\"color: red\">*</b>";
+                                document.getElementById('to_dept').innerHTML = "<input type='text'  readonly='true' value=" + deptname + ">\n" +
+                                        "<input type='hidden' name='ToDepartment' readonly='true' value=" + todept + ">";
+                                if ($('#ViewDept').is(':hidden') && toorg === '1014001') {
+                                    $('#ViewDept').show();
+                                    document.getElementById('to_dept').innerHTML = "<input type='text'  readonly='true' value=" + deptname + ">\n" +
+                                            "<input type='hidden' name='ToDepartment' readonly='true' value=" + todept + ">";
+                                } else if ($('#ViewDept').is(':hidden') === false && toorg === '1014001') {
+                                    document.getElementById('to_dept').innerHTML = "<input type='text'  readonly='true' value=" + deptname + ">\n" +
+                                            "<input type='hidden' name='ToDepartment' readonly='true' value=" + todept + ">";
+                                } else {
+                                    $('#ViewDept').hide();
+                                }
+
+                            }
+                            document.getElementById('SalaryScale').value = scale;
+                            document.getElementById('SalaryStep').value = step;
+                            document.getElementById('Grade').value = grade;
+                            document.getElementById('IncrementDay').value = day;
+                            document.getElementById('FullSalaryScale').value = valuescale;
+                            document.getElementById('SalaryCode').value = code;
+
+                        } else if (TransferTypeName.match(/^Demotion.*$/)) {
+//                } else if (tt === "6") {
+                            if (post !== "" && emptype !== "" && toorg !== "") {
+
+                                document.getElementById('emp_type').innerHTML = "<input type='text' name='EmpType' readonly='true' value=" + emptype + ">\n" +
+                                        "<b style=\"color: red\">*</b>";
+                                document.getElementById('In_Mo').innerHTML = "<input type='text' name='IncrementMonth' readonly='true' value=" + month + ">";
+                            }
+                            $('#ViewDept').hide();
+                            document.getElementById('SalaryScale').value = scale;
+                            document.getElementById('SalaryStep').value = step;
+                            document.getElementById('Grade').value = grade;
+                            document.getElementById('IncrementDay').value = day;
+                            document.getElementById('FullSalaryScale').value = valuescale;
+                            document.getElementById('SalaryCode').value = code;
+
+                        } else if (TransferTypeName.match(/^Transfer.*$/)) {
+//                } else if (tt === "4") {
+                    //$('#TransferCategory1').show();
+                            if (post !== "" && emptype !== "") {
+                                document.getElementById('new_post').innerHTML = "<input type='text'  readonly='true' value=" + designation + ">\n" +
+                                        "<input type='hidden' name='NewPost' readonly='true' value=" + post + ">\n" +
+                                        "<b style=\"color: red\">*</b>";
+                                document.getElementById('emp_type').innerHTML = "<input type='text' name='EmpType' readonly='true' value=" + emptype + ">\n" +
+                                        "<b style=\"color: red\">*</b>";
+                                document.getElementById('In_Mo').innerHTML = "<input type='text' name='IncrementMonth' readonly='true' value=" + month + ">";
+                            }
+
+                            $('#ViewDept').hide();
+                            document.getElementById('SalaryScale').value = scale;
+                            document.getElementById('SalaryStep').value = step;
+                            document.getElementById('Grade').value = grade;
+                            document.getElementById('IncrementDay').value = day;
+                            document.getElementById('FullSalaryScale').value = valuescale;
+                            document.getElementById('SalaryCode').value = code;
+
+//                            if (designation === 'Instructor') {
+                                var newPost = post;
+                                var transferType = $("#TransferType").val();
+                                 var EPF_NO = $("#EPF").val();
+                                $.ajax({
+                                    url: "<?php echo url::to('PromotionNewPostCheck'); ?>",
+                                    data: {NewPost: newPost, TransferType: transferType,EPF_NO:EPF_NO},
+                                    success: function(re) {
+                                        document.getElementById('to_org').innerHTML = re;
+                                    }
+                                });
+//                            } else {
+//                                var newPost = post;
+//                                var transferType = $("#TransferType").val();
+//                                 var EPF_NO = $("#EPF").val();
+//                                $.ajax({
+//                                    url: "<?php echo url::to('PromotionNewPostCheck'); ?>",
+//                                    data: {NewPost: newPost, TransferType: transferType,EPF_NO:EPF_NO},
+//                                    success: function(re) {
+//                                        document.getElementById('to_org').innerHTML = re;
+//                                    }
+//                                });
+//                            }
+                        } else {
+//                } else {
+                            if (post !== "" && emptype !== "") {
+                                document.getElementById('new_post').innerHTML = "<input type='text'  readonly='true' value=" + designation + ">\n" +
+                                        "<input type='hidden' name='NewPost' readonly='true' value=" + post + ">\n" +
+                                        "<b style=\"color: red\">*</b>";
+                                document.getElementById('emp_type').innerHTML = "<input type='text' name='EmpType' readonly='true' value=" + emptype + ">\n" +
+                                        "<b style=\"color: red\">*</b>";
+                                document.getElementById('In_Mo').innerHTML = "<input type='text' name='IncrementMonth' readonly='true' value=" + month + ">";
+                            }
+
+                            $('#ViewDept').hide();
+                            document.getElementById('SalaryScale').value = scale;
+                            document.getElementById('SalaryStep').value = step;
+                            document.getElementById('Grade').value = grade;
+                            document.getElementById('IncrementDay').value = day;
+                            document.getElementById('FullSalaryScale').value = valuescale;
+                            document.getElementById('SalaryCode').value = code;
+                            $('#NewPost').change(function() {
+                                var newPost = document.getElementById('NewPost').value;
+                                $.ajax({
+                                    url: "<?php echo url::to('designationSalaryScaleLoadajax'); ?>",
+                                    data: {NewPost: newPost},
+                                    beforeSend: function() {
+                                        document.getElementById('ajax_img_SalaryScale').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                    },
+                                    success: function(re) {
+                                        var a = re.split('/n/');
+                                        document.getElementById('FullSalaryScale').value = a[0];
+                                        document.getElementById('SalaryScale').value = a[1];
+                                    },
+                                    complete: function() {
+                                        document.getElementById('ajax_img_SalaryScale').innerHTML = "";
+                                    }
+                                });
+                            });
+                        }
+                    }
+                });
+            },
+            complete: function() {
+                document.getElementById('ajax_img_TransferTypeName').innerHTML = "";
+            }
+        });
+    });
+    $('#IncrementDay').blur(function() {
+        var month = document.getElementById('IncrementMonth').value;
+        var day = document.getElementById('IncrementDay').value;
+
+        if (month === "January" && day > 31) {
+            alert('The date of ' + day + 'does not exist for the  Month of ' + month + '!...');
+        } else if (month === "February" && day > 29) {
+            alert('The date of ' + day + 'does not exist for the  Month of ' + month + '!...');
+        } else if (month === "March" && day > 31) {
+            alert('The date of ' + day + 'does not exist for the  Month of ' + month + '!...');
+        } else if (month === "April" && day > 30) {
+            alert('The date of ' + day + 'does not exist for the  Month of ' + month + '!...');
+        } else if (month === "May" && day > 31) {
+            alert('The date of ' + day + 'does not exist for the  Month of ' + month + '!...');
+        } else if (month === "June" && day > 30) {
+            alert('The date of ' + day + 'does not exist for the  Month of ' + month + '!...');
+        } else if (month === "July" && day > 31) {
+            alert('The date of ' + day + 'does not exist for the  Month of ' + month + '!...');
+        } else if (month === "August" && day > 31) {
+            alert('The date of ' + day + 'does not exist for the  Month of ' + month + '!...');
+        } else if (month === "September" && day > 30) {
+            alert('The date of ' + day + 'does not exist for the  Month of ' + month + '!...');
+        } else if (month === "October" && day > 31) {
+            alert('The date of ' + day + 'does not exist for the  Month of ' + month + '!...');
+        } else if (month === "November" && day > 30) {
+            alert('The date of ' + day + 'does not exist for the  Month of ' + month + '!...');
+        } else if (month === "December" && day > 31) {
+            alert('The date of ' + day + 'does not exist for the  Month of ' + month + '!...');
+        }
+
+    });
+    $("#EPF").change(function() {
+        $("#table").html('');
+        $("#btn").click(function() {
+            var epf = $("#EPF").val();
+            $.ajax({
+                type: "GET",
+                url: "<?php echo url::to('promotionExist'); ?>",
+                data: {EPF: epf},
+                beforeSend: function() {
+                    document.getElementById('ajax_img_PromoExist').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                },
+                success: function(result) {
+                    if (result === '1') {
+                        var alert_html = '<img  src="assets/images/alert.jpg" width="60px" height="30px"/>'
+                            alert_html+= '<h4>Currently No any Active Promotion Assigned for this Employee...!</h4>';
+                        bootbox.alert(alert_html);
+                    } else if (result === '2') {
+                        document.getElementById('EPF').value = '';
+                        var alert_html = '<img  src="assets/images/alert.jpg" width="60px" height="30px"/>';
+                            alert_html+= '<h4>Mentioned EPF No Holder is not an Employee of the VTA Centers...!</h4>';
+                        bootbox.alert(alert_html);
+                    } else {
+                        $('#table').html(result);
+                    }
+                },
+                complete: function() {
+                    document.getElementById('ajax_img_PromoExist').innerHTML = "";
+                }
+            });
+        });
+    });
+
+</script>
+<script>
+
+    function check() {
+//    alert("zxcvbnm");
+        var emp = document.getElementById("Emp_ID").value;
+        var type = document.getElementById("TransferType").value;
+        var role = document.getElementById("NewPost").value;
+        var org = document.getElementById('ToOrganisation').value;
+        var sdate = document.getElementById('StartDate').value;
+        if (type === '1' || type === '2' || type === 'Transfer' && role === 'A213' || role === 'A212') {
+            $.ajax({
+                url: "<?php echo url::to('Org_inch'); ?>",
+                data: {emp: emp, type: type, role: role, org: org},
+                success: function(result) {
+//               alert(result);
+                    bootbox.dialog(result, [{
+                            "label": "Yes",
+                            "class": "btn-small btn-success",
+                            "callback": function() {
+                                $.ajax({
+                                    url: "<?php echo url::to('Org_inch_edit'); ?>",
+                                    data: {org: org, sdate: sdate, emp: emp, type: type, role: role},
+                                    success: function(result) {
+//                                    alert(result);
+                                        bootbox.dialog(result, [{
+                                                "label": "oK",
+                                                "class": "btn-small btn-primary",
+                                            }]);
+
+                                        $("#myform").submit();
+                                    }
+                                });
+                            }
+                        },
+                        {
+                            "label": "No",
+                            "class": "btn-small btn-danger",
+                            "callback": function() {
+                                $("#myform").submit();
+                            }
+                        }]);
+                }
+            });
+        }
+    }
+</script>

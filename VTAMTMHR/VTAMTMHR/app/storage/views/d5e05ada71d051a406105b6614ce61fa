@@ -1,0 +1,259 @@
+<!--
+* Created By Amila
+* 2017-04-28
+-->
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>View Non NVQ Courses<small><i class="icon-double-angle-right"></i>View Modules With Instructors</small></h1>
+            </div>
+			<div class="form-horizontal" id="loadTable"> 
+				<a href="viewNonNvqYearPlans"><h4><i class="icon-double-angle-left"></i> Back</h4></a>
+				
+				<form method='POST' class="form-horizontal"  action='addModulesAndInstructors' id='cnfrmboot' onsubmit="return validate()">
+			
+				<div class="control-group" id="">
+					<?php echo $table1; ?>
+				</div>
+			
+				<div class="control-group" hidden id="addModule" style="padding-top: 10px;padding-bottom: 10px;margin-right: 200px;margin-left: 100px;margin-top:25px;margin-bottom:25px; border: 1px solid #FFFFFF;width:700px">
+
+				</div>
+				<div class="control-group" hidden id="editInstructor" style="padding-top: 10px;padding-bottom: 10px;margin-right: 200px;margin-left: 100px;margin-top:25px;margin-bottom:25px; border: 1px solid #FFFFFF;width:700px">
+
+				</div>
+				<div class="control-group" hidden id="divAddInstructor" style="padding-top: 10px;padding-bottom: 10px;margin-right: 200px;margin-left: 100px;margin-top:25px;margin-bottom:25px; border: 1px solid #FFFFFF;width:700px">
+					<label class="control-label">Select Instructors :</label>
+					<div class="controls" id="divInstructor">
+					</div></br>
+						<div class="controls">
+						<button type="button" id="saveInstructor" name="saveInstructor" class="btn">Save</button>
+						</div>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/datepicker.css">
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+
+
+<script type="text/javascript">
+function validate(){
+	if($("#trainee_ids").val()==''){
+		return false;
+	}
+}
+</script>
+<script type="text/javascript">
+function deleteThisModule(res){
+	var id=res.value;
+	var cyp=$("#cypID").val();
+	bootbox.confirm("Do you realy want to delete this module","Cancel","Delete",function(res){
+		if(res){
+			$.ajax({
+				url:'deleteAssignedModule',
+				data:{InsMID:id,cypID:cyp},
+				beforeSend: function(){
+					$("#loadCourses").html('<br><br><img height="50%" width="25%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+				},
+				success: function(result){
+					bootbox.alert(result);
+					location.reload();
+				},
+				error: function(result){
+					alert(result.responseText);
+				}
+			});
+		}
+	});
+}
+</script>
+<script type="text/javascript">
+	$("#assignModule").click(function(){
+		$("#divAddInstructor").hide();
+		$.ajax({
+			url:'assignMooduleToCourseYearPlan',
+			success:function(res){
+				if($("#addModule").is(":hidden")){
+					if($("#editInstructor").is(":hidden")){
+						
+					}else{
+						$("#editInstructor").hide();
+					}
+					$("#addModule").show();
+					$("#addModule").html(res);
+					
+				}else{
+					$("#addModule").hide();
+				}
+			},
+			error: function(res){
+				alert(res.responseText);
+			}
+		});
+	});
+</script>
+<script type="text/javascript">
+
+$('#nonNvqModuleTable').dataTable({
+		'bPaginate': true,
+		'aoColumns': [
+			{'bSortable': false},
+			{'bSortable': false},
+			{'bSortable': false},
+			{'bSortable': false},
+			{'bSortable': false},
+			{'bSortable': false},
+			{'bSortable': false},
+			{'bSortable': false},
+			{'bSortable': false},
+			{'bSortable': false}
+							   
+		]});
+</script>
+<script type="text/javascript">
+function clickCheckbox(x){
+	var td_id=x.value;
+	var cypID=$("#cypID").val();
+	if(x.checked==true){
+	var center = $('#center').val();
+		$.ajax
+                ({
+                    beforeSend: function()
+                    {
+                        $("#loding").html('<br><br><img height="50%" width="25%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+						$("#placeHolder").css("display", "none");
+                    },
+                    type: "POST",
+                    url: 'loadInstructorForAssignEdit',
+                    data:{cypID:cypID},
+                    //dataType: 'json',
+                    success: function(result)
+                    {
+					var html='<select id="instructor-'+td_id+'" name="instructor-'+td_id+'[]" multiple="multiple" class="chzn-select" data-placeholder="Choose a Instructor..." >'+result+'</select>';
+						
+						$("#td_"+td_id).append(html);
+						$("#instructor-"+td_id+".chzn-select").trigger("liszt:updated");
+						$(".chzn-select").chosen(); 
+						
+                    },
+					 complete: function() {
+                         $("#loding").html('');
+						 $("#placeHolder").css("display", "");
+                    }
+                });
+	}else{
+		$("#td_"+td_id).html("");
+	}
+}
+</script>
+<script type="text/javascript">
+function editThisModule(res){
+	var val=res.value;
+	var cypID=$("#cypID").val();
+	$("#divAddInstructor").hide();
+	$.ajax({
+		url:'viewInstructorsForModule',
+		data:{ModuleID:val,cypID:cypID},
+		success: function(result){
+		if($("#editInstructor").is(":hidden") ){
+			
+			if($("#addModule").is(":hidden") ){
+			}else{
+				$("#addModule").hide();
+			}
+				$("#editInstructor").show();
+				$("#editInstructor").html(result);
+			}else{
+				$("#editInstructor").hide();
+				$("#divAddInstructor").hide();
+			}
+		},
+		error: function(result){
+			alert(result.responseText);
+		}
+			
+	});
+	
+}
+</script>
+<script type="text/javascript">
+function deleteThisInstructor(res){
+	var InsEPF=res.value;
+	var moduleID=$("#moduleID").val();
+	var cypID=$("#cypID").val();
+	bootbox.confirm("Do you realy want to delete this module","Cancel","Delete",function(res){
+	if(res){
+	$.ajax({//
+		url:'deleteAssignedInstructor',
+		data:{EmpNo:InsEPF,moduleID:moduleID,cypID:cypID},
+		success: function(result){
+			bootbox.alert(result);
+			location.reload();
+		},
+		error: function(result){
+			alert(result.responseText);
+		}
+	
+	});//
+	}});
+}
+</script>
+<script type="text/javascript">
+$("#editInstructor").on("click","#addInstructor",function(){
+	var cypID=$("#cypID").val();
+	$.ajax({
+		type:'POST',
+		url:'loadInstructorForAssignEdit',
+		data:{cypID:cypID},
+		success: function(result){
+			var htm='<select multiple="multiple" id="instructors" name="instructors[]" class="chzn-select" data-placeholder="Choose a Instructor..." required="required">'+result+'</select>';
+			//
+			if($("#divAddInstructor").is(":hidden")){
+				$("#divAddInstructor").show();
+				$("#divInstructor").html(htm);
+				$("#instructors.chzn-select").trigger("liszt:updated");
+				$(".chzn-select").chosen(); 
+			}else{
+				$("#divAddInstructor").hide();
+			}//
+		},
+		error: function(result){
+			alert(result.responseText);
+		}
+	});
+});
+</script>
+<script type="text/javascript">
+$("#saveInstructor").click(function(){
+	var epf=$("#instructors").val();
+	var cypID=$("#cypID").val();
+	var moduleID=$("#moduleID").val();
+	if(epf){
+		$.ajax({
+			url:'assignNewInstrctorForModule',
+			data:{moduleID:moduleID,cypID:cypID,EpfNo:epf},
+			success: function(result){
+				bootbox.alert(result);
+				location.reload();
+			},
+			error: function(result){
+				alert(result.responseText);
+			}
+		});
+	}else{
+		alert("Please Select Instructors To Assign");
+	}
+});
+</script>

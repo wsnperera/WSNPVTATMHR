@@ -1,0 +1,191 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    VTA	
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        District Wise Training Performance Report
+                    </small>			
+                </h1>
+            </div>
+
+            <form class="form-horizontal" id="main_from" action='searchCenterDetailsDownload' name="fully[]" method="POST" enctype="multipart/form-data">
+
+                <!--Name of Institute-->
+                <div class="control-group">
+                    <label class="control-label" for="Name of District">District : </label>
+                    <div class="controls">
+                        <select name="district" id="district" onchange="setInputDistrict(this)" style="margin: 0px;" required>
+                            
+                            <option value="0">All</option>
+                           
+                            <?php foreach($district as $dis): ?>
+                            <option value="<?php echo $dis->DistrictCode; ?>"><?php echo $dis->DistrictName; ?></option> 
+                            <?php endforeach; ?>
+                        </select>
+					Start Date : &nbsp;&nbsp;
+                    <input type='date' id="sdate" name="sdate" size="10px" onchange="setInputSDate()"  required/>&nbsp;&nbsp;
+                    End Date : &nbsp;&nbsp;
+                    <input type='date' id="edate" name="edate" size="10px" onchange="setInputEDate()" required/>&nbsp;&nbsp;
+                    </div>
+                </div>
+
+                <!--view Download Excel Btn-->
+                <div class="control-group">
+                    <div class="controls">
+                        <div id="addDownloaddExcelBtn"> 
+                            <button type="button" onclick="getTableTrainingPerformanceDetailsDownload();" class="btn btn-purple btn-small">
+                                <i class="icon-cloud-download bigger-200"></i>Excel</button>
+                            <button type="button" onclick="getTableTrainingPerformanceDetails();" class="btn btn-blue btn-small">
+                                <i class="icon-eye-open bigger-200"></i>View</button>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div id="loading">                  
+                </div>
+                <div id="table">                  
+                </div>
+
+            </form>             
+        </div>
+    </div>
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+
+                                function tableModify() {
+                                    $('#sample-table-2').dataTable({
+                                        "bPaginate": false,
+                                        "aaSorting": [],
+                                        "aoColumns": [
+                                            {"bSortable": false},
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            
+                                            {"bSortable": false},
+											{"bSortable": false},
+                                            {"bSortable": false},
+											{"bSortable": false},
+                                            {"bSortable": false}
+
+                                        ]});
+                                }
+</script>
+
+<script type="text/javascript">
+
+    $("#year").on("change", function () {
+        $("#table").html("");
+        $("#loading").html('');
+
+    });
+
+    $("#district").on("change", function () {
+        $("#table").html("");
+        $("#loading").html('');
+
+    });
+
+
+    function getTableTrainingPerformanceDetails() {
+		$("#table").html("");
+        var district = $("#district").val();
+		var sdate = $("#sdate").val();
+        var edate = $("#edate").val();
+        var year = $("#year").val();
+        $('#table').val('');
+        if (district != "" && sdate != "" && edate != "")
+        {
+			if (sdate > edate)
+        {
+            bootbox.alert('Start date should be lower than End date!');            
+        } else{
+            $.ajax
+                    ({
+                        beforeSend: function ()
+                        {
+                            $("#loading").html('<br><br><img height="50%" width="25%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                        },
+                        type: "GET",
+                        url: "<?php echo Url('searchCenterDetails'); ?>",
+                        data: {district: district, sdate: sdate, edate: edate},
+                        success: function (result)
+                        {
+                            $('#table').html(result);
+                            tableModify();
+                        },
+                        complete: function () {
+
+                            $("#loading").html('');
+                        },
+                    });
+
+        }
+		}
+    }
+
+</script>
+
+<script type="text/javascript">
+function getTableTrainingPerformanceDetailsDownload() {
+        var district = $("#district").val();
+        var year = $("#year").val();
+		var sdate = $("#sdate").val();
+        var edate = $("#edate").val();
+        $('#table').val('');
+        if (district != "" && sdate != "" && edate != "")
+        {
+            bootbox.alert('Please wait few seconds!..');
+            location.replace('searchCenterDetailsDownload?district=' + district + '&sdate=' + sdate +'&edate=' + edate + '');
+        }
+    }
+
+</script>
+<script type="text/javascript">
+function setInputSDate(){
+$('#table').html("");   
+var objFromDate = document.getElementById("sdate").value; 
+document.getElementById('edate').setAttribute("min", objFromDate);
+}
+</script>
+
+<script type="text/javascript">
+function setInputEDate(){
+$('#table').html("");
+var objFromDate = document.getElementById("edate").value; 
+document.getElementById('sdate').setAttribute("max", objFromDate);
+}
+</script>
+
+ 

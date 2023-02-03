@@ -1,0 +1,249 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href="<?php echo url('ViewHRPromotion'); ?>"> << Back to HR - Promotion </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="page-header position-relative">
+
+        <h1>
+            HR - Promotion		
+            <small>
+                <i class="icon-double-angle-right"></i>
+                View
+            </small>			
+        </h1>
+
+    </div><!--/.page-header-->
+    <div class="row-fluid">
+
+        <table><tr><td>
+            <?php if($user->hasPermission('CreateHRPromotion')): ?>
+            <a href="<?php echo url('CreateHRPromotion'); ?>"><button type="button" id="submit" class="btn btn-pink">
+                <i class="icon-pencil bigger-100"></i>Create Promotion</button></a>
+            <?php endif; ?>
+			</td></tr></table>
+        
+      <br/>
+	  <hr/>
+     
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th rowspan="2">No</th>
+                        <th rowspan="2">Edit</th>
+                        <th rowspan="2">EPF No</th>
+						<th rowspan="2">NIC[Old NIC]</th>
+                        <th rowspan="2">Full Name</th>
+						<th rowspan="2">Name with Initials</th>
+                        <th rowspan="2">District</th>
+						<th rowspan="2">To Center(Type)</th>
+                        <th rowspan="2">To Department</th>
+                        <th rowspan="2">Transfer/Promotion Type</th>
+                        <th rowspan="2">New Post</th>
+                        <th rowspan="2">Employee Type</th>
+						<th rowspan="2">Effective Date</th>
+                        
+                        <th colspan="5" style="text-align: center;">Starting Salary Details</th>
+						<th colspan="5" style="text-align: center;">Present Salary Details</th>
+                        <th rowspan="2">Increment Month</th>
+                        <th rowspan="2">Increment Day</th>
+						<th rowspan="2">Confirmation Date</th>
+						<th colspan="3" style="text-align: center;">Gratuity/EFT/EPF Details</th>
+                        <th rowspan="2"><?php if($user->hasPermission('DeleteHRPromotion')): ?> Remove <?php endif; ?></th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: center;">Service Category</th>
+                        <th style="text-align: center;">Salary Code</th>
+						<th style="text-align: center;">Salary Scale</th>
+						<th style="text-align: center;">Salary Step</th>
+						<th style="text-align: center;">Grade</th>
+						
+						 <th style="text-align: center;">Service Category</th>
+                        <th style="text-align: center;">Salary Code</th>
+						<th style="text-align: center;">Salary Scale</th>
+						<th style="text-align: center;">Salary Step</th>
+						<th style="text-align: center;">Grade</th>
+						
+						<th style="text-align: center;">Gratuity Amount</th>
+						<th style="text-align: center;">ETF Released Date</th>
+						<th style="text-align: center;">EPF Released Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php $i = 0; ?>
+                    <?php if(isset ($promotion)): ?>
+                    <?php foreach ($promotion as $pr): ?>
+                    <tr>
+                        <td><?php $i++;?><?php echo $i; ?></td>
+                       
+                        <td>
+						<?php if($user->hasPermission('EditHRPromotion')): ?>
+                            <a href="<?php echo url('EditHRPromotion?id='.$pr->P_ID); ?>"><i class="icon-edit icon-2x icon-only"></i></a>
+                        <?php endif; ?>
+						</td>
+						<td><?php echo $pr->EPF; ?></td>
+						<td><?php if($pr->NIC != $pr->OldNIC): ?>
+						 <?php echo $pr->NIC; ?> [<?php echo $pr->OldNIC; ?>] 
+						<?php else: ?>
+						 <?php echo $pr->NIC; ?>
+						<?php endif; ?></td>
+						<td><?php echo $pr->Name; ?> <?php echo $pr->LastName; ?></td>
+						<td><?php echo $pr->Initials; ?> <?php echo $pr->LastName; ?></td>
+						<td><?php echo $pr->DistrictName; ?></td>
+						<td><?php echo $pr->OrgaName; ?>(<?php echo $pr->Type; ?>)</td>
+						<td><?php echo $pr->DepartmentName; ?></td>
+						<td><?php echo $pr->TransferType; ?></td>
+						<td><?php echo $pr->Designation; ?></td>
+						<td><?php echo $pr->EmployeeType; ?></td>
+						<td><?php echo $pr->StartDate; ?></td>
+						<td><?php echo $pr->ServiceCategory; ?></td>
+						<td><?php echo $pr->SalaryCode; ?></td>
+						<td><?php echo $pr->SalaryScale; ?></td>
+						
+						<?php 
+						if(!empty($pr->SalaryStep ))
+						{
+						 $salsteptrans = HRSalaryStepTrans::where('id','=',$pr->SalaryStep)->first();
+						}
+						else
+						{
+							$salsteptrans="";
+						}
+						?>
+						<td>
+						<?php if($pr->SalaryStep != ''): ?>
+						No.<?php echo $salsteptrans->StepNo; ?>-<?php echo $salsteptrans->StepAmount; ?>/=
+						<?php if($salsteptrans->EBAvailable == 1): ?>
+							(EB Available)
+							<?php else: ?>
+								<?php endif; ?>
+							<?php else: ?>
+								<?php endif; ?>
+						</td>
+						<td><?php echo $pr->Grade; ?></td>
+						
+						<td><?php echo $pr->PServiceCategory; ?></td>
+						<td><?php echo $pr->PSalaryCode; ?></td>
+						<td><?php echo $pr->PSalaryScale; ?></td>
+						
+						<?php 
+						if(!empty($pr->PSalaryStep) || $pr->PSalaryStep != 0)
+						{
+						 $salsteptransP = HRSalaryStepTrans::where('id','=',$pr->PSalaryStep)->first();
+						}
+						else
+						{
+							$salsteptransP="";
+						}
+						?>
+						<td>
+						<?php if($pr->PSalaryStep != '' || $pr->PSalaryStep != 0): ?>
+						No.<?php echo $salsteptransP->StepNo; ?>-<?php echo $salsteptransP->StepAmount; ?>/=
+						<?php if($salsteptransP->EBAvailable == 1): ?>
+							(EB Available)
+							<?php else: ?>
+								<?php endif; ?>
+							<?php else: ?>
+								<?php endif; ?>
+						</td>
+						<td><?php echo $pr->PGrade; ?></td>
+						
+						
+						<td><?php echo $pr->IncrementMonth; ?></td>
+						<td><?php echo $pr->IncrementDay; ?></td>
+						<td><?php echo $pr->ConfirmationDate; ?></td>
+						<td><?php echo $pr->GratuityAmount; ?></td>
+						<td><?php echo $pr->ETFReleasedDate; ?></td>
+						<td><?php echo $pr->EPFReleasedDate; ?></td>
+						
+                <td>
+				<?php if($user->hasPermission('DeleteHRPromotion')): ?>
+                    <form id="deleteform"  action="<?php echo url('DeleteHRPromotion'); ?>" method="POST" onsubmit="return doConfirm('<?php echo $pr->NIC; ?>', this)">
+                        <input type="hidden" name='pid' value="<?php echo $pr->P_ID; ?>" />
+                        <button type="submit" class="btn btn-danger btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                    </form> 
+				<?php endif; ?>
+                </td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+
+                                function doConfirm(promotion, formobj) {
+                                bootbox.confirm("Are you sure you want to remove promotion record of" + promotion, function(result){
+                                if (result){
+                                formobj.submit();
+                                }
+                                });
+                                        return false; // by default do nothing hack :D
+                                }
+
+                        $('#sample-table-2').dataTable({
+                        "bPaginate":false,
+                                "aaSorting":[],
+                                "aoColumns": [
+                                {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false},
+                                {"bSortable": false},{"bSortable": false}, {"bSortable": false},{"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false},{"bSortable": false},{"bSortable": false},{"bSortable": false},{"bSortable": false},
+                               {"bSortable": false},{"bSortable": false},{"bSortable": false},{"bSortable": false},{"bSortable": false} ]});
+                                $('table th input:checkbox').on('click', function() {
+                        var that = this;
+                                $(this).closest('table').find('tr > td:first-child input:checkbox')
+                                .each(function() {
+                                this.checked = that.checked;
+                                        $(this).closest('tr').toggleClass('selected');
+                                });
+                        });
+                                $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+                                function tooltip_placement(context, source) {
+                                var $source = $(source);
+                                        var $parent = $source.closest('table')
+                                        var off1 = $parent.offset();
+                                        var w1 = $parent.width();
+                                        var off2 = $source.offset();
+                                        var w2 = $source.width();
+                                        if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                                        return 'right';
+                                        return 'left';
+                                }
+
+$("#EmpSearch").click(function() {
+    var EPFNo =$('#EPFNo').val();
+    alert(EPFNo);
+                   
+                      // var id=document.getElementById('sid').value;
+                       //var ccode=document.getElementById('CourseCode').value;
+                      // var form =$("#please").serializeArray();
+                
+                //alert('dghsg');   
+                     $.ajax({
+                        url: "<?php echo url('pleaseSubmitForm'); ?>",
+                        type: "POST",
+                        data: form,
+
+                       
+                                success: function(result) {
+                                 response(result.print);
+                             window.location.replace("<?php echo url('viewFees'); ?>");
+                             
+                                
+                                }
+                               
+                          
+                    });
+                 
+                });
+
+</script>

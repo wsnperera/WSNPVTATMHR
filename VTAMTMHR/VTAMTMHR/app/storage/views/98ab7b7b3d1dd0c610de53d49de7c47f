@@ -1,0 +1,528 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>      
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('ViewModuleTask'); ?>> << Back to Module Task</a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>Actual Time Table<small><i class="icon-double-angle-right"></i>View</small></h1>
+        </div>
+        <form name='search' action="<?php echo url('SearchMOActualTimeTable'); ?>" method='get' class="form-horizontal">
+<!--            Search Module Course By Course List Code : <input type='text' name="key"/>   <input type='submit' value='Search'/>-->
+            <!--<a href="<?php echo url('CreateModuleTask'); ?>"><input type='button' value='Create Module Task' /></a>-->
+            
+ <div class="control-group">
+                <label class="control-label" for="CourseListCode">Trade : </label>
+                <div class="controls">
+                    <select name="Trade" id="Trade">
+                        <option value="">--Select--</option>
+                        <?php foreach($Trades as $t): ?>
+                        <option value="<?php echo $t->TradeId; ?>"><?php echo $t->TradeCode; ?> - <?php echo $t->TradeName; ?></option>
+                        <?php endforeach; ?>
+                    </select><span id="img1"></span>
+                <!--    Duration <input id="Duration" placeholder="" type="text"> -->
+                </div>
+            </div>
+             <div class="control-group">
+                        
+                            <label class="control-label" for="Medium">Competency Standard</label>
+
+                             <div class="controls">
+
+                                <select name="ComStand" id="ComStand" required="true">
+
+                                    
+
+                                </select><span id="img2"></span>
+
+                             </div>
+                              
+                            
+                    </div>
+                     <div class="control-group">
+                        
+                            <label class="control-label" for="Medium">Qualification Package</label>
+
+                             <div class="controls">
+
+                                <select name="Qpackage" id="Qpackage" required="true">
+
+                                    
+
+                                </select> </select><span id="img3"></span>
+
+
+                             </div>
+                            
+                    </div> 
+        <div class="control-group">
+                <label class="control-label" for="CourseListCode">Course Name : </label>
+                <div class="controls">
+                    <select name="CourseListCode" id="CourseListCode" required>
+                        <option value="">--Select--</option>
+                        <?php foreach($listCode as $lc): ?>
+                        <option value="<?php echo $lc->CD_ID; ?>"><?php echo $lc->CourseListCode; ?> - [<?php echo $lc->CourseName; ?>] - <?php echo $lc->Nvq; ?>-<?php echo $lc->CourseLevel; ?>-<?php echo $lc->CourseType; ?>-<?php echo $lc->Duration; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                <!--    Duration <input id="Duration" placeholder="" type="text"> -->
+                </div>
+            </div> 
+            <div class="control-group">
+                    <label class="control-label" for="centers">Year:</label>
+                    <?php  $Cyear = date("Y"); ?>
+                    <div class="controls">
+                      <select name="Year" id="Year" required>
+                            <option value="" required>--- Select Year ---</option>
+							<option value="<?php echo $Cyear-2; ?>"><?php echo $Cyear-2; ?></option>
+							 <option value="<?php echo $Cyear-1; ?>"><?php echo $Cyear-1; ?></option>
+                            <option value="<?php echo $Cyear; ?>"><?php echo $Cyear; ?></option>
+                            <option value="<?php echo $Cyear+1; ?>"><?php echo $Cyear+1; ?></option>
+                            <option value="<?php echo $Cyear+2; ?>"><?php echo $Cyear+2; ?></option>
+                            <option value="<?php echo $Cyear+3; ?>"><?php echo $Cyear+3; ?></option>
+                           
+                          
+                        </select> 
+                    </div>
+                </div>
+                 <div class="control-group">
+                    <label class="control-label" for="centers">Batch:</label>
+                    <div class="controls">
+                        <select name="Batch" id="Batch" required>
+                            <option value="" >--- Select Batch ---</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+							 <option value="1.2">1.2</option>
+							  <option value="2.2">2.2</option>
+                          
+                        </select>
+                       
+                    </div>
+                </div>
+            <div class="control-group">
+                <div class="controls">
+                        <input type="submit" value="Search"  class="btn btn-small btn-primary"/>
+                    </div>
+            </div> 
+        </form>
+        <hr/>
+        <?php if(isset($moduleTask)): ?>
+        
+    <table>
+    <tr>
+        <td>
+          
+            <form> 
+                            <input type="hidden" value="<?php echo $CDID; ?>" name="CD_IDP" id="CD_IDP"/>
+                            <input type="hidden" value="<?php echo $YearD; ?>" name="YearP" id="YearP"/>
+                            <input type="hidden" value="<?php echo $BatchD; ?>" name="BatchP" id="BatchP"/>
+                            <button type="button" id="upload" class="btn btn-yellow">
+                            <i class="icon-print bigger-200"></i>Print</button>
+                            <span id='img4'></span>
+            </form> 
+                       
+        </td>
+        <td>
+            <form name='search' action="<?php echo url('DownloadMOActualTimeTable'); ?>" method='POST' class="form-horizontal">
+                <input type="hidden" value="<?php echo $CDID; ?>" name="CD_ID" id="CD_ID"/>
+                <input type="hidden" value="<?php echo $YearD; ?>" name="Year" id="Year"/>
+                <input type="hidden" value="<?php echo $BatchD; ?>" name="Batch" id="Batch"/>
+                <button type="submit" id="search" class="btn btn-success">
+                <i class="icon-download-alt bigger-200"></i>Download</button>
+               
+            </form> 
+        </td>
+    </tr>
+    </table>
+        
+
+        <?php endif; ?>
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+             <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                 <thead>
+                <tr>
+                    <th class="center">No</th>
+                        <th class="center">Year</th>
+                        <th class="center">Batch</th>
+                        <th class="center">Course</th>
+                        <th class="center">Month</th>
+                        <th class="center">Week No</th>
+                        <th class="center">Date</th>
+                        <th class="center">Day</th>
+                        <th class="center">Session</th>
+                        <th class="center">Module</th>
+                        <th class="center">Task</th>
+                </tr>
+                 </thead>
+                 <?php $tt=1; ?>
+                 <tbody>
+                <?php if(isset($moduleTask)): ?>
+                    <?php foreach($moduleTask as $mm): ?>
+                    <tr>
+                     
+                       <td class="center"><?php echo $tt++; ?></td>
+                        <td class="center"><?php echo $mm->Year; ?></td>
+                        <td class="center"><?php echo $mm->Batch; ?></td>
+                        <td class="center"><?php echo $mm->CourseName; ?></td>
+                        <td class="center"><?php echo $mm->Month; ?></td>
+                        <td class="center"><?php echo $mm->WeekNo; ?></td>
+                        <td class="center"><?php echo $mm->Date; ?></td>
+                        <td class="center"><?php echo $mm->Day; ?></td>
+                        <td class="center"><?php echo $mm->Session; ?></td>
+                        
+                        <?php if($mm->TaskSeqID == '999999'): ?>
+                        
+                          <td class="center">Continuous Assessments</td>
+                          <td class="center">Continuous Assessments</td>
+                        
+                        
+                        <?php elseif($mm->TaskSeqID == '999998'): ?>
+                        
+                          <td class="center">English/Career Skills</td>
+                          <td class="center">English/Career Skills</td>
+                       
+                        
+                        <?php elseif($mm->TaskSeqID == 999997): ?>
+                        
+                          <td class="center">Oriantation</td>
+                          <td class="center">Oriantation</td>
+                        
+                        
+                        
+                        <?php else: ?>
+                        
+                          <td class="center"><?php echo $mm->ModuleName; ?>(<?php echo $mm->ModuleCode; ?>)</td>
+                          <td class="center"><?php echo $mm->TaskName; ?>(<?php echo $mm->TaskCode; ?>)</td>
+                       
+                        
+                        <?php endif; ?>
+                   </tr>
+                        <?php endforeach; ?>
+                    <?php if($moduleTask=='[]'): ?>
+                        <center>Data Not Found</center>
+                    <?php endif; ?>
+                <?php endif; ?>
+        </tbody>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+             <div class="span4" id="ajaxerror">
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-ok"></i>
+                   
+                    <?php echo Session::get('done'); ?>
+                </strong>
+                <br>
+            </div>
+            <?php endif; ?>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+
+        </div>
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+     
+
+    function doConfirm(course,formobj)  {
+        bootbox.confirm("Are you sure you want to remove "+course, function(result) 
+        {
+            if(result) 
+            {
+                formobj.submit();
+            }
+         });
+         return false;  // by default do nothing hack :D
+     }
+     
+      <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+$('#sample-table-2').dataTable({
+    "aoColumns": [
+            {"bSortable": false}, 
+            {"bSortable": false},
+             {"bSortable": false},
+            {"bSortable": false},
+              null,
+             null,
+              null,
+              {"bSortable": false}, 
+                {"bSortable": false}, 
+                {"bSortable": false}, 
+                 {"bSortable": false}, 
+    ]});
+            $('table th input:checkbox').on('click', function() {
+    var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function() {
+            this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+            });
+    });
+            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+            function tooltip_placement(context, source) {
+            var $source = $(source);
+                    var $parent = $source.closest('table')
+                    var off1 = $parent.offset();
+                    var w1 = $parent.width();
+                    var off2 = $source.offset();
+                    var w2 = $source.width();
+                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                    return 'right';
+                    return 'left';
+            }
+
+
+  $('#upload').click(function()
+    {
+      
+        var CD_ID = $("#CD_IDP").val(); 
+        var Year = $("#YearP").val(); 
+        var Batch = $("#BatchP").val(); 
+      //alert(CD_ID); 
+      
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            
+                            document.getElementById('img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+                        type: "POST",
+                        url: "<?php echo Url('printActualTimeTablePDF'); ?>",
+                        data: {CD_ID: CD_ID,Year: Year,Batch: Batch},
+                        success:function response(responseText, statusText, xhr, $form)
+                        {
+       
+                               var printWin = window.open("","printSpecial");
+                                printWin.document.open();
+                                printWin.document.write(responseText);
+                                printWin.document.close();
+                                printWin.print();
+       
+   
+                         
+
+                        },
+                        complete: function() {
+                            document.getElementById('img4').innerHTML ="";
+
+                        }
+                    });
+        
+    }
+    );
+     /*$('#Trade').change(function(){
+
+       // alert('dg');
+       //e.preventDefault();
+       var Trade = document.getElementById('Trade').value; 
+      // alert(Trade); 
+        //var a=1;
+       var msg = '--- Select Course ---';
+        $("#CourseListCode").html('');
+       $.ajax  ({
+                    
+                    url: "<?php echo url::to('LoadTradeWiseCLCmoTask'); ?>",
+                    data: { Trade: Trade},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        $("#CourseListCode").append("<option value=''>" + msg + "</option>");
+                         $.each(result, function(i, item)
+                        {
+
+
+
+                            $("#CourseListCode").append("<option value=" + item.CD_ID + ">"+ item.CourseListCode+"-"+item.CourseName+"["+item.CourseType+"/"+item.Nvq+"/"+item.CourseLevel+"/"+item.Duration+"]</option>");
+                           // a = a +1;
+
+
+
+                        });
+                                        
+                        
+                        }
+
+
+                    
+                });
+        
+
+
+       
+    });*/
+    $('#Qpackage').change(function(){
+
+       // alert('dg');
+       //e.preventDefault();
+       var Trade = document.getElementById('Trade').value; 
+       var Qpackage = document.getElementById('Qpackage').value;
+      // alert(Trade); 
+        //var a=1;
+       var msg = '--- Select Course ---';
+        $("#CourseListCode").html('');
+       $.ajax  ({
+                     beforeSend: function()
+                                        {
+                                            
+                                            document.getElementById('img3').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                        },
+                    url: "<?php echo url::to('LoadTradeWiseCLCmoTask11'); ?>",
+                    data: { Trade: Trade,Qpackage: Qpackage},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        $("#CourseListCode").append("<option value=''>" + msg + "</option>");
+                         $.each(result, function(i, item)
+                        {
+
+
+
+                            $("#CourseListCode").append("<option value=" + item.CD_ID + ">"+ item.CourseListCode+"-"+item.CourseName+"["+item.CourseType+"/"+item.Nvq+"/"+item.CourseLevel+"/"+item.Duration+"]</option>");
+                           // a = a +1;
+
+
+
+                        });
+                                        
+                        
+                        },
+                                        complete: function() {
+                                            document.getElementById('img3').innerHTML ="";
+
+                                        }
+
+
+                    
+                });
+        
+
+
+       
+    });
+ $("#Trade").change(function() {
+        var TradeId = $("#Trade").val();
+        $("#ComStand").html('');
+        
+        var msg = '--- Select Competency Standard ---';
+      
+            
+                          $.ajax({
+
+                                       beforeSend: function()
+                                        {
+                                            
+                                            document.getElementById('img1').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                        },
+                                        type: "GET",
+                                        url: "<?php echo url::to('LoadCompetencyCourseCreate'); ?>",
+                                        data: {TradeId: TradeId},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#ComStand").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#ComStand").append("<option value=" + item.code + ">" +item.code + "-"+ item.name +  "</option>");
+
+
+
+                                                });
+
+                                        },
+                                        complete: function() {
+                                            document.getElementById('img1').innerHTML ="";
+
+                                        }
+                                });            
+
+            
+       
+    });
+
+                 $("#ComStand").change(function() {
+        var ComStand = $("#ComStand").val();
+        $("#Qpackage").html('');
+        
+        var msg = '--- Select Qualification Package ---';
+      
+            
+                          $.ajax({
+                                        beforeSend: function()
+                                        {
+                                            
+                                            document.getElementById('img2').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                        },
+                                        type: "GET",
+                                        url: "<?php echo url::to('LoadNVQCourseComPackageQQQ'); ?>",
+                                        data: {ComStand: ComStand},
+                                        dataType: "json", 
+                                         success: function(result) {
+                                             $("#Qpackage").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#Qpackage").append("<option value=" + item.id + ">" +item.packagecode + "</option>");
+
+
+
+                                                });
+
+                                        },
+                                        complete: function() {
+                                            document.getElementById('img2').innerHTML ="";
+
+                                        }
+                                });            
+
+            
+       
+    }); 
+
+
+
+ </script>

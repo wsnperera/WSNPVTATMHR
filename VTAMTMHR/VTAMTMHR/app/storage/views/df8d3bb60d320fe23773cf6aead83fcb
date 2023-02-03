@@ -1,0 +1,373 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php
+    $mr=0;                  //use for chech and get new row in months
+    $ch=array(
+    0=>'Mo',
+    1=>'Tu',
+    2=>'We',
+    3=>'Th',
+    4=>'Fr',
+    5=>'Sa',
+    6=>'Su');   // column head values 
+    $monthName=array(0=>'January',1=>'February',2=>'March',3=>'April',
+                    4=>'May',5=>'June',6=>'July',7=>'August',
+                    8=>'September',9=>'October',10=>'November',11=>'December');   // Month Names
+?>
+<br>
+<center>
+<form method='get' action="calander">
+    Trade : 
+    <select name='trade' id='trade'>
+        <option>All Trades</option>
+        <?php foreach($trade as $t): ?>
+            <option><?php echo $t->TradeName; ?></option>
+        <?php endforeach; ?>
+    </select>
+    Course Code : 
+    <select name='courseCode' id='courseCode'>
+        <?php foreach($coursestarted as $t): ?>
+            <option><?php echo $t->CourseCode; ?></option>
+        <?php endforeach; ?>
+    </select>
+    <input type="submit" value='Search' />
+</form>
+</center>
+<?php if(!isset($course)): ?>
+    <?php $nowYear= date("Y");  //get Current year ?>
+<h1><center>Calander For <?php echo $nowYear; ?></center></h1><br>
+    <center>
+    <table border='0' class="table">
+        <?php for($n=1;$n<=12;$n++): ?>
+        <?php $hdYes=FALSE; ?>
+            <?php if($mr==0): ?>
+                <tr>
+            <?php endif; ?>
+            <?php $mr++; ?>
+            <td>
+                <b><center><?php echo $monthName[$n-1]; ?></center></b>
+            <?php
+                $fdt=date("l", mktime(0, 0, 0, $n, 1, $nowYear));      //get selected month first day type
+                $fdt=substr($fdt,0,2);  //substring for generate day no
+                $noDays = cal_days_in_month(CAL_GREGORIAN, $n, $nowYear); //get Month day count
+                $noOfDaysSkip=0;
+                $nr=0;                //use for chech and get new row
+                $c=0;
+                $temp=1;
+                for($c=0;$c<7;$c++)
+                {
+                        if($fdt==$ch[$c])
+                        {
+                            $noOfDaysSkip=$c;
+                        }
+                }
+            ?>
+            <table border='0' class="table">
+                <tr>
+                    <?php for($c=0;$c<7;$c++): ?>
+                        <th><?php echo $ch[$c]; ?></th>
+                    <?php endfor; ?>
+                </tr>
+                <tr>
+                <?php for($c=0;$c<$noOfDaysSkip;$c++): ?>
+                    <td></td>
+                <?php endfor; ?>
+                <?php if($c<7): ?>
+                   <?php for($c=$c;$c<7;$c++): ?>
+                        <?php foreach($holiday as $h): ?>
+                            <?php if( $h->HolidayMonth==$n && $h->HolidayDay==$temp): ?>
+                                <?php if($h->HTId=='4'): ?>
+                                    <td bgcolor='green'><?php 
+                                                            echo $temp++;
+                                                            $hdYes=TRUE;
+                                                            break;
+                                                        ?> 
+                                    </td>
+                                <?php else: ?>
+                                    <td bgcolor='red'><?php 
+                                                            echo $temp++;
+                                                            $hdYes=TRUE;
+                                                            break;
+                                                        ?> 
+                                    </td>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <?php $hdYes=FALSE; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <?php if(!$hdYes): ?>
+                            <td><?php echo $temp++; ?></td>
+                        <?php endif; ?>
+                        <?php $noDays--; ?>
+                        <?php if($c==6): ?>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endfor; ?> 
+                <?php endif; ?>
+                <?php $hdYes=FALSE; ?>
+                <?php for($c=0;$c<$noDays;$c++): ?>
+                    <?php if($nr==0): ?>
+                        <tr>
+                    <?php endif; ?>
+                    <?php $nr++; ?>
+                    <?php foreach($holiday as $h): ?>
+                        <?php if($h->HolidayMonth==$n && $h->HolidayDay==$c+$temp): ?>
+                            <?php if($h->HTId=='4'): ?>
+                                <td bgcolor='green'><?php 
+                                                        echo $c+$temp;
+                                                        $hdYes=TRUE;
+                                                        break;
+                                                    ?> 
+                                </td>
+                            <?php else: ?>
+                                <td bgcolor='red'><?php 
+                                                        echo $c+$temp;
+                                                        $hdYes=TRUE;
+                                                        break;
+                                                    ?> 
+                                </td>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <?php $hdYes=FALSE; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    <?php if(!$hdYes): ?>
+                        <td><?php echo $c+$temp; ?></td>
+                    <?php endif; ?>
+                    <?php if($nr==7): ?>
+                        </tr><?php $nr=0; ?>
+                    <?php endif; ?>
+                <?php endfor; ?>
+            </table>
+            </td>
+            <?php if($mr==4): ?>
+                </tr><?php $mr=0; ?>
+            <?php endif; ?>
+        <?php endfor; ?>
+    </table>
+    </center>
+<?php else: ?>
+    <?php 
+        $startDay=$course->StartDate;//get course start date
+        $startYear=substr($startDay,0,4);   // get start year
+        $startMonth=substr($startDay,5,2);   // get start year
+        $startDate=substr($startDay,8,2);   // get start year
+        $endDay=$course->ExpectedCompleted;//get course expected end date
+        $endYear=substr($endDay,0,4);   // get course expected end year
+        $endMonth=substr($endDay,5,2);   // get course expected end year
+        $endDate=substr($endDay,8,2);   // get course expected end year
+        $start=$startMonth;  // chech start year
+        $end=$endMonth;      // chech end year
+        $courseMode=$course->Mode;   // get course mode
+    ?>
+<center><h1>Calander For Course Code <?php echo $course->CourseCode; ?></h1></center>
+    <?php for($y=$startYear;$y<=$endYear;$y++): ?>
+    <center><h3><u><?php echo $y; ?></u></h3></center>
+        <?php
+        $mr=0;  
+        if($startYear!=$endYear)
+        {
+            if($y==$startYear)
+            {
+                $start=$startMonth;  // chech start year
+                $end=12; 
+            }
+            elseif($y==$endYear) 
+            {
+                $start=1;  // chech start year
+                $end=$endMonth; 
+            }
+            else
+            {
+                $start=1;  // chech start year
+                $end=12; 
+            }
+        }
+        else
+        {
+            $start=$startMonth;  // chech start year
+            $end=$endMonth;
+        }
+        ?>
+        <center>
+        <table border='0' class="table">
+        <?php for($n=$start;$n<=$end;$n++): ?>
+        <?php $hdYes=FALSE; ?>
+            <?php if($mr==0): ?>
+                <tr>
+            <?php endif; ?>
+            <?php $mr++; ?>
+            <td>
+            <b><center><?php echo $monthName[$n-1]; ?></center></b>    
+            <?php
+                $nowYear= date("Y"); //get Current year
+                $fdt=date("l", mktime(0, 0, 0, $n, 1, $y));      //get selected month first day type
+                $fdt=substr($fdt,0,2);  //substring for generate day no
+                $noDays = cal_days_in_month(CAL_GREGORIAN, $n, $y); //get Month day count
+                $noOfDaysSkip=0;
+                $nr=0;                //use for chech and get new row
+                $c=0;
+                $temp=1;
+                for($c=0;$c<7;$c++)
+                {
+                    if($fdt==$ch[$c])
+                    {
+                        $noOfDaysSkip=$c;
+                    }
+                }
+            ?>
+            <table border='0' class="table">
+                <tr>
+                    <?php for($c=0;$c<7;$c++): ?>
+                        <th><?php echo $ch[$c]; ?></th>
+                    <?php endfor; ?>
+                </tr>
+                <tr>
+                <?php for($c=0;$c<$noOfDaysSkip;$c++): ?>
+                    <td></td>
+                <?php endfor; ?>
+                <?php if($c<7): ?>
+                   <?php for($c=$c;$c<7;$c++): ?>
+                        <?php foreach($holiday as $h): ?>
+                            <?php if($h->HolidayYear==$y && $h->HolidayMonth==$n && $h->HolidayDay==$temp): ?>
+                                <?php if($h->HTId=='4'): ?>
+                                    <td bgcolor='green'><?php 
+                                                            echo $temp++;
+                                                            $hdYes=TRUE;
+                                                            break;
+                                                        ?> 
+                                    </td>
+                                <?php else: ?>
+                                    <td bgcolor='red'><?php 
+                                                            echo $temp++;
+                                                            $hdYes=TRUE;
+                                                            break;
+                                                        ?> 
+                                    </td>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <?php $hdYes=FALSE; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <?php if(!$hdYes && $startYear==$y && $startMonth==$n && $temp<=$startDate): ?>
+                            <?php if($startYear==$y && $startMonth==$n && $temp==$startDate): ?>
+                                <td  bgcolor='#F7FF00'><?php echo $temp++; ?></td>
+                            <?php else: ?>
+                                <td><?php echo $temp++; ?></td>
+                            <?php endif; ?>
+                        <?php elseif(!$hdYes && $startYear==$y && $startMonth==$n && $temp==$startDate): ?>
+                            <?php if($startYear==$y && $startMonth==$n && $temp==$startDate): ?>
+                                <td  bgcolor='#F7FF00'><?php echo $temp++; ?></td>
+                            <?php else: ?>
+                                <td><?php echo $temp++; ?></td>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <?php if(!$hdYes && $course->Mode=='Evn'): ?>
+                                <?php if(substr(date("l", mktime(0, 0, 0, $n, $temp,$y)),0,3)=='Sat' || substr(date("l", mktime(0, 0, 0, $n, $temp,$y)),0,3)=='Sun'): ?>
+                                    <td><?php echo $temp++; ?></td>
+                                <?php else: ?>
+                                    <td bgcolor='#B266FF'><?php echo $temp++; ?></td>
+                                <?php endif; ?>
+                            <?php elseif(!$hdYes && substr(date("l", mktime(0, 0, 0, $n, $temp,$y)),0,3)==$course->Mode): ?>
+                                <td bgcolor='#B266FF'><?php echo $temp++; ?></td>
+                            <?php elseif(!$hdYes): ?>
+                                <td><?php echo $temp++; ?></td>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        <?php $noDays--; ?>
+                        <?php if($c==6): ?>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endfor; ?> 
+                <?php endif; ?>
+                <?php $hdYes=FALSE; ?>
+                <?php for($c=0;$c<$noDays;$c++): ?>
+                    <?php if($nr==0): ?>
+                        <tr>
+                    <?php endif; ?>
+                    <?php $nr++; ?>
+                    <?php foreach($holiday as $h): ?>
+                        <?php if($h->HolidayYear==$y && $h->HolidayMonth==$n && $h->HolidayDay==$c+$temp): ?>
+                        
+                            <?php if($h->HTId=='4'): ?>
+                                <td bgcolor='green'><?php 
+                                                        echo $c+$temp;
+                                                        $hdYes=TRUE;
+                                                        break;
+                                                    ?> 
+                                </td>
+                            <?php else: ?>
+                                <td bgcolor='red'><?php 
+                                                        echo $c+$temp;
+                                                        $hdYes=TRUE;
+                                                        break;
+                                                    ?> 
+                                </td>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <?php $hdYes=FALSE; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    <?php if(!$hdYes && $startYear==$y && $startMonth==$n && $c+$temp<=$startDate): ?>
+                        <?php if($startYear==$y && $startMonth==$n && $c+$temp==$startDate): ?>
+                            <td  bgcolor='#F7FF00'><?php echo $c+$temp; ?></td>
+                        <?php else: ?>
+                            <td><?php echo $c+$temp; ?></td>
+                        <?php endif; ?>
+                    <?php elseif(!$hdYes && $endYear==$y && $endMonth==$n && $c+$temp>=$endDate): ?>
+                        <?php if($endYear==$y && $endMonth==$n && $c+$temp==$endDate): ?>
+                            <td  bgcolor='#F7FF00'><?php echo $c+$temp; ?></td>
+                        <?php else: ?>
+                            <td><?php echo $c+$temp; ?></td>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <?php if(!$hdYes && $course->Mode=='Evn'): ?>
+                                <?php if(substr(date("l", mktime(0, 0, 0, $n, $c+$temp,$y)),0,3)=='Sat' || substr(date("l", mktime(0, 0, 0, $n,$c+$temp,$y)),0,3)=='Sun'): ?>
+                                    <td><?php echo $c+$temp; ?></td>
+                                <?php else: ?>
+                                    <td bgcolor='#B266FF'><?php echo $c+$temp; ?></td>
+                                <?php endif; ?>
+                        <?php elseif(!$hdYes && substr(date("l", mktime(0, 0, 0, $n,$c+$temp,$y)),0,3)==$course->Mode): ?>
+                                <td bgcolor='#B266FF'><?php echo $c+$temp; ?></td>
+                        <?php elseif(!$hdYes): ?>
+                            <td><?php echo $c+$temp; ?></td>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    <?php if($nr==7): ?>
+                        </tr><?php $nr=0; ?>
+                    <?php endif; ?>
+                <?php endfor; ?>
+            </table>
+            </td>
+            <?php if($mr==4): ?>
+                </tr><?php $mr=0; ?>
+            <?php endif; ?>
+        <?php endfor; ?>
+    </table>
+    </center>
+    <?php endfor; ?>
+<?php endif; ?>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type='text/javascript'>
+    $("#trade").change(function()
+    {
+        $.ajax
+        ({
+            type: "GET",
+            url: 'getCourseCode',
+            data:{trade : $("#trade").val()},
+            dataType:"json",
+            success: function(result)
+            {
+                
+               $("#courseCode").html(''); 
+                
+                $.each(result, function(i,item) 
+                {
+                    //alert(item);
+                    $("#courseCode").append('<option>'+item.courseCode+'</option>')
+                });
+                
+            },
+        });
+    });
+</script>

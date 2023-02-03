@@ -1,0 +1,124 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>Course Started<small><i class="icon-double-angle-right"></i>Create</small></h1>
+                <a href=<?php echo url('viewCourseStarted'); ?>> << Back </a>
+            </div>
+            <form class="form-horizontal" action='' method="POST">
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Institute : </label>
+                    <div class="controls">
+                        <input type="text" readonly="true" value="<?php echo ProjectN::getInstitute()->InstituteName; ?>" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Organization : </label>
+                    <div class="controls">
+                        <input type="text" readonly="true" value="<?php echo ProjectN::getOrganization()->OrgaName; ?>" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course List Code And Batch : </label>
+                        <div class="controls">
+                            <select name='CourseListCode' id='CourseListCode' onchange="ajaxCreateCourseCode()" required="true">
+                                <option></option>
+                                <?php foreach($CourseYearPlanNotParallelGroups as $cyp): ?>
+                                <option value="<?php echo $cyp['id']; ?>"><?php echo $cyp['CourseListCode']; ?> Batch-<?php echo $cyp['batch']; ?></option>
+                                <?php endforeach; ?>
+                                <?php foreach($CourseYearPlanParallelGroups as $cyp): ?>
+                                <option value="<?php echo $cyp['id']; ?>"><?php echo $cyp['CourseListCode']; ?> Batch-<?php echo $cyp['batch']; ?> (Parallel Group)</option>
+                                <?php endforeach; ?>
+                            </select>
+                            <span style="color: red"><b>*</b></span>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Start Date : </label>
+                        <div class="controls">
+                            <input type="date" id='startDate' name="startDate" min="<?php echo date('Y-m-d'); ?>"  required="true" onchange="ajaxCreateCourseCode()"/>
+                            <span style="color: red"><b>*</b></span>
+                        </div>
+                </div>
+                <div class="control-group" id="gif">
+                    <div class="controls">
+                        <div class="control-group" id="gen"></div>
+                    </div>
+                </div>
+                <div class="control-group" id="save">
+                    <div class="controls" id="CouseCode" style="background-color: gray ; width: 220px">
+                        <center><h2><span id='courseCodeDiv' style=" color: white ;"></span></h2></center>
+                        <input type="hidden" name="courseCode" value="" id="courseCode" readonly="true"/>
+                    </div>
+                    <br>
+                    <div class="controls" style="width: 220px;">
+                        <input type="submit" class="btn btn-small btn-primary btn-block" value="Create"/>
+                    </div>
+                 </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type='text/javascript'>
+    $( document ).ready(function()
+    {
+        $("#save").hide();
+        $("#gif").hide();
+    });
+    function ajaxCreateCourseCode()
+    {
+        if($("#CourseListCode").val()=='' || $("#startDate").val()=='')
+        {
+            $("#save").hide();
+            $("#gif").hide();
+        }
+        else
+        {
+            $.ajax
+            ({
+                beforeSend: function() 
+                {
+                    document.getElementById('gen').innerHTML = "<br><br><img height='80%' width='50%' src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                    $("#save").hide();
+                    $("#gif").show();
+                },
+                type: "POST",
+                url: 'ajaxCreateCourseCode',
+                data:{ cypID :$("#CourseListCode").val() , year : $("#startDate").val()},
+                success: function(result)
+                {
+                    $("#save").show();
+                    document.getElementById('courseCodeDiv').innerHTML = '<br>Course Code<br><br>'+result+'<br><br>';
+                    $("#courseCode").val(result);
+                },
+                complete: function() 
+                {
+                    document.getElementById('gen').innerHTML = "";
+                    $("#gif").hide();
+                },
+            });
+        }
+     }
+</script>
+      
+           
+               
+               
+               
+      
+        
+        
+
+    

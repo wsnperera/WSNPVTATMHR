@@ -1,0 +1,118 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>Implant Placement<small><i class="icon-double-angle-right"></i>Create</small></h1>
+            </div>
+            <form class="form-horizontal" action='createIP' method="POST"/>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course Code : </label>
+                    <div class="controls">
+                        <select name='CourseCode' id='CourseCode'>
+                            <option></option>
+                            <?php foreach($courseCode as $cc): ?>
+                                <option><?php echo $cc->CourseCode; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>   
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Student ID : </label>
+                        <div class="controls">
+                            <span id="placeHolder">        
+                            </span>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Type : </label>
+                    <div class="controls">
+                        <select name='Type'>
+                            <option>Local Employment</option>
+                            <option>Foreign Employment</option>
+                            <option>Self Employment</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Salary : </label>
+                    <div class="controls">
+                        <input type="text" name="Salary"  />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Date Of Placed : </label>
+                    <div class="controls">
+                        <input type="date" name="DateOfPlaced"  />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Duration : </label>
+                    <div class="controls">
+                        <input type="text" name="Duration"  /> Months 
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type='text/javascript'>   
+    <?php if(isset($done)): ?>
+        
+    $.gritter.add({ title: "", text: "Implant Placement Added Successfully", class_name: "gritter-info gritter-center" });
+
+    <?php endif; ?>
+    
+    $("#CourseCode").change(function()
+    {
+        var x=true;
+        var html = '<select name="StudentId">';
+        
+        $.ajax
+        ({
+            type: "GET",
+            url: 'ajaxStudent',
+            data:{courseCode : $("#CourseCode").val()},
+            dataType:"json",
+            success: function(result)
+            {
+                $("#placeHolder").html('');
+                $.each(result, function(i,item) 
+                {
+                    html+='<option >'+item.id+'</option>';
+                });
+                html+='</select>';
+                
+                //console.log(html);
+                
+                $("#placeHolder").html(html);
+            }
+        });
+    });
+</script>
+      
+           
+               
+               
+               
+      
+        
+        
+
+    

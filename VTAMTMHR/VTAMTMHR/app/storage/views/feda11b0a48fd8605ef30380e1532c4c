@@ -1,0 +1,174 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('courses'); ?>> << Back to Course Started </a> 
+
+<?php endif; ?>
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="page-header position-relative">
+
+            <h1>
+                Course Started			
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    View
+                </small>			
+            </h1>
+        </div>
+
+        <form name='search' action="<?php echo url('findCoursestarted'); ?>" method='get'>
+
+            Search Course Started By Course Code <input type='text' name="key"/>   <input type='submit' value='Search'/>
+
+            
+            <a href=<?php echo url('createCoursestarted'); ?>><input type='button' value='Create Course Started' /></a>
+           
+
+
+            <?php if(isset($Completed)): ?>
+            <a href=<?php echo url('coursestarted'); ?>><input type='button' value='View Not Completed Courses' /></a>
+            <?php else: ?>
+            <a href=<?php echo url('coursestarted?Completed=Yes'); ?>><input type='button' value='View Completed Courses' /></a>
+            <?php endif; ?>
+
+
+        </form>
+
+
+
+
+
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+
+
+
+
+            <table class="table">
+
+
+                <tr>
+
+                    <th>CS ID</th>
+                    <th>Institute Name</th>
+                    <th>Course List Code</th>
+                    <th>Course Code</th>
+                    <th>Term</th>
+                    <th>Course Type</th>
+                    <th>Course Fee</th>
+                    <th>Start Date</th>
+                    <th>Expected Completion Date</th>
+                    <th>Completed</th>
+					<?php if(isset($Completed)): ?>
+                    <th>Completed Date</th>
+                    <th>Final Exam Held</th>
+                    <th>Implant Placed</th>
+                    <th>Implant Completed</th>
+                    <th>Year Start</th>
+					<?php endif; ?>
+
+
+                    
+                    <th>Remove</th>
+                   
+                </tr>
+                <?php if(isset ($coursestarteds)): ?>
+
+                <?php foreach ($coursestarteds as $c): ?>
+
+                <tr>
+                   
+                    
+                        <?php if(!isset($Completed)): ?> 
+                                          
+                            <td><a href="<?php echo url('editCoursestarted?cid='.$c->CS_ID); ?>"><?php echo $c->CS_ID; ?></a></td>
+                             
+                        <?php else: ?>
+                         
+                             <td><?php echo $c->CS_ID; ?></td>
+                        <?php endif; ?>
+           
+                    <td><?php echo $c->Institue->InstituteName; ?></td>
+                    <td><?php echo $c->CourseListCode; ?></td>
+                    <td><?php echo $c->CourseCode; ?></td>
+                    <td><?php echo $c->Term; ?></td>
+                    <td><?php echo $c->type; ?></td>
+                    <td><?php echo $c->CourseFee; ?></td>
+                    <td><?php echo $c->StartDate; ?></td>               
+                    <td><?php echo $c->ExpectedCompleted; ?></td>
+                    <td><?php echo $c->Completed; ?></td>
+					<?php if(isset($Completed)): ?>
+                    <td><?php echo $c->CompletedDate; ?></td>
+                    <td><?php echo $c->FinalExamHeld; ?></td>
+                    <td><?php echo $c->InplantPlaced; ?></td>
+                    <td><?php echo $c->InplantCompleted; ?></td>
+                    <td><?php echo $c->YearStart; ?></td>
+					<?php endif; ?>
+
+                    <td>
+                        <form id="deleteform"  action=<?php echo url('deleteCoursestarted'); ?> method="POST" onsubmit="return doConfirm('<?php echo $c->CourseListCode; ?>', this)">
+
+                            <input type="hidden" name='cid' value= "<?php echo $c->CourseCode; ?>" />
+
+
+                              
+                            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                              
+                        </form>
+
+                    </td>
+
+                </tr>
+
+
+                <?php endforeach; ?>
+
+                <?php endif; ?>
+
+            </table>
+
+
+
+
+
+
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+
+
+            function doConfirm(holiday, formobj)
+            {
+
+
+            bootbox.confirm("Are you sure you want to remove " + holiday, function(result)
+            {
+            if (result)
+            {
+            formobj.submit();
+            }
+
+
+            });
+                    return false; // by default do nothing hack :D
+            }
+
+
+
+
+
+
+
+</script>

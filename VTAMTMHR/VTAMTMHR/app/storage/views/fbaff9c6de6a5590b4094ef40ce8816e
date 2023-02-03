@@ -1,0 +1,86 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>Payments<small><i class="icon-double-angle-right"></i>View</small></h1>
+            </div>
+            <form method='GET' action='payFee' >
+                <div class="control-group">
+                    <div class="controls"> 
+                        Course Code &nbsp;&nbsp;&nbsp;:&nbsp;
+                        <select name='courseCode' id='courseCode'>
+                            <option></option>
+                            <?php foreach($coursestarted as $c): ?>
+                                <option><?php echo $c->CourseCode; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <!--<a href=<?php echo url('payFegistrationFee'); ?>><input type='button' value='Pay Registration Fee' /></a> last coding point--> 
+                    </div>
+                    
+                </div>
+                <div class="control-group">
+                        <div class="controls">
+                            <span id="placeHolder">        
+                            </span>
+                        </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type='text/javascript'>   
+    <?php if(isset($done)): ?>
+        
+    $.gritter.add({ title: "", text: "Transaction Successfully", class_name: "gritter-info gritter-center" });
+
+    <?php endif; ?>
+    
+    $("#courseCode").change(function()
+    {
+        if($("#courseCode").val()!='')
+        {
+            var x=true;
+            var html = '';
+            $.ajax
+            ({
+                type: "GET",
+                url: 'ajaxFee',
+                data:{courseCode : $("#courseCode").val()},
+                dataType:"json",
+                success: function(result)
+                {
+                    var c=0;
+                    $("#placeHolder").html('');
+                    $.each(result, function(i,item) 
+                    {
+                        if(x)
+                        {
+                            x=false;
+                            html+= "<table class='table'><tr><th>Student No</th><th>Student Name</th><th>Student NIC</th><th>Course Code</th><th>Training No</th><th>Paid Amount</th><th>Due Amount</th><th></th></tr>";
+
+                        }
+                        html+= '<tr><td><a href="viewFeeOne?id='+item.id+'">'+item.id+'</a></td><td>'+item.name+'</td><td>'+item.nic+'</td><td>'+item.courseCode+'</td><td>'+item.trainingNo+'</td><td>'+item.amountPaid+'</td><td>'+item.CourseFee+'</td>';
+                        html+='<td>';
+                        html+='<input type="hidden" name="id" value='+item.id+' /><input type="hidden" name="name" value='+item.name+' />';
+                        html+='<input type="hidden" name="courseCode" value='+item.courseCode+' /><input type="hidden" name="trainingNo" value='+item.trainingNo+' />';
+                        html+='<input type="hidden" name="amountPaid" value='+item.amountPaid+' /><input type="hidden" name="due" value='+item.CourseFee+' />';
+                        html+='<input type="hidden" name="nic" value='+item.nic+' />';
+                        html+='<button type="submit" class="btn btn-grey btn-small">';
+                        html+='<i class="icon-dollar icon-2x icon-only"></i></button></td></tr>';
+
+                    });
+                    html+='</table>';
+                    $("#placeHolder").html(html);
+                }
+            });
+        }
+        else
+        {
+            $("#placeHolder").html('');
+        }
+    });
+</script>
+
+

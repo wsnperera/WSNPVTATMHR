@@ -1,0 +1,207 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<a href="<?php echo url('viewEmployee'); ?>"> << Back to Employee </a> 
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Employee		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+
+            <!--Write your code here start-->
+            <form class="form-horizontal"  enctype="multipart/form-data" method="POST" action="<?php echo url('Photo_Of_Employee'); ?>">
+                <h4 style="text-align: right"> <b style="color: red">*</b></<b>Required/Mandatory Fields </b></h4>
+
+                <input type="hidden" name="id" value="<?php echo $Employee->id; ?> "/>
+               
+            </form>
+
+            <div class="page-header position-relative"></div>
+            <form class="form-horizontal" action="<?php echo url('editEmployee'); ?>" method="POST" />
+            <input type="hidden" name="id" value="<?php echo $Employee->id; ?> "/>
+            <br/>
+
+            <div class="control-group">
+                <label class="control-label" for="InstituteId">Organisation Name</label>
+                <div class="controls">
+                    <input type="text"  disabled="true" value="<?php echo $institute; ?>"/>
+                    <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>"/>
+                </div>
+            </div>
+
+
+            <div class="page-header position-relative"></div>
+            <b>Personal Details</b>
+             <div class="control-group">
+                <label class="control-label" for="NIC">NIC</label>
+                <div class="controls">
+                    <input type="text" name="NIC" id="load_nic_val" value="<?php echo $Employee->NIC; ?>" required/><b style="color: red">*</b>
+                    <span id="ajax_img2"></span>
+
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="EPFNo">Employee Reference No</label>
+                <div class="controls">
+                    <input type="text" name="EPFNo" value="<?php echo $Employee->EPFNo; ?>" required /><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="Initials">Initials</label>
+                <div class="controls">
+                    <input type="text" name="Initials" value="<?php echo $Employee->Initials; ?>" required/><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="Name">Name</label>
+                <div class="controls">
+                    <input type="text" name="Name" value="<?php echo $Employee->Name; ?>" required/><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="LastName">Last Name</label>
+                <div class="controls">
+                    <input type="text" name="LastName" value="<?php echo $Employee->LastName; ?>" required/><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="Sex">Sex</label>
+                <div class="controls">
+                    <select name="Sex">
+                        <option <?php if($Employee->Sex == "Male"): ?> selected value="<?php echo $Employee->Sex; ?>" <?php endif; ?>>Male</option>
+                        <option <?php if($Employee->Sex == "Female"): ?> selected value="<?php echo $Employee->Sex; ?>" <?php endif; ?>>Female</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="DOB">DOB</label>
+                <div class="controls">
+                    <input type="date" name="DOB" value="<?php echo $Employee->DOB; ?>" />
+                </div>
+            </div>
+
+      
+
+        
+         
+     
+      
+            
+             <div class="page-header position-relative"></div>
+            <b>Currently Working Centre</b>
+            <div class="control-group">
+                <label class="control-label" for="Emergency">Crenter name</label>
+                <div class="controls">
+                     <select name="ToOrganisation" id="ToOrganisation" required>
+                            <option value="">--Select--</option>
+                            <?php foreach($centers as $c): ?>
+                            <option <?php if($c->id == $Employee->CurrentOrgaID): ?> selected <?php endif; ?> value="<?php echo $c->id; ?>"><?php echo $c->OrgaName; ?> - (<?php echo $c->Type; ?>)</option>
+                            <?php endforeach; ?>
+                           
+                        </select>
+                        <b style="color: red">*</b>
+                </div>
+            </div>
+             <div class="page-header position-relative"></div>
+            <b>Current Designation</b>
+            <div class="control-group">
+                <label class="control-label" for="Emergency">Designation</label>
+                <div class="controls">
+                     <select name="Designation" id="Designation" required>
+                            <option value="">--Select--</option>
+                            <?php foreach($designations as $d): ?>
+                            <option <?php if($d->id == $Employee->CurrentDesignation): ?> selected <?php endif; ?> value="<?php echo $d->id; ?>"><?php echo $d->Designation; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <b style="color: red">*</b>
+                </div>
+            </div>
+             <div class="control-group">
+                <label class="control-label" >Active</label>
+                <div class="controls">
+                     <select name="Active" id="Active" required>
+                            <option value="">--Select Active tatus--</option>
+                             <option value="1" <?php if($Employee->Active == 1): ?> selected="true" <?php endif; ?>>Yes</option>
+							 <option value="0" <?php if($Employee->Active == 0): ?> selected="true" <?php endif; ?>>No</option>
+                        </select>
+                        <b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="page-header position-relative"></div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-small btn-primary">Update</button>
+                </div>
+            </div>
+            </form>
+        </div>
+        <!--/span 4 for error handling -->
+
+        <div class="span4">
+
+
+
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+
+
+
+
+/*  $("#Photograph").change(function() {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#preview').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+
+
+
+            //    $.ajax({
+            //                url: "<?php echo url::to('abc'); ?>",
+            //                //data: {DistrictName: epf},
+            //                success: function(result)
+            //                {
+            //                   alert(result);
+            //                }
+            //            });
+
+        }); */
+ 
+
+    
+    
+
+</script>

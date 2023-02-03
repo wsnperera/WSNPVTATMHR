@@ -1,0 +1,165 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('viewTraininggroup'); ?>> << Back to Training Group </a> 
+
+<?php endif; ?>
+
+
+    
+                
+
+
+				<div class="page-content">
+                                    
+					<div class="row-fluid">
+                                            
+                                     <div class="span12">
+							
+                                        <!--PAGE CONTENT BEGINS-->
+
+                                        
+                                        <!--/.page-header-->
+                                        
+                                        <div class="page-header position-relative">
+                                            
+				<h1>
+				Class		
+				<small>
+					<i class="icon-double-angle-right"></i>
+					View
+				</small>			
+				</h1>                  
+                                            
+                                            <form name='search' action="<?php echo url('findTraininggroups'); ?>" method='get'>
+                                                
+                                            <label class="control-label" for="CourseCode">Course Code</label>
+                                            <select name="key" ><label class="control-label" for="CourseCode">Course Code</label>
+                                            <?php foreach ($coursecodes as $i): ?>
+                                          
+                                            <option value="<?php echo $i->CourseCode; ?>"><?php echo $i->CourseCode; ?></option>
+
+                                            <?php endforeach; ?>
+
+
+                                            </select>
+
+
+
+
+                                            <!-- Search Course Code <input type='Dropdown' name="key"/>-->   <input type='submit' value='Search'/>
+                                             
+                                             <!--<a href=<?php echo url('createHoliday'); ?>><input type='button' value='Create Holiday' /></a>-->
+                                               
+                                              <a href=<?php echo url('createClass'); ?>><input type='button' value='Create Class' /></a>
+                                             <a href="<?php echo url('downloadTG'); ?>" class="btn btn-large pull-right"><i class="icon-download-alt"> </i> Download </a>  
+                                            </form>
+                                            
+                                          
+                                            
+                                            
+                                            
+						<div class="span12">
+							<!--PAGE CONTENT BEGINS-->
+
+
+
+
+								<table class="table">
+
+
+										<tr>
+                                                                                        <th>Student ID</th>
+											<th>Institute ID</th>
+                                                                                        <th>Organisation ID</th>
+											<th>Course  Code</th>
+                                                                                        <th>Batch Code</th>
+                                                                                 
+                                                                                     
+                                                                                        <th>Class No</th>
+                                                                                         <th>Remove</th>
+                                                                                        
+                                                                                      
+
+										</tr>
+<?php if(isset ($traininggroups)): ?>
+
+            <?php foreach ($traininggroups as $c): ?>
+
+                <tr>
+                    
+<td><a href="<?php echo url('editTraininggroup?cid='.$c->StudentID); ?>"><?php echo $c->StudentID; ?></a></td>
+                            
+                         
+                            <td><?php echo $c->InstituteId; ?></td>
+                            <td><?php echo $c->OrgaId; ?></td>
+                             <td><?php echo $c->CourseCode; ?></td>
+                             <td><?php echo $c->BatchCode; ?></td>
+                          
+                             <td><?php echo $c->TrainingGroup; ?></td>
+  <input type="hidden" name='coursecode' value= "<?php echo $c->CourseCode; ?>" />
+                                 <td>
+                                     <form id="deleteform"  action=<?php echo url('DeleteTraininggroups'); ?> method="POST" onsubmit="return doConfirm('<?php echo $c->StudentID; ?>',this)">
+
+                                         <input type="hidden" name='cid' value= "<?php echo $c->StudentID; ?>" />
+                                       
+                                         
+                      
+                                          <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+
+                                     </form>
+
+                                 </td>
+
+                </tr>
+
+
+            <?php endforeach; ?>
+
+    <?php endif; ?>
+
+								</table>
+
+								
+								
+                                                                                                                                                
+
+
+							<!--PAGE CONTENT ENDS-->
+						</div><!--/.span-->
+					</div><!--/.row-fluid-->
+				</div><!--/.page-content-->
+
+			<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+                        
+
+<script type="text/javascript">
+    
+  
+        function doConfirm(holiday,formobj)
+        {
+            
+            
+            bootbox.confirm("Are you sure you want to remove "+holiday, function(result) 
+            {
+                   if(result) 
+                   {
+                        formobj.submit();
+							
+                    }
+                    
+                    
+            });
+            
+         
+            return false;  // by default do nothing hack :D
+        }
+          
+   
+         
+         
+        
+
+    
+</script>

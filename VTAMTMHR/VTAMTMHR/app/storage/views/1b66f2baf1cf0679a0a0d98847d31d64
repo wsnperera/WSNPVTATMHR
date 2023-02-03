@@ -1,0 +1,238 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<a href=<?php echo url('employeeexperience'); ?>> << Back to Employee Experience</a> 
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+            Employee		
+            <small>
+                <i class="icon-double-angle-right"></i>
+                Work Experience
+                <i class="icon-double-angle-right"></i>
+                Create
+            </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <form class="form-horizontal" action="<?php echo url('createEmployeeexperience'); ?>" method="POST" name="form1" />
+
+            <div class="control-group" >
+                <td> <input type="hidden" name="Emp_ID" id="Emp_ID"  /></td>
+            </div >
+            
+            <div class="control-group" >
+            <label class="control-label" for="form-field-2">Institute Name</label></td>
+            <div class="controls">
+            <input type="hidden" value="<?php echo $user->instituteId; ?>" name="instituteId" />
+            <input type="text" value="<?php echo Institute::where('InstituteId', "=", $user->instituteId)->pluck('InstituteName');; ?>"  readonly="true"/>
+            </div>
+            </div >
+
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <!-- Error Message -->
+
+            <div class="alert alert-error">
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+            </div>
+
+            <!-- Error Message -->
+
+            <?php endforeach; ?>
+
+            <?php endif; ?>
+
+            
+            <div class="control-group" >
+                <label class="control-label" for="form-field-6">EPF No</label>
+                <div class="controls">
+                    <input type="text" name="EPF" required="required" id="EPF"/>
+                </div >
+            </div >
+            
+            <div class="control-group" >
+                 <label class="control-label" for="form-field-4">Employee Name</label></td>
+            <div class="controls">
+                <label  id="Emp_Name" name="Emp_Name"></label>
+            </div>
+            </div >
+
+            <div class="control-group" >
+                <label class="control-label" for="form-field-6">Joined Company Name</label>
+                <div class="controls">
+                    <select  id="CompanyName" required="required" onchange="company()">
+                        <option></option>
+                        <?php foreach ($companyexperience as $ce): ?>
+                        <option value="<?php echo $ce->EECompanyName; ?>"><?php echo $ce->EECompanyName; ?></option>
+                        <?php endforeach; ?>
+                        <option>Other</option>
+                    </select>
+                    <span id="jo_company" ></span>
+                </div >
+            </div>
+
+            <div class="control-group" >
+                <label class="control-label" for="form-field-6">Joined Date</label>
+                <div class="controls">
+                    <input type="date" name="JoinedDate" required="required" id="JoinedDate"/>
+                </div>
+            </div >
+
+            <div class="control-group" >
+                <label class="control-label" for="form-field-8">Joined Designation</label>
+                <div class="controls">
+                    <select id="JoinedDesignation"required="required" onchange="designation()">
+                        <option></option>
+                        <?php foreach ($joineddesignation as $jd): ?>
+                        <option value="<?php echo $jd->EEDesignation; ?>"><?php echo $jd->EEDesignation; ?></option>
+                        <?php endforeach; ?>
+                        <option>Other</option>
+                    </select>
+                    <span id="jo_desig"></span>
+                </div >
+            </div>
+
+            <div class="control-group" >
+                <label class="control-label" for="form-field-7">Resigned Date</label>
+                <div class="controls">
+                    <input type="date" name="DateResigned" id="DateResigned" required="required" onblur="time()"/>
+                </div>
+            </div >
+
+
+            <div class="control-group" >
+                <label class="control-label" for="form-field-9">Position Held</label>
+                <div class="controls">
+                    <select  id="PositionHeld" required="required" onchange='position()'>
+                        <option></option>
+                        <?php foreach ($joineddesignation as $jd): ?>
+                        <option value="<?php echo $jd->EEDesignation; ?>"><?php echo $jd->EEDesignation; ?></option>
+                        <?php endforeach; ?>
+                        <option>Other</option>
+                    </select>
+                    <span id="po_held"></span>
+                </div>
+            </div >
+
+            <div class="control-group" >
+                <label class="control-label" for="form-field-9">Reason to Leave</label>
+                <div class="controls">
+                    <textarea rows="4" name="Reason" placeholder="Type your reason here...!"></textarea>
+                </div>
+            </div >
+
+            <div class="control-group" >
+                <div class="controls"><input type="submit" class="btn btn-small btn-primary"   value="Submit" >
+                <span class="controls"><input type="reset" value="Clear" class="btn btn-small btn-grey"/></span></div>
+            </div >
+            
+        </div>
+
+        </form>
+        <!--PAGE CONTENT ENDS-->
+    </div><!--/.span-->
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script type="text/javascript">
+    $("#EPF").change(function() 
+    {
+        var epf = document.getElementById('EPF').value;
+        $.ajax({
+            url: "<?php echo url::to('epfajax'); ?>",
+            data: {epf: epf},
+            success: function(re) {
+                document.getElementById('Emp_ID').value = re;    
+            }
+        });
+         $.ajax({
+            url: "<?php echo url::to('nameajax'); ?>",
+            data: {epf: epf},
+            success: function(name) {
+                document.getElementById('Emp_Name').innerHTML = name;
+            }
+        });
+
+    });
+   function company()
+    {
+        var com = document.getElementById('CompanyName').value;
+        var divv = document.getElementById("jo_company");
+        if (com === 'Other') {
+            toAppend = "<input type='text'name='CompanyName'placeholder='Please Specify...!' >";
+            divv.innerHTML = toAppend;
+            return;
+        }
+        else
+        {
+            divv.innerHTML = "<input type='hidden' name='CompanyName' value='" + com + "'/>";
+        }
+    }
+    function designation() 
+    {
+        var desing = document.getElementById('JoinedDesignation').value;
+        var divv = document.getElementById("jo_desig");
+        if (desing === 'Other') {
+            toAppend = "<input type='text'name='JoinedDesignation'placeholder='Please Specify...!' >";
+            divv.innerHTML = toAppend;
+            return;
+        }
+        else
+        {
+            divv.innerHTML = "<input type='hidden' name='JoinedDesignation' value='" + desing + "'/>";
+        }
+    }
+    function position()
+    {
+        var poi = document.getElementById('PositionHeld').value;
+        var divv = document.getElementById("po_held");
+        if (poi === 'Other') {
+            toAppend = "<input type='text'name='PositionHeld'placeholder='Please Specify...!' >";
+            divv.innerHTML = toAppend;
+            return;
+        }
+        else
+        {
+            divv.innerHTML = "<input type='hidden' name='PositionHeld' value='" + poi + "'/>";
+       
+                }
+    }
+    function time()
+    {
+        var start=document.getElementById('JoinedDate').value;
+        var end=document.getElementById('DateResigned').value;
+         var s = start.split('-');
+          var e = end.split('-');    
+      
+        var y1 = s[0];
+        var m1 = s[1];
+        var d1 = s[2];
+
+        var d2 = e[2];
+        var m2 = e[1];
+        var y2 = e[0];
+        if (y2 - y1 >= 0 && m2 - m1 >= 0 && d2 - d1 >= 0) {
+            return true;
+        } else if (y2 - y1 >= 0 && m2 - m1 > 0) {
+            return true;
+        } else if (y2 - y1 > 0) {
+            return true;
+        } else {
+            alert('You cannot select a Resigned Date earlier than Joined Date!');
+        }
+    }
+    
+
+</script>
+
+

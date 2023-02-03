@@ -1,0 +1,564 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+	<div class="span8">
+       
+            <div class="page-header position-relative">
+                <!--<a href=<?php echo url('ViewAndDownloadAssessor'); ?>> << Back to Assessor View</a>-->
+                <h1>Accreditation Payment<small><i class="icon-double-angle-right"></i>Create</small></h1>
+            </div>
+			
+			    
+            <form class="form-horizontal" action='' method="POST"  onsubmit="return validateForm()" id='NewModule'>
+                
+                <div class="control-group">
+                   
+                    <div class="controls">
+
+                    <?php if(Session::has('done')): ?>
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-ok"></i>
+                                Accreditation Application Record Added Successfully 
+                            </strong>
+                            <br>
+                        </div>
+                    <?php endif; ?>
+                     </div>
+                   
+                </div> 
+				
+				<div class="control-group">
+                    <label class="control-label" >District:</label>
+                        <div class="controls" id="hfuidy">
+                            <select name="District" id="District" required>
+						        <option value="">--Select District--</option>
+								<?php foreach($Districts as $d): ?>
+                                <option value="<?php echo $d->DistrictCode; ?>"><?php echo $d->DistrictName; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                           
+                        </div>         
+                 </div>
+				
+                <div class="control-group">
+                    <label class="control-label" >Centre : </label>
+                        <div class="controls" id="Trserade">
+                            <select name="CenterID" id="CenterID" required>
+                                 <option value="">--Select Centre--</option>
+								
+                                <?php foreach($Centers as $v): ?>
+                                <option value="<?php echo $v->id; ?>"><?php echo $v->OrgaName; ?> - <?php echo $v->Type; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                           
+                        </div>         
+                 </div> 
+              
+				<div class="control-group">
+                <label class="control-label" for="CourseListCode">Trade : </label>
+                <div class="controls">
+                    <select name="Trade" id="Trade" required>
+                        <option value="">--Select--</option>
+                        <?php foreach($Trades as $t): ?>
+                        <option value="<?php echo $t->TradeId; ?>"><?php echo $t->TradeCode; ?> - <?php echo $t->TradeName; ?></option>
+                        <?php endforeach; ?>
+                    </select><span id="img1"></span>
+                <!--    Duration <input id="Duration" placeholder="" type="text"> -->
+                </div>
+            </div>
+			 <div class="control-group">
+                <label class="control-label" for="CD_ID">Course Name : </label>
+                <div class="controls">
+                    <select name="CD_ID" id="CD_ID" required>
+                        <option value="">--Select Course--</option>
+                       
+                    </select>
+                <!--    Duration <input id="Duration" placeholder="" type="text"> -->
+                </div>
+            </div> 
+			 <div class="controls" id='table'>
+                </div> 
+                
+                <div class="control-group">
+                    <label class="control-label" for="ApplicationReciievedStatus">Application Recieved Status  : </label>
+                        <div class="controls">
+                            <select name='ApplicationReciievedStatus' id='ApplicationReciievedStatus' required>
+                                 <option value="">--Select Status--</option>
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+								
+                               
+                            </select>
+                        </div>
+                </div>
+				<div class="control-group" id="ApplicationRecievedDate1">
+                    <label class="control-label" for="ApplicationRecievedDate">Application Recieved Date : </label>
+                        <div class="controls">
+                           <input type="Date" name="ApplicationRecievedDate" id="ApplicationRecievedDate"  />
+                        </div>
+                </div>
+				  
+                <div class="control-group" id="PaymentSubmitStatus1">
+                    <label class="control-label" for="PaymentSubmitStatus">Payment Submit Status : </label>
+                        <div class="controls">
+                            <select name='PaymentSubmitStatus' id='PaymentSubmitStatus' >
+                                 <option value="">--Select Status--</option>
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+								
+                               
+                            </select>
+                        </div>
+                </div>
+					 <div class="control-group" id="PayDate1">
+                    <label class="control-label" for="PayDate">Payment Date : </label>
+                        <div class="controls">
+                           <input type="Date" name="PayDate" id="PayDate"  />
+                        </div>
+                </div>
+				<div class="control-group" id="PayAmount1">
+                    <label class="control-label" for="PayAmount">Pay Amount: </label>
+                        <div class="controls">
+                           <input type="text" name="PayAmount" id="PayAmount"  value="2000"/>
+                        </div>
+                </div>
+				<div class="control-group" id="VoucherNo1">
+                    <label class="control-label" for="VoucherNo">VoucherNo: </label>
+                        <div class="controls">
+                           <input type="text" name="VoucherNo" id="VoucherNo"  />
+                        </div>
+                </div>
+               
+         <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-block btn-pink">Save</button>
+                </div>
+            </div>             
+
+            </form>
+			 <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+		
+		
+		</div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+                                            function doConfirm(course, formobj)
+                                            {
+                                            bootbox.confirm("Are you sure you want to remove Course Year Plan with Course List Code : " + course, function(result)
+                                            {
+                                            if (result)
+                                            {
+                                            formobj.submit();
+                                            }
+                                            });
+                                                    return false; // by default do nothing hack :D
+                                            }
+
+                                    $('#sample-table-2').dataTable({
+                                    "aoColumns": [
+                                          
+                                    {"bSortable": false},
+                                    {"bSortable": false},
+                                    {"bSortable": false},
+									{"bSortable": false},
+                                            null,
+											null,
+									//{"bSortable": false},
+											null,
+												null,
+                                            null,
+                                    {"bSortable": false},
+                                            null,
+											null,
+											null,
+											null,
+											null,
+											null,
+											null,
+											null,
+											null,
+                                   // {"bSortable": false},
+                                    {"bSortable": false},
+                                        null,
+                                    {"bSortable": false},
+                                    {"bSortable": false},
+									{"bSortable": false},
+									null,
+									null,
+									null,
+                                    {"bSortable": false}
+                                    ]});
+                                            $('table th input:checkbox').on('click', function() {
+                                    var that = this;
+                                            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                                            .each(function() {
+                                            this.checked = that.checked;
+                                                    $(this).closest('tr').toggleClass('selected');
+                                            });
+                                    });
+                                            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+                                            function tooltip_placement(context, source) {
+                                            var $source = $(source);
+                                                    var $parent = $source.closest('table')
+                                                    var off1 = $parent.offset();
+                                                    var w1 = $parent.width();
+                                                    var off2 = $source.offset();
+                                                    var w2 = $source.width();
+                                                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                                                    return 'right';
+                                                    return 'left';
+                                            }
+
+
+</script>
+<script>
+
+    <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+	
+	  $("#CD_ID").change(function() {
+        var CD_ID = $("#CD_ID").val();
+		var CenterID = $("#CenterID").val();
+        $("#table").html('');
+        
+       
+        $.ajax({
+            type: "GET",
+            url: "<?php echo url::to('loadaccreditationapplicationTimetable'); ?>",
+            data: {CD_ID: CD_ID,CenterID:CenterID},
+            success: function(result) {
+                $('#table').html(result);
+
+            }
+        });
+    });
+
+	
+	$("#ApplicationReciievedStatus").change(function()
+    {
+        var m = document.getElementById("ApplicationReciievedStatus").value;
+		if(m == 'No')
+		{
+			$('#ApplicationRecievedDate1').hide();
+			$('#PaymentSubmitStatus1').hide();
+			$('#PayDate1').hide();
+			$('#PayAmount1').hide();
+			$('#VoucherNo1').hide();
+		}
+		
+		else{
+			$('#ApplicationRecievedDate1').show();
+			$('#PaymentSubmitStatus1').show();
+			$('#PayDate1').show();
+			$('#PayAmount1').show();
+			$('#VoucherNo1').show();
+			
+		}
+		
+    });
+	$("#PaymentSubmitStatus").change(function()
+    {
+        var m = document.getElementById("PaymentSubmitStatus").value;
+		if(m == 'No')
+		{
+			
+			
+			$('#PayDate1').hide();
+			$('#PayAmount1').hide();
+			$('#VoucherNo1').hide();
+		}
+		
+		else{
+			
+			$('#PayDate1').show();
+			$('#PayAmount1').show();
+			$('#VoucherNo1').show();
+			
+		}
+		
+    });
+
+	
+	function validateForm() {
+		
+       var m = document.getElementById("ApplicationReciievedStatus").value;
+	   var n = document.getElementById("PaymentSubmitStatus").value;
+	   var ApplicationRecievedDate = document.getElementById("ApplicationRecievedDate").value;
+	   var PayDate = document.getElementById("PayDate").value;
+	   var PayAmount = document.getElementById("PayAmount").value;
+	   var VoucherNo = document.getElementById("VoucherNo").value;
+	   
+		if(m == 'Yes')
+		{
+			if(ApplicationRecievedDate == "")
+			{
+				bootbox.alert("Please Fill Application Recieved Date !!!");
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+			if(n == 'Yes')
+		    {
+				if(PayDate == "" || PayAmount == "" || VoucherNo == "")
+				{
+					bootbox.alert("Please Fill Pay Date, Amount & Voucher Number !!!");
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+		   }
+		   else
+		   {
+			return true;
+		   }
+		}
+		else
+		{
+			return true;
+		}
+		
+	   
+    }
+
+       $("#Trade").change(function() {
+        var cid = $("#CenterID").val();
+       var tid = $("#Trade").val();
+	   //alert(cid);
+        $("#CD_ID").html('');
+        var msg = '--- Select Course ---';
+       
+                          $.ajax({
+                                        type: "GET",
+                                        url: "<?php echo url::to('LoadAccreditationCDList'); ?>",
+                                        data: {cid: cid,TID: tid},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#CD_ID").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#CD_ID").append("<option value=" + item.CD_ID + ">" +item.CourseName + "-"+ item.CourseListCode +  "[CourseType - " + item.CourseType + "][Duration - " + item.Duration+"]Nvq-("+ item.Nvq+")-(" + item.CourseLevel
+													+ ")</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            
+        
+    });
+
+    
+  
+    
+    $('#DatePlanned').change(function(){
+
+        //alert('dg');
+       var DatePlanned = document.getElementById('DatePlanned').value;
+       var CenterID = document.getElementById('CenterID').value;
+       var CourseYearPlanID = document.getElementById('CourseYearPlanID').value; 
+      // var msg = '--- Select Working Place ---';
+        //$("#WorkingPlace").html('');
+       $.ajax  ({
+                    url: "<?php echo url::to('MOCMCheckPlanneddate'); ?>",
+                    data: {DatePlanned: DatePlanned,CenterID: CenterID,CourseYearPlanID: CourseYearPlanID},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        if(result.module == 1)
+                        {
+                             document.getElementById('DatePlanned').value = "";
+                             $('#table1').html(result.html);
+                             
+                        }
+                        else
+                        {
+                             $("#table1").html('');
+                        }
+                       
+                        
+                                        
+                        
+                        }
+
+
+                    
+                });
+        
+
+
+       
+    });
+
+    function fillModule1() {
+
+        //alert('dfhgftrghy');
+        var WorkingPlaceName = document.getElementById('WorkingPlaceName').value;
+        var WorkingPlaceAddress = document.getElementById('WorkingPlaceAddress').value;
+        var InstituteId = document.getElementById('M_Code').value;
+        var ContactNo = document.getElementById('ContactNo').value;
+        $.ajax({
+                    url: "<?php echo url::to('saveAssessorWorkingPlace'); ?>",
+                    data: {WorkingPlaceName: WorkingPlaceName, WorkingPlaceAddress: WorkingPlaceAddress, InstituteId: InstituteId,ContactNo: ContactNo},
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.ModuleId !== 0) {
+                            $("#ModuleDiv1").html(result.html);
+                            $('#addModule1').hide();
+                            $('#ajaxerror').html(result.done);
+                            
+                           //var InstititeId = result.InstituteAddress;
+                           // $("#WorkingPlace").html('');
+                              /*  $.ajax({
+                                            url: "<?php echo url::to('getModuleId'); ?>",
+                                            data: {ModuleCode: ModuleCode},
+                                            success: function(re) {
+                                                  document.getElementById("AjaxModuleId").value = re;
+                                                               }
+                                       });*/
+
+                        /* $.ajax  ({
+                                    url: "<?php echo url::to('getWorkingPlace'); ?>",
+                                    data: { InstititeId: InstititeId},
+                                    dataType: "json", 
+                                    success: function(result) {
+
+                                        //alert(result);
+                                        $("#WorkingPlace").append("<option value=''>" + msg + "</option>");
+                                         $.each(result, function(i, item)
+                                        {
+
+
+
+                                            $("#WorkingPlace").append("<option value=" + item.id + ">" + item.Placename + "  (" + item.Address + ")</option>");
+
+
+
+                                        });
+                                                        
+                                        
+                                        }
+
+
+                                    
+                                });*/
+
+                        } else {
+                            $('#ajaxerror').html(result.html);
+                            window.scrollTo(0, 0);
+                        }
+                    }
+                });
+    }
+	$("#District").change(function() 
+	{
+        var District = $("#District").val();
+        $("#CenterID").html('');
+        //$("#CourseYearPlanID").html('');
+        var msg = '--- Select Centre ---';
+		var all = 'All';
+       
+                          $.ajax({
+                                        type: "GET",
+                                        url: "<?php echo url::to('loaddistrictcentersin'); ?>",
+                                        data: {District: District},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#CenterID").append("<option value=''>" + msg + "</option>");
+											// $("#CenterID").append("<option value='All'>" + all + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#CenterID").append("<option value=" + item.id + ">" +item.OrgaName + "(" + item.Type + ")</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            
+     
+    });
+	
+	$('#upload').click(function()
+    {
+      
+        var CenterIDD = $("#CenterIDD").val(); 
+		 var YearD = $("#YearD").val(); 
+		  var BatchD = $("#BatchD").val(); 
+		   var districtD = $("#districtD").val(); 
+       
+      //alert(CD_ID);
+      
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            
+                            document.getElementById('img7').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+                        type: "POST",
+                        url: "<?php echo Url('PrintPDFTrainingPlanReportCheck'); ?>",
+                        data: {CenterIDD: CenterIDD,YearD:YearD,BatchD:BatchD,districtD:districtD},
+                        success:function response(responseText, statusText, xhr, $form)
+                        {
+       
+                               var printWin = window.open("","printSpecial");
+                                printWin.document.open();
+                                printWin.document.write(responseText);
+                                printWin.document.close();
+                                printWin.print();
+       
+   
+                         
+
+                        },
+                        complete: function() {
+                            document.getElementById('img7').innerHTML ="";
+
+                        }
+                    });
+        
+    }
+    );
+
+    </script>
+
+

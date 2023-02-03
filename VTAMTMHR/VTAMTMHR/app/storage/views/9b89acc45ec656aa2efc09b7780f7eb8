@@ -1,0 +1,164 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('applicants'); ?>> << Back to Applicants </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+
+            <h1>
+                Applicant			
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    Search Applicant
+                </small>			
+            </h1>
+
+        </div>
+        <div>
+            <form name='search' action="<?php echo url('findApplicant'); ?>" method='get'>
+                Search Applicant <input type='text' name="serachkey" placeholder="NIC or Name in English" style="margin: 0"/>   <input type='submit' value='Search' style="height: 30px;"/>
+                <a href=<?php echo url('listApplicant'); ?>><input type='button' value='Applicant List' style="height: 30px;"/></a>
+            </form>
+        </div>    
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table class="table" id="set">
+                <tr>
+                    <th>Applicant ID</th>
+                    <th>Institute Name</th>
+                    <th>Center Name</th>
+                    <th>Year</th>
+                    <th>National Course Code</th>
+                    <th>Mode</th>
+                    <th>Course Code</th>
+                    <th>NIC</th>
+                    <th>Index No</th>
+                    <th>Name With Initials</th>
+                    <th>Full Name</th>
+                    <th>Address</th>
+                    <th>DOB</th>
+                    <th>Gender</th>
+                    <th>Province</th>
+                    <th>District</th>
+                    <th>Divisional secretariat</th>
+                    <th>Grama Sevaka Division</th>
+                    <th>Tel</th>
+                    <th>Tel Mobile</th>
+                    <th>Email</th>
+                    <th>Method Of Awareness</th>
+                    <th>Submit Mode</th>
+                    <th>Employed</th>
+                    <th>Remove</th>
+                </tr>
+
+
+                <?php foreach ($applicants as $applicant): ?>
+                <tr>
+                    <td><?php if($applicant->CourseCode != '' && isset($applicant->Courseapplicant)): ?>
+                        <?php if($applicant->Courseapplicant->StartDate >= date('Y-m-d')): ?>
+                        <form action="<?php echo url('editApplicantView'); ?>" method="get"><input type="hidden" name="id" value="<?php echo $applicant->id; ?>"/><button type="submit"><?php echo $applicant->id; ?></button></form>
+                        <?php else: ?>
+                        <input type="hidden" name="id" value="<?php echo $applicant->id; ?>"/><button type="button"><?php echo $applicant->id; ?></button>
+                        <?php endif; ?>
+                        <?php else: ?>
+                        <form action="<?php echo url('editApplicantView'); ?>" method="get"><input type="hidden" name="id" value="<?php echo $applicant->id; ?>"/><button type="submit"><?php echo $applicant->id; ?></button></form>
+                        <?php endif; ?>
+                    </td>
+                    <td><?php echo $applicant->Institue->InstituteName; ?></td>
+                    <td><?php echo $applicant->Organisation->OrgaName; ?></td>
+                    <td><?php echo $applicant->Year; ?></td>
+                    <td><?php echo $applicant->CourseListCode; ?></td>
+                    <td><?php echo $applicant->mode; ?></td>
+                    <td><?php echo $applicant->CourseCode; ?></td>
+                    <td><?php echo $applicant->NIC; ?></td>
+                    <td><?php echo $applicant->IndexNo; ?></td>
+                    <td><?php echo $applicant->NameWithInitials; ?></td>
+                    <td><?php echo $applicant->FullName; ?></td>
+                    <td><?php echo $applicant->Address; ?></td>
+                    <td><?php echo $applicant->DOB; ?></td>
+                    <td><?php echo $applicant->Gender; ?></td>
+                    <td><?php if(!is_null($applicant->applicantProvince)): ?><?php echo $applicant->applicantProvince->ProvinceName; ?> <?php endif; ?></td>
+                    <td><?php if(!is_null($applicant->applicantDistrict)): ?><?php echo $applicant->applicantDistrict->DistrictName; ?> <?php endif; ?></td>
+                    <td><?php if(!is_null($applicant->applicantElectorate)): ?><?php echo $applicant->applicantElectorate->ElectorateName; ?> <?php endif; ?></td>
+                    <td><?php echo $applicant->Grama_Sewa_Division; ?></td>
+                    <td><?php echo $applicant->Tel; ?></td>
+                    <td><?php echo $applicant->Tel_mob; ?></td>
+                    <td><?php echo $applicant->email; ?></td>
+                    <td><?php echo $applicant->method_of_awareness; ?></td>
+                    <td><?php echo $applicant->submit_mode; ?></td>
+                    <td>
+                        <?php if($applicant->Employment != ''): ?>
+                        <form method="get"><input type="hidden" id="isss1_<?php echo $applicant->id; ?>" name="id"/><button type="button" id="vara_<?php echo $applicant->id; ?>">Employed</button></form>
+                        <?php endif; ?>
+                    </td>
+                    <?php if($applicant->CourseCode != ''&& isset($applicant->Courseapplicant)): ?>
+                    <?php if($applicant->Courseapplicant->StartDate >= date('Y-m-d')): ?>
+                    <td>
+                        <form id="deleteform"  action=<?php echo url('deleteApplicant'); ?> method="POST" onsubmit="return doConfirm('<?php echo $applicant->FullName; ?>', this)">
+                            <input type="hidden" name='aid' value=<?php echo $applicant->id; ?> />
+                            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                        </form>
+                    </td>
+                    <?php endif; ?>
+                    <?php else: ?>
+                    <td>
+                        <form id="deleteform"  action=<?php echo url('deleteApplicant'); ?> method="POST" onsubmit="return doConfirm('<?php echo $applicant->FullName; ?>', this)">
+                            <input type="hidden" name='aid' value=<?php echo $applicant->id; ?> />
+                            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                        </form>
+                    </td>
+                    <?php endif; ?>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script type="text/javascript">
+                    $("#set").on('click', '[id^="vara"]', function() {
+                        var id = this.id;
+                        var stdid = $("#"+id).attr('isss1');
+                        var spanid = id.split("_")[1];
+//                        alert(spanid);
+                        $.ajax
+                        ({
+                            url: "<?php echo url::to('App_getResult'); ?>",
+                            data: {spanid: spanid},
+                            success: function(result){
+                                        bootbox.dialog(result,[{ 
+                                            "label": "ok",
+                                            "class": "btn btn-small btn-primary",
+                                            "callback": function() {
+                                                        window.location.href = 'applicants';
+                                                    }
+                                                }]);
+//alert(result);
+                            }
+                        });
+            });</script>
+
+<script type="text/javascript">
+
+                    <?php if (isset($done)): ?>
+
+                    $.gritter.add({title: "", text: "Record Added Successfully", class_name: "gritter-info gritter-center"});
+                    <?php endif; ?>
+
+                    function doConfirm(applicant, formobj){
+
+                    bootbox.confirm("Are you sure you want to remove " + applicant, function(result)
+                    {
+                    if (result)
+                    {
+                    formobj.submit();
+                    }
+                    });
+                            return false;
+                    }
+</script>
+
+

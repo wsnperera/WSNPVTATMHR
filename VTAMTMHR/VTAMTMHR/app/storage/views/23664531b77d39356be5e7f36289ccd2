@@ -1,0 +1,93 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('eventplanned'); ?>> << Back to Event Planned </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="page-header position-relative">
+        <h1>
+            Event	
+            <small>
+                <i class="icon-double-angle-right"></i>
+                Event Planned
+                <i class="icon-double-angle-right"></i>
+                View
+            </small>			
+        </h1>
+    </div><!--/.page-header-->
+   <div class="row-fluid">
+        <form name='search' action="<?php echo url('findEventplanned'); ?>" method='get'>
+            Search Planned Events<input type='text' name="searchKey" placeholder="Search by Event Name / Course List Code..."/>   <input type='submit' value='Search'/> &nbsp;
+            <a href=<?php echo url('createEventplanned'); ?>><input class="btn-small" type="button" value="Create Event Planned"/></a>
+        </form>
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table class="table">
+                <tr>
+                    <th>Event Planned ID</th>
+                    <th>Institute Name</th>
+                    <th>Organisation Name</th>
+                    <th>Event Name</th>
+                    <th>Scheduled Date</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Description</th>
+                    <th>Course List Code</th>
+                    <th>Event held Place</th>
+                    <th>Remove</th>
+
+                </tr>
+                
+                <?php if(isset ($eventplanned)): ?>
+                <?php foreach ($eventplanned as $ep): ?>
+                <tr>
+                    <td><a href="<?php echo url('editEventplanned?id='.$ep->EP_ID); ?>"><?php echo $ep->EP_ID; ?></a></td>
+                    <td><?php if(!is_null($ep->getInstituteName)): ?><?php echo $ep->getInstituteName->InstituteName; ?><?php endif; ?></td>
+                    <td><?php if(!is_null($ep->getOrganizationName)): ?><?php echo $ep->getOrganizationName->OrgaName; ?><?php endif; ?></td>
+                    <td><?php if(!is_null($ep->getEvent)): ?><?php echo $ep->getEvent->EventName; ?><?php endif; ?></td>
+                    <td><?php echo $ep->ScheduledDate; ?></td>
+                    <td><?php echo $ep->From; ?></td>
+                    <td><?php echo $ep->To; ?></td>
+                    <td><?php echo $ep->Description; ?></td>
+                    <td><?php echo $ep->CourseListCode; ?></td>
+                    <td><?php if(!is_null($ep->getOrganisation)): ?><?php echo $ep->getOrganisation->OrgaName; ?><?php endif; ?></td>
+                    <td>
+                        <form id="deleteform"  action=<?php echo url('deleteEventplanned'); ?> method="POST" onsubmit="return doConfirm('<?php echo $ep->Description; ?>', this)">
+                            <input type="hidden" name='epid' value='<?php echo $ep->EP_ID; ?>'/>
+                            <button type="submit" class="btn btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                        </form>
+                   </td>
+                </tr>
+                
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </table>
+
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+            function doConfirm(eventplanned, formobj){
+            bootbox.confirm("Are you sure you want to remove planned Event " + eventplanned, function(result) {
+            if (result)   {
+            formobj.submit();
+            }
+            });
+                    return false; // by default do nothing hack :D
+            }
+            
+ $(document).ready(function(){
+  var cen_id = $('.CenterId').val();
+ 
+   var res = cen_id.split(",");
+   var co = res.length-1;
+    for (var i=0; i<co; i++ ){
+        alert(i);
+   document.getElementById('uuu').innerHTML = res[i];
+    }
+  });        
+            
+</script>

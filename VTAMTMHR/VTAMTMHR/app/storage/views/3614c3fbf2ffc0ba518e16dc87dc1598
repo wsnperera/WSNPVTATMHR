@@ -1,0 +1,112 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('vocational'); ?>> << Back to View </a> 
+<?php endif; ?>
+
+<div class="page-content">
+    <div class="page-header position-relative">
+        <h1>
+            Vocational Organization			
+            <small>
+                <i class="icon-double-angle-right"></i>
+                View
+            </small>			
+        </h1>
+    </div>
+    <div class="row-fluid">
+        <form name='search' action="<?php echo url('searchvocational'); ?>" method='get'>
+            <table>
+                <tr>
+                    <td style="text-align: center;">Order By :&nbsp;&nbsp;
+                        <select style="width: 120px;margin: 0" name="order_by">
+                            <option value="">Order By</option>
+                            <option value="id">index</option>
+                            <option value="InstituteId">Institute wise</option>
+                            <option value="Organization">Organization wise</option>
+                            <option value="District">District wise</option>
+                        </select>
+                    </td>
+                    <td style="text-align: center;">&nbsp;&nbsp;
+                        Search &nbsp;&nbsp;<input type='text' name="serachkey" placeholder="Organization" style="width: 120px;margin: 0"/>
+                    </td>
+                    <td style="text-align: center;"><input type='submit' value='Search' style="height: 30px;"/></td>
+                    <td style="text-align: center;"><a href=<?php echo url('createvocational'); ?>><input type='button' value='Create' style="height: 30px;"/></a></td>
+                    <td style="text-align: center;"><?php if(isset ($completed)): ?>
+                    <a href=<?php echo url('vocational'); ?>><input type='button' value='View Active Record' style="height: 30px;" /></a>
+                    <?php else: ?>
+                    <a href=<?php echo url('vocational?completed=YES'); ?>><input type='button' value='View Inactive Record' style="height: 30px;"/></a>
+                    <?php endif; ?></td>
+                </tr>
+            </table>
+        </form>
+
+        <div class="span12">
+
+            <table class="table">
+                <tr>
+                    <th>Institute Name</th>
+                    <th>Organization Name</th>
+                    <th>Address</th>
+                    <th>Telephone</th>
+                    <th>Email</th>
+                    <th>District</th>
+                    <th>Active</th>
+                    <th>Remove</th>
+                </tr>
+                <?php if(isset ($vocational)): ?>
+                <?php foreach ($vocational as $v): ?>
+
+                <tr>
+                    <td><a href="<?php echo url('editvocational?id='.$v->id); ?>"><?php echo $v->getVocationalInstitute->InstituteName; ?></a></td>
+                    <td><?php echo $v->Organization; ?></td>
+                    <td><?php echo $v->Address; ?></td>
+                    <td><?php echo $v->Tel; ?></td>
+                    <td><?php echo $v->email; ?></td>
+                    <td><?php echo $v->District; ?></td>
+                    <td><?php echo $v->Active; ?></td>
+                    <td>
+                        <form id="deleteform"  action=<?php echo url('deletevocational'); ?> method="POST" onsubmit="return doConfirm('<?php echo $v->id; ?>', this)">
+                            <input type="hidden" name='voc' value=<?php echo $v->id; ?> />
+                            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                        </form>
+
+                    </td>
+
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+
+
+            function doConfirm(batch, formobj)
+            {
+
+
+            bootbox.confirm("Are you sure you want to remove " + batch, function(result)
+            {
+            if (result)
+            {
+            formobj.submit();
+            }
+
+
+            });
+                    return false; // by default do nothing hack :D
+            }
+
+
+
+
+
+
+
+</script>

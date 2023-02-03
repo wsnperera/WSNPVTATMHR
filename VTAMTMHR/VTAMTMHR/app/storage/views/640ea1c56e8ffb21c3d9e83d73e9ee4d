@@ -1,0 +1,126 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+                                    
+	<div class="row-fluid">
+                                            
+                                           
+                                        
+                                            
+                                            
+                                    <div class="span12">
+							
+                                        <!--PAGE CONTENT BEGINS-->
+
+                                        
+                                        <!--/.page-header-->
+                                        
+                                        <div class="page-header position-relative">
+                                            
+				<h1>
+				Holiday Type			
+				<small>
+					<i class="icon-double-angle-right"></i>
+					Edit
+				</small>			
+				</h1>
+		</div><!--/.page-header-->
+
+
+                			  <!--Write your code here start-->
+                                          
+                                                
+                <form class="form-horizontal" action="<?php echo url('editHolidayType'); ?>" method="POST"/>
+												
+			<input type="hidden" name="HTId" value="<?php echo Request::get('cid'); ?> "/>
+												
+
+
+	<br/>
+												
+												
+												
+												
+		<div class="control-group">
+												
+			<label class="control-label" for="HTName">Holiday Type</label>
+													
+				<div class="controls">
+															
+			<input type="text" name="HTName" value="<?php echo $batch->HTName; ?>"/>
+																	
+		</div>
+															
+	</div>
+
+	<br/>
+												
+												
+												
+												
+												
+			<div class="control-group">
+												
+		<div class="controls">
+															
+ <button type="submit" class="btn btn-small btn-primary">Update</button>
+																	 
+		</div>
+															
+	</div>
+												
+											
+</form>
+											
+											
+											
+</div></div></div>
+									
+									
+									
+	<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+									
+									
+									
+									
+<script type="text/javascript">
+</script>
+									
+									
+												
+																	
+																	
+
+                                                    
+
+                                                            
+
+                                                           
+
+                                                        
+
+
+
+                                                
+                                                    
+							
+
+							
+								
+							
+                                                        
+						
+
+                                                
+                                                    
+							
+
+							
+								
+							
+                                                        
+						
+                                                
+                                                    
+							
+
+                                  

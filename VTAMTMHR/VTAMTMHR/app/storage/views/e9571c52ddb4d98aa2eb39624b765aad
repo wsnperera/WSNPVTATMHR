@@ -1,0 +1,80 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('viewOJTInstitute'); ?>> << Back to OJTInstitute </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>
+                OJTInstitute		
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    View
+                </small>			
+            </h1>
+        </div>
+        <form name='search' action="<?php echo url('searchOJTInstitute'); ?>" method='get'>
+            Search OJT Institute <input type='text' name="serachkey"/>   <input type='submit' value='Search'/>
+        </form>
+
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table class="table">
+                <tr>
+                    <th>OJT Institute ID</th>	
+                    <th>Institute Name</th>
+                    <th>Center</th>
+                    <th>Address</th>
+                    <th>Contact Person Name</th>
+                    <th>Contact Person Designation</th>
+                    <th>Contact No</th>
+                    <th>Email</th>
+                    <th>Remove</th>	
+                </tr>
+
+                <?php if(isset ($OJTInstitute)): ?>
+                <?php foreach ($OJTInstitute as $ojt): ?>
+                <tr>
+                    <td><a href="<?php echo url('editOJTInstitute?id='.$ojt->id); ?>"><?php echo $ojt->id; ?></a></td>
+                    <td><?php echo $ojt->Institute; ?> </td>
+                    <td><?php echo $ojt->center; ?> </td>
+                    <td><?php echo $ojt->Address; ?> </td>  
+                    <td><?php echo $ojt->ContactPersonName; ?> </td>  
+                    <td><?php echo $ojt->ContactPersonDesignation; ?> </td>  
+                    <td><?php echo $ojt->ContactNo; ?> </td>  
+                    <td><?php echo $ojt->Email; ?> </td> 
+                    <td>
+                        <form id="deleteform"  action="<?php echo url('deleteOJTInstitute?id='.$ojt->id); ?>" method="POST" onsubmit="return doConfirm('<?php echo $ojt->Institute; ?>', this)">
+                            <input type="hidden" name='id' value="<?php echo $ojt->id; ?>" />
+                            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </table>
+
+
+
+
+
+
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+
+            function doConfirm(OJTInstitute, formobj){
+            bootbox.confirm("Are you sure you want to remove " + OJTInstitute, function(result)  {
+            if (result){
+            formobj.submit();
+            }
+            });
+                    return false; // by default do nothing hack :D
+            }
+
+</script>

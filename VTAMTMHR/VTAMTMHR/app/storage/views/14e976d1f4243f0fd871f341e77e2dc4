@@ -1,0 +1,152 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+
+<?php endif; ?>
+<div class="page-content">
+    <div class="page-header position-relative">
+
+        <h1>
+            DO Special Transfer		
+            <small>
+                <i class="icon-double-angle-right"></i>
+                View
+            </small>			
+        </h1>
+
+    </div><!--/.page-header-->
+    <div class="row-fluid">
+
+        <form name='search' action="<?php echo url('findPromotion'); ?>" method='get'>
+
+        </form>
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th rowspan="2">#No#</th>
+                        <th rowspan="2">Institute Name</th>
+                        <th rowspan="2">Employee Reference No</th>
+                        <th rowspan="2">Employee Name</th>
+                        <th rowspan="2">N.I.C</th>
+                        <th rowspan="2">Effective Date</th>
+                        <th rowspan="2">To Center</th>
+                        <th rowspan="2">DO Name(Belongs)</th>
+                        <th rowspan="2">To Department</th>
+                        <th rowspan="2">Transfer Type</th>
+                        <th rowspan="2">New Post</th>
+                        <th rowspan="2">Employee Type</th>
+                        <th rowspan="2">Grade</th>
+                        <th colspan="2" style="text-align: center;">Salary Details</th>
+                        <th rowspan="2">Increment Month</th>
+                        <th rowspan="2">Increment Day</th>
+                        <th rowspan="2"><?php if($user->hasPermission('deletePromotionNew')): ?> Remove <?php endif; ?></th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: center;">Salary Scale</th>
+                        <th style="text-align: center;">Salary Step</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php $i = 0; ?>
+                    <?php if(isset ($promotion)): ?>
+                    <?php foreach ($promotion as $pr): ?>
+                    <tr>
+                        <td><?php $i++;
+                    echo$i; ?></td>
+                        <td><?php if(!is_null($pr->getInstitute)): ?><?php echo $pr->getInstitute->InstituteName; ?> <?php endif; ?></td>
+                        <td><?php echo $pr->EPF; ?></td>
+                
+                <td><?php if(!is_null($pr->getEmp)): ?><?php echo $pr->getEmp->Name; ?><?php endif; ?></td>
+                <td><?php echo $pr->NIC; ?></td>
+                <td ><?php echo $pr->StartDate; ?></td>
+                <td><?php if(!is_null($pr->getOrga)): ?><?php echo $pr->getOrga->OrgaName; ?><?php endif; ?></td>
+                <td style="text-align: center;"><?php
+                    $OrgaName = Organisation::where('id', '=', $pr->ToOrganisation)->pluck('OrgaName');
+                    $EmpOrgTypeId = Organisation::where('id', '=', $pr->ToOrganisation)->pluck('TypeId');
+                    $DOTypeID = OrganisationType::where('Type', '=', 'DO')->pluck('OT_ID');
+                    $EmpOrgTypeName = OrganisationType::where('OT_ID', '=', $EmpOrgTypeId)->pluck('Type');
+                    if ($EmpOrgTypeName !== 'DO' && $EmpOrgTypeName !== 'HO' && $EmpOrgTypeName !== 'NVTI') {
+                        $EmpDOOrgTypeIdDistrictCode = Organisation::where('id', '=', $pr->ToOrganisation)->pluck('DistrictCode');
+                        $EmpDOOrgaName = Organisation::where('DistrictCode', '=', $EmpDOOrgTypeIdDistrictCode)->where('TypeId', '=', $DOTypeID)->pluck('OrgaName');
+                        echo $EmpDOOrgaName;
+                    } else {
+                        echo '-';
+                    }
+                    ?></td>
+                <td><?php if(!is_null($pr->getDepartment)): ?><?php echo $pr->getDepartment->DepartmentName; ?><?php endif; ?></td>
+                <td><?php if(!is_null($pr->getTransferType)): ?><?php echo $pr->getTransferType->TransferType; ?><?php endif; ?></td>
+                <td><?php if(!is_null($pr->getPost)): ?><?php echo $pr->getPost->Designation; ?><?php endif; ?></td>
+                <td><?php if(!is_null($pr->getEmpType)): ?><?php echo $pr->getEmpType->EmployeeType; ?><?php endif; ?></td>
+                <td><?php echo $pr->Grade; ?></td>
+                <td><?php if(!is_null($pr->getSalaryScale)): ?><?php echo $pr->getSalaryScale->SalaryScale; ?><?php endif; ?></td>
+                <td><?php echo $pr->SalaryStep; ?></td>
+                <td><?php echo $pr->IncrementMonth; ?></td>
+                <td><?php echo $pr->IncrementDay; ?></td>
+
+                <td>
+                <?php if($pr->Comfirm == 0): ?>
+                <?php if($user->hasPermission('deletePromotionNew')): ?>
+                
+                    <form id="deleteform"  action="<?php echo url('deletePromotionNew'); ?>" method="POST" onsubmit="return doConfirm('<?php echo $pr->NIC; ?>', this)">
+                        <input type="hidden" name='pid' value="<?php echo $pr->P_ID; ?>" />
+                        <button type="submit" class="btn btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                    </form> 
+                <?php endif; ?>
+                <?php endif; ?>
+                </td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+
+                                function doConfirm(promotion, formobj) {
+                                bootbox.confirm("Are you sure you want to remove promotion record of" + promotion, function(result){
+                                if (result){
+                                formobj.submit();
+                                }
+                                });
+                                        return false; // by default do nothing hack :D
+                                }
+
+                        $('#sample-table-2').dataTable({
+                        "bPaginate":false,
+                                "aaSorting":[],
+                                "aoColumns": [
+                                {"bSortable": false}, {"bSortable": false}, null, {"bSortable": false}, null, null, null, null, null, null, null, null, null,
+                                {"bSortable": false}, {"bSortable": false},{"bSortable": false}, {"bSortable": false}, {"bSortable": false}
+                                ]});
+                                $('table th input:checkbox').on('click', function() {
+                        var that = this;
+                                $(this).closest('table').find('tr > td:first-child input:checkbox')
+                                .each(function() {
+                                this.checked = that.checked;
+                                        $(this).closest('tr').toggleClass('selected');
+                                });
+                        });
+                                $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+                                function tooltip_placement(context, source) {
+                                var $source = $(source);
+                                        var $parent = $source.closest('table')
+                                        var off1 = $parent.offset();
+                                        var w1 = $parent.width();
+                                        var off2 = $source.offset();
+                                        var w2 = $source.width();
+                                        if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                                        return 'right';
+                                        return 'left';
+                                }
+
+
+</script>

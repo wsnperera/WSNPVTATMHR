@@ -1,0 +1,1042 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>     
+
+
+<?php if (Session::has('done')): ?>
+ 
+  <div class="alert alert-block alert-success">
+
+       
+                 <strong> <i class="icon-ok"></i><?php echo Session::get('done'); ?></strong>
+
+   </div>
+  
+      
+ <?php endif; ?>  
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Applicant			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Add New NVQ-RPL
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+            <form class="form-horizontal" action="<?php echo url('ApplyNvqRplOnline'); ?>" method="POST" id="dale_my_form">
+
+           
+        
+           
+            <!-- Course name -->
+         
+            <lable id="error"><center><h3>You are not authorized to register under this Mode</h3></center> </lable>
+            <div class="control-group" id="nicno">
+
+                <label class="control-label" for="NIC">NIC No</label>
+
+                <div class="controls">
+                    <input type="text" name="NIC" id="load_nic_val"/>
+                    <span id="ajax_img2"></span>
+                </div>
+
+            </div>
+            
+            <!-- Course name -->
+            <table>
+                <tr>
+                    <td style="width: 420px">
+                        <div class="control-group">
+                            <label class="control-label" for="Medium">Full name as in National Identity Card</label>
+                            <div class="controls">
+                                <input type="text" name="nameasNIC" id="nameasNIC"/>
+                            </div>
+
+                        </div>
+                    </td>
+                    <td style="width: 300px" valign="top" rowspan="7" id="nic_records"></td>
+                </tr>           
+
+                <!-- Course Type -->
+                <tr><td> 
+                        <div class="control-group">
+
+                            <label class="control-label" for="NameWithInitials">Name With Initials</label>
+
+                            <div class="controls">
+                                <input type="text" name="NameWithInitials" id="NameWithInitials"/>
+                        </div>
+
+                        </div>
+                    </td></tr>
+                <tr><td> 
+                        <div class="control-group">
+
+                            <label class="control-label" for="FullName">Name which should be appeared in the Certificate</label>
+
+                            <div class="controls">
+                                <textarea name="FullName" id="FullName"></textarea>
+                            </div>
+
+                        </div>
+                    </td></tr>
+                <tr><td> 
+                        <div class="control-group">
+
+                            <label class="control-label" for="Address">Permanent Address</label>
+
+                            <div class="controls">
+                                <textarea name="Address" id="Address"></textarea>
+                            </div>
+
+                        </div>
+                    </td></tr>
+                <tr><td> 
+                        <div class="control-group">
+
+                            <label class="control-label" for="Address">Address to Post Certificate</label>
+
+                            <div class="controls">
+                                <textarea name="Address_Certificate" id="Address_certificate"></textarea>
+                            </div>
+                        </div>
+                    </td></tr>
+                <tr><td> 
+                        <div class="control-group">
+
+                            <label class="control-label" for="DOB">DOB</label>
+
+                            <div class="controls">
+                                <input type="text" name="DOB" id="DOB" readonly/>
+                            </div>
+                        </div>
+                    </td></tr>
+                <tr><td> 
+                        <div class="control-group">
+
+                            <label class="control-label" >Age</label>
+
+                            <div class="controls">
+                                <input type="text" name="Age" readonly id="Age" style="width: 20px;"/>&nbsp;Years
+                                <input type="text" id="month" readonly style="width: 20px;"/>&nbsp;Months
+                                <input type="text" id="days" readonly style="width: 20px;"/>&nbsp;Days
+                            </div>
+
+                        </div>
+                    </td></tr>
+            </table>
+            <div class="control-group">
+
+                <label class="control-label" for="Gender">Gender</label>
+
+                <div class="controls">
+                    <input type="text" name="Gender" readonly id="Gender"/>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="Province">Province</label>
+
+                <div class="controls">
+                    <select name="Province" id="Province">
+                        <option value="">Province</option>
+                        <?php foreach ($province as $p): ?>
+
+                        <option value="<?php echo $p->ProvinceCode; ?>"><?php echo $p->ProvinceName; ?></option>
+
+                        <?php endforeach; ?>
+                    </select>
+                    <span id="ajax_img3"></span>
+                </div>
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="District">District</label>
+
+                <div class="controls">
+                    <select name="District" id="District">
+                        <option></option>
+                    </select>
+                    <span id="ajax_img4"></span>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label">Electorate</label>
+
+                <div class="controls" id="elec_load">
+                    <select name="Electorate" id="Electorate">
+                        <option></option>
+                    </select>
+
+                </div>
+            </div>
+            <div class="control-group">
+
+                <label class="control-label">GS Division</label>
+                    <div class="controls" id="elec_load">
+                    <select name="Grama_Sewa_Division" id="Grama_Sewa_Division">
+                        <option></option>
+                    </select>
+
+                </div>
+                
+
+            </div>
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="Tel">Telephone(Home)</label>
+
+                <div class="controls">
+                    <input type="text" name="Tel" class="num_inp" id="tp1"/>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="Tel">Telephone(Mobile)</label>
+
+                <div class="controls">
+                    <input type="text" name="Tel_mob" class="num_inp" id="tp2"/>
+                </div>
+
+            </div>
+                <div class="control-group">
+
+                <label class="control-label" for="CourseListCode">Trade</label>
+
+                <div class="controls">
+                    <select name="Trade" id="TradeId">
+                        <?php foreach ($trade as $t): ?>
+                        <option value="<?php echo $t->TradeId; ?>"><?php echo $t->TradeName; ?></option>
+                        <?php endforeach; ?>
+                    </select>                
+                </div>
+            </div>
+            <hr/>
+             <div class="control-group">
+
+                <label class="control-label" for="CourseCode">Course Code</label>
+
+                <div class="controls">
+                    <select name="CourseCode" id="CourseCode">
+                     <option></option>  
+                    </select>   
+                     <lable id="NvqLevel"></lable>
+                </div>
+               
+            </div>
+            <div class="control-group">
+
+                <label class="control-label">Experience of Service</label>
+
+                <div class="controls">
+                    <table style="width: 400px;" id="exp_table1">
+                        <tr style="border:1px solid #d9d9d9">
+                            <th rowspan="2" style="width: 300px; border:1px solid #d9d9d9">Institute</th>
+                            <th colspan="2" style="width: 100px; border:1px solid #d9d9d9">Duration</th>
+                        </tr>
+                        <tr style="border:1px solid #000">
+                            <th style="width: 50px; border:1px solid #d9d9d9">Years</th>
+                            <th style="width: 50px; border:1px solid #d9d9d9">Months</th>
+                        </tr>
+                        <tr style="height: 50px;">
+                            <td style="width: 300px;" id="mtd11">
+                                
+                                <input type="text" name="exp_institute">
+                            </td>
+                            <td style="width: 50px; text-align: center;"><input type="text" id="year11" class="num_inp" name="year" style="width: 30px;"/></td>
+                            <td style="width: 50px; text-align: center;"><input type="text" id="month11" name="months" class="num_inp" style="width: 30px;"/></td>
+                        </tr>
+                    </table>
+                    <br/>
+                    
+                   
+                </div>
+
+            </div>
+            <hr/>
+            <div class="control-group">
+
+                <label class="control-label">Fulltime training certificate from NAITA or any other TVEC registered Establishment</label>
+
+                <div class="controls">
+                   <table style="width: 400px;" id="exp_table11">
+                        <tr style="border:1px solid #d9d9d9">
+                            <th rowspan="2" style="width: 300px; border:1px solid #d9d9d9">Training Establishment</th>
+                           
+                            <th colspan="2" style="width: 100px; border:1px solid #d9d9d9">Duration</th>
+                            <th colspan="2" style="width: 300px; border:1px solid #d9d9d9">Course</th>
+                        </tr>
+                        <tr style="border:1px solid #000">
+                            <th style="width: 50px; border:1px solid #d9d9d9">Years</th>
+                            <th style="width: 50px; border:1px solid #d9d9d9">Months</th>
+                        </tr>
+                        <tr style="height: 50px;">
+                            <td style="width: 300px;" id="mtd111">
+                                <select name="Training">
+                                    <?php foreach ($exp_service as $e): ?>
+                                    <option value="<?php echo $e->EInstitudeName; ?>"><?php echo $e->EInstitudeName; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                
+                            </td>
+                            <td style="width: 50px; text-align: center;"><input type="text" id="year111" class="num_inp" name="Tyear" style="width: 30px;"/></td>
+                            <td style="width: 50px; text-align: center;"><input type="text" id="month111" name="Tmonths" class="num_inp" style="width: 30px;"/></td>
+                            <td style="width:500px; text-align: center;"><input type="text"  name="Course"  style="width: 200px;"/></td>
+                        </tr>
+                    </table>  
+                    
+                    
+                    
+                    
+                    
+                    
+                    <br/>
+                    
+               
+                </div>
+
+            </div>
+            <hr/>
+            <div class="control-group">
+
+                <div class="controls">
+                    <button value="save" type="button" id="btn_save" class="btn btn-small btn-primary">Save</button>
+
+                </div>
+            </div>
+
+            </form>
+
+        </div>
+
+
+
+        <div class="span4">
+
+
+
+            <?php if($errors->has()): ?>
+
+            <?php foreach($errors->all() as $msg): ?>
+
+
+
+            <div class="alert alert-error">
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+            </div>
+
+
+
+            <?php endforeach; ?>
+
+            <?php endif; ?>
+
+
+
+        </div>
+
+    </div>
+</div>
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script>
+    
+$( document ).ready(function() {
+    console.log( "ready!" );
+    $("#error").hide();
+});
+
+ $("#TradeId").change(function() {
+      
+        var Trade1 = document.getElementById('TradeId').value;
+        $.ajax({
+            url: "<?php echo url::to('loadCourseCodeViaTradeAjax1'); ?>",
+            data: {Trade: Trade1},
+            beforeSend: function() {
+                document.getElementById('ajax_img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+            },
+            success: function(result) {
+                document.getElementById('CourseCode').innerHTML = result;
+            },
+            complete: function() {
+                document.getElementById('ajax_img4').innerHTML = "";
+            }
+        });
+    });
+ $("#CourseCode").change(function() {
+      
+       
+        
+//        alert($(this).val());
+//        $.ajax({
+//            url: "<?php echo url::to('loadNvqLevelViaCourseCodeAjax'); ?>",
+//            data: {CCODE: CCode},
+//            beforeSend: function() {
+//                document.getElementById('ajax_img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+//            },
+//            success: function(result) {
+//                document.getElementById('NvqLevel').innerHTML = result;
+//            },
+//            complete: function() {
+//                document.getElementById('ajax_img4').innerHTML = "";
+//            }
+//        });
+    });
+
+    
+    function myfunc() 
+    {
+        var mode=$('#mode').val();
+        if(mode === '5')
+        {
+         
+         
+         $("#load_nic_val").attr("disabled",true); 
+         $("#nameasNIC").attr("disabled",true); 
+         $("#NameWithInitials").attr("disabled",true); 
+         $("#FullName").attr("disabled",true); 
+         $("#Address").attr("disabled",true); 
+         $("#Address_certificate").attr("disabled",true);
+         $("#GSDev").attr("disabled",true); 
+         $("#tp1").attr("disabled",true); 
+         $("#tp2").attr("disabled",true); 
+         $("#error").show();
+         $("#btn_save").hide();
+         $("#exp_table1").hide();
+         $("#exp_table11").hide();
+        } 
+        else
+        {
+         $("#load_nic_val").attr("disabled",false); 
+         $("#nameasNIC").attr("disabled",false); 
+         $("#NameWithInitials").attr("disabled",false); 
+         $("#FullName").attr("disabled",false); 
+         $("#Address").attr("disabled",false); 
+         $("#Address_certificate").attr("disabled",false);
+         $("#GSDev").attr("disabled",false); 
+         $("#tp1").attr("disabled",false); 
+         $("#tp2").attr("disabled",false);
+         $("#error").hide();
+         $("#btn_save").show();
+         $("#exp_table1").show();
+         $("#exp_table11").show();
+        
+        }
+    }
+
+    $('#btn_save').click(function() {
+        var a = parseInt($('#dale_id').val());
+        var yy = $('#year1').val();
+        var mm = $('#month1').val();
+        
+        if (a === 1) {
+            if ($('#duration1').val() === '') {
+                document.getElementById('duration1').style.border = '1px solid red';
+            } else if (yy === '' && mm === '') {
+                document.getElementById('year1').style.border = '1px solid red';
+                document.getElementById('month1').style.border = '1px solid red';
+            } else {
+                $('#dale_my_form').submit();
+            }
+        } else if (yy === '' && mm === '') {
+            document.getElementById('year1').style.border = '1px solid red';
+            document.getElementById('month1').style.border = '1px solid red';
+        } else {
+            $('#dale_my_form').submit();
+        }
+
+    });
+
+    function course_dale_remove(y) {
+        var s = parseInt(y);
+        var onclk = 'course_dale_plus(' + s + ')';
+        var a = "<select name=\"tra_course[]\" style=\"width: 180px;\">\n" +
+                "<?php foreach ($tra_establish as $t): ?>\n" +
+                "<option value=\"<?php echo $t->CourseName; ?>\"><?php echo $t->CourseName; ?></option>\n" +
+                "<?php endforeach; ?>\n" +
+                "</select>\n" +
+                "<button style=\"margin: 0; height: 30px; border: 0\" type=\"button\" onclick='" + onclk + "'><i class=\"icon-plus icon-2x icon-only\"></i></button>";
+        document.getElementById('course_td' + s).innerHTML = a;
+    }
+
+    function tra_dale_remove(y) {
+        var s = parseInt(y);
+        var onclk = 'tra_dale_plus(' + s + ')';
+        var a = "<select name=\"tra_institute[]\" style=\"width: 180px;\">\n" +
+                "<?php foreach ($tra_establish as $t): ?>\n" +
+                "<option value=\"<?php echo $t->TrainingInstituteName; ?>\"><?php echo $t->TrainingInstituteName; ?></option>\n" +
+                "<?php endforeach; ?>\n" +
+                "</select>\n" +
+                "<button style=\"margin: 0; height: 30px; border: 0\" type=\"button\" onclick='" + onclk + "'><i class=\"icon-plus icon-2x icon-only\"></i></button>";
+        document.getElementById('tra_td' + s).innerHTML = a;
+    }
+
+    function course_dale_plus(x) {
+        var s = parseInt(x);
+        var onclk = 'course_dale_remove(' + s + ')';
+        var a = "<input type=\"text\" name=\"tra_course[]\" style=\"width: 165px;\"/>\n" +
+                "<button style=\"margin: 0; height: 30px; border: 0\" type=\"button\" onclick='" + onclk + "'><i class=\"icon-remove icon-2x icon-only\"></i></button>";
+        document.getElementById('course_td' + s).innerHTML = a;
+    }
+
+    function tra_dale_plus(x) {
+        var s = parseInt(x);
+        var onclk = 'tra_dale_remove(' + s + ')';
+        var a = "<input type=\"text\" name=\"tra_institute[]\" style=\"width: 165px;\"/>\n" +
+                "<button style=\"margin: 0; height: 30px; border: 0\" type=\"button\" onclick='" + onclk + "'><i class=\"icon-remove icon-2x icon-only\"></i></button>";
+        document.getElementById('tra_td' + s).innerHTML = a;
+    }
+
+    $('#tra_remove_row').click(function() {
+        var rowCount = $('#train_table tr').length;
+        if (rowCount > 1) {
+            $('#train_table tr:last').remove();
+            var a = parseInt($('#dale_id').val());
+            var b = a - 1;
+            $('#dale_id').val(b);
+            document.getElementById('duration' + b).readOnly = false;
+        }
+    });
+
+    $('#tra_add_row').click(function() {
+        var a = parseInt($('#dale_id').val());
+        if (a === 0) {
+            var b = a + 1;
+            var onclk = 'tra_dale_plus(' + b + ')';
+            var onclk1 = 'course_dale_plus(' + b + ')';
+            var mtd = 'tra_td' + b;
+            var duration = 'duration' + b;
+            var mtd1 = 'course_td' + b;
+            $('#dale_id').val(b);
+            $('#train_table').append("<tr style=\"height: 50px;\"><td style=\"width: 230px;\" id='" + mtd + "'>\n" +
+                    "<select name=\"tra_institute[]\" style=\"width: 180px;\">\n" +
+                    "<?php foreach ($tra_establish as $t): ?>\n" +
+                    "<option value=\"<?php echo $t->TrainingInstituteName; ?>\"><?php echo $t->TrainingInstituteName; ?></option>\n" +
+                    "<?php endforeach; ?>\n" +
+                    "</select>\n" +
+                    "<button style=\"margin: 0; height: 30px; border: 0\" type=\"button\" onclick='" + onclk + "'><i class=\"icon-plus icon-2x icon-only\"></i></button>\n" +
+                    "</td>\n" +
+                    "<td style=\"width: 230px;\" id='" + mtd1 + "'>\n" +
+                    "<select name=\"tra_course[]\" style=\"width: 180px;\">\n" +
+                    "<?php foreach ($tra_establish as $t): ?>\n" +
+                    "<option value=\"<?php echo $t->CourseName; ?>\"><?php echo $t->CourseName; ?></option>\n" +
+                    "<?php endforeach; ?>\n" +
+                    "</select>\n" +
+                    "<button style=\"margin: 0; height: 30px; border: 0\" type=\"button\" onclick='" + onclk1 + "'><i class=\"icon-plus icon-2x icon-only\"></i></button>\n" +
+                    "</td>\n" +
+                    "<td style=\"width: 100px; text-align: center;\"><input type=\"text\" id='" + duration + "' name=\"duration[]\" class=\"num_inp\" style=\"width: 80px;\"/></td>\n" +
+                    "</tr>");
+        } else {
+            var dd = $('#duration' + a).val();
+            if (dd === '') {
+                document.getElementById('duration' + a).style.border = '1px solid red';
+            } else {
+                document.getElementById('duration' + a).style.border = '';
+                document.getElementById('duration' + a).readOnly = true;
+                var b = a + 1;
+                var onclk = 'tra_dale_plus(' + b + ')';
+                var onclk1 = 'course_dale_plus(' + b + ')';
+                var mtd = 'tra_td' + b;
+                var duration = 'duration' + b;
+                var mtd1 = 'course_td' + b;
+                $('#dale_id').val(b);
+                $('#train_table').append("<tr style=\"height: 50px;\"><td style=\"width: 230px;\" id='" + mtd + "'>\n" +
+                        "<select name=\"tra_institute[]\" style=\"width: 180px;\">\n" +
+                        "<?php foreach ($tra_establish as $t): ?>\n" +
+                        "<option value=\"<?php echo $t->TrainingInstituteName; ?>\"><?php echo $t->TrainingInstituteName; ?></option>\n" +
+                        "<?php endforeach; ?>\n" +
+                        "</select>\n" +
+                        "<button style=\"margin: 0; height: 30px; border: 0\" type=\"button\" onclick='" + onclk + "'><i class=\"icon-plus icon-2x icon-only\"></i></button>\n" +
+                        "</td>\n" +
+                        "<td style=\"width: 230px;\" id='" + mtd1 + "'>\n" +
+                        "<select name=\"tra_course[]\" style=\"width: 180px;\">\n" +
+                        "<?php foreach ($tra_establish as $t): ?>\n" +
+                        "<option value=\"<?php echo $t->CourseName; ?>\"><?php echo $t->CourseName; ?></option>\n" +
+                        "<?php endforeach; ?>\n" +
+                        "</select>\n" +
+                        "<button style=\"margin: 0; height: 30px; border: 0\" type=\"button\" onclick='" + onclk1 + "'><i class=\"icon-plus icon-2x icon-only\"></i></button>\n" +
+                        "</td>\n" +
+                        "<td style=\"width: 100px; text-align: center;\"><input type=\"text\" id='" + duration + "' name=\"duration[]\" class=\"num_inp\" style=\"width: 80px;\"/></td>\n" +
+                        "</tr>");
+            }
+        }
+    });
+
+    function dale_remove(y) {
+        var s = parseInt(y);
+        var onclk = 'dale_plus(' + s + ')';
+        var a = "<select name=\"exp_institute[]\">\n" +
+                "<?php foreach ($exp_service as $e): ?>\n" +
+                "<option value=\"<?php echo $e->EInstitudeName; ?>\"><?php echo $e->EInstitudeName; ?></option>\n" +
+                "<?php endforeach; ?>\n" +
+                "</select>\n" +
+                "<button style=\"margin: 0; height: 30px; border: 0\" type=\"button\" onclick='" + onclk + "'><i class=\"icon-plus icon-2x icon-only\"></i></button>";
+        document.getElementById('mtd' + s).innerHTML = a;
+    }
+
+    function dale_plus(x) {
+        var s = parseInt(x);
+        var onclk = 'dale_remove(' + s + ')';
+        var a = "<input type=\"text\" name=\"exp_institute[]\"/>\n" +
+                "<button style=\"margin: 0; height: 30px; border: 0\" type=\"button\" onclick='" + onclk + "'><i class=\"icon-remove icon-2x icon-only\"></i></button>";
+        document.getElementById('mtd' + s).innerHTML = a;
+    }
+
+    $('#remove_row').click(function() {
+        var rowCount = $('#exp_table tr').length;
+        if (rowCount > 3) {
+            var a = parseInt($('#my_id').val());
+            var b = a - 1;
+            $('#my_id').val(b);
+            $('#exp_table tr:last').remove();
+            document.getElementById('year' + b).readOnly = false;
+            document.getElementById('month' + b).readOnly = false;
+        }
+    });
+
+    $('#add_row').click(function() {
+        var a = parseInt($('#my_id').val());
+        var yy = $('#year' + a).val();
+        var mm = $('#month' + a).val();
+        if (yy === '' && mm === '') {
+            document.getElementById('year' + a).style.border = '1px solid red';
+            document.getElementById('month' + a).style.border = '1px solid red';
+        } else {
+            document.getElementById('year' + a).style.border = '';
+            document.getElementById('month' + a).style.border = '';
+            var b = a + 1;
+            var onclk = 'dale_plus(' + b + ')';
+            var year = 'year' + b;
+            var month = 'month' + b;
+            var mtd = 'mtd' + b;
+            $('#my_id').val(b);
+            $('#exp_table').append("<tr style=\"height: 50px;\"><td style=\"width: 300px;\" id='" + mtd + "'>\n" +
+                    "<select name=\"exp_institute[]\">\n" +
+                    "<?php foreach ($exp_service as $e): ?>\n" +
+                    "<option value=\"<?php echo $e->EInstitudeName; ?>\"><?php echo $e->EInstitudeName; ?></option>\n" +
+                    "<?php endforeach; ?>\n" +
+                    "</select>\n" +
+                    "<button style=\"margin: 0; height: 30px; border: 0\" type=\"button\" onclick='" + onclk + "'><i class=\"icon-plus icon-2x icon-only\"></i></button>\n" +
+                    "</td>\n" +
+                    "<td style=\"width: 50px; text-align: center;\"><input type=\"text\" id='" + year + "' class=\"num_inp\" name=\"year[]\" style=\"width: 30px;\"/></td>\n" +
+                    "<td style=\"width: 50px; text-align: center;\"><input type=\"text\" id='" + month + "' name=\"months[]\" class=\"num_inp\" style=\"width: 30px;\"/></td>\n" +
+                    "</tr>");
+            document.getElementById('year' + a).readOnly = true;
+            document.getElementById('month' + a).readOnly = true;
+        }
+    });
+
+    <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Record Added Successfully", class_name: "gritter-info gritter-center"});
+            <?php endif; ?>
+          
+    $("#Province").change(function() {
+
+        document.getElementById('Electorate').innerHTML = "";
+        var province = document.getElementById('Province').value;
+        $.ajax({
+            url: "<?php echo url::to('loadDistrictAjax'); ?>",
+            data: {prov: province},
+            beforeSend: function() {
+                document.getElementById('ajax_img3').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+            },
+            success: function(result) {
+                document.getElementById('District').innerHTML = result;
+            },
+            complete: function() {
+                document.getElementById('ajax_img3').innerHTML = "";
+            }
+        });
+    });
+    $("#District").change(function() {
+
+        var District = document.getElementById('District').value;
+        $.ajax({
+            url: "<?php echo url::to('loadElectorateAjax'); ?>",
+            data: {prov: District},
+            beforeSend: function() {
+                document.getElementById('ajax_img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+            },
+            success: function(result) {
+                document.getElementById('Electorate').innerHTML = result;
+            },
+            complete: function() {
+                document.getElementById('ajax_img4').innerHTML = "";
+            }
+        });
+    });
+
+        $("#Electorate").change(function() {
+
+            alert('electorate');
+
+        var District = document.getElementById('Electorate').value;
+
+            alert(District);
+        $.ajax({
+            url: "<?php echo url::to('loadGNDivisionAjax'); ?>",
+            data: {prov: District},
+            beforeSend: function() {
+               // document.getElementById('ajax_img6').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+            },
+            success: function(result) {
+                document.getElementById('Grama_Sewa_Division').innerHTML = result;
+            },
+            complete: function() {
+               // document.getElementById('ajax_img6').innerHTML = "";
+            }
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+    $("#load_nic_val").keyup(function() {
+
+        document.getElementById('NameWithInitials').value = "";
+        document.getElementById('FullName').value = "";
+        document.getElementById('Address').innerHTML = "";
+        document.getElementById('DOB').value = "";
+        document.getElementById('Gender').value = "";
+        document.getElementById('Age').value = "";
+        document.getElementById('month').value = "";
+        document.getElementById('days').value = "";
+        document.getElementById('nic_records').innerHTML = '';
+        var s_nic = document.getElementById('load_nic_val').value;
+        document.getElementById('load_nic_val').style.border = "1px solid #777";
+        if (s_nic === " ") {
+            document.getElementById('load_nic_val').style.border = "2px solid red";
+        } else if (s_nic === "") {
+            document.getElementById('load_nic_val').style.border = "1px solid #777";
+        } else if (s_nic.length < 10) {
+            if (isNaN(s_nic)) {
+                document.getElementById('load_nic_val').style.border = "2px solid red";
+            }
+        } else if (s_nic.length === 10) {
+            var nic = s_nic;
+            var myarray = new Array();
+            myarray = nic.split("");
+            if (myarray[9] === "V") {
+
+                var y = myarray[0] + myarray[1];
+                var d = myarray[2] + myarray[3] + myarray[4];
+                dob_calculate(y, d);
+            } else {
+                document.getElementById('load_nic_val').style.border = "2px solid red";
+            }
+        } else if (s_nic.length > 10) {
+            document.getElementById('load_nic_val').style.border = "2px solid red";
+        }
+
+    });
+    function dob_calculate(y, d) {
+        var y = parseInt(y);
+        var d = parseInt(d);
+        var gender = '';
+        var my_year = 1900 + y;
+        var my_month = '';
+        var my_date = '';
+        if (d < 500) {
+            gender = 'Male';
+            if (d <= 31) {
+                my_month = '01';
+                my_date = d;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 60) {
+                my_month = '02';
+                my_date = d - 31;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 91) {
+                my_month = '03';
+                my_date = d - 60;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 121) {
+                my_month = '04';
+                my_date = d - 91;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 152) {
+                my_month = '05';
+                my_date = d - 121;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 182) {
+                my_month = '06';
+                my_date = d - 152;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 213) {
+                my_month = '07';
+                my_date = d - 182;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 244) {
+                my_month = '08';
+                my_date = d - 213;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 274) {
+                my_month = '09';
+                my_date = d - 244;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 305) {
+                my_month = '10';
+                my_date = d - 274;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 335) {
+                my_month = '11';
+                my_date = d - 305;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else {
+                my_month = '12';
+                my_date = d - 335;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            }
+
+            var dob = my_year + '-' + my_month + '-' + my_date;
+            document.getElementById('DOB').value = dob;
+            document.getElementById('Gender').value = gender;
+            ageCalculater(my_year, my_month, my_date);
+
+        } else {
+            gender = 'Female';
+            if (d <= 531) {
+                my_month = '01';
+                my_date = d - 500;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 560) {
+                my_month = '02';
+                my_date = d - 531;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 591) {
+                my_month = '03';
+                my_date = d - 560;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 621) {
+                my_month = '04';
+                my_date = d - 591;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 652) {
+                my_month = '05';
+                my_date = d - 621;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 682) {
+                my_month = '06';
+                my_date = d - 652;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 713) {
+                my_month = '07';
+                my_date = d - 682;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 744) {
+                my_month = '08';
+                my_date = d - 713;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 774) {
+                my_month = '09';
+                my_date = d - 744;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 805) {
+                my_month = '10';
+                my_date = d - 774;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 835) {
+                my_month = '11';
+                my_date = d - 805;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else {
+                my_month = '12';
+                my_date = d - 835;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            }
+
+            var dob = my_year + '-' + my_month + '-' + my_date;
+            document.getElementById('DOB').value = dob;
+            document.getElementById('Gender').value = gender;
+            ageCalculater(my_year, my_month, my_date);
+        }
+    }
+
+    function ageCalculater(my_year, my_month, my_date) {
+        var year = '';
+        var month = '';
+        var days = '';
+        var y = my_year;
+        var m = my_month;
+        var d = my_date;
+
+        var t_day = new Date();
+        var d1 = t_day.getDate();
+        var m1 = t_day.getMonth() + 1;
+        var y1 = t_day.getFullYear();
+
+        var age_year = y1 - y;
+        var age_month = m1 - m;
+        var age_day = d1 - d;
+
+        if (age_day < 0 && age_month <= 0) {
+            year = (age_year - 1);
+            month = (11 + m1 - m);
+            days = (30 + d1 - d);
+            document.getElementById('Age').value = year;
+            document.getElementById('month').value = month;
+            document.getElementById('days').value = days;
+        } else if (age_day < 0 && age_month > 0) {
+            year = (age_year);
+            month = (m1 - m + 1);
+            days = (30 + d1 - d);
+            document.getElementById('Age').value = year;
+            document.getElementById('month').value = month;
+            document.getElementById('days').value = days;
+        } else if (age_day >= 0 && age_month < 0) {
+            year = (age_year - 1);
+            month = (12 + m1 - m);
+            days = (d1 - d);
+            document.getElementById('Age').value = year;
+            document.getElementById('month').value = month;
+            document.getElementById('days').value = days;
+        } else if (age_day >= 0 && age_month >= 0) {
+            year = (age_year);
+            month = (m1 - m);
+            days = (d1 - d);
+            document.getElementById('Age').value = year;
+            document.getElementById('month').value = month;
+            document.getElementById('days').value = days;
+        } else {
+
+        }
+
+        nic_data_load();
+
+    }
+
+
+    function nic_data_load() {
+        var s_nic = document.getElementById('load_nic_val').value;
+        document.getElementById('load_nic_val').style.border = "1px solid #777";
+        $.ajax({
+            url: "<?php echo url::to('loadNicAjax'); ?>",
+            data: {nic: s_nic},
+            beforeSend: function() {
+                document.getElementById('ajax_img2').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+            },
+            success: function(result) {
+                var d = result.split('|#|');
+                var NameWithInitials = d[0];
+                var FullName = d[1];
+                var Address = d[2];
+                var DOB = d[3];
+                var dale = d[4];
+                document.getElementById('NameWithInitials').value = NameWithInitials;
+                document.getElementById('FullName').value = FullName;
+                document.getElementById('Address').innerHTML = Address;
+                document.getElementById('DOB').value = DOB;
+                if (dale === "dale") {
+                    document.getElementById('nic_records').innerHTML = '';
+                } else {
+                    document.getElementById('nic_records').innerHTML = dale;
+                }
+            },
+            complete: function() {
+                document.getElementById('ajax_img2').innerHTML = "";
+            }
+        });
+    }
+
+
+    $(".num_inp").keyup(function() {
+
+        var a = $(this).val();
+        if (isNaN(a)) {
+            $(this).val('');
+            alert('Please Input Numbers Only!');
+        }
+
+    });
+</script>
+
+
+
+
+
+
+
+
+
+

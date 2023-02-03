@@ -1,0 +1,466 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        HO Centre Grading       
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            View
+                        </small>            
+                    </h1>
+                </div>
+            </div>
+            <!--PAGE CONTENT BEGINS-->
+			 
+            <form action="" method='POST' class='form-horizontal'>
+			
+             <div class="control-group">
+                    <label class="control-label" for="centers">Year</label>
+                    <div class="controls">
+                        <select name="Year" id="Year" required="true">
+                            <?php $year = DATE("Y"); ?>
+                            <option value="" >--- Select Year----</option>
+							<option value="<?php echo $year-2; ?>"><?php echo $year-2; ?></option>
+							<option value="<?php echo $year-1; ?>"><?php echo $year-1; ?></option>
+                            <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+							<option value="<?php echo $year+1; ?>"><?php echo $year+1; ?></option>
+							<option value="<?php echo $year+2; ?>"><?php echo $year+2; ?></option>
+                            
+                        </select>
+                    </div>
+                </div>
+                 
+                <br/> 
+				 <div class="control-group">
+				  <div class="controls">
+				<table>
+				<tr>
+					<td>
+							
+									<button type="submit"  class="btn btn-primary">
+											Search</button>
+											<span id='upld' hidden>
+											
+										  
+							
+					</td>				
+					<td>
+						
+							
+							 <button type="button" class="btn btn-success" onclick="downloadReport()">Download Report</button>
+						 
+						
+        </td>
+		</tr>
+		</table>
+		</div>
+                </div>
+           </form>
+            <div id="aaaa">
+            <?php if(isset($courses)): ?>
+            
+            
+             
+            
+
+             <?php endif; ?>
+           <!-- <h5 style="color: #777777;"><?php if(isset($CourseCode)): ?>CourseCode:&nbsp;&nbsp;<?php echo $CourseCode; ?><?php endif; ?></h5>
+            <h5 style="color: #777777;"><?php if(isset($BatchCode)): ?>BatchCode:&nbsp;&nbsp;<?php echo $BatchCode; ?><?php endif; ?></h5>-->
+			<table class="table table-striped table-bordered table-hover">
+			<thead>
+			<tr>
+			<td>
+			<center>
+			<b><i>Grade *** </i></b><font color="blue">Greater than or Equal 75 - A</i></font> ,<font color="green">Between 55 - 74 - B</font> ,<font color="orange">54 - 36 - C</font>,<font color="red">Below 36 - D</font></center>
+			<center><b><i>Minimum No Of Courses *** </i></b><font color="blue">DVTC - 10</i></font> ,<font color="green">NVTI - 15</font>,<font color="orange">VTC - 5</font>,<font color="red">Attached - 2</font>
+			</center>
+			</td>
+			</tr>
+			</thead>
+			</table>
+            
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead>
+                        <th class='center'>No</th>
+						<th class='center'>Year</th>
+						<th class='center'>District</th>
+                        <th class='center'>Center</th>
+						<th class='center'>Type</th>
+						<th class='center'>Reg. No</th>
+                        <th class='center'>Achived Mark(100)</th>
+						<th class='center'>No Of Courses</th>
+                        <th class='center'>Grade</th>
+                        <th class='center'>Comments</th>
+						<th class='center'>Remarks</th>
+						<th class='center'>Active Status</th>
+						<th class='center'>Date Closed</th>
+                        <th class='center'>Edit Center Grading Form</th>
+                        <th class='center'>View Center Grading Form</th>
+						<th class='center'>Remove</th>
+                        
+                       
+                        
+                </tr>
+                </thead>
+                    <tbody>
+
+                  <?php 
+                  $SerialNo=1;
+                  ?>
+                <?php if(isset($courses)): ?>
+                <?php foreach($courses as $t): ?>
+
+               
+                
+                        <tr>
+                           
+                            <td class="center"><?php echo $SerialNo++; ?></td>
+							<td class="center"><?php echo $t->Year; ?></td>
+							<td class="center"><?php echo $t->DistrictName; ?></td>
+                            <td class="center"><?php echo $t->OrgaName; ?></td>
+                            <td class="center"><?php echo $t->Type; ?></td> 
+							<td class="center"><?php echo $t->RegistrationNo; ?></td> 
+                            <td class="center"><?php echo $t->AchivedMark; ?></td>
+							<td class="center"><?php echo $t->NoOfCourses; ?></td>
+							<td class="center"><?php echo $t->CenterGrade; ?></td>
+							<td class="center"><?php echo $t->Comments; ?></td>
+                            <td class="center"><?php echo $t->Remarks; ?></td>
+							<td class="center">
+							<?php echo $t->Active; ?>
+							</td>
+							<td class="center"><?php echo $t->Remarks; ?></td>
+                           
+                            <td class="center">
+							 <?php if($user->hasPermission('EditHOCenterMonitoringForms')): ?>
+                                <form id="deleteform"  action='EditHOCenterMonitoringForms' method="GET">
+                                <input type="hidden" name='id' value="<?php echo $t->id; ?>" />
+                                <button type="Submit" class="btn btn-info btn-mini"><i class="icon-edit icon-2x icon-only"></i></button>
+                                </form>
+								<?php endif; ?>
+                             </td>
+                             <td class="center">
+							 <?php if($user->hasPermission('ViewHOCenterMonitoringFormsEntered')): ?>
+                                <form id="deleteform"  action='ViewHOCenterMonitoringFormsEntered' method="GET">
+                                <input type="hidden" name='id' value="<?php echo $t->id; ?>" />
+                                <button type="Submit" class="btn btn-success btn-mini"><i class="icon-eye-open icon-2x icon-only"></i></button>
+                                </form>
+								<?php endif; ?>
+                             </td>
+                           <td>
+						   <?php if($user->hasPermission('DeleteHOCenterMonitoringForms')): ?>
+							 <form id="deleteform"  action='DeleteHOCenterMonitoringForms' method="POST" onsubmit="return doConfirm('<?php echo $t->OrgaName; ?>',this)">
+                                <input type="hidden" name='id' value="<?php echo $t->id; ?>" />
+                                <button type="submit" class="btn btn-danger btn-mini"><i class="icon-trash icon-2x icon-only"></i></button>
+                            </form>
+						    <?php endif; ?>
+						  </td>
+                       
+                            
+                       
+                            
+                        </tr>
+              
+
+              
+                
+                    
+               
+               
+                <?php endforeach; ?>
+
+               
+                <?php endif; ?>
+            </tbody>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+            </div>
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+
+ function downloadReport() 
+ {
+    
+	var Year = $("#Year").val();
+	
+    if (!Year) {
+       
+	   
+        bootbox.alert('Please select Year');
+
+        } else {
+        window.location.replace("DownloadHOCenterMonitoringFormsExcel?Year=" + Year + "");
+        bootbox.alert('Please wait few seconds');
+    }
+
+}
+    function doConfirm(applicant, formobj)
+    {
+        bootbox.confirm("Are you sure you want to remove " + applicant, function(result)
+        {
+        if (result)
+        {
+        formobj.submit();
+        }
+        });
+                return false;
+    }
+    
+    $('#sample-table-2').dataTable({
+    "aoColumns": [
+             null,
+            {"bSortable": false},
+           
+            {"bSortable": false},
+            {"bSortable": false},
+         
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+			{"bSortable": false},
+			{"bSortable": false},
+			 {"bSortable": false},{"bSortable": false},
+			  {"bSortable": false},
+			   {"bSortable": false},
+			    {"bSortable": false}, {"bSortable": false},
+            
+           
+    ]});
+            $('table th input:checkbox').on('click', function() {
+    var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function() {
+            this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+            });
+    });
+            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+            function tooltip_placement(context, source) {
+            var $source = $(source);
+                    var $parent = $source.closest('table')
+                    var off1 = $parent.offset();
+                    var w1 = $parent.width();
+                    var off2 = $source.offset();
+                    var w2 = $source.width();
+                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                    return 'right';
+                    return 'left';
+            }
+
+
+</script>
+
+<script>
+
+  
+    
+$('#center').change(function(){
+
+        //alert('dg');
+       var center = document.getElementById('center').value; 
+      
+       var msg = '--- Select Course ---';
+        $("#Course").html('');
+       $.ajax  ({
+                    url: "<?php echo url::to('GetNominatedCourses'); ?>",
+                    data: { center: center},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        $("#Course").append("<option value=''>" + msg + "</option>");
+                         $.each(result, function(i, item)
+                        {
+
+
+
+                            $("#Course").append("<option value=" + item.CS_ID + ">" + item.CourseCode + " (" + item.CourseName + ")</option>");
+
+
+
+                        });
+                                        
+                        
+                        }
+
+
+                    
+                });
+        
+
+
+       
+    });
+  
+
+
+    $('#upload').click(function()
+    {
+      
+        var CS_ID = $("#CS_ID").val(); 
+      // alert(CS_ID);
+      
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            
+                            document.getElementById('img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+                        type: "POST",
+                        url: "<?php echo Url('PrintAssessorAssignedLetter'); ?>",
+                        data: {CS_ID: CS_ID},
+                        success:function response(responseText, statusText, xhr, $form)
+                        {
+       
+                               var printWin = window.open("","printSpecial");
+                                printWin.document.open();
+                                printWin.document.write(responseText);
+                                printWin.document.close();
+                                printWin.print();
+       
+   
+                         
+
+                        },
+                        complete: function() {
+                            document.getElementById('img4').innerHTML ="";
+
+                        }
+                    });
+        
+    }
+    );
+    /*$('#reject').click(function()
+    {
+     
+       var TID = document.getElementById('reject').value; 
+       alert(TID);
+
+
+      
+          
+        
+    }
+    );
+    $('#reject1').click(function()
+    {
+     
+       var TID = document.getElementById('reject1').value; 
+       alert(TID);
+
+
+      
+          
+        
+    }
+    );*/
+     /* function addModule() {
+
+        var TID = document.getElementById('reject').value; 
+       alert(TID);
+
+        /*$.ajax  ({
+                    url: "<?php echo url::to(''); ?>",
+                    success: function(result) {
+                        if ($('#addModule').is(':hidden')) {
+                            $('#addModule').show();
+                        } else {
+                            $('#addModule').hide();
+                        }
+                    }
+                });*/
+ //   }
+ $(".red").click(function(){
+
+     var id = this.id;
+     //alert(id);
+bootbox.confirm("<form id='infos' action=''><div class='control-group'><div class='controls'>\
+    Reason:<textarea cols='1000' rows='6' name='Reason' id='Reason'></textarea></div></div></form>", function(result) {
+        if(result)
+        {
+            //$('#infos').submit();
+           // alert(result);
+
+         var reason = $("#Reason").val();
+        // var g = $("#editComment").val();
+         //alert(reason);
+
+
+        doStuffWithResults(id,reason);
+        }
+});
+  
+});
+    
+function doStuffWithResults(id,reason) {
+
+     $.ajax  ({
+                    url: "<?php echo url::to('DORejectAssignedAssessor'); ?>",
+                    data: { id: id,reason: reason},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       location.reload();          
+                        
+                        }
+
+
+                    
+                });
+   
+}
+    
+
+ $(".DEEPPINK").click(function(){
+
+     var id = this.id;
+     //alert(id);
+
+
+     $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            
+                            document.getElementById('img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+                        type: "POST",
+                        url: "<?php echo Url('DownloadQuestionPaper'); ?>",
+                        data: {id: id},
+                        success:function response(responseText, statusText, xhr, $form)
+                        {
+       
+                               var printWin = window.open("","printSpecial");
+                                printWin.document.open();
+                                printWin.document.write(responseText);
+                                printWin.document.close();
+                                printWin.print();
+       
+   
+                         
+
+                        },
+                        complete: function() {
+                            document.getElementById('img4').innerHTML ="";
+
+                        }
+                    });
+  
+});
+
+</script>

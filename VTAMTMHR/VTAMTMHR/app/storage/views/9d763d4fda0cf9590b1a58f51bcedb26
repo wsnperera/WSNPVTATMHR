@@ -1,0 +1,171 @@
+
+
+<!--/* 
+* center wise report
+* Created by Imalka 30-12-2015.
+*/-->
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>VTA<small><i class="icon-double-angle-right"></i>View Center Wise Report</small></h1>
+                <!--<a href=<?php echo url('viewEnterAssignmentMarks_COT'); ?>> << Enter Assignments Marks </a>   -->             
+                <!--form-->
+                <!--view form load messages-->
+                <div id="ReturnMessages">
+                    <?php if(Session::has('message')): ?>
+                    <div class="alert alert-success">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="icon-remove"></i>
+                        </button>
+                        <strong>
+                            <i class="icon-ok"></i>
+                            <?php echo Session::get('message'); ?>
+                        </strong>
+                    </div>
+                    <?php endif; ?>
+                </div>
+                <!--center's drop down-->
+
+                <form class="form-horizontal" id="main_from" action='' name="fully[]" method="POST" enctype="multipart/form-data">
+                    <!--Name of Institute-->
+                    <div class="control-group">
+                        <label class="control-label" for="Name of Organization">Name of Center : </label>
+                        <div class="controls">
+                            <select name="Institute" id="center" required>
+
+                                <option selected value='0'>All Centers</option>
+                                <?php foreach($Center as $c): ?>
+
+                                <option value="<?php echo $c->id; ?>"  <?php if(isset($instituteID) && ($c->id == $instituteID)): ?> selected <?php endif; ?>  ><?php echo $c->OrgaName; ?></option>
+
+                                <?php endforeach; ?>
+                            </select>
+                            <b style="color: red">*</b>      
+                        </div>
+                    </div>
+                    <!--given date range-->
+                    <div class="control-group">
+
+                        <label class="control-label" for="id-date-range-picker-1">Select Date Range : &nbsp;</label>
+
+                        <div class="cntrols">
+                            <span class="add-on">
+                                <i class="icon-calendar"></i>
+                            </span>
+                            <input class="span4" type="text" name="date-range-picker" id="id-date-range-picker-1"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="button" class="btn btn-primary" onclick="getTable()"/>View</button>
+                            <button type="button" class="btn btn-primary" onclick="downloadReport()">Download Report</button>
+                        </div>
+                    </div>
+
+
+
+                    <!--display loading-->
+                    <div id="loding">                    
+                    </div>
+                    <!--set display none-->
+
+                    <!--Details table-->
+                    <div class="row-fluid span12" style="margin: 0px" overflow="auto">
+                        <div class="table-header">
+                        </div>
+                        <!--Display data on table-->
+                        <div id ="table"></div>
+                    </div>                   
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+
+<script>
+                                function getTable() {
+                                    var center = $("#center").val();
+                                    var dateRange = $("#id-date-range-picker-1").val();
+
+
+                                    //alert(dateRange);
+
+                                    if (dateRange == "") {
+                                        bootbox.alert("Please Enter Date Range!!!");
+                                    } else {
+                                        $.ajax
+                                                ({
+                                                    type: "GET",
+                                                    url: "<?php echo Url('centerwiseSummarySearch'); ?>",
+                                                    data: {center: center, dateRange: dateRange},
+                                                    dataType: 'json',
+                                                    success: function (result)
+                                                    {
+                                                        if (result.Count > 0) {
+                                                            $('#table').html(result.Table);
+                                                        }
+                                                        else {
+                                                            alert("data not found");
+                                                        }
+
+                                                    }
+                                                });
+                                    }
+                                }
+                                function downloadReport() {
+                                    var center = $("#center").val();
+                                    var dateRange = $('#id-date-range-picker-1').val();
+                                    //dateRange =1;
+                                    if (!dateRange) {
+                                        $('#table').html('');
+                                        bootbox.alert('Please select date range');
+
+                                    } else {
+                                        window.location.replace("centerWiseReport?instituteID=" + center + "&dateRange=" + dateRange + "");
+                                        bootbox.alert('Please wait few seconds');
+                                    }
+
+                                }
+
+                                $(document).ready(function () {
+                                    var a = "<?php if(isset($a)): ?> <?php endif; ?>";
+                                    if (a) {
+                                        var b = a.trim();
+                                        $('#center').attr('disabled', 'disabled');
+                                        //$("#module").val(b).change();
+                                    }
+
+                                });
+
+
+</script>
+<script>
+    $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function () {
+        $(this).next().focus();
+    });
+</script>

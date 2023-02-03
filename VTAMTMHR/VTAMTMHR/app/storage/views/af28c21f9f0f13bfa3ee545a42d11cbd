@@ -1,0 +1,167 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>
+                    Report Type 			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create Report Types
+                    </small>			
+                </h1>
+            </div>
+            <form class="form-horizontal" action="<?php echo url('editReportType'); ?>" method="POST">
+                <div class="control-group">
+                    <label class="control-label">Report Name</label>
+                    <div class="controls">
+                        <input type="hidden" id="reportname" name="id" value="<?php echo $reportDetails->id; ?>"/>
+                        <input type="text" id="reportname" name="ReportName" value="<?php echo $reportDetails->ReportName; ?>" readonly=""/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Report Type</label>
+                    <div class="controls">
+                        <select class="chzn-select" id="reporttype" name="ReportType">
+                            <option value=""></option>
+                            <?php foreach($reportTypes as $rt): ?>
+                            <option value="<?php echo $rt; ?>" <?php if($rt==$reportDetails->ReportType): ?> selected <?php endif; ?>><?php echo $rt; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Report View</label>
+                    <div class="controls">                        
+                        <input type="text" id="reportname" name="ReportView" value="<?php echo $reportDetails->ReportView; ?>" readonly=""/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Report Description</label>
+                    <div class="controls">
+                        <textarea id="reportdescription" name="ReportDescription"><?php echo $reportDetails->ReportDescription; ?></textarea>
+                    </div>
+                </div> 
+                <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th class="center">Column Name</th>
+                            <th class="center">Column For Selection</th>
+                            <th class="center">Column for Group</th>
+                            <th class="center">Column for Sort</th>
+                            <th class="center">Column for Filter</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php for($i = 0; $i < count($coloumnList); $i++): ?> 
+                        <tr>
+                            <td><?php echo $coloumnList[$i]; ?></td>
+                            <td class="center"><input type='checkbox' name='SelectList[]' value='<?php echo $coloumnList[$i]; ?>' <?php echo (ReportDetails::in_array_all($coloumnList[$i],($reportDetails->SelectList != null?json_decode($reportDetails->SelectList):array()))?"checked":""); ?> id="SelectList<?php echo $coloumnList[$i]; ?>"><span class='lbl'></span></td>
+                            <td class="center"><input type='checkbox' id="GroupingList<?php echo $coloumnList[$i]; ?>" name='GroupingList[]' value="<?php echo $coloumnList[$i].ReportDetails::setValueInView($coloumnList[$i],$reportDetails->id)["value"]; ?>" <?php echo (ReportDetails::in_array_all($coloumnList[$i],($reportDetails->GroupingList != null?json_decode($reportDetails->GroupingList):array()))?"checked":""); ?>><span class='lbl' id='SpanGroupingList<?php echo $coloumnList[$i]; ?>'><?php echo ReportDetails::setValueInView($coloumnList[$i],$reportDetails->id)["html"]; ?></span></td>
+                            <td class="center"><input type='checkbox' name='OrderingList[]' value='<?php echo $coloumnList[$i]; ?>' <?php echo (ReportDetails::in_array_all($coloumnList[$i],($reportDetails->OrderingList != null?json_decode($reportDetails->OrderingList):array()))?"checked":""); ?>><span class='lbl'></span></td>
+                            <td class="center"><input type='checkbox' name='FilteringList[]' value='<?php echo $coloumnList[$i]; ?>' <?php echo (ReportDetails::in_array_all($coloumnList[$i],($reportDetails->FilteringList != null?json_decode($reportDetails->FilteringList):array()))?"checked":""); ?>><span class='lbl'></span></td>
+                        </tr>
+                        <?php endfor; ?>
+                    </tbody>
+                </table>
+                <input type="submit" class="btn btn-large span12 btn-primary pull-right" name="submit" value="Save"/>
+            </form> 
+        </div><!--/.span-->
+        <div class="span4" id="error">
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-ok"></i>
+                    <?php echo Session::get('done'); ?>
+                </strong>
+                <br>
+            </div>
+            <?php endif; ?>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+
+        </div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<div class="hidden">
+    <div id="groupingType">
+        <h1 style="text-align: center">Select Grouping Type</h1>
+        <div style="margin-left: 30px;margin-top: 40px;font-size: 18px;">
+            <input type="checkbox" class="GroupingType" name="GroupingType" value="Count"><span class="lbl">Count</span><br/>
+            <input type="checkbox" class="GroupingType" name="GroupingType" value="Sum"><span class="lbl">Sum</span><br/>
+            <input type="checkbox" class="GroupingType" name="GroupingType" value="Average"><span class="lbl">Average</span>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+$(function () {
+    $(".chzn-select").chosen();
+    $("#reporttype_chzn").find('input').on('change', function (e) {
+        var option = $("<option>").val($("#reporttype_chzn").find('input').val()).text($("#reporttype_chzn").find('input').val());
+        // add the new option
+        $("#reporttype.chzn-select").prepend(option);
+        // automatically select it
+        $("#reporttype.chzn-select").find(option).prop('selected', true);
+        // trigger the update
+        $("#reporttype.chzn-select").trigger("liszt:updated");
+    });
+    $("[id^=GroupingList]").click(function () {
+        var id = this.id;
+        var idsplit = id.split("GroupingList")[1];
+        if ($("#" + id).is(":checked")) {
+            bootbox.dialog($("#groupingType").html(), [{
+                    "label": "OK",
+                    "class": "btn btn-small btn-success",
+                    "callback": function () {
+                        var gtype = $(".GroupingType:checked").serializeArray();
+                        if (gtype.length !== 0) {
+                            var gtypelist = [];
+                            $.each(gtype, function (key, value) {
+                                gtypelist.push(value.value);
+                            });
+                            $("#" + id).val($("#" + id).val() + "." + gtypelist.join("."));
+                            $("#SpanGroupingList" + idsplit).html("<span style='color:red;'>(" + gtypelist.join(",") + ")</span>");
+                        } else {
+                            $("#SpanGroupingList" + idsplit).html("");
+                            $("#" + id).val(idsplit);
+                        }
+                    }}]);
+        } else {
+            $("#SpanGroupingList" + idsplit).html("");
+            $("#" + id).val(idsplit);
+        }
+    });
+    var oTable1 = $('#sample-table-2').dataTable({
+        "bPaginate": false,
+        "aoColumns": [
+            null, null, null, {bSortable: false}, {bSortable: false}, {bSortable: false}
+        ]});
+});
+</script>

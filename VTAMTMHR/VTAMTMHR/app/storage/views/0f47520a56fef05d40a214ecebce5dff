@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>DTET MIS</title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+        <link rel="stylesheet" href="assets/css/chosen.css" />
+        <link rel="stylesheet" href="assets/css/ace.min.css" />
+        <link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+        <link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    <body>
+        <button type="button" class="btn btn-large btn-primary pull-right" id="downloadButton">Download</button>
+        <div id="resultTable">
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <?php foreach($Header as $head): ?>
+                        <td><?php echo $head; ?></td>
+                        <?php endforeach; ?>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <?php foreach($Data as $d): ?>                    
+                    <tr>
+                        <?php foreach($Header as $head2): ?>
+                        <td><?php echo $d->$head2; ?></td>
+                        <?php endforeach; ?>                   
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="hidden">
+            <div id="downloadBootbox">
+                <h4>Select Options And Click Save Button</h4>
+                <input type="hidden" name="header" value='<?php echo json_encode($Header); ?>'/>
+                <input type="hidden" name="sql" value="<?php echo $sql; ?>"/>
+                <input type="hidden" name="reportId" value="<?php echo $reportId; ?>"/>
+                <table class="table table-striped table-bordered table-hover">          
+                    <tr>
+                        <td colspan="2">Download the Report via Excel</td>          
+                    </tr>                           
+                    <tr>
+                        <td class="center"><input type="checkbox" name="downloadOption[]" value="excelDownload"><span class="lbl"></span></td> 
+                        <td class="center">Download Excel</td>                 
+                    </tr>            
+                    <tr>
+                        <td colspan="2">Same report you viewed will be saved</td>          
+                    </tr> 
+                    <tr>
+                        <td class="center"><input type="checkbox" name="downloadOption[]" value="staticSave"><span class="lbl"></span></td> 
+                        <td class="center">Save report static view.</td>                 
+                    </tr>  
+                    <tr>
+                        <td colspan="2">Report will be updated according to data changes</td>          
+                    </tr>    
+                    <tr>
+                        <td class="center"><input type="checkbox" id="dynamicSave" name="downloadOption[]" value="dynamicSave"><span class="lbl"></span></td> 
+                        <td class="center">Report</td>                 
+                    </tr>                        
+                    <tr id="rname">               
+                    </tr>  
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--basic scripts-->
+
+        <!--[if !IE]>-->
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+        <!--<![endif]-->
+
+        <!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<![endif]-->
+
+        <!--[if !IE]>-->
+
+        <script type="text/javascript">
+window.jQuery || document.write("<script src='assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+        </script>
+
+        <!--<![endif]-->
+
+        <!--[if IE]>
+<script type="text/javascript">
+window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+        <script type="text/javascript">
+            if ("ontouchend" in document)
+                document.write("<script src='assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+        </script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/bootbox.min.js"></script>
+        <!--page specific plugin scripts-->
+
+        <!--ace scripts-->
+
+        <script src="assets/js/ace-elements.min.js"></script>
+        <script src="assets/js/ace.min.js"></script>
+
+        <!--inline scripts related to this page-->
+        <script src="assets/js/jquery.gritter.min.js"></script>
+        <script src="assets/plugins/form.js"></script>
+        <script type="text/javascript">
+            $("#downloadButton").click(function () {
+                var cloneHTML = $("#downloadBootbox").clone();
+                cloneHTML.find("#rname").attr("id", "rnamebootbox");
+                cloneHTML.find("#dynamicSave").attr("id", "dynamicSavebootbox");
+                bootbox.dialog('<form id="downloadForm">' + cloneHTML.html() + '<input type="hidden"></form>', [{
+                        "label": "Save",
+                        "class": "btn btn-small btn-success",
+                        "callback": function () {
+                            var data = $("#downloadForm").serializeArray();
+                            if (data[3] !== undefined) {
+       			        data.push({name:"valueHTML",value:$("#resultTable").html()});
+                                $.ajax({
+                                    url: "saveReportFromTool",
+                                    type: 'POST',
+                                    data: data,
+                                    dataType: "json",
+                                    beforeSend: function () {
+                                        $('body').css('cursor', 'wait');
+                                    },
+                                    success: function (result) {
+                                        if (result.error === "true") {
+                                            var msg = "";
+                                            $.each(result.message, function (key, value) {
+                                                msg += value + "\n";
+                                            });
+                                            alert(msg);
+                                        } else if (result.excel === "true") {
+                                            var msg = "";
+                                            $.each(result.message, function (key, value) {
+                                                msg += value + "\n";
+                                            });
+                                            window.open(result.url, "_self");
+                                            alert(msg);
+                                            bootbox.hideAll();
+                                        } else {
+                                            var msg = "";
+                                            $.each(result.message, function (key, value) {
+                                                msg += value + "\n";
+                                            });
+                                            alert(msg);
+                                            bootbox.hideAll();
+                                        }
+                                    },
+                                    complete: function () {
+                                        $('body').css('cursor', '');
+                                    }
+                                });
+                                return false;
+                            } else {
+                                alert("At least 1 save option should select.");
+                                return false;
+                            }
+                            return false;
+                        }
+                    }, {
+                        "label": "Cancel",
+                        "class": "btn btn-small btn-danger",
+                        "callback": function () {
+
+                        }
+                    }]);
+
+                $("#dynamicSavebootbox").click(function () {
+                    if ($("#dynamicSavebootbox").is(":checked")) {
+                        $("#rnamebootbox").html('<td class="center"><strong>Report Name</strong></td><td class="center"><input type="text" name="ReportName" value="" style="margin: 0"/></td>');
+                    } else {
+                        $("#rnamebootbox").html("");
+                    }
+                });
+            });
+
+        </script>
+    </body>
+</html>

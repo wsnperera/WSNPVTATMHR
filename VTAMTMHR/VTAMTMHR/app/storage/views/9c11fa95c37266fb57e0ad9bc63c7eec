@@ -1,0 +1,196 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Applicant		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Applicant Progress Report
+                    </small>			
+                </h1>
+            </div>
+
+            <form action="<?php echo url('ViewAppProgressReport'); ?>" method="POST" id="form_go">
+                <table>
+                    <tr>
+                        <td>Year :</td>
+                        <td>
+                            <input type="text" id="my_year" name="year" style="width: 100px; margin: 0" placeholder="Year"/>&nbsp;&nbsp;
+                        </td>
+                        <td>Course :&nbsp;&nbsp;</td>
+                        <td>
+                            <select name="clc" id="clc" style="margin: 0px;">
+                                <option value="">Select Course</option>
+                            </select>&nbsp;&nbsp;
+                        </td>
+                        <?php if(isset($hoff)): ?>
+                        <td>Institute :&nbsp;&nbsp;</td>
+                        <td>
+                            <select name="organisation" id="organisation" style="margin: 0px;">
+                                <option value="">Select Institute</option>
+                            </select>&nbsp;&nbsp;
+                        </td>
+                        <?php endif; ?>
+                        <td>
+                            <input type="button" id="btn_go" value="GO" style="height: 30px;"/>
+                            <span id="ajax_img"></span>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <form action="<?php echo url('DownloadAppProgressReport'); ?>" method="POST">
+                <?php if(isset($applicant)): ?>
+                <div class="span12">
+                    <input type="hidden" name="year" value="<?php echo $year; ?>"/>
+                    <input type="hidden" name="clc" value="<?php echo $clc; ?>"/>
+                    <input type="hidden" name="organisation" value="<?php echo $orga; ?>"/>
+                    <button type="submit" class="btn btn-large pull-right"><i class="icon-download"></i>Download</button>
+                </div>
+                <?php endif; ?>
+                <div class="row-fluid span12" style="margin: 0px" overflow="auto">
+                    <div class="table-header">
+                    </div>
+                    <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Institute</th>
+                                <th>Course</th>
+                                <th>All Applicants</th>
+                                <th>Selected</th>
+                                <th>Pending</th>
+                                <th>Not Selected</th>
+                                <th>Other</th>
+                                <th>Registered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if(isset($applicant)): ?>
+                            <?php
+                            $A = 0;
+                            $B = 0;
+                            $C = 0;
+                            $D = 0;
+                            $E = 0;
+                            $F = 0;
+                            ?>
+                            <?php foreach($applicant as $aa): ?>
+                            <?php
+                            $orga_name = Organisation::where('id', '=', $aa->OrgId)->pluck('OrgaName');
+                            $c_name = Course::where('CourseListCode', '=', $aa->CourseListCode)->pluck('CourseName');
+                            $con_all_applicant = DaleProgressRep::getAllAppCount($aa->OrgId, $aa->CourseListCode, $year);
+                            $con_selected_applicant = DaleProgressRep::getSelectedAppCount($aa->OrgId, $aa->CourseListCode, $year);
+                            $con_pending_applicant = DaleProgressRep::getPendingAppCount($aa->OrgId, $aa->CourseListCode, $year);
+                            $con_notselected_applicant = DaleProgressRep::getNotSelectedAppCount($aa->OrgId, $aa->CourseListCode, $year);
+                            $other = $con_all_applicant - ($con_selected_applicant + $con_notselected_applicant + $con_pending_applicant);
+                            $con_reg_applicant = DaleProgressRep::getRegAppCount($aa->OrgId, $aa->CourseListCode, $year);
+                            
+                            $A = $A + $con_all_applicant;
+                            $B = $B + $con_selected_applicant;
+                            $C = $C + $con_pending_applicant;
+                            $D = $D + $con_notselected_applicant;
+                            $E = $E + $other;
+                            $F = $F + $con_reg_applicant;
+                            ?>
+                            <tr>
+                                <td style="text-align: center"><?php echo $orga_name; ?></td>
+                                <td style="text-align: center"><?php echo $c_name; ?></td>
+                                <td style="text-align: center"><?php echo $con_all_applicant; ?></td>
+                                <td style="text-align: center"><?php echo $con_selected_applicant; ?></td>
+                                <td style="text-align: center"><?php echo $con_pending_applicant; ?></td>
+                                <td style="text-align: center"><?php echo $con_notselected_applicant; ?></td>
+                                <td style="text-align: center"><?php echo $other; ?></td>
+                                <td style="text-align: center"><?php echo $con_reg_applicant; ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <tr>
+                                <td style="text-align: center"></td>
+                                <td style="text-align: center">Total</td>
+                                <td style="text-align: center"><?php echo $A; ?></td>
+                                <td style="text-align: center"><?php echo $B; ?></td>
+                                <td style="text-align: center"><?php echo $C; ?></td>
+                                <td style="text-align: center"><?php echo $D; ?></td>
+                                <td style="text-align: center"><?php echo $E; ?></td>
+                                <td style="text-align: center"><?php echo $F; ?></td>
+                            </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+
+
+$('#my_year').keyup(function() {
+    var d = new Date();
+    var yy = d.getFullYear();
+    var y = $('#my_year').val();
+    if (isNaN(y)) {
+        $('#my_year').val('');
+        alert('Sorry, Year must be a number!');
+    } else if (y.length === 4) {
+        if (y == yy || y == (yy + 1) || y == (yy - 1)) {
+
+            clc();
+
+        } else {
+            $('#my_year').val('');
+            alert('Sorry, You enter invalid Year!');
+        }
+    } else if (y.length > 4) {
+        $('#my_year').val('');
+        alert('Sorry, You enter invalid Year!');
+    }
+});
+
+function clc() {
+    var y = $('#my_year').val();
+    $.ajax({
+        url: "<?php echo url::to('AppAjaxLoadCLC'); ?>",
+        beforeSend: function() {
+            document.getElementById('ajax_img').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+        },
+        data: {y: y},
+        success: function(res) {
+            document.getElementById('clc').innerHTML = res;
+            document.getElementById('ajax_img').innerHTML = "";
+            $.ajax({
+                url: "<?php echo url::to('AppAjaxLoadOrga'); ?>",
+                data: {y: y},
+                success: function(result) {
+                    document.getElementById('organisation').innerHTML = result;
+                }
+            });
+        }
+    });
+}
+
+$('#btn_go').click(function() {
+    var y = $('#my_year').val();
+    if (y !== '') {
+        $('#form_go').submit();
+    }
+});
+
+$('#sample-table-2').dataTable({
+    "bPaginate": false,
+    "aaSorting": [],
+    "aoColumns": [
+        null, null, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}
+    ]});
+
+</script>
+<script src="assets/js/chosen.jquery.min.js"></script>

@@ -1,0 +1,116 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span14">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>Aptitude Test Mark<small><i class="icon-double-angle-right"></i>Add</small></h1>
+                    <a href="viewAppitudeTest"><< Back</a>
+                </div>
+                <form class="form-horizontal" action='' method="POST" onsubmit="return doConfirm(this)">
+                    <div class="control-group">
+                        <label class="control-label" for="CourseListCode">Course List Code : </label>
+                        <div class="controls">
+                            <select name='eventID' onchange="ajaxGetApplicntList(this)">
+                                <option></option>
+                                    <?php foreach($courseYearPlan as $ep): ?>
+                                        <option value="<?php echo $ep->id; ?>"><?php echo $ep->CourseListCode; ?></option>
+                                    <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <span id="loding">
+                    </span>
+                    <div id="table" class="row-fluid span20" style="margin: 0px;" overflow="auto">
+                        <table  class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Applicant ID</th>
+                                    <th>NIC</th>
+                                    <th>Course List Code</th>
+                                    <th>Name With Initials</th>
+                                    <th>Address</th>
+                                    <th>Mark</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $('#table').hide();
+    });
+    function doConfirm(formobj)
+    {
+        bootbox.prompt("<b>Warning</b> : Please double check the values you entered.The values cann't be edited again !! <br/> Pleace Enter Key <br/> Key : DTET", 
+            function(result) 
+            {
+                if(result=== 'DTET')
+                {
+                    formobj.submit();                          
+                }
+            }
+        );
+        return false;
+     }
+    function ajaxGetApplicntList(val)
+    {
+        if(val.value=='')
+        {
+            $('#table').hide();
+            document.getElementById('loding').innerHTML = "";
+        }
+        else
+        {
+            $.ajax
+            ({
+                beforeSend: function() 
+                {
+                    document.getElementById('loding').innerHTML = "<br><br><img height='80%' width='50%' src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                },
+                type: "GET",
+                url: 'ajaxGetApplicntList',
+                data:{eventId :val.value},
+                success: function(result) 
+                {
+                    if(result!='')
+                    {
+                        document.getElementById('loding').innerHTML ="";
+                        document.getElementById('table-body').innerHTML =result;
+                        $('#table').show();
+                    }
+                    else
+                    {
+                        document.getElementById('loding').innerHTML = "<font style='margin-left: 200px;' >----------<b>No Date Found</b>----------</font>";
+                    }
+                },
+            });
+        }
+    }
+    $('#sample-table-2').dataTable({
+       "sScrollX": "100%",
+           "bScrollCollapse": true,
+           "bJQueryUI": true,
+    "aoColumns": [
+            {"bSortable": false}, 
+            {"bSortable": false}, 
+            {"bSortable": false}, 
+            {"bSortable": false}, 
+            {"bSortable": false}
+    ]});
+</script>

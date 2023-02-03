@@ -1,0 +1,109 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href=<?php echo url('ViewAccreditRequest'); ?>> << Back to View </a>
+                <h1>Analise Accreditation Request<small><i class="icon-double-angle-right"></i>Analise</small></h1>
+            </div>
+            <form class="form-horizontal" action='' method="POST">
+                <input type="hidden" name="id" value="<?php echo $ca->id; ?>" />
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Conform : </label>
+                        <div class="controls">
+                            <select name="accredited" id='accredited'>
+                                <?php if($ca->accredited=='Yes'): ?>
+                                    <option selected>Yes</option>
+                                    <option>No</option>
+                                <?php else: ?>
+                                    <option >Yes</option>
+                                    <option selected>No</option>
+                                <?php endif; ?>
+                            <select>
+                        </div>
+                </div>
+                <div class="control-group" id="note">
+                    <label class="control-label" for="CourseListCode">Note : </label>
+                        <div class="controls">
+                            <textarea name="Note" rows="10" ><?php echo $ca->Note; ?></textarea>
+                        </div>
+                </div>
+                <div class="control-group" id='AccreditationNo'>
+                    <?php if($ca->accredited=='Yes'): ?>
+                        <label class="control-label" for="CourseListCode">Accredit Number : </label>
+                        <div class="controls" >
+                            <input type='text' name='AccreditationNo' value="<?php echo $ca->AccreditationNo; ?>"/>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="control-group" id='startDate'>
+                    <?php if($ca->accredited=='Yes'): ?>
+                        <label class="control-label" for="CourseListCode">Start Date : </label>
+                        <div class="controls" >
+                            <input type='date' name='startDate' value="<?php echo $ca->accreditedDate; ?>"/>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="control-group" id='expireDate'>
+                    <?php if($ca->accredited=='Yes'): ?>
+                        <label class="control-label" for="CourseListCode">Valid Duration(Months) : </label>
+                        <div class="controls" >
+                            <input type='text' name='expirDate' value='36'/>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Done</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+    $("#accredited").change(function()
+    {
+        var html='<label class="control-label" for="CourseListCode">Valid Duration(Months) : </label><div class="controls" ><input type="text" name="expirDate" value="36"/ readonly></div>';
+        var html2='<label class="control-label" for="CourseListCode">Start Date : </label><div class="controls" ><input type="date" name="startDate" value="<?php echo $ca->expirDate; ?>"/></div>';
+        var html3='<div class="control-group" id="AccredititaionNo"><label class="control-label" for="CourseListCode">Accredit Number : </label><div class="controls" ><input type="text" name="AccreditationNo" value="<?php echo $ca->AccreditationNo; ?>"/></div></div>';
+        if($("#accredited").val()=='Yes')
+        {
+            $("#expireDate").html(html);
+            $("#startDate").html(html2);
+            $("#AccreditationNo").html(html3);
+            $("#note").hide();
+        }
+        else
+        {
+            $("#expireDate").html(null);
+            $("#startDate").html(null);
+            $("#AccreditationNo").html(null);
+            $("#note").show();
+        }
+    });
+    <?php if(isset($error)): ?>
+        $.gritter.add({ title: "", text: "Request Editing Error", class_name: "gritter-info gritter-center" });
+    <?php endif; ?>
+</script>
+      
+           
+               
+               
+               
+      
+        
+        
+
+    

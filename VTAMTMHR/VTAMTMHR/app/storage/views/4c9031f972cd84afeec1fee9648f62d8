@@ -1,0 +1,214 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+
+            <!--PAGE CONTENT BEGINS-->
+
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Course			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+
+
+            <!--Write your code here start-->
+
+
+
+            <form class="form-horizontal" action="<?php echo url('editHoliday'); ?>" method="POST"/>
+
+
+
+
+            <input type="hidden" name="H_ID" value=<?php echo Request::get('cid'); ?> />
+
+
+
+
+
+
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="HolidayYear">Holiday Date</label>
+
+                <div class="controls">
+                    <?php
+                    $year = $holiday->HolidayYear;
+                    $month = $holiday->HolidayMonth;
+                    $day = $holiday->HolidayDay;
+                    if ($month < 10) {
+                        $month = '0' . $month;
+                    }
+                    if ($day < 10) {
+                        $day = '0' . $day;
+                    }
+                    $fulldate = $year . '-' . $month . '-' . $day;
+                    ?>
+                    <input type="date" name="HolidayYear" value='<?php echo $fulldate; ?>'/> 
+					</div>
+
+
+
+            </div>
+			
+            <!--
+           <div class="control-group">
+               
+                   <label class="control-label" for="HolidayMonth">Holiday Month</label>
+
+                   <div class="controls">
+                           <input type="text" name="HolidayMonth" value=<?php echo $holiday->HolidayMonth; ?>  />
+                   </div>
+                   
+           </div>
+
+          
+              <div class="control-group">
+               
+                   <label class="control-label" for="HolidayDay">Holiday Day</label>
+
+                   <div class="controls">
+                           <input type="text" name="HolidayDay" value=<?php echo $holiday->HolidayDay; ?>  />
+                   </div>
+                   
+           </div>
+            -->
+            <div class="control-group">
+
+                <label class="control-label" for="H_Id">Choose Holiday Type</label>
+
+                <div class="controls">
+
+                    <select name="H_Id">
+
+
+                        <?php foreach($holidaytypes as $c): ?>
+
+
+                        <option <?php if($c->HTName == $h_day): ?> selected  <?php endif; ?> value=<?php echo $c->HTId; ?>><?php echo $c->HTName; ?></option>
+
+                        <?php endforeach; ?>
+
+
+
+                    </select>
+
+                </div>
+				</div>
+              
+              
+
+                  
+                   
+                   
+                        <div class="control-group">
+
+                            <label class="control-label" for="PublicIn">Public or Institute</label>
+
+                            <div class="controls">
+
+                                <select name="PublicIn">
+                                    <?php if($holiday->PublicIn == 'Public'): ?>
+
+                                    <option selected value="1">Public</option>
+                                    <option value="0">Institute</option>
+                                    <?php endif; ?>
+                                    <?php if($holiday->PublicIn == 'Institute'): ?>
+
+                                    <option  value="1">Public</option>
+                                    <option selected  value="0">Institute</option>
+                                    <?php endif; ?> 
+
+
+
+                                </select>
+
+                            </div> 
+							</div>
+							
+							 <div class="control-group">
+
+                            <label class="control-label" for="PublicIn">Actice Status</label>
+
+                            <div class="controls">
+
+                                <select name="Active" required>
+                                   
+								<option  value="">---Select---</option>
+								<?php if($holiday->Active == '1'): ?>
+                                    <option  value="1" selected>Yes</option>
+                                    <option value="0">No</option>
+									<?php else: ?>
+										<option  value="1" >Yes</option>
+                                    <option value="0" selected>No</option>
+										<?php endif; ?>
+                                   
+
+
+
+                                </select>
+
+                            </div> 
+							</div>
+                           
+
+                            <div class="control-group">
+
+                                <div class="controls">
+
+                                    <button type="submit" class="btn btn-small btn-primary">Update</button>
+
+                                </div>
+                            </div>
+
+
+                            <!-- Submit Button --!>
+
+
+                          
+                           </form>
+                         
+                         
+                         
+
+
+                            <!--Write your code here end-->
+
+
+                            <!--PAGE CONTENT ENDS-->
+
+
+                        </div><!--/.span-->
+
+
+
+                    </div><!--/.row-fluid-->
+                </div><!--/.page-content-->
+
+
+                <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+                <script type="text/javascript">
+
+
+
+
+
+
+
+                </script>

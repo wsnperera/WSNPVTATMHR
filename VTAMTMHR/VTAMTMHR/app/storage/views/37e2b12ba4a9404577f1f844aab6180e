@@ -1,0 +1,132 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>    
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<a href="<?php echo url('ViewHREmployeeEBQualification'); ?>"> << Back to Employee EB Qualification </a>
+<div class="page-content">                              
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Employee EB Qualification		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div>
+
+            <form class="form-horizontal" action="<?php echo url('EditHREmployeeEBQualification'); ?>" method="POST"/>
+          <h5 style="text-align: left"><b style="color: red">* Required/Mandatory Fields </b></h5>
+			<hr/>
+
+            <div class="control-group">
+                
+                <div class="controls">
+                    <input type="hidden" style="color:red" name="EQ_ID" value="<?php echo Request::get('id'); ?>" readonly="readonly"/>
+                </div>
+            </div>
+
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-3">Employee Reference No</label>
+                <div class="controls">
+                    <input type="text" name="EPF" value="<?php echo $EPF; ?>" readonly /><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-3">Employee NIC</label>
+                <div class="controls">
+                    <input type="text" name="NIC" value="<?php echo $EmpNIC; ?>" readonly/>
+                </div>
+            </div>
+			 <div class="control-group">
+                <label class="control-label" for="form-field-3">Employee Name</label>
+                <div class="controls">
+                   
+					<textarea name="Ename" id="Ename" readonly><?php echo $EmpInitials; ?> <?php echo $EmpLastName; ?></textarea>
+                </div>
+            </div>
+
+           <div class="control-group">
+                <label class="control-label" for="form-field-6">Grade</label>
+                <div class="controls" >
+                    <select name="GradeID" id="GradeID" required>
+                        <option value="">--Select Grade--</option>
+                       <?php foreach ($grades as $qo): ?>
+                        <option  value="<?php echo $qo->id; ?>" <?php if($qo->id == $empqua->GradeId): ?> selected <?php endif; ?>><?php echo $qo->Grade; ?></option>
+                        <?php endforeach; ?>
+                    </select><b style="color: red">*</b><span id="ajax_img2"></span>
+                </div>
+				</div>
+          
+           
+
+           
+			
+            <div class="control-group">
+                <label class="control-label" for="form-field-7">Date Qualified</label>
+                <div class="controls">
+                    <input type="Date"  name="DateQualified" id="DateQualified" value="<?php echo $empqua->QualifiedDate; ?>" required /><b style="color: red">*</b>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <input class="btn btn-small btn-primary" type="submit"  value="Update" />
+                </div>
+            </div>
+            </form>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+        <div class="span4" id="ajaxerror">
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-ok"></i>
+                    <?php echo Session::get('done'); ?>
+                </strong>
+                <br>
+            </div>
+            <?php endif; ?>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+                          
+                     
+							
+                          
+
+                         
+                            
+</script>

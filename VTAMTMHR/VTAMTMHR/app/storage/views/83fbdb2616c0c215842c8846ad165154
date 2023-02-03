@@ -1,0 +1,280 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href=<?php echo url('AssignQPackageModules'); ?>> << Back to View</a>
+                <h1>Course<small><i class="icon-double-angle-right"></i>Create Qualification Package Module</small></h1>
+            </div>
+
+            <form class="form-horizontal"  action="" method="POST" id='NewModule'/>
+       
+           <div class="control-group">
+                        
+                            <label class="control-label" for="Medium">Trade</label>
+
+                             <div class="controls">
+
+                                <select name="TradeId" id="TradeId" required="true">
+
+                                     <?php foreach($trades as $t): ?>
+                                        
+                                               <option value="<?php echo $t->TradeId; ?>"><?php echo $t->TradeName; ?></option>     
+
+                                     <?php endforeach; ?>
+
+                                </select> <span id="img5"></span>
+
+                             </div>
+                             
+                            
+                    </div>
+                    <div class="control-group">
+                        
+                            <label class="control-label" for="Medium">Competency Standard</label>
+
+                             <div class="controls">
+
+                                <select name="ComStand" id="ComStand" required="true">
+
+                                    
+
+                                </select><span id="img6"></span>
+
+                             </div>
+                              
+                            
+                    </div>
+                     <div class="control-group">
+                        
+                            <label class="control-label" for="Medium">Qualification Package</label>
+
+                             <div class="controls">
+
+                                <select name="Qpackage" id="Qpackage" required="true">
+
+                                    
+
+                                </select>
+
+                             </div>
+                            
+                    </div>
+                     
+                     <div class="control-group">
+                        <span id="img7"></span>
+                    <div id="table" class="controls">
+                        
+                    </div>
+                     </div>
+
+
+            <div class="control-group">
+                <div class="controls">
+                        <input type="submit" value="Save"  class="btn btn-pink btn-block"/>
+                </div>
+            </div>             
+
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+       
+    
+             </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+ <script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+ 
+<script>
+
+    $('#table.sample-table-2').dataTable({
+    "aoColumns": [
+            null, null,null, null,
+            
+    ]});
+     $('table th input:checkbox').on('click', function() {
+    var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function() {
+            this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+            });
+    });
+            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+            function tooltip_placement(context, source) {
+            var $source = $(source);
+                    var $parent = $source.closest('table')
+                    var off1 = $parent.offset();
+                    var w1 = $parent.width();
+                    var off2 = $source.offset();
+                    var w2 = $source.width();
+                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                    return 'right';
+                    return 'left';
+            }
+
+    function table() {
+    $('#table.sample-table-2').dataTable({
+        //"bPaginate": false,
+        "aoColumns": [
+           {"bSortable": false}, 
+            {"bSortable": false},
+              {"bSortable": false},
+             {"bSortable": false},
+        ]});
+
+    $('table th input:checkbox').on('click', function() {
+        var that = this;
+        $(this).closest('table').find('tr > td:nth-child(4) input:checkbox')
+                .each(function() {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+    });
+}
+
+    <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Qualification Package Modules Added Successfully", class_name: "gritter-success gritter-center"});
+
+    <?php endif; ?>
+
+
+           $("#TradeId").change(function() {
+        var TradeId = $("#TradeId").val();
+        $("#ComStand").html('');
+        
+        var msg = '--- Select Competency Standard ---';
+      
+            
+                          $.ajax({
+
+                                        beforeSend: function()
+                                        {
+                                            
+                                            document.getElementById('img5').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                        },
+                                        type: "GET",
+                                        url: "<?php echo url::to('LoadCompetencyCourseCreate'); ?>",
+                                        data: {TradeId: TradeId},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#ComStand").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#ComStand").append("<option value=" + item.code + ">" +item.code + "-"+ item.name +  "</option>");
+
+
+
+                                                });
+
+                                        },
+                                        complete: function() {
+                                            document.getElementById('img5').innerHTML ="";
+
+                                        }
+                                });            
+
+            
+       
+    });
+        
+                 $("#ComStand").change(function() {
+        var ComStand = $("#ComStand").val();
+        $("#Qpackage").html('');
+        
+        var msg = '--- Select Qualification Package ---';
+      
+            
+                          $.ajax({
+                                        beforeSend: function()
+                                        {
+                                            
+                                            document.getElementById('img6').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                        },
+                                        type: "GET",
+                                        url: "<?php echo url::to('LoadNVQCourseComPackageQQ'); ?>",
+                                        data: {ComStand: ComStand},
+                                        dataType: "json", 
+                                         success: function(result) {
+                                             $("#Qpackage").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#Qpackage").append("<option value=" + item.id + ">" +item.packagecode + "</option>");
+
+
+
+                                                });
+
+                                        } ,
+                                        complete: function() {
+                                            document.getElementById('img6').innerHTML ="";
+
+                                        }
+                                });            
+
+            
+       
+    }); 
+       
+        
+  $("#Qpackage").change(function() {
+        //var ComStand = $("#ComStand").val();
+        $("#table").html('');
+        
+        //var msg = '--- Select Qualification Package ---';
+      
+            
+                          $.ajax({
+                                        beforeSend: function()
+                                        {
+                                            
+                                            document.getElementById('img7').innerHTML = "<img src=\"<?php echo Url('assets/images/ajax-loader.gif'); ?>\"/>";
+                                        },
+                                        type: "GET",
+                                        url: "<?php echo url::to('LoadModuleTableQPack'); ?>",
+                                        data: {},
+                                        //dataType: "json", 
+                                         success: function(result) {
+                                             
+                                            $("#table").html(result);
+                                            table();
+                                            $('.date-picker').datepicker().next().on(ace.click_event, function() {
+                                                $(this).prev().focus();
+                                            });
+                                        },
+                                        complete: function() {
+                                            document.getElementById('img7').innerHTML ="";
+
+                                        }
+                                });            
+
+            
+       
+    });  
+       
+
+   
+    
+   
+   
+    
+   
+  
+</script>
+
+

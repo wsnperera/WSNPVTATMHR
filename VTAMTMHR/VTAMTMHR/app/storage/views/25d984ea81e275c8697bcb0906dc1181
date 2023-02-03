@@ -1,0 +1,132 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>Assign Course Year Plan<small><i class="icon-double-angle-right"></i>Assign</small></h1>
+                <a href=<?php echo url('viewCourseYearPlan'); ?>> << Back to View </a>
+            </div>
+            <form class="form-horizontal" action='' method="POST">
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Organisation : </label>
+                        <div class="controls">
+                            <select name='OrgId' required="true">
+                                <option></option>
+                                <?php foreach($Oraganization as $o): ?>
+                                    <option value="<?php echo $o->id; ?>"><?php echo $o->OrgaName; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <span class="lbl" style="color: red"><b>*</b></span>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Year : </label>
+                        <div class="controls">
+                            <select name='Year' required="true" >
+                                <option></option>
+                                <option><?php echo date('Y'); ?></option>
+                                <option><?php echo date('Y')+1; ?></option>
+                            </select>
+                            <span class="lbl" style="color: red"><b>*</b></span>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course List Code : </label>
+                        <div class="controls">
+                            <select name='CourseListCode' onchange="ajaxFee(this)" required="true">
+                                <option></option>
+                                <?php foreach($CourseListCode as $clc): ?>
+                                <option value="<?php echo $clc->CourseListCode; ?>"><?php echo $clc->CourseName; ?> (<?php echo $clc->CourseListCode; ?>)-<?php echo $clc->CourseType; ?>- <?php echo $clc->Duration; ?> - Months</option>
+                                <?php endforeach; ?>
+                            </select>
+                            <span class="lbl" style="color: red"><b>*</b></span>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Batch : </label>
+                        <div class="controls">
+                            <select name='batch' required="true">
+                                <option></option>
+                                <option>1</option>
+                                <option>2</option>
+                            </select>
+                            <span class="lbl" style="color: red"><b>*</b></span>
+                        </div>
+                </div>
+                 <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Exam Type : </label>
+                        <div class="controls">
+                            <select name='ExamType' required="true">
+                          
+                                <option>Single</option>
+                                <option>Module</option>
+                            </select>
+                            <span class="lbl" style="color: red"><b>*</b></span>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Expected Start Date : </label>
+                        <div class="controls">
+                            <input type="date" name="startDate"  min="<?php echo date('Y-m-d'); ?>" required="true"/>
+                            <span class="lbl" style="color: red"><b>*</b></span>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" class="btn btn-small btn-primary" value="Create"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+    $('#sample-table-2').dataTable({
+    "aoColumns": [
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false}
+    ]});
+            $('table th input:checkbox').on('click', function() {
+    var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function() {
+            this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+            });
+    });
+            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+            function tooltip_placement(context, source) {
+            var $source = $(source);
+                    var $parent = $source.closest('table')
+                    var off1 = $parent.offset();
+                    var w1 = $parent.width();
+                    var off2 = $source.offset();
+                    var w2 = $source.width();
+                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                    return 'right';
+                    return 'left';
+            }
+</script>
+      
+           
+               
+               
+               
+      
+        
+        
+
+    

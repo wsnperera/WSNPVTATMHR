@@ -1,0 +1,90 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+<div class="page-content">
+    <div class="row-fluid">
+
+        <div class="span8">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        Exam Ready			
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            Exam Schedule		
+                    </h1>
+                </div>
+            </div>
+
+            <form action="<?php echo url('SendReadyExam'); ?>" method='post' id="my_form">
+                <table>
+                    <tr>
+                        <td>Course Code :</td>
+                        <td>
+                            <select  name="ccode" id="ccode" data-placeholder="Choose course code">
+                                <option id="ccode" value=""></option>
+                                <?php foreach ($courseCode as $c): ?>
+
+                                <option value="<?php echo $c->CourseCode; ?>"><?php echo $c->CourseCode; ?></option>
+                                <?php endforeach; ?>
+
+                                <span id="ajax_img1"></span>
+                                &nbsp;&nbsp;
+                        </td>
+
+                    </tr>
+
+
+                </table>
+                <div id="details_tbl">
+
+
+                </div>
+                </br>
+                <input style="height: 45px; margin: 0" type="submit"  class="btn" id="" name="" value="Send Details" ><span class="lbl"></span>
+                
+                
+                <a href="viewAlreadySendStudentDetails"><input type="button" value="View Already Send " class="btn"></a>
+
+            </form>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>        
+    
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>     
+<script type="text/javascript">
+
+    $("#ccode").change(function() {
+
+        //alert();
+        var ccode = document.getElementById('ccode').value;
+        $.ajax({
+            url: "<?php echo url::to('ViewExamDetailsNext'); ?>",
+            data: {ccode: ccode},
+
+            success: function(codeView123)
+            {
+              // $("#course_code").trigger("liszt:updated");
+              $('#details_tbl').html(codeView123);
+            }
+        });
+    });
+    </script>
+    
+    <script type="text/javascript">
+    
+    $('#details_tbl').on('click','table th input:checkbox',function() {
+    var that = this;
+    $(this).closest('table').find('tr > td:nth-child(4) input:checkbox')
+            .each(function() {
+                this.checked = that.checked;
+                $(this).closest('tr').toggleClass('selected');
+            });
+});
+
+
+</script>

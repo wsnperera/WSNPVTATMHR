@@ -1,0 +1,145 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Exam Index Number			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div>
+            <form class="form-horizontal" action="<?php echo url('ExIndex_ActionEdit'); ?>" method="POST">
+                <input type="hidden" name="id" value="<?php echo Request::get('id'); ?> "/>
+                <div class="control-group">
+                    <label class="control-label" for="InstituteId">Institute Name</label>
+                    <div class="controls">
+                        <input type="hidden"  name="InstituteId" value="<?php echo $record->InstituteId; ?>"/>
+                        <input type="text" value="<?php echo $institute; ?>" readonly/>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="control-group">
+                    <label class="control-label" for="OrgaId">Course Code</label>
+                    <div class="controls">
+                        <input type="hidden" name="OrgaId" value="<?php echo $record->OrgaId; ?>"/>
+                        <input type="text" value="<?php echo $organization; ?>" readonly/>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="control-group">
+                    <label class="control-label" for="CourseCode">Course Code</label>
+                    <div class="controls">
+                        <input type="text" name="CourseCode" value="<?php echo $record->CourseCode; ?>" readonly/>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="control-group">
+                    <label class="control-label" for="examId">Exam Name</label>
+                    <div class="controls">
+                        <input type="hidden" name="examId"  value="<?php echo $record->examId; ?>"/>
+                        <input type="text" value="<?php echo $exam; ?>" readonly/>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="control-group">
+                    <label class="control-label" for="StudentId">Student Name</label>
+                    <div class="controls">
+                        <input type="hidden" name="StudentId" value="<?php echo $record->StudentId; ?>"/>
+                        <input type="text" value="<?php echo $student; ?>" readonly/>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="control-group">
+                    <label class="control-label" for="index">Index No</label>
+                    <div class="controls">
+                        <input type="text" name="index" value="<?php echo $record->index; ?>"/>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="control-group">
+                    <label class="control-label" for="P_R">Present/Repeat</label>
+                    <div class="controls">
+                        <select name="P_R" id="CurrentRecord">
+                            <option></option>
+                            <option value="P"  <?php if($record->P_R == 'P'): ?> selected <?php endif; ?>>Present</option>
+                            <option value="R">Repeat</option>
+                        </select>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<script type="text/javascript">
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

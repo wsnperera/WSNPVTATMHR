@@ -1,0 +1,127 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+
+            <!--PAGE CONTENT BEGINS-->
+
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Qualification			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+
+
+            <!--Write your code here start-->
+
+
+
+            <form class="form-horizontal" action="<?php echo url('editEntry'); ?>" method="POST"/>
+
+
+            <!-- Hold the primary key -->
+
+            <input type="hidden" name="Qualification_ID" value=<?php echo Request::get('Qualification_ID'); ?> />
+
+
+
+
+
+
+
+
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="qualification">Qualification</label>
+
+                <div class="controls">
+
+                    <input type="text" name="Qualification"  value="<?php echo $course->qualification; ?>" readonly/>
+
+                </div>
+
+            </div>
+            <!-- active-->
+
+            <div class="control-group">
+
+                <label class="control-label" for="active">Active</label>
+
+                <div class="controls">
+
+                    <select name="active">
+
+                        <option value="Yes" >Yes</option>
+                        <option value="No">No</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!-- active -->
+
+
+            <!-- Submit Button -->
+
+            <div class="control-group">
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Update</button>
+
+                </div>
+            </div>
+
+
+            <!-- Submit Button -->
+
+
+
+            </form>
+
+
+
+
+
+            <!--Write your code here end-->
+
+
+            <!--PAGE CONTENT ENDS-->
+
+
+        </div><!--/.span-->
+
+
+
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+
+
+
+
+
+
+
+</script>

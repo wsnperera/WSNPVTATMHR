@@ -1,0 +1,33 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Student Attendance			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Reports
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+
+            <form action="<?php echo url('stdAttendanceReport'); ?>" method='get'>
+                <label>Select Report:</label> 
+                <select id="form-field-select-1" name="report">
+                    <option value="">Select Report</option>
+                    <option value="YR">Yearly Report</option>
+                </select>               
+                <br/><button type="submit">Submit</button>
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script type="text/javascript">
+</script>

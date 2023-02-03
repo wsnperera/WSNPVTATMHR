@@ -1,0 +1,294 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href=<?php echo url('ViewCenterCriterias'); ?>> << Back to  View</a>
+            <h1>Center Monitoring Criteria List<small><i class="icon-double-angle-right"></i>Create</small></h1>
+                
+            </div>
+            <form class="form-horizontal" action='' method="POST"  id='NewModule'>
+                  <div class="control-group">
+                   
+                    <div class="controls">
+
+                <?php if(Session::has('done')): ?>
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-ok"></i>
+                                Added Successfully 
+                            </strong>
+                            <br>
+                        </div>
+                    <?php endif; ?>
+                     </div>
+                   
+                </div> 
+                 <div class="control-group">          
+                   
+                    <div class="controls">
+                            <?php if($errors->has()): ?>
+                                <?php foreach($errors->all() as $msg): ?>
+                                    <div class="alert alert-error" id="error">
+                                        <button type="button" class="close" data-dismiss="alert">
+                                            <i class="icon-remove"></i>
+                                        </button>
+                                        <strong>
+                                            <i class="icon-remove"></i>
+                                            Error!
+                                        </strong><?php echo $msg; ?>
+                                        <br>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                    </div>
+                   
+                </div> 
+                <div class="control-group">
+                    <label class="control-label" >Category : </label>
+                        <div class="controls" id="Trade">
+                            <select name="CategoryID" id="CategoryID" required="true">
+                                 <option value="">--Select Category--</option>
+                                <?php foreach($Category as $v): ?>
+                                <option value="<?php echo $v->id; ?>"><?php echo $v->id; ?> - <?php echo $v->TypeInSinhala; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                           
+                        </div>         
+                 </div> 
+                 
+                 <div class="control-group">
+                    <label class="control-label" >Criteria Name In Sinhala : </label>
+                        <div class="controls" id="Trade">
+                            <input type="text" name="CnameSinhala" id="CnameSinhala" required="true">
+                           
+                        </div>         
+                 </div> 
+                <div class="control-group">
+                    <label class="control-label" >Criteria Name In English : </label>
+                        <div class="controls" id="Trade">
+                            <input type="text" name="CnameEnglish" id="CnameEnglish" >
+                           
+                        </div>         
+                 </div>
+                 <div class="control-group">
+                    <label class="control-label" >Full Weight : </label>
+                        <div class="controls" id="Trade">
+                            <input type="text" name="Fweight" id="Fweight" required="true">
+                           
+                        </div>         
+                 </div>
+				  <div class="control-group">
+                    <label class="control-label" >Question Order : </label>
+                        <div class="controls" id="Trade">
+                            <input type="number" name="QOrder" id="QOrder" required="true">
+                           
+                        </div>         
+                 </div>
+                <div class="control-group">
+                    <label class="control-label" >Employee Type : </label>
+                        <div class="controls" id="Trade">
+                            <select name="CEmpTypeID" id="CEmpTypeID" required="true">
+                                 <option value="">--Select Category--</option>
+                                <?php foreach($EMPType as $v): ?>
+                                <option value="<?php echo $v->id; ?>"><?php echo $v->id; ?> - <?php echo $v->Type; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                           
+                        </div>         
+                 </div> 
+                 <div class="control-group">
+                    <label class="control-label" >Calculation Type : </label>
+                        <div class="controls" id="Trade">
+                            <select name="CalType" id="CalType" required="true">
+                                 <option value="">--Select Calculation Type--</option>
+                                 <option value="EN">Accept Entered value</option>
+                                 <option value="P">Precentage</option>
+                                 <option value="YN">Yes/No</option>
+                            </select>
+                           
+                        </div>         
+                 </div>
+                 <div id="table">
+                 </div>
+                 
+                
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-small btn-primary">Save</button>
+                </div>
+            </div>             
+
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+       
+        <div class="span4" id="ajaxerror">
+            
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+
+        </div>
+             </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+
+    <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+
+
+       $("#CalType").change(function() {
+
+        var CalType = document.getElementById('CalType').value;
+        //alert(CalType);
+        $("#table").html('');
+        
+        //var msg = '--- Select Course ---';
+        $.ajax({
+            type: "GET",
+            url: "<?php echo url::to('GetCenterCalClass'); ?>",
+            data: {CalType: CalType},
+            success: function(result) {
+
+                $('#table').html(result);
+
+            }
+           
+        });
+    });
+
+    
+  
+    
+    $('#DatePlanned').change(function(){
+
+        //alert('dg');
+       var DatePlanned = document.getElementById('DatePlanned').value;
+       var CenterID = document.getElementById('CenterID').value;
+       var CourseYearPlanID = document.getElementById('CourseYearPlanID').value; 
+      // var msg = '--- Select Working Place ---';
+        //$("#WorkingPlace").html('');
+       $.ajax  ({
+                    url: "<?php echo url::to('MOCMCheckPlanneddate'); ?>",
+                    data: {DatePlanned: DatePlanned,CenterID: CenterID,CourseYearPlanID: CourseYearPlanID},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        if(result.module == 1)
+                        {
+                             document.getElementById('DatePlanned').value = "";
+                             $('#table1').html(result.html);
+                             
+                        }
+                        else
+                        {
+                             $("#table1").html('');
+                        }
+                       
+                        
+                                        
+                        
+                        }
+
+
+                    
+                });
+        
+
+
+       
+    });
+
+    function fillModule1() {
+
+        //alert('dfhgftrghy');
+        var WorkingPlaceName = document.getElementById('WorkingPlaceName').value;
+        var WorkingPlaceAddress = document.getElementById('WorkingPlaceAddress').value;
+        var InstituteId = document.getElementById('M_Code').value;
+        var ContactNo = document.getElementById('ContactNo').value;
+        $.ajax({
+                    url: "<?php echo url::to('saveAssessorWorkingPlace'); ?>",
+                    data: {WorkingPlaceName: WorkingPlaceName, WorkingPlaceAddress: WorkingPlaceAddress, InstituteId: InstituteId,ContactNo: ContactNo},
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.ModuleId !== 0) {
+                            $("#ModuleDiv1").html(result.html);
+                            $('#addModule1').hide();
+                            $('#ajaxerror').html(result.done);
+                            
+                           //var InstititeId = result.InstituteAddress;
+                           // $("#WorkingPlace").html('');
+                              /*  $.ajax({
+                                            url: "<?php echo url::to('getModuleId'); ?>",
+                                            data: {ModuleCode: ModuleCode},
+                                            success: function(re) {
+                                                  document.getElementById("AjaxModuleId").value = re;
+                                                               }
+                                       });*/
+
+                        /* $.ajax  ({
+                                    url: "<?php echo url::to('getWorkingPlace'); ?>",
+                                    data: { InstititeId: InstititeId},
+                                    dataType: "json", 
+                                    success: function(result) {
+
+                                        //alert(result);
+                                        $("#WorkingPlace").append("<option value=''>" + msg + "</option>");
+                                         $.each(result, function(i, item)
+                                        {
+
+
+
+                                            $("#WorkingPlace").append("<option value=" + item.id + ">" + item.Placename + "  (" + item.Address + ")</option>");
+
+
+
+                                        });
+                                                        
+                                        
+                                        }
+
+
+                                    
+                                });*/
+
+                        } else {
+                            $('#ajaxerror').html(result.html);
+                            window.scrollTo(0, 0);
+                        }
+                    }
+                });
+    }
+    </script>
+
+

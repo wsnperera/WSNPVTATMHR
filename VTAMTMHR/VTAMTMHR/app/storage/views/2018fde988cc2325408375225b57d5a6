@@ -1,0 +1,484 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<a href="<?php echo url('viewInstituteCourseDetail'); ?>">
+    Go Back to Course View
+</a>  
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    On The Job Training				
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create Course(Batch)
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <form class="form-horizontal" action="<?php echo url('addInstituteCourse'); ?>" method="POST" id="createbatchform">
+                <br/>  
+                <div class="control-group">
+                    <label class="control-label" for="instituteid">Institute-Center</label>
+                    <div class="controls">
+                        <select name="instituteid" id="instituteid" class="chzn-select">
+                            <option value=""></option>
+                            <?php foreach($allinstitute as $ai): ?>
+                            <option value="<?php echo $ai->id; ?>"><?php echo $ai->Institute." - ". $ai->center; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php if($user->hasPermission('createOJTInstitiute')): ?>
+                        <input type="button" value="Add New Institute" onclick="addInstitute()" class="btn btn-small btn-primary" >
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="courseid">Course</label>
+                    <div class="controls">
+                        <select name="courseid" id="courseid" class="chzn-select">
+                            <option value=""></option>
+                            <?php foreach($allcourse as $ac): ?>
+                            <option value="<?php echo $ac->id; ?>"><?php echo $ac->CourseName; ?></option>
+                            <?php endforeach; ?>
+                        </select>                        
+                        <?php if($user->hasPermission('createOJTCourseName')): ?>
+                        <input type="button" value="Add New Course" onclick="addCourse()" class="btn btn-small btn-primary" >
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="nvqnonnvq">NVQ/NON NVQ</label>
+                    <div class="controls">
+                        <select name="nvqnonnvq" id="nvqnon" class="chzn-select">
+                            <option value=""></option>
+                            <option value="NVQ">NVQ</option>
+                            <option value="NON">NON</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="nvqlevel">Level</label>
+                    <div class="controls">
+                        <select name="nvqlevel" id="nvqlevel" class="chzn-select">
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="batch">Batch</label>
+                    <div class="controls">
+                        <input name="batch" id="batch" type="text"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="year">Year</label>
+                    <div class="controls">
+                        <input name="year" id="year" type="text"/>
+                    </div>
+                </div>
+                <input type="hidden" name="addstudenthidden" id="addstudenthidden" value=""/>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary" name="button" value="save">Save</button>
+                        <button type="button" class="btn btn-small btn-primary" name="button" id="addstudent" value="saveaddstudent">Save & Add Student</button>
+                    </div>
+                </div>
+            </form>
+        </div><!--/.span-->
+        <!--/span 4 for error handling -->
+        <div class="span4" id="ajaxerror">
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-ok"></i>
+                    <?php echo Session::get('done'); ?>
+                </strong>
+                <br>
+            </div>
+            <?php endif; ?>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+        <!--PAGE CONTENT ENDS-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script>
+
+                            $(".chzn-select").chosen();
+                            function addInstitute() {
+                                bootbox.dialog('<form class="form-horizontal"><div class="control-group">'
+                                        + '<label class="control-label">InstituteName</label>'
+
+                                        + '<div class="controls">'
+                                        + ' <input id="insid" placeholder="Institute Name" type="text"><span style="color:red">*</span>'
+                                        + '</div>'
+                                        + '</div>'
+                                        + '<div class="control-group">'
+                                        + '  <label class="control-label">Center</label>'
+
+                                        + '  <div class="controls">'
+                                        + '      <input id="center" placeholder="Center Name" type="text"><span style="color:red">*</span>'
+                                        + '  </div>'
+                                        + '</div>'
+                                        + '                <div class = "control-group" >'
+                                        + '                <label class = "control-label" > District </label>'
+
+                                        + '                <div class = "controls" >'
+                                        + '    <select id="District" class="chzn-select">'
+                                        + '                <option value="" > </option>'
+                                        + '<?php foreach($district as $as): ?>'
+                                        + '                  <option value = "<?php echo $as->DistrictCode; ?>" > <?php echo $as->DistrictName; ?> </option>'
+                                        + '<?php endforeach; ?>'
+                                        + '                </select><span style="color:red">*</span>'
+                                        + '              </div>'
+                                        + '              </div>'
+                                        + '<div class="control-group">'
+                                        + '  <label class="control-label">Address</label>'
+
+                                        + '  <div class="controls">'
+                                        + '      <textarea id="address"></textarea><span style="color:red">*</span>'
+                                        + '  </div>'
+                                        + '</div>'
+                                        + '<div class="control-group">'
+                                        + '  <label class="control-label">Contact Person Name</label>'
+
+                                        + '  <div class="controls">'
+                                        + '      <textarea id="contactpersonname"></textarea><span style="color:red">*</span>'
+                                        + '  </div>'
+                                        + '</div>'
+                                        + '<div class="control-group">'
+                                        + '  <label class="control-label">Designation</label>'
+
+                                        + '  <div class="controls">'
+                                        + '      <input type="text" id="designation" /><span style="color:red">*</span>'
+                                        + '  </div>'
+                                        + ' </div>'
+                                        + '<div class="control-group">'
+                                        + '  <label class="control-label">Contact No</label>'
+
+                                        + '  <div class="controls">'
+                                        + '      <input type="text" id="contactno" /><span style="color:red">(0XXXXXXXX)</span>'
+                                        + '  </div>'
+                                        + ' </div>'
+                                        + ' <div class="control-group">'
+                                        + '   <label class="control-label">E-Mail</label>'
+
+                                        + '   <div class="controls">'
+                                        + '       <input type="text" id="email" /><span style="color:red">(example@example.com)</span>'
+                                        + '   </div>'
+                                        + ' </div></form>', [{
+                                                "label": "Save",
+                                                "class": "btn btn-small btn-success",
+                                                "callback": function () {
+
+                                                    var ContactPerson = $("#contactpersonname").val();
+                                                    var InstituteName = $("#insid").val();
+                                                    var CenterName = $("#center").val();
+                                                    var Address = $("#address").val();
+                                                    var Designation = $("#designation").val();
+                                                    var ContactNo = $("#contactno").val();
+                                                    var Email = $("#email").val();
+                                                    var District = $("#District").val();
+                                                    $.ajax
+                                                            ({
+                                                                url: "<?php echo url::to('createOJTInstitiute'); ?>",
+                                                                data: {InstituteName: InstituteName, CenterName: CenterName, Address: Address, ContactPerson: ContactPerson, Designation: Designation, ContactNo: ContactNo, Email: Email, District: District},
+                                                                dataType: "json",
+                                                                success: function (result)
+                                                                {
+                                                                    if (result.status === "Failed") {
+                                                                        if ("Institute" in result.errors) {
+                                                                            $("#insid").css("border", "1px solid red");
+                                                                        } else {
+                                                                            $("#insid").css("border", "");
+                                                                        }
+                                                                        if ("center" in result.errors) {
+                                                                            $("#center").css("border", "1px solid red");
+                                                                        } else {
+                                                                            $("#center").css("border", "");
+                                                                        }
+                                                                        if ("Address" in result.errors) {
+                                                                            $("#address").css("border", "1px solid red");
+                                                                        } else {
+                                                                            $("#address").css("border", "");
+                                                                        }
+                                                                        if ("District" in result.errors) {
+                                                                            $("#District_chzn").css("border", "1px solid red");
+                                                                        } else {
+                                                                            $("#District_chzn").css("border", "");
+                                                                        }
+                                                                        if ("ContactPersonName" in result.errors) {
+                                                                            $("#contactpersonname").css("border", "1px solid red");
+                                                                        } else {
+                                                                            $("#contactpersonname").css("border", "");
+                                                                        }
+                                                                        if ("ContactPersonDesignation" in result.errors) {
+                                                                            $("#designation").css("border", "1px solid red");
+                                                                        }
+                                                                        if ("ContactNo" in result.errors) {
+                                                                            $("#contactno").css("border", "1px solid red");
+                                                                        } else {
+                                                                            $("#contactno").css("border", "");
+                                                                        }
+                                                                        if ("Email" in result.errors) {
+                                                                            $("#email").css("border", "1px solid red");
+                                                                        } else {
+                                                                            $("#email").css("border", "");
+                                                                        }
+                                                                    } else {
+                                                                        $("#instituteid").html(result.html);
+                                                                        $("#instituteid.chzn-select").trigger("liszt:updated");
+                                                                        alert("Added Successful");
+                                                                        bootbox.hideAll();
+                                                                    }
+
+                                                                }
+                                                            });
+                                                    return false;
+                                                }
+                                            }, {
+                                                "label": "Cancel",
+                                                "class": "btn btn-small btn-danger",
+                                                "callback": function () {
+                                                }
+                                            }]);
+                                $(".chzn-select").chosen();
+                            }
+
+                            function addCourse() {
+                                bootbox.dialog('<form class="form-horizontal" style="height:200px"><div class="control-group">'
+                                        + '                    <label class = "control-label" > Course Name </label>'
+
+                                        + '                    <div class = "controls" >'
+                                        + '        <input type = "text" id = "coursename" /><span style="color:red">*</span>'
+                                        + '                    </div>'
+                                        + '                  </div>'
+                                        + '                  <div class = "control-group" >'
+                                        + '                  <label class = "control-label" > Sector </label>'
+
+                                        + '                  <div class = "controls" >'
+                                        + '      <select id = "sector" class = "chzn-select" >'
+                                        + '                  <option value = "" > </option>'
+                                        + ' <?php foreach($allsectors as $as): ?>'
+                                        + '                  <option value = "<?php echo $as->id; ?>" > <?php echo $as->SectorName; ?> </option>'
+                                        + '<?php endforeach; ?>'
+                                        + '                </select><span style="color:red">*</span>'
+                                        + '                </div>'
+                                        + '                </div>'
+                                        + '                <div class = "control-group" >'
+                                        + '                <label class = "control-label" > NVQ / NONNVQ </label>'
+
+                                        + '                <div class = "controls" >'
+                                        + '    <select id="nvqnonbb" class="chzn-select">'
+                                        + '                <option value="" > </option>'
+                                        + '                <option value="NVQ" > NVQ </option>'
+                                        + '                <option value="NON" > NON NVQ </option>'
+                                        + '                </select><span style="color:red">*</span>'
+                                        + '              </div>'
+                                        + '              </div>'
+                                        + ' <div class = "control-group" > '
+                                        + '                <label class = "control-label" > NVQ Level </label>'
+
+                                        + '                <div class = "controls" >'
+                                        + '    <select id="nvqlevelbb" class="chzn-select">'
+                                        + '                </select><span style="color:red">*</span>'
+                                        + '              </div>'
+                                        + '              </div>'
+                                        + '</form>',
+                                        [{
+                                                "label": "Save",
+                                                "class": "btn btn-small btn-success",
+                                                "callback": function () {
+                                                    var CourseName = $("#coursename").val();
+                                                    var Sector = $("#sector").val();
+                                                    var NVQLevel = $("#nvqlevelbb").val();
+                                                    var NVQNON = $("#nvqnonbb").val();
+                                                    $.ajax
+                                                            ({
+                                                                url: "<?php echo url::to('createOJTCourseName'); ?>",
+                                                                data: {CourseName: CourseName, Sector: Sector, NVQLevel: NVQLevel, NVQNON: NVQNON},
+                                                                dataType: "json",
+                                                                success: function (result)
+                                                                {
+                                                                    if (result.status === "Failed") {
+                                                                        if ("CourseName" in result.errors) {
+                                                                            $("#coursename").css("border", "1px solid red");
+                                                                        } else {
+                                                                            $("#coursename").css("border", "");
+                                                                        }
+                                                                        if ("Sector" in result.errors) {
+                                                                            $("#sector_chzn").css("border", "1px solid red");
+                                                                        } else {
+                                                                            $("#sector_chzn").css("border", "");
+                                                                        }
+                                                                        if ("NVQLevel" in result.errors) {
+                                                                            $("#nvqlevelbb_chzn").css("border", "1px solid red");
+                                                                        } else {
+                                                                            $("#nvqlevelbb_chzn").css("border", "");
+                                                                        }
+                                                                        if ("nvqnon" in result.errors) {
+                                                                            $("#nvqnonbb_chzn").css("border", "1px solid red");
+                                                                        } else {
+                                                                            $("#nvqnonbb_chzn").css("border", "");
+                                                                        }
+                                                                    } else {
+                                                                        $("#courseid").html(result.html);
+                                                                        $("#courseid.chzn-select").trigger("liszt:updated");
+                                                                        $("#nvqnon").val(NVQNON);
+                                                                        $("#nvqnon.chzn-select").trigger("liszt:updated");
+                                                                        getNVQLevel(NVQNON);
+                                                                        $("#nvqlevel").val(NVQLevel);
+                                                                        $("#nvqlevel.chzn-select").trigger("liszt:updated");
+                                                                        alert("Added Successful");
+                                                                        bootbox.hideAll();
+                                                                    }
+                                                                }
+
+                                                            });
+                                                    return false;
+                                                }
+                                            }, {
+                                                "label": "Cancel",
+                                                "class": "btn btn-small btn-danger",
+                                                "callback": function () {
+                                                }
+                                            }]
+                                        );
+                                $(".chzn-select").chosen();
+                                $("#nvqnonbb").change(function () {
+                                    var value = $("#nvqnonbb").val();
+                                    if (value === "NVQ") {
+                                        $("#nvqlevelbb").html("<option value=''>Select Level</option>\n\
+                                            <option value='1'>Level 1</option>\n\
+                                        <option value='2'>Level 2</option>\n\
+                                    <option value='3'>Level 3</option>\n\
+                                                        <option value='4'>Level 4</option>\n\
+                                                        <option value='5'>Level 5</option>\n\
+                                                        <option value='6'>Level 6</option>\n\
+                                                        <option value='7'>Level 7</option>");
+                                        $("#nvqlevelbb.chzn-select").trigger("liszt:updated");
+                                    } else if (value === "NON") {
+                                        $("#nvqlevelbb").html("<option value=''>Select Level</option>\n\
+                                                        <option value='Certificate'>Certificate</option>\n\
+                                                        <option value='Diploma'>Diploma</option>\n\
+                                                        <option value='Higher Diploma'>Higher Diploma</option>\n\
+                                                        <option value='Degree'>Degree</option>");
+                                        $("#nvqlevelbb.chzn-select").trigger("liszt:updated");
+                                    } else {
+                                        $("#nvqlevelbb").html("");
+                                        $("#nvqlevelbb.chzn-select").trigger("liszt:updated");
+                                    }
+                                });
+                                $("#sector_chzn").find('input').on('change', function (e)
+                                {
+                                    var option = $("<option>").val($("#sector_chzn").find('input').val()).text($("#sector_chzn").find('input').val());
+                                    // add the new option
+                                    $("#sector.chzn-select").prepend(option);
+                                    // automatically select it
+                                    $("#sector.chzn-select").find(option).prop('selected', true);
+                                    // trigger the update
+                                    $("#sector.chzn-select").trigger("liszt:updated");
+                                });
+                            }
+
+                            $("#nvqnon").change(function () {
+                                var value = $("#nvqnon").val();
+                                getNVQLevel(value);
+                            });
+                            $("#addstudent").click(function () {
+                                bootbox.dialog("<form class='form-horizontal'>" +
+                                        "<div class='control-group'><div class='controls'><label><input name='addtype' type='radio' value='excel'><span class='lbl'>Upload Using Excel File</span></label></div></div>" +
+                                        "<div class='control-group'><div class='controls'><label><input name='addtype' type='radio' value='manual' checked><span class='lbl'>Manually Add Students</span></label></div></div>" +
+                                        "</form>", [{
+                                                "label": "Save",
+                                                "class": "btn btn-small btn-primary",
+                                                "callback": function () {
+                                                    $("#addstudenthidden").val($("input[name='addtype']:checked").val());
+                                                    $("#createbatchform").submit();
+                                                }
+                                            }, {
+                                                "label": "Cancel",
+                                                "class": "btn btn-small btn-primary",
+                                                "callback": function () {
+                                                }
+                                            }]);
+                            });
+
+                            $("#courseid").change(function () {
+                                var courseid = $("#courseid").val();
+                                $.ajax({
+                                    url: "<?php echo url::to('getCourseNVQLevelOJT'); ?>",
+                                    data: {courseid: courseid},
+                                    dataType: "json",
+                                    success: function (result)
+                                    {
+                                        if (result.nocourse !== "nocourse") {
+                                            $("#nvqnon").val(result.nvqnon);
+                                            $("#nvqnon.chzn-select").trigger("liszt:updated");
+                                            getNVQLevel(result.nvqnon);
+                                            $("#nvqlevel").val(result.NVQLevel);
+                                            $("#nvqlevel.chzn-select").trigger("liszt:updated");
+                                        }
+                                    }
+
+                                });
+                            });
+                            
+                            function getNVQLevel(value) {
+                                if (value === "NVQ") {
+                                    $("#nvqlevel").html("<option value=''>Select Level</option>\n\
+                                            <option value='1'>Level 1</option>\n\
+                                        <option value='2'>Level 2</option>\n\
+                                    <option value='3'>Level 3</option>\n\
+                                                        <option value='4'>Level 4</option>\n\
+                                                        <option value='5'>Level 5</option>\n\
+                                                        <option value='6'>Level 6</option>\n\
+                                                        <option value='7'>Level 7</option>");
+                                    $("#nvqlevel.chzn-select").trigger("liszt:updated");
+                                } else if (value === "NON") {
+                                    $("#nvqlevel").html("<option value=''>Select Level</option>\n\
+                                                        <option value='Certificate'>Certificate</option>\n\
+                                                        <option value='Diploma'>Diploma</option>\n\
+                                                        <option value='Higher Diploma'>Higher Diploma</option>\n\
+                                                        <option value='Degree'>Degree</option>");
+                                    $("#nvqlevel.chzn-select").trigger("liszt:updated");
+                                } else {
+                                    $("#nvqlevel").html("");
+                                    $("#nvqlevel.chzn-select").trigger("liszt:updated");
+                                }
+                            }
+</script>
+
+
+
+
+
+
+
+
+
+

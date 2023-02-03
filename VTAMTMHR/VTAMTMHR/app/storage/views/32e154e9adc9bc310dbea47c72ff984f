@@ -1,0 +1,139 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+<div class="page-content">
+    <div class="row-fluid">
+
+        <div class="span8">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        Exam			
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            Exam Schedule		
+                    </h1>
+                </div>
+            </div>
+            <form action="<?php echo url('getCourseDetails'); ?>" method='post' id="my_form">
+                <table>
+                    <tr>
+                        <td>Organisation Name :</td>
+                        <td>
+                            <select  name="centerName" id="centerName" data-placeholder="Choose Center Name">
+                                <option id="centerName" value=""></option>
+                                <?php foreach ($oragaName as $c): ?>
+                                <option value="<?php echo $c->id; ?>"><?php echo $c->OrgaName; ?></option>
+                                <?php endforeach; ?>
+
+                                <span id="ajax_img1"></span>
+                                &nbsp;&nbsp;
+                        </td>
+
+                    </tr>
+                    <tr >
+                        <td>Course Code :</td>
+                        <td>
+                            <select  name="C_code" id="C_code" data-placeholder="Choose course Name">
+
+                            </select>
+
+                        </td>
+                        <td><input style="height: 30px; margin: 0" type="submit" name="btn_search" value="Search"/></td>
+                        <td><a href="editStdIndexNumber"><input style="height: 30px; margin: 0" type="button" name="btn_search" value="Edit Index Number"/>
+                            </a></td> 
+
+                    </tr>
+                </table>
+                </form>
+                <div class="table-header">
+                </div>
+            <form action="<?php echo url('submitIndexNo'); ?>" method="post">
+                
+                <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>NIC</th>
+                            <th>Full Name</th>
+                            <th>Index Number</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <?php if(isset($stDetails)): ?>
+                        <?php foreach($stDetails as $students): ?>
+                        <tr><input type="hidden" name="ccode" value="<?php echo $C_Code; ?>">
+                            <td><?php echo $students->NIC; ?><input type="hidden" name="nic[]" value="<?php echo $students->NIC; ?>"></td>
+                            <td><?php echo $students->FullName; ?></td>
+                            <td><input type="text" name="IndexNo[]" id="IndexNo"></td>
+                        </tr>             
+                        <?php endforeach; ?>
+                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>
+                                
+                        <input type="submit" value="Submit Index Number" class="btn" name="index" id="index">
+                                </td>
+                                </tr>
+                    <?php endif; ?>
+                    </tbody>
+                </table>
+                </form>
+            
+        </div>
+
+
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
+
+<script type="text/javascript">
+            $("#centerName").change(function() {
+
+
+    var org_id = document.getElementById('centerName').value;
+            $.ajax({
+            url: "<?php echo url::to('getCourseCode'); ?>",
+                    data: {org_id: org_id},
+                    dataType: "json",
+                    success: function(CC)
+
+                    {
+
+                    $("#C_code").find('option').remove();
+                            $("#C_code").append("<option>---Select Course Code---</option>");
+                            //$("C_code").append('<input type="submit" name="submit" value="Search">');
+                            $.each(CC, function(key, value) {
+                            $('#C_code').append($("<option></option>").val(value.CourseCode).text(value.CourseCode));
+                            });
+                    }
+            });
+    });</script>
+<script type="text/javascript">
+
+//    $(#C_code).on('click', '#btn_search', function(){
+//         var org_id = document.getElementById('centerName').value;
+//         var course_code=document.getElementById('C_code').value;
+//        alert(org_id)
+//        if (org_id != '' && course_code != '') {
+//            $("#my_form").submit();
+//        } else {
+//            alert('Plz Select All Field!');
+//        }
+//         });
+//    });
+
+//$("#C_code").change(function() {
+//    var org_id = document.getElementById('centerName').value;
+//    var course_code=document.getElementById('C_code').value;
+// alert(org_id)
+
+            });
+
+</script>

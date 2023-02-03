@@ -1,0 +1,198 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>Exam Assignment(NON-NVQ)<small><i class="icon-double-angle-right"></i>View</small></h1>
+        </div>
+        <form name='search'  method='get'>
+<!--            Search Module Course By Course List Code : <input type='text' name="key"/>   <input type='submit' value='Search'/>-->
+            <a href="<?php echo url('CreatExamAssignment'); ?>"><input type='button' value='Create Exam Assignment' /></a>
+        </form>
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#No#</th>
+                        <th>Course Name</th>
+                        <th>Course List Code</th>
+                        <th>Course Code</th>
+                        <th>Module Name</th>
+                        <th>Assignment Name</th>
+                        <th>Date</th>
+                        <th>Enter Marks</th>
+                        <th>View Assignment Marks</th>
+                        <th>Remove </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php $i = 0; ?>
+                    <?php if(isset ($ExamAssignment)): ?>
+                    <?php foreach($ExamAssignment as $EA): ?>
+                    <tr> 
+                        <td><?php $i++;
+                    echo $i;
+                    ?></td>
+
+                        <td><?php
+                            $CourseListCode1 = Coursestarted::where('CS_ID', '=', $EA->CourseStartedId)->pluck('CourseListCode');
+                            $CourseName = Course::where('Deleted', '!=', 1)->where('CourseListCode', '=', $CourseListCode1)->pluck('CourseName');
+                            echo $CourseName;
+                            ?></td>
+
+                        <td><?php
+                            $CourseListCode = Coursestarted::where('CS_ID', '=', $EA->CourseStartedId)->pluck('CourseListCode');
+                            echo $CourseListCode;
+                            ?></td>
+
+                        <td><?php echo $EA->CourseCode; ?></td>
+
+                        <td><?php
+                            $ModuleId = ModuleCourse::where('MC_ID', '=', $EA->ModuleCourseId)->pluck('ModuleId');
+                            $ModuleName = Module::where('ModuleId', '=', $ModuleId)->pluck('ModuleName');
+                            echo $ModuleName;
+                            ?></td>
+
+                        <td><?php echo $EA->AssignmentName; ?></td>
+                        <td><?php echo $EA->Date; ?></td>
+
+                        <td><?php
+                            $today = date('Y-m-d');
+                            $CountExamAssignmentMarks = ExamAssignmentMarks::where('Deleted', '!=', 1)->where('ExAssId', '=', $EA->ExAssId)->count();
+                            $CountTrainee = Trainee::where('Deleted', '!=', 1)->where('CourseCode', '=', $EA->CourseCode)->where('DropOut', '!=', 'Yes')->count();
+                            if ($CountExamAssignmentMarks !== $CountTrainee && $EA->Date < $today) {
+                                ?>
+                                <a href='<?php echo url('CreateExamAssignmentMarks?CourseStartedId='.$EA->CourseStartedId.'&CourseListCode='.Coursestarted::where('CS_ID','=',$EA->CourseStartedId)->pluck('CourseListCode').'&AssignmentName='.$EA->AssignmentName.'&DateValue='.$EA->Date.'&ModuleCourseId='.$EA->ModuleCourseId); ?>' >
+                                    <input type="hidden" name='ExAssId' value="<?php echo $EA->ExAssId; ?>" />
+                                    <button type="submit" class="btn btn-grey btn-small">Add Assignment Exam Marks</button>
+                                </a>
+                            <?php } else if ($CountTrainee !== 0 && $CountExamAssignmentMarks === $CountTrainee && $EA->Date < $today) { ?>
+                                <b style="color: red;"> Marks assigned for all Students</b>
+                            <?php } else if ($CountTrainee === 0 && $CountExamAssignmentMarks === $CountTrainee && $EA->Date < $today) { ?>
+                                <b style="color: red;">Students are not Available</b>
+                            <?php } else { ?>
+                                <b style="color: red;"> Assignment is not completed</b>
+                            <?php } ?></td>
+
+                        <td><?php
+                            $Count = ExamAssignmentMarks::where('Deleted', '!=', 1)->where('ExAssId', '=', $EA->ExAssId)->count();
+                            if ($Count > 0) {
+                                ?>
+                                <a href='<?php echo url('ViewExamAssignmentMarks?ExAssId='.$EA->ExAssId); ?>' >
+                                    <input type="hidden" name='ExAssId' value="<?php echo $EA->ExAssId; ?>" />
+                                    <button type="submit" class="btn btn-grey btn-small">View Assignment Exam Marks</button>
+                                </a>   
+                            <?php } else if ($Count === 0 && $CountTrainee !== 0 && $EA->Date > $today) { ?>
+                                <b style="color: red;"> Assignment is not completed</b>
+                            <?php } else if ($Count === 0 && $CountTrainee !== 0) { ?>
+                                <b style="color: red;"> Marks are not assigned for any available Students</b>
+
+                            <?php } else { ?>
+                                <b style="color: red;">Students are not available</b>
+                            <?php } ?></td>
+
+                        <td>
+                            <form id="deleteform"  action='DeleteExamAssignment' method="POST" onsubmit="return doConfirm('<?php echo $EA->AssignmentName; ?>','<?php echo $EA->CourseCode; ?>', this)">
+                                <input type="hidden" name='ExAssId' value="<?php echo $EA->ExAssId; ?>" />
+                                <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                            </form>
+                        </td>
+
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+            <div class="span4" id="ajaxerror">
+                <?php if(Session::has('done')): ?>
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="icon-remove"></i>
+                    </button>
+                    <strong>
+                        <i class="icon-ok"></i>
+
+                        <?php echo Session::get('done'); ?>
+                    </strong>
+                    <br>
+                </div>
+                <?php endif; ?>
+                <?php if(Session::has('message')): ?>
+                <div class="alert alert-error" id="error">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="icon-remove"></i>
+                    </button>
+
+                    <strong><?php echo Session::get('message'); ?></strong><br>
+                </div>
+                <?php endif; ?>
+                <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                <div class="alert alert-error" id="error">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="icon-remove"></i>
+                    </button>
+                    <strong>
+                        <i class="icon-remove"></i>
+                        Error!
+                    </strong><?php echo $msg; ?>
+                    <br>
+                </div>
+                <?php endforeach; ?>
+                <?php endif; ?>
+
+            </div>
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+
+
+                                        function doConfirm(AssignmentName, CourseCode, formobj)  {
+                                        bootbox.confirm("Are you confirm to remove the " + AssignmentName + " of Course Code " + CourseCode, function(result)
+                                        {
+                                        if (result)
+                                        {
+                                        formobj.submit();
+                                        }
+                                        });
+                                                return false; // by default do nothing hack :D
+                                        }
+
+                                <?php if (isset($done)): ?>
+
+                                        $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+                                        <?php endif; ?>
+                                        $('#sample-table-2').dataTable({
+                                "bPaginate":false,
+                                        "aoColumns": [
+                                        {"bSortable": false}, null, null, null, null, null, null, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}
+                                        ]});
+                                        $('table th input:checkbox').on('click', function() {
+                                var that = this;
+                                        $(this).closest('table').find('tr > td:first-child input:checkbox')
+                                        .each(function() {
+                                        this.checked = that.checked;
+                                                $(this).closest('tr').toggleClass('selected');
+                                        });
+                                });
+                                        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+                                        function tooltip_placement(context, source) {
+                                        var $source = $(source);
+                                                var $parent = $source.closest('table')
+                                                var off1 = $parent.offset();
+                                                var w1 = $parent.width();
+                                                var off2 = $source.offset();
+                                                var w2 = $source.width();
+                                                if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                                                return 'right';
+                                                return 'left';
+                                        }
+
+
+</script>

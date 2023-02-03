@@ -1,0 +1,185 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Course	
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Occupational Information Report
+                    </small>			
+                </h1>
+            </div>
+
+            <form class="form-horizontal" id="main_from" action='searchSectorDetailsDownload' name="fully[]" method="POST" enctype="multipart/form-data">
+
+
+
+                <!--Get Exam Year and Month-->
+                <div class="control-group">
+                    <label class="control-label" for="Select year">Year :</label>
+                    <div class="controls">
+                        <!--Get Year-->
+                        <span id="year_val">
+                            <input type="number" name="Year" rows="1" id="year" min="2014" max="<?php echo date("Y")+2; ?>" value="<?php echo date("Y"); ?>" required="true">                                    
+                        </span>                       
+                    </div>
+                </div>  
+                <!--Name of Institute-->
+                <div class="control-group">
+                    <label class="control-label" for="Name of District">District : </label>
+                    <div class="controls">
+                        <select name="district" id="district" onchange="setInputDistrict(this)" style="margin: 0px;" required>
+                            <?php if($ho=='HO'): ?>
+                            <option value="0">All</option>
+                            <?php endif; ?>
+                            <?php foreach($district as $dis): ?>
+                            <option value="<?php echo $dis->DistrictCode; ?>"><?php echo $dis->DistrictName; ?></option> 
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <!--view Download Excel Btn-->
+                <div class="control-group">
+                    <div class="controls">
+                        <div id="addDownloaddExcelBtn"> 
+                            <button type="button" onclick="getTableSectorDetailsDownload();" class="btn btn-purple btn-small">
+                                <i class="icon-cloud-download bigger-200"></i>Excel</button>
+                            <button type="button" onclick="getTableSectorDetails();" class="btn btn-blue btn-small">
+                                <i class="icon-eye-open bigger-200"></i>View</button>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div id="loding">                  
+                </div>
+                <div id="table">                  
+                </div>
+
+            </form>             
+        </div>
+    </div>
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+
+                                function tableModify() {
+                                    $('#sample-table-2').dataTable({
+                                        "bPaginate": false,
+                                        "aaSorting": [],
+                                        "aoColumns": [
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false},
+                                            {"bSortable": false}
+                                        ]});
+                                }
+</script>
+
+<script type="text/javascript">
+
+    $("#year").on("change", function () {
+        $("#table").html("");
+        $("#loding").html('');
+
+    });
+
+    $("#district").on("change", function () {
+        $("#table").html("");
+        $("#loding").html('');
+
+    });
+
+
+    function getTableSectorDetails() {
+        var district = $("#district").val();
+        var year = $("#year").val();
+        $('#table').val('');
+        if (district != "" && year != '')
+        {
+            $.ajax
+                    ({
+                        beforeSend: function ()
+                        {
+                            $("#loding").html('<br><br><img height="50%" width="25%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                        },
+                        type: "GET",
+                        url: "<?php echo Url('searchSectorDetails'); ?>",
+                        data: {district: district, year: year},
+                        success: function (result)
+                        {
+                            $('#table').html(result);
+                            tableModify();
+                        },
+                        complete: function () {
+
+                            $("#loding").html('');
+                        },
+                    });
+
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+function getTableSectorDetailsDownload() {
+        var district = $("#district").val();
+        var year = $("#year").val();
+        $('#table').val('');
+        if (district != "" && year != "")
+        {
+            bootbox.alert('Please wait few soconds!');
+            location.replace('searchSectorDetailsDownload?district=' + district + '&year=' + year + '');
+        }
+    }
+
+</script>
+
+ 

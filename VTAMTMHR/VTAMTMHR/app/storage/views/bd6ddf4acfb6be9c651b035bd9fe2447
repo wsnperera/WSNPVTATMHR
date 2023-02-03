@@ -1,0 +1,156 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<a href="<?php echo url('viewAssignedInspectorsOJT'); ?>">
+    Go Back to Inspector Assign View
+</a>  
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<div class="row-fluid">
+    <div class="span8">
+        <!--PAGE CONTENT BEGINS-->
+        <!--/.page-header-->
+        <div class="page-header position-relative">
+            <h1>
+                On The Job Training			
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    Assign Inspector
+                </small>			
+            </h1>
+        </div><!--/.page-header-->
+        <!--Write your code here start-->
+        <form class="form-horizontal" action="<?php echo url('assignInspectorOJT'); ?>" method="post" onkeypress="return event.keyCode != 13;">
+            <div class="control-group">
+                <label class="control-label">DS Devision:</label>
+                <div class="controls">
+                    <select name="electorate" id="electorate" class="chzn-select">
+                        <option value=""></option>
+                        <?php foreach($electoratelist as $el): ?>
+                        <option value="<?php echo $el->ElectorateCode; ?>"><?php echo $el->ElectorateName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Inspector List:</label>
+                <div class="controls">
+                    <select id="empid" name="empid" class="chzn-select">
+                        <option value=""></option>
+                        <?php foreach($inspectorlist as $il): ?>
+                        <option value="<?php echo $il->id; ?>"><?php echo $il->Initials."-".$il->Name; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Company List:</label>
+                <div class="controls">
+                    <select multiple="" name="companyid[]" id="vacancyid" class="chzn-select">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="validfrom">Valid From:</label>
+                <div class="controls"> 
+                    <div class="row-fluid input-append">
+                        <input class="date-picker" name="validfrom" id="validfrom" type="text" data-date-format="yyyy-mm-dd" name="todate" readonly=""/>
+                        <span class="add-on">
+                            <i class="icon-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>   
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary btn-small">Save</button>
+                </div>
+            </div>
+        </form>
+        <!--Write your code here end-->
+        <!--PAGE CONTENT ENDS-->
+    </div><!--/.span-->
+    <div class="span4" id="error">
+        <?php if(Session::has('done')): ?>
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="icon-remove"></i>
+            </button>
+            <strong>
+                <i class="icon-ok"></i>
+                <?php echo Session::get('done'); ?>
+            </strong>
+            <br>
+        </div>
+        <?php endif; ?>
+        <?php if(Session::has('message')): ?>
+        <div class="alert alert-error" id="error">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="icon-remove"></i>
+            </button>
+            <strong><?php echo Session::get('message'); ?></strong><br>
+        </div>
+        <?php endif; ?>
+        <?php if($errors->has()): ?>
+        <?php foreach($errors->all() as $msg): ?>
+        <div class="alert alert-error" id="error">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="icon-remove"></i>
+            </button>
+            <strong>
+                <i class="icon-remove"></i>
+                Error!
+            </strong><?php echo $msg; ?>
+            <br>
+        </div>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+            $(".chzn-select").chosen();
+            $("#companyid_chzn").find('input').on('change', function (e)
+            {
+                var option = $("<option>").val($("#companyid_chzn").find('input').val()).text($("#companyid_chzn").find('input').val());
+                // add the new option
+                $("#companyid.chzn-select").prepend(option);
+                // automatically select it
+                $("#companyid.chzn-select").find(option).prop('selected', true);
+                // trigger the update
+                $("#companyid.chzn-select").trigger("liszt:updated");
+            });
+            $("#electorate").change(function () {
+                var electorate = $("#electorate").val();
+                var empid = $("#empid").val();
+                $.ajax({
+                    url: "<?php echo url('getInspectorCompanyOJT'); ?>",
+                    type: "get",
+                    data: {electorate: electorate, empid: empid},
+                    success: function (result) {
+                        $("#vacancyid").html(result);
+                        $("#vacancyid.chzn-select").trigger("liszt:updated");
+                    }
+                });
+            });
+            $("#empid").change(function () {
+                var electorate = $("#electorate").val();
+                var empid = $("#empid").val();
+                $.ajax({
+                    url: "<?php echo url('getInspectorCompanyOJT'); ?>",
+                    type: "get",
+                    data: {electorate: electorate, empid: empid},
+                    success: function (result) {
+                        $("#vacancyid").html(result);
+                        $("#vacancyid.chzn-select").trigger("liszt:updated");
+                    }
+                });
+            });
+            $(document).ready(function () {
+                $('.date-picker').datepicker().next().on(ace.click_event, function () {
+                    $(this).prev().focus();
+                });
+            });
+
+</script>

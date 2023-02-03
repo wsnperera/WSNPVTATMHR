@@ -1,0 +1,244 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    NVQ 1ST Assignment		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Assign Students
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+     <?php if($issearch=="True"): ?>      
+            <form class="form-horizontal" action="<?php echo url('AssignStudentPre1'); ?>" method="POST">
+                <table>
+                <tr>
+                    <td>
+                        <label class="control-label" for="AId">Pre Assessment Title</label>
+                    </td>
+                    <td>
+                        <div class="controls">
+                            <select name="EId" id="EId">
+                             <option value="">---Select---</option>
+                             <?php foreach($aignmntid as $c): ?>
+                                <option value="<?php echo $c->EP_ID; ?>"><?php echo $c->Description; ?></option>
+                             <?php endforeach; ?>
+                            </select>
+                            
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="control-label" for="AId">Course Code</label> 
+                    </td>
+                    <td>
+                        <div class="controls">
+                                                          
+                            <input type="text" name="Ccode" id="Ccode" readonly/>
+                              
+                        
+                        </div> 
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="control-label" for="Mode">Select Mode</label> 
+                    </td>
+                    <td>
+                        <div class="controls">
+                          <input type="text" name="mode" id="mode" readonly/>        
+                        </div> 
+                    </td>
+                </tr>
+            </table>   
+           
+            <div class="control-group">
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">View Students</button>
+
+                </div>
+            </div>
+             </form>
+      
+    <?php endif; ?>   
+<?php if($issearch!="True"): ?> 
+
+<form class="form-horizontal" action="<?php echo url('AssignStudentPreAssgnmnt'); ?>" method="POST">
+    <table class="table">
+
+
+        <tr>
+
+            <th>Select<lable>
+            <input class='checkVP' type="checkbox"  /><span class="lbl"></span></lable></th>
+            <th>Student No</th>
+            <th>Student Name</th>
+            <th>NIC</th>
+            <th></th>
+
+        </tr>
+        <?php if(isset ($traineesRpl)): ?>    <!-- RPL STUDENTS -->
+        <input type="hidden" name="mode" value="RPL">
+        <?php foreach ($traineesRpl as $c): ?>
+
+        <tr>
+            <td><lable>
+            <input class='checkVP' name="ds[checkVP][<?php echo $c->id; ?>]" type="checkbox" value="<?php echo $c->id; ?>" /><span class="lbl"></span></lable></td>
+        <td><?php echo $c->id; ?>
+            <input type="hidden" name="ds[Training_No][<?php echo $c->id; ?>]" value="<?php echo $c->id; ?>" class="coursecode" id="coursecode" >
+        </td>
+        <td><?php echo $c->NameWithInitials; ?></td>
+        <td><?php echo $c->NIC; ?></td>
+        </tr>
+
+
+        <?php endforeach; ?>
+
+        <?php endif; ?>
+
+
+        <?php if(isset ($traineesCBT)): ?>    <!-- CBT STUDENTS -->
+
+        <?php foreach ($traineesCBT as $c): ?>
+
+        <tr>
+            <td><lable>
+            <input class='checkVP' name="ds[checkVP][<?php echo $c->Training_No; ?>]" type="checkbox" value="<?php echo $c->Training_No; ?>" /><span class="lbl"></span></lable></td>
+        <td><?php echo $c->Training_No; ?>
+            <input type="hidden" name="ds[Training_No][<?php echo $c->Training_No; ?>]" value="<?php echo $c->Training_No; ?>" class="coursecode" id="coursecode" >
+        </td>
+        <td><?php echo $c->NameWithInitials; ?></td>
+        <td><?php echo $c->NIC; ?></td>
+        </tr>
+
+
+        <?php endforeach; ?>
+
+        <?php endif; ?>
+
+         <?php if(isset ($traineesEp)): ?>    <!-- Enterprise STUDENTS -->
+
+        <?php foreach ($traineesEp as $c): ?>
+
+        <tr>
+            <td><lable>
+            <input class='checkVP' name="ds[checkVP][<?php echo $c->Training_No; ?>]" type="checkbox" value="<?php echo $c->Training_No; ?>" /><span class="lbl"></span></lable></td>
+        <td><?php echo $c->Training_No; ?>
+            <input type="hidden" name="ds[Training_No][<?php echo $c->Training_No; ?>]" value="<?php echo $c->Training_No; ?>" class="coursecode" id="coursecode" >
+        </td>
+        <td><?php echo $c->NameWithInitials; ?></td>
+        <td><?php echo $c->NIC; ?></td>
+        </tr>
+
+
+        <?php endforeach; ?>
+
+        <?php endif; ?>
+
+
+    </table>
+        <input type="hidden" name="Ccode" value="<?php echo $CCode; ?>">
+        <input type="hidden" name="Interview" value="<?php echo $Eid; ?>">
+    <div class="control-group">
+
+        <div class="controls">
+
+            <button type="submit" class="btn btn-small btn-primary">Confirm Students</button>
+
+        </div>
+    </div>
+</form>
+        </div>
+    </div>
+</div>
+
+<?php endif; ?>
+
+
+ <?php if (Session::has('done')): ?>
+ 
+  <div class="alert alert-block alert-success">
+
+               
+                    
+                 
+
+                 <strong> <i class="icon-ok"></i><?php echo Session::get('done'); ?></strong>
+
+              </div>
+  
+      
+ <?php endif; ?>
+  
+  
+   
+    
+    <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+    
+
+    
+   <script type="text/javascript">
+
+$("#EId").change(function() {
+
+    
+    var EpId = $("#EId").val();
+
+    
+
+
+    $.ajax({
+        url: "<?php echo url('NVQ1STAssignmentLoadAjax'); ?>",
+        type: "GET",
+        data: {EpId: EpId},
+        success: function(result) {
+            
+                 document.getElementById('Ccode').value=result;
+            
+        }
+    });
+
+     $.ajax({
+        url: "<?php echo url('NVQ1STAssignmentLoadAjaxMode'); ?>",
+        type: "GET",
+        data: {EpId: EpId},
+        success: function(result) {
+            
+                 document.getElementById('mode').value=result;
+            
+        }
+    });
+
+}); 
+      
+     
+
+
+
+
+    $('table th input:checkbox').on('click', function() {
+        var that = this;
+        $(this).closest('table').find('tr > td:first-child input:checkbox')
+                .each(function() {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+    });
+
+
+      
+      
+    </script>
+        

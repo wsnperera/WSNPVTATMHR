@@ -1,0 +1,147 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>Assign Course Year Plan<small><i class="icon-double-angle-right"></i>Assign Modules</small></h1>
+                <a href=<?php echo url('ConfirmCourseYearPlanFirstPage'); ?>> << Back to View </a>
+            </div>
+            <form class="form-horizontal" action='editModulesToCourse' method="GET">
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course List Code : </label>
+                        <div class="controls">
+                            <span class="lbl" ><?php echo $courseYearPlan->CourseListCode; ?></span>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Batch : </label>
+                        <div class="controls">
+                            <span class="lbl" ><?php echo $courseYearPlan->batch; ?></span>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Medium : </label>
+                    <div class="controls">
+                        <span class="lbl" ><?php echo $courseYearPlan->medium; ?></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Max Capacity : </label>
+                        <div class="controls">
+                            <span class="lbl" ><?php echo $courseYearPlan->maxCapacity; ?></span>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Fee Type : </label>
+                    <div class="controls">
+                        <span class="lbl" ><?php echo $courseYearPlan->feeType; ?></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Stipend/Course-Fee :</label>
+                    <div class="controls">
+                        <span class="lbl" ><?php echo $courseYearPlan->Fee; ?></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Expected Start Date : </label>
+                        <div class="controls">
+                            <span class="lbl" ><?php echo $courseYearPlan->startDate; ?></span>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Instructor : </label>
+                    <div class="controls">
+                        <table >
+                            <tr>
+                                <td>
+                                    <table id="my_table" >
+                                        <tr>
+                                            <td>
+                                                <?php foreach($Instructor as $i): ?>
+                                                    <?php echo $i['Name']; ?> , 
+                                                <?php endforeach; ?>
+                                            </td>
+                                        </tr>
+                                        
+                                    </table>
+                                    <br>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <table class="table">
+                            <tr>
+                                <th>Module Code</th>
+                                <th>Module Name</th>
+                            </tr>
+                            <tr>
+                            <?php foreach($module as $m): ?>
+                                <tr>
+                                    <td><span class="lbl"><?php echo $m['ModuleCode']; ?></span></td>
+                                    <td><?php echo $m['ModuleName']; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="hidden" name="yearPalnID" value="<?php echo $courseYearPlan->id; ?>" />
+                        <input type="submit" class="btn btn-small btn-primary" value="Edit"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+    $('#sample-table-2').dataTable({
+    "aoColumns": [
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false}
+    ]});
+            $('table th input:checkbox').on('click', function() {
+    var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function() {
+            this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+            });
+    });
+            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+            function tooltip_placement(context, source) {
+            var $source = $(source);
+                    var $parent = $source.closest('table')
+                    var off1 = $parent.offset();
+                    var w1 = $parent.width();
+                    var off2 = $source.offset();
+                    var w2 = $source.width();
+                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                    return 'right';
+                    return 'left';
+            }
+</script>
+      
+           
+               
+               
+               
+      
+        
+        
+
+    

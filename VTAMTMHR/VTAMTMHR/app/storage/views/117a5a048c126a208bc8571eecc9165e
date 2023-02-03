@@ -1,0 +1,225 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href="<?php echo url('NVQPackageUnit'); ?>"> << Back to View </a>
+                <h1>NVQ  Packages Units<small><i class="icon-double-angle-right"></i>Edit</small></h1>
+            </div>
+           
+			<form class="form-horizontal" action='UpdateEdit' method="POST"/>
+			
+                
+                    <input type="hidden" name="id"  value="<?php echo $Rec->id; ?>" />
+                        <div class="control-group">
+                            <label class="control-label" for="ModuleName">Trade:</label>
+                                <div class="controls">
+                                
+                                    <select name="TradeId" id="TradeId" required>
+                                    <option value="">--- select Trade ---</option>
+                                    <?php foreach($TCode as $t): ?>
+                                    <option <?php if($t->TradeId == $OriginalTradeID): ?> selected <?php endif; ?> value="<?php echo $t->TradeId; ?>"><?php echo $t->TradeName; ?></option>
+                                    <?php endforeach; ?>
+                                    </select><span id="img1"></span>
+                                
+                                </div>
+                        </div>
+
+                    <div class="control-group">
+                            <label class="control-label" for="ModuleName">Competency Standard Code:</label>
+                                <div class="controls">
+                                        <select name="Code" id="Code" required>
+										<option value="">--- select Competency ---</option>
+                                       <?php foreach($CCode as $y): ?>
+                                        <option <?php if($OriginalCompetencyID == $y->code): ?> selected <?php endif; ?> value="<?php echo $y->code; ?>"><?php echo $y->code; ?>-<?php echo $y->name; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                        
+                                </div>
+                        </div> 
+                        
+                        <div class="control-group">
+                            <label class="control-label" for="ModuleName">Package Code:</label>
+                                <div class="controls">
+                                        <select name="PCode" id="PCode" required>
+										<option value="">--- select PackageCode ---</option>
+                                        <?php foreach($CompentencyCode as $p): ?>
+                                        <option <?php if($module->QualificationPackageId == $p->id): ?> selected <?php endif; ?> value="<?php echo $p->id; ?>">
+                                        <?php echo $p->packagecode; ?></option>
+                                        <?php endforeach; ?>
+                                    
+                                    </select><span id="img1"></span>
+                                        
+                                </div>
+                        </div> 
+               
+		
+             	<div class="control-group">
+                    <label class="control-label" for="modulecode">Unit:</label>
+                        <div class="controls">
+                        <select name="UnitID" id="UnitID" class="chzn-select" data-placeholder="Choose Unit..." required >
+                        <option value="">--- Select Unit ---</option>
+								 
+								 <?php foreach($Units as $u): ?>
+								 <option <?php if($u->UID == $module->UnitID): ?> selected="true" <?php endif; ?> value="<?php echo $u->UID; ?>"><?php echo $u->UnitCode; ?> - <?php echo $u->UnitName; ?> - <?php echo $u->UnitVersion; ?></option>
+								<?php endforeach; ?>
+						</select><font color="red">*</font>
+                                  
+                        </div>
+                </div>
+                        
+						  <div class="control-group">
+                            <label class="control-label" for="ModuleName"> Unit Status:</label>
+                                <div class="controls">
+                                        <select name="Ustatus" id="Ustatus" required>
+                                                <option <?php if($Rec->UnitStatus == ""): ?>selected="true" <?php endif; ?> value="">---Select Status---</option>
+                                                <option <?php if($Rec->UnitStatus == "C"): ?>selected="true" <?php endif; ?> value="C">Compulsory</option>
+                                                <option <?php if($Rec->UnitStatus == "O"): ?>selected="true" <?php endif; ?> value="O">Optional</option>
+                                          
+                                        </select>
+                                        
+                                </div>
+                        </div>
+                       
+                        <div class="control-group">
+                            <label class="control-label" for="modulecode">Active Status:</label>
+                                <div class="controls">
+                                <select name="AStatus" id="AStatus" required>
+                                                <option <?php if($Rec->Active == ""): ?>selected="true" <?php endif; ?> value="">---Select Status---</option>
+                                                <option <?php if($Rec->Active == "1"): ?>selected="true" <?php endif; ?> value="1">Active</option>
+                                                <option <?php if($Rec->Active == "O"): ?>selected="true" <?php endif; ?> value="0">Deactive</option>
+                                            
+                                    
+                                        </select>
+                                </div>
+                        </div>
+                
+		
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+<script>
+   jQuery(document).ready(function() {
+   
+$(".chzn-select").trigger("liszt:activate");
+$(".chzn-select").chosen(); 
+});
+
+   
+    
+</script>
+<script>
+    
+    <?php if(isset($done)): ?>
+        
+    $.gritter.add({ title: "", text: "Competency Standard Edited Successfully", class_name: "gritter-warning gritter-center" });
+
+    <?php endif; ?>
+    $("#TradeId").change(function() {
+        var TradeId = $("#TradeId").val();
+        $("#Code").html('');
+        
+        var msg = '--- Select Competency Standard ---';
+      
+            
+                          $.ajax({
+
+                                       beforeSend: function()
+                                        {
+                                            
+                                            document.getElementById('img1').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                        },
+                                        type: "GET",
+                                        url: "<?php echo url::to('FindIDNVQUnits'); ?>",
+                                        data: {TradeId: TradeId},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#Code").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+                                                    
+
+                                                    $("#Code").append("<option value="  +item.id + ">" +item.code + "-"+ item.name +  "</option>");
+
+
+
+                                                });
+
+                                        },
+                                        complete: function() {
+                                            document.getElementById('img1').innerHTML ="";
+
+                                        }
+                                });            
+
+            
+       
+    });
+//packge code
+
+$("#Code").change(function()
+{
+var code = document.getElementById("Code").value;
+var msg = '--- Select PackageCode ---';
+$("#PCode").html('');
+$.ajax  ({
+            url: "<?php echo url::to('FindNVQUnits'); ?>",
+            data: { code: code},
+            dataType: "json", 
+            success: function(result)
+            
+                {
+                                             $("#PCode").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+                                              $("#PCode").append("<option value=" + item.id + ">" +item.packagecode + "</option>");
+
+
+
+                                                });
+            
+                
+                }
+
+
+            
+        });
+
+
+
+
+});
+</script>

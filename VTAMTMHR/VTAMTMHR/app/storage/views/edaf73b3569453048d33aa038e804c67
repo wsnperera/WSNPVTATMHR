@@ -1,0 +1,193 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<!--ace styles-->
+
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<a href="<?php echo url('ApplyLeave'); ?>" hidden="">
+    Back to Apply Leave
+</a>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Letters			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Interview Letters
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label">Select Course Type</label>
+                    <div class="controls">
+                        <select name="coursetype" id="coursetype">
+                            <option value="">Select Course Type</option>
+                            <option value="Full">Full Time</option>                        
+                            <option value="Part">Part Time</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group" id="divCourseListCode">
+                </div>
+                <div id='table'></div>
+
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+        <div class="span4" id="ajaxerror">
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-ok"></i>
+                    <?php echo Session::get('done'); ?>
+                </strong>
+            </div>
+            <?php endif; ?>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+
+        </div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+function table() {
+    var oTable1 = $('#sample-table-2').dataTable({
+        "bPaginate": false,
+        "aoColumns": [
+            null, null, null, {"bSortable": false}
+        ]});
+
+    $('table th input:checkbox').on('click', function () {
+        var that = this;
+        $(this).closest('table').find('tr > td:nth-child(4) input:checkbox')
+                .each(function () {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+    });
+}
+$(document).ready(function () {
+
+    $('#table').on('click', '#btnPrintLetter', function () {
+        var applicants = new Array();
+        var interviewdate = $("#interviewdate").val();
+        var medium = $("#medium").val();
+        $('input[name="applicant"]:checked').each(function () {
+            applicants.push(this.value);
+        });
+        $.ajax
+                ({
+                    url: "<?php echo url::to('printInterviewLetterDTET'); ?>",
+                    data: {applicants: applicants, interviewdate: interviewdate, medium: medium},
+                    dataType: "json",
+                    beforeSend: function () {
+                        $("body").css("cursor", "progress");
+                        $("body input").css("cursor", "progress");
+                    },
+                    success: function (result)
+                    {
+                        if (result.status == "pass") {
+                            $("#ajaxerror").html("");
+                            response(result.html);
+                        } else {
+                            $("#ajaxerror").html(result.html);
+                        }
+                    },
+                    complete: function () {
+                        $("body").css("cursor", "default");
+                        $("body input").css("cursor", "default");
+                    }
+                });
+    });
+    function response(data)
+    {
+        var printWin = window.open("", "printSpecial");
+        printWin.document.open();
+        printWin.document.write(data);
+        printWin.document.close();
+        printWin.print();
+    }
+});
+
+$("#coursetype").change(function () {
+    var coursetype = $("#coursetype").val();
+    $.ajax({
+        url: "<?php echo url::to('getCourseListCodeInterviewLetter'); ?>",
+        data: {coursetype: coursetype},
+        beforeSend: function () {
+            $("body").css("cursor", "progress");
+            $("body input").css("cursor", "progress");
+        },
+        success: function (result)
+        {
+            $('#divCourseListCode').html(result);
+        },
+        complete: function () {
+            $("body").css("cursor", "default");
+            $("body input").css("cursor", "default");
+        }
+    });
+});
+$("#divCourseListCode").on("change", "#CourseListCode", function () {
+    var courselistcode = $('#CourseListCode').val();
+    if (courselistcode !== '') {
+        $.ajax({
+            url: "<?php echo url::to('viewInterviweeListInterviewLetters'); ?>",
+            data: {courselistcode: courselistcode},
+            beforeSend: function () {
+                $("body").css("cursor", "progress");
+                $("body input").css("cursor", "progress");
+            },
+            success: function (result) {
+                $('#table').html(result);
+                table();
+                $('.date-picker').datepicker().next().on(ace.click_event, function () {
+                    $(this).prev().focus();
+                });
+            },
+            complete: function () {
+                $("body").css("cursor", "default");
+                $("body input").css("cursor", "default");
+            }
+        });
+    }
+});
+</script>

@@ -1,0 +1,182 @@
+@include('includes.bar')     
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>
+                    Carder			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+                <a href="Employment" ><< Back To View </a>
+            </div>
+            <form class="form-horizontal" action="{{url('createEmployment')}}" method="POST" id="NewSalaryScale">
+                <div class="control-group">
+                    <label class="control-label" for="EmpCode">Carder</label>
+                    <div class="controls">
+                        <input type="text" name="EmpCode"  />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="MajorMinor">Academic</label>
+                    <div class="controls">
+                        <select name="Academic">
+                            <option value=""></option>
+                            <option >Yes</option>
+                            <option >No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Designation">Designation</label>
+                    <div class="controls">
+                        <input type="text" name="Designation"  />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Designation">No Of Positions</label>
+                    <div class="controls">
+                        <input type="text" name="Positions"  />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Designation">Salary Code</label>
+                    <div class="controls">
+                        <input type="text" name="SalaryCode"  />
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label" for="SalaryScale">Salary Scale</label>
+                    <div class="controls" id="SalaryScaleDiv">
+                        <select name="SS_ID" id="SS_ID">
+                            <option value="">--Select--</option>
+                            @foreach($salaryScale as $ss)
+                            <option value="{{$ss->SS_ID}}">{{$ss->SalaryScale}}</option>
+                            @endforeach
+                        </select>
+                        <input type="button"  value="New Salary Scale" name="NewSalaryScale" id="NewSalaryScale" onclick="addSalaryScale()" class="btn btn-small btn-primary"/>
+                    </div>
+                </div>
+
+                <div class="control-group" hidden="" id="addSalaryScale" style="padding-top: 10px;padding-bottom: 10px;margin-right: 200px;margin-left: 100px;margin-top:25px;margin-bottom:25px; border: 1px solid #009ceb;width:460px">
+                    <h6 align="center" style="font-family: arialblack;font-size: 12pt" ><b>Create New Salary Scale</b></h6>
+                  
+                    <div class="control-group">
+                        <label class="control-label">Salary Scale </label>
+                        <div class="controls">
+                            <input id="SalaryScale"  type="text">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Minimum Salary</label>
+                        <div class="controls">
+                            <input id="MinSalary"  type="text">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Maximum Salary</label>
+                        <div class="controls">
+                            <input id="MaxSalary"  type="text">
+                        </div>
+                    </div>
+
+
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <input type="button" value="Create Salary Scale" onclick="fillSalaryScale()" class="btn btn-small btn-primary"/>
+                        </div>
+                    </div>  
+
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="MajorMinor">Major or Minor</label>
+                    <div class="controls">
+                        <select name="MajorMinor">
+                            <option value=""></option>
+                            <option value="Major">Major</option>
+                            <option value="Minor">Minor</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Save</button>
+                    </div>
+                </div>  
+            </form>
+        </div>
+        <div class="span4">
+            @if($errors->has())
+                @foreach($errors->all() as $msg)
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="icon-remove"></i>
+                        </button>
+                        <strong> <i class="icon-remove"></i>{{$msg}}</strong>
+                    </div>
+                @endforeach
+            @endif
+        </div>
+    </div><!--/.row-fluid-->
+</div>
+@include('includes.footer')
+<script>
+    @if (isset($done))
+        $.gritter.add({title: "", text: "Carder Added Successfully", class_name: "gritter-info gritter-center"});
+    @endif
+    
+      function addSalaryScale() {
+                $.ajax
+                        ({
+                            url: "{{url::to('')}}",
+                            success: function(result)
+                            {
+                                if ($('#addSalaryScale').is(':hidden')) {
+                                    $('#addSalaryScale').show();
+                                } else {
+                                    $('#addSalaryScale').hide();
+                                }
+                            }
+                        });
+            }
+    function fillSalaryScale() {
+        var SalaryScale = document.getElementById('SalaryScale').value;
+        var MaxSalary = document.getElementById('MaxSalary').value;
+        var MinSalary = document.getElementById('MinSalary').value;
+        if(MaxSalary<MinSalary){
+            alert('Maximum Salary value cannot be less than Minimum Salary value!...');
+        }else{
+        $.ajax
+                ({
+                    url: "{{url::to('saveSalaryScale')}}",
+                    data: {SalaryScale: SalaryScale, MaxSalary: MaxSalary, MinSalary: MinSalary},
+                    dataType: 'json',
+                    success: function(result){
+                        if (result.SS_ID !== 0) {
+                            $("#SalaryScaleDiv").html(result.html);
+                            $('#addSalaryScale').hide();
+                            $('#ajaxerror').html(result.done);
+
+                        } else {
+                            $('#ajaxerror').html(result.html);
+                            window.scrollTo(0, 0);
+                        }
+                    }
+                });
+            }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,263 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<a href="<?php echo url('OJTviewPlacementStudentList?District='.$prefereddistrict); ?>">
+    Go Back to Student Placement
+</a>  
+<!--page specific plugin styles-->
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<!--ace styles-->
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    On The Job Training			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create Student Placement
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+            <form class="form-horizontal" name="placement" action="<?php echo url('OJTcreateOJTStudentPlacement'); ?>" method="post" onkeypress="return event.keyCode != 13;">
+                <div class="control-group">
+                    <input type="hidden" name="district" value="<?php echo $prefereddistrict; ?>"/>
+                    <input type="hidden" name="studentid"  id="studentid" value="<?php echo $id; ?>"/>
+                    <label class="control-label">Student Name:</label>
+                    <div class="controls">
+                        <textarea id="FullName" style="resize: none;" readonly=""><?php echo $FullName; ?></textarea>&nbsp;&nbsp;&nbsp;
+                     
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">NIC:</label>
+                    <div class="controls">
+                        <input type="text" id="NIC" value="<?php echo $NIC; ?>" readonly=""/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Institute:</label>
+                    <div class="controls">
+                        <input type="text" id="Institute" value="<?php echo $InstituteName; ?>" readonly=""/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Training Number:</label>
+                    <div class="controls">
+                        <input type="text" id="trainingno" name="trainingno" value="<?php echo $TrainingNo; ?>" readonly=""/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Student Trade:</label>
+                    <div class="controls">
+                        <input type="text" id="Trade" value="<?php echo $tradename; ?>" readonly=""/>
+                    </div>
+                </div> 
+                <?php
+                $districtName=District::where('DistrictCode','=',$prefereddistrict)->pluck('DistrictName');
+                ?>
+
+                <div class="control-group">
+                    <label class="control-label">Student District:</label>
+                    <div class="controls">
+                        <input type="text" id="District" value="<?php echo $districtName; ?>" readonly=""/>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Placement Company:</label>
+                    <div class="controls">
+                        <select name="vacancyid" id="companyid" class="chzn-select">
+                            <option value=""></option>
+                                <?php foreach($companyname as $dis): ?>
+                                <option value="<?php echo $dis->cid; ?>" > <?php echo $dis->CompanyName; ?></option>
+                                <?php endforeach; ?>
+
+                        </select>
+                        <!--                        <button type="button" id="addcompany" class="btn btn-small btn-primary">Add Company</button>-->
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="startdate">Placement Start Date:</label>
+                    <div class="controls"> 
+                        <div class="row-fluid input-append">
+                            <input class="date-picker" name="startdate" id="placementstartdate" type="text" data-date-format="yyyy-mm-dd"  readonly=""/>
+                            <span class="add-on">
+                                <i class="icon-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>    
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary btn-small">Save</button>
+                    </div>
+                </div>
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+        <div class="span4" id="error">
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-ok"></i>
+                    <?php echo Session::get('done'); ?>
+                </strong>
+                <br>
+            </div>
+            <?php endif; ?>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+                $(".chzn-select").chosen();
+                $("#addcompany").click(function() {
+                    bootbox.dialog('<iframe name="addcompanyframe" id="addcompanyframe" style="width:530px;height:400px;border:0" ></iframe>', [{
+                            "label": "Save",
+                            "class": "btn btn-small btn-primary",
+                            "callback": function() {
+                                var companyid = $("#addcompanyframe").contents().find("#companyid").val();
+                                var contactperson = $("#addcompanyframe").contents().find("#contactperson").val();
+                                var designation = $("#addcompanyframe").contents().find("#designation").val();
+                                var Address = $("#addcompanyframe").contents().find("#Address").val();
+                                var District = $("#addcompanyframe").contents().find("#District").val();
+                                var DSDevision = $("#addcompanyframe").contents().find("#DSDevision").val();
+                                var Tel = $("#addcompanyframe").contents().find("#Tel").val();
+                                var Fax = $("#addcompanyframe").contents().find("#Fax").val();
+                                var Email = $("#addcompanyframe").contents().find("#Email").val();
+                                var Trade = $("#addcompanyframe").contents().find("#Trade").val();
+                                var CourseListCode = $("#addcompanyframe").contents().find("#CourseListCode").val();
+                                var noofvacancy = $("#addcompanyframe").contents().find("#noofvacancy").val();
+                                var validfrom = $("#addcompanyframe").contents().find("#validfrom").val();
+                                var studentid = $("#studentid").val();
+                                $.ajax({
+                                    url: "<?php echo url('addCompanyInStudentPlacement'); ?>",
+                                    type: "POST",
+                                    data: {companyid: companyid, Address: Address, District: District, DSDevision: DSDevision, Tel: Tel, Email: Email, Trade: Trade, CourseListCode: CourseListCode, noofvacancy: noofvacancy, validfrom: validfrom, studentid: studentid, contactperson: contactperson, designation: designation, Fax: Fax},
+                                    dataType: "json",
+                                    success: function(result) {
+                                        if (result.message === "Successful") {
+                                            $("#companyid").html(result.vacancy);
+                                            $("#District").val(result.district);
+                                            $("#companyid.chzn-select").trigger("liszt:updated");
+                                            alert("Vacancy Added Successfull");
+                                        }
+                                    }
+                                });
+                            }
+                        }, {
+                            "label": "Cancel",
+                            "class": "btn btn-small btn-danger",
+                            "callback": function() {
+
+                            }
+                        }]);
+                    $(".chzn-select").chosen();
+                });
+                $('.date-picker').datepicker().next().on(ace.click_event, function() {
+                    $(this).prev().focus();
+                });
+
+
+</script>
+<script  type="text/javascript">
+    $("#placementcourse").change(function()
+    {
+        var tradeid = $("#placementcourse").val();
+        // alert(tradeid);
+        $.ajax({
+            type: "GET",
+            url: "<?php echo Url('OJTgetstudentplacementCompanyDetail'); ?>",
+            data: {tradeid: tradeid},
+            //alert(data);
+            dataType: "json",
+            success: function(result) {
+                // alert(data);
+
+
+                $("#companyid").html("<option value=\"0\" selected>--Select company--</option>");
+                $.each(result, function(i, item)
+                {
+                    //  alert('dis');
+                    $("#companyid").append("<option value=" + item.id + ">" + item.CompanyName + "</option>");
+
+                });
+                $("#companyid.chzn-select").trigger("liszt:updated");
+            }
+        });
+
+
+    });
+
+    $("#tradeid").change(function() {
+        var TradeId = $("#tradeid").val();
+        //alert(TradeId);
+        $.ajax({
+            url: "<?php echo url('getvacancylistcoursedetails'); ?>",
+            type: "GET",
+            data: {TradeId: TradeId},
+            success: function(result) {
+                $("#placementcourse").html(result);
+                $("#placementcourse.chzn-select").trigger("liszt:updated");
+            }
+        });
+    });
+    
+          $("#student_district").change(function() {
+                    var student_district = $("#student_district").val();
+                   // alert(student_district);
+                    $.ajax({
+                        url: "<?php echo url('getvacancylisttradedetails'); ?>",
+                        type: "GET",
+                        data: {student_district: student_district},
+                        success: function(result) {
+                            $("#tradeid").html(result);
+                            $("#tradeid.chzn-select").trigger("liszt:updated");
+                        }
+                    });
+                });
+
+</script>

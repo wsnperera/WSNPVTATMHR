@@ -1,0 +1,133 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+  	<div class="row-fluid">
+            <div class="span8">
+		<div class="page-header position-relative">
+                	<h1>
+                            Batch			
+                            <small>
+                                    <i class="icon-double-angle-right"></i>
+                                    Create
+                            </small>			
+			</h1>
+		</div>
+                <form class="form-horizontal" method="POST"/>
+                    <div class="control-group">
+                        <label class="control-label" for="InstituteId">Institute Name</label>
+                            <div class="controls">
+                                <input type="text" name="InstituteId" disabled="true" value="<?php echo $institute; ?>"/>
+                                <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>"/>
+                            </div>
+                    </div>
+                    <br/>      
+                                                
+                    <div class="control-group">
+                        <label class="control-label" for="OrgaId">Organization Name</label>
+                            <div class="controls">
+                                <input type="text" name="OrgaId" disabled="true" value="<?php echo $organization; ?>"/>
+                                <input type="hidden" name="OrgaId" value="<?php echo $og_id; ?>"/>
+                            </div>
+                    </div>
+                    <br/>                                        
+       
+                    <div class="control-group">
+                        <label class="control-label" for="CourseCode">Course code</label>
+                            <div class="controls">
+                                <select name="CourseCode" id="Change">
+                                    <?php foreach ($course as $c): ?>
+                                        <option value="<?php echo $c->CourseCode; ?>"><?php echo $c->CourseCode; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <span id="ajax_img1"></span>
+                            </div>
+                    </div>
+                    <br/>                               
+                                                   
+                    <div class="control-group">
+                        <label class="control-label" for="CourseListCode"> Course List Code</label>
+                            <div class="controls">
+                                <input type="text" name="CourseListCode" readonly id="aa"/>
+			    </div>
+                    </div>
+                    <br/>                            
+                                                   
+                    <div class="control-group">
+                        <label class="control-label" for="BatchCode">Batch code</label>
+                            <div class="controls">
+                                <input type="text" name="BatchCode" id="BatchCode" />
+                            </div>
+                    </div>
+                    <br/>                                 
+                                                     
+                    <div class="control-group">
+                        <label class="control-label" for="StartDate">Start Date</label>
+                            <div class="controls">
+                                <input type="date" name="StartDate"  /> 
+                            </div>
+                    </div>
+                    <br/>                                     
+                                                         
+                    <div class="control-group">
+                        <label class="control-label" for="Year">Year</label>
+                            <div class="controls">
+                                <input type="Text" name="Year"  /> 
+                            </div>
+                    </div>
+                    <br/> 
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-small btn-primary">Save</button>
+                        </div>
+                    </div>
+                    <br/>
+                </form>                                
+            </div>
+            <div class="span4">
+                <?php if($errors->has()): ?>
+                    <?php foreach($errors->all() as $msg): ?>
+                        <div class="alert alert-error">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+    </div>
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<script>
+    
+    <?php if(isset($done)): ?>
+        
+    $.gritter.add({ title: "", text: "Batch Added Successfully", class_name: "gritter-info gritter-center" });
+
+    <?php endif; ?>
+    
+    $("#Change").change(function() {
+    
+    var a = document.getElementById('Change').value;
+    document.getElementById('BatchCode').value = a;
+    var cut = document.getElementById('Change').value;
+    
+        $.ajax
+                ({
+                    url: "<?php echo url::to('batchajax'); ?>",
+                    data: {CourseCode: cut},
+                    beforeSend: function() {document.getElementById('ajax_img1').innerHTML="<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";},
+                    success: function(result)
+                    {
+                     document.getElementById('aa').value=result;
+                    },
+                    complete: function() {document.getElementById('ajax_img1').innerHTML="";}
+                });
+
+    });
+    
+     
+</script>
+                                           

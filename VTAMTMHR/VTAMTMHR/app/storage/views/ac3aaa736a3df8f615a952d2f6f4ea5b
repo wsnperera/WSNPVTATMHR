@@ -1,0 +1,256 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>      
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('ViewModuleTask'); ?>> << Back to Module Task</a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>Report<small><i class="icon-double-angle-right"></i>Center Critearia Wise Monitoring Progress Report</small></h1>
+        </div>
+        <form name='search' action="<?php echo url('ViewCoursePlanReportW'); ?>" method='POST' class="form-horizontal">
+<!--            Search Module Course By Course List Code : <input type='text' name="key"/>   <input type='submit' value='Search'/>-->
+            <!--<a href="<?php echo url('CreateModuleTask'); ?>"><input type='button' value='Create Module Task' /></a>-->
+            
+
+        <div class="control-group">
+                <label class="control-label" for="CourseListCode">District : </label>
+                <div class="controls">
+                    <select name="District" id="District" required>
+                        <option value="">--Select District--</option>
+                        <option value="All" >All</option>
+                        <?php foreach($District as $lc): ?>
+                        <option value="<?php echo $lc->DistrictCode; ?>"><?php echo $lc->DistrictName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                <!--    Duration <input id="Duration" placeholder="" type="text"> -->
+                </div>
+            </div> 
+			 <div class="control-group">
+                <label class="control-label" for="CourseListCode">Center: </label>
+                <div class="controls">
+                    <select name="CenterID" id="CenterID" required>
+                        <option value="">--Select Center--</option>
+                        
+                    </select>
+                <!--    Duration <input id="Duration" placeholder="" type="text"> -->
+                </div>
+            </div> 
+			 
+             <!--given date range-->
+                    <div class="control-group">
+
+                        <label class="control-label" for="id-date-range-picker-1">Select Date Range : </label>
+
+                        <div class="controls">
+                            
+                            <input class="span4" type="text" name="date-range-picker" id="id-date-range-picker-1"/>
+                        </div>
+                    </div>
+           <!--Report type-->
+           
+                
+            <div class="control-group">
+                <div class="controls">
+                        <button type="button" class="btn btn-primary" onclick="getTable()"/>View</button>
+                            <button type="button" class="btn btn-primary" onclick="downloadReport()">Download Report</button>
+                    </div>
+            </div> 
+			 <span id='img5'></span>
+        </form>
+		
+        <hr/>
+       
+        <div class="span12" id="table">
+         
+            <!--PAGE CONTENT ENDS-->
+           
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+<script type="text/javascript">
+     
+
+    function doConfirm(course,formobj)  {
+        bootbox.confirm("Are you sure you want to remove "+course, function(result) 
+        {
+            if(result) 
+            {
+                formobj.submit();
+            }
+         });
+         return false;  // by default do nothing hack :D
+     }
+     
+      <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+$('#sample-table-2').dataTable({
+    "aoColumns": [
+            
+    ]});
+            $('table th input:checkbox').on('click', function() {
+    var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function() {
+            this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+            });
+    });
+            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+            function tooltip_placement(context, source) {
+            var $source = $(source);
+                    var $parent = $source.closest('table')
+                    var off1 = $parent.offset();
+                    var w1 = $parent.width();
+                    var off2 = $source.offset();
+                    var w2 = $source.width();
+                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                    return 'right';
+                    return 'left';
+            }
+
+
+  
+
+ </script>
+ <script>
+    $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function () {
+        $(this).next().focus();
+    });
+</script>
+ <script type="text/javascript">
+ 
+
+ $("#District").change(function() 
+	{
+        var District = $("#District").val();
+        $("#CenterID").html('');
+        //$("#CourseYearPlanID").html('');
+        var msg = '--- Select Centre ---';
+		var all = 'All';
+       
+                          $.ajax({
+                                        type: "GET",
+                                        url: "<?php echo url::to('CriteariaWiseloaddistrictcentersin'); ?>",
+                                        data: {District: District},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#CenterID").append("<option value=''>" + msg + "</option>");
+											// $("#CenterID").append("<option value='All'>" + all + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#CenterID").append("<option value=" + item.id + ">" +item.OrgaName + "(" + item.Type + ")</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            
+     
+    });
+	
+                                function getTable() {
+                                    var District = document.getElementById('District').value;
+									var CenterID = document.getElementById('CenterID').value;
+									//var CD_ID = document.getElementById('CourseYearPlanID').value;
+                                    var dateRange = $("#id-date-range-picker-1").val();
+									
+									//alert(CD_ID);
+
+                                       
+
+                                    //alert(dateRange);
+
+                                    if (dateRange == "") {
+                                        bootbox.alert("Please Enter Date Range!!!");
+                                    } else {
+
+                                        $.ajax
+                                                ({
+													beforeSend: function()
+													{
+														
+														document.getElementById('img5').innerHTML = "<img src=\"<?php echo Url('assets/images/ajax-loader.gif'); ?>\"/>";
+													},
+                                                    type: "GET",
+                                                    url: "<?php echo Url('LoadViewCenterCriteariaWiseMonitoringProgressReport'); ?>",
+                                                    data: {District: District, CenterID:CenterID,dateRange: dateRange},
+                                                    dataType: 'json',
+                                                    success: function (result)
+                                                    {
+
+                                                        //if (result.Count > 0) {
+                                                            $('#table').html(''); 
+                                                            $('#table').html(result.Table);
+                                                       // }
+                                                        /* else {
+                                                            $('#table').html(''); 
+                                                            alert("data not found");
+                                                        } */
+
+                                                    },
+													complete: function() {
+														document.getElementById('img5').innerHTML ="";
+
+													}
+                                                });
+                                    }
+                                }
+ </script>
+ <script type="text/javascript">
+ function downloadReport() {
+                                    var District = document.getElementById('District').value;
+									var CenterID = document.getElementById('CenterID').value;
+									var CD_ID = '';
+                                    var dateRange = $("#id-date-range-picker-1").val();
+                                    //dateRange =1;
+                                    if (!dateRange) {
+                                        $('#table').html('');
+                                        bootbox.alert('Please select date range');
+
+                                    } else {
+                                        window.location.replace("DownloadLoadViewCenterCriteariaWiseMonitoringProgressReport?District=" + District + "&dateRange=" + dateRange + "&CenterID=" + CenterID +"&CD_ID=" + CD_ID + "");
+                                        bootbox.alert('Please wait few seconds');
+                                    }
+
+                                }
+ </script>

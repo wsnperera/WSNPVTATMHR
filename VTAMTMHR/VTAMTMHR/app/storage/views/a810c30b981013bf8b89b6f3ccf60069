@@ -1,0 +1,62 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('institute'); ?>> << Back to Test Center </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>Test Center<small><i class="icon-double-angle-right"></i>View</small></h1>
+        </div>
+        <form name='search' action="<?php echo url('findTestCenter'); ?>" method='get'>
+            Search Test Center By Name <input type='text' name="key"/>   <input type='submit' value='Search'/>
+            <a href=<?php echo url('CreateTestCenter'); ?>><input type='button' value='Create Test Center' /></a>
+        </form>
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Name In Sinhala</th>
+                    <th>Test Center Code</th>
+                    <th>Address</th>
+                    <th>Address In Sinhala</th>
+                </tr>
+                <?php if(isset ($testCenter)): ?>
+                    <?php foreach($testCenter as $t): ?>
+                    <tr>
+                        <td><b><u><a href="<?php echo url('editTestCenter?id='.$t->CenterId); ?>"><?php echo $t->CenterName; ?></a></u><b></td>
+                        <td><?php echo $t->CenterNameS; ?></td>
+                        <td><?php echo $t->CenterCode; ?></td>
+                        <td><?php echo $t->Address; ?></td>
+                        <td><?php echo $t->AddressS; ?></td>
+                        <td>
+                            <form id="deleteform"  action='deleteTestCenter' method="POST" onsubmit="return doConfirm('<?php echo $t->CenterName; ?>',this)">
+                                <input type="hidden" name='id' value=<?php echo $t->CenterId; ?> />
+                                <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php if($testCenter=='[]'): ?>
+                        </table><center>Data Not Found</center>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type="text/javascript">
+    function doConfirm(course,formobj)
+    {
+        bootbox.confirm("Are you sure you want to remove "+course, function(result) 
+        {
+            if(result) 
+            {
+                formobj.submit();
+            }
+         });
+         return false;  // by default do nothing hack :D
+     }
+ </script>

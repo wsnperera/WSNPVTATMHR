@@ -1,0 +1,216 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>
+                    Inplant Organization			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+            </div>
+            <form class="form-horizontal" method="POST"/>
+                <div class="control-group">
+                    <label class="control-label" for="InstituteId">Institute Name</label>
+                        <div class="controls">
+                            <input type="text" name="InstituteId" disabled="true" value="<?php echo $institute; ?>"/>
+                            <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>"/>
+                        </div>
+                </div>
+                <br/> 
+
+                <div class="control-group">
+                    <label class="control-label" for="CourseCode">Country Name</label>
+                        <div class="controls">
+                            <select name="CountryId" id="CountryId">
+                                <?php foreach ($country as $c): ?>
+                                    <option value="<?php echo $c->id; ?>"><?php echo $c->CountryName; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <span id="ajax_img1"></span>
+                        </div>
+                </div>
+                <br/> 
+
+                <div class="control-group">
+                    <label class="control-label" for="OrgaName">Organaization Name</label>
+                        <div class="controls">
+                            <input type="text" name="OrgaName"/>
+                        </div>
+                </div>
+                <br/> 
+
+                <div class="control-group">
+                    <label class="control-label" for="Address">Address</label>
+                        <div class="controls">
+                            <textarea name="Address" id="Address"></textarea>
+                        </div>
+                </div>
+                <br/> 
+
+                <div class="control-group">
+                    <label class="control-label" for="Tel">Telephone</label>
+                        <div class="controls">
+                            <input type="text"  id="Tel_code" readonly style="width: 30px;"/><input type="text" id="Tel" style="width: 160px;"/>
+                            <input type="hidden" name="Tel" id="dale"/>
+                        </div>
+                </div>
+                <br/> 
+
+                <div class="control-group">
+                    <label class="control-label" for="Email">Email</label>
+                        <div class="controls">
+                            <input type="text" name="Email"  /> 
+                        </div>
+                    <br/> 
+
+                    <div class="control-group" id="d_dis">
+                        <label class="control-label" for="DistrictCode">District</label>
+                            <div class="controls">
+                                <select name="DistrictCode" id="DistrictCode">
+                                    <option></option>
+                                    <?php foreach ($district as $d): ?>
+                                        <option value="<?php echo $d->DistrictCode; ?>"><?php echo $d->DistrictName; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                    </div>
+                    <br/> 
+
+                    <div class="control-group">
+                        <label class="control-label" for="Active">Active</label>
+                            <div class="controls">
+                                <select name="Active" id="Active">
+                                    <option></option>
+                                    <option value="YES">YES</option>
+                                    <option value="NO">NO</option>
+                                </select>
+                            </div>
+                    </div>
+                    <br/> 
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-small btn-primary">Save</button>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="icon-remove"></i>
+                        </button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+    </div>
+    </div>
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<script>
+
+    <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Record Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+
+            $("#CountryId").change(function() {
+
+        var aaa = "<label class=\"control-label\" for=\"DistrictCode\">District</label>\n" +
+                "<div class=\"controls\">\n" +
+                "<select name=\"DistrictCode\" id=\"DistrictCode\">\n" +
+                "<option></option>\n" +
+                "<?php foreach ($district as $d): ?>\n" +
+                "<option value=\"<?php echo $d->DistrictCode; ?>\"><?php echo $d->DistrictName; ?></option>\n" +
+                "<?php endforeach; ?>\n" +
+                "</select>\n" +
+                "</div";
+
+        var cut = document.getElementById('CountryId').value;
+        if (cut === '1') {
+            document.getElementById('d_dis').innerHTML = aaa;
+
+        } else {
+            document.getElementById('d_dis').innerHTML = "<input name=\"DistrictCode\" type=\"hidden\" value=\"0\"/>";
+        }
+
+        $.ajax
+                ({
+                    url: "<?php echo url::to('inplantajax'); ?>",
+                    data: {CountryId: cut},
+                    beforeSend: function() {document.getElementById('ajax_img1').innerHTML="<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";},
+                    success: function(result)
+                    {
+//                        alert(result);
+                        document.getElementById('Tel_code').value = result;
+                    },
+                    complete: function() {document.getElementById('ajax_img1').innerHTML="";}
+                });
+
+    });
+
+    $("#Tel").keyup(function() {
+        document.getElementById('Tel').style.border="1px solid #777";
+        var tel_code = document.getElementById('Tel_code').value;
+        var tel = document.getElementById('Tel').value;
+        if (isNaN(tel)) {
+            document.getElementById('Tel').style.border="1px solid red";
+        } else if (tel.length === 10) {
+            var str = tel;
+            var res = str.substr(1, 9);
+            var t_last = res;
+            document.getElementById('dale').value = t_last;
+            document.getElementById('Tel').style.border="1px solid #777";
+        } else if (tel.length === 9) {
+            var t = tel.split('');
+            var a = t[0];
+            if (a !== "0") {
+                var last_tel =  tel;
+                document.getElementById('dale').value = last_tel;
+                document.getElementById('Tel').style.border="1px solid #777";
+            }
+        }else if(tel.length>10){
+            document.getElementById('Tel').style.border="1px solid red";
+        }
+
+
+    });
+    $("#Tel").change(function() {
+        document.getElementById('Tel').style.border="1px solid #777";
+        var tel_code = document.getElementById('Tel_code').value;
+        var tel = document.getElementById('Tel').value;
+        if (isNaN(tel)) {
+            document.getElementById('Tel').style.border="1px solid red";
+        } else if (tel.length === 10) {
+            var str = tel;
+            var res = str.substr(1, 9);
+            var t_last = res;
+            document.getElementById('dale').value = t_last;
+            document.getElementById('Tel').style.border="1px solid #777";
+        } else if (tel.length === 9) {
+            var t = tel.split('');
+            var a = t[0];
+            if (a !== "0") {
+                var last_tel = tel;
+                document.getElementById('dale').value = last_tel;
+                document.getElementById('Tel').style.border="1px solid #777";
+            }
+        }else if(tel.length>10){
+            document.getElementById('Tel').style.border="1px solid red";
+        }
+
+
+    });
+
+</script>

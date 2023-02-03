@@ -1,0 +1,313 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+
+
+
+
+
+
+
+<div class="page-content">
+
+
+
+
+
+
+
+    <div class="row-fluid">
+
+
+
+
+
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+
+
+
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Subject Assignment			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+
+
+
+            <form class="form-horizontal" action="<?php echo url('createSubjectAssignment'); ?>" method="POST"/>
+
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>  
+
+
+
+
+
+
+
+            <div class="control-group">          
+                <label class="control-label" for="InstituteId">Institute Name</label>
+
+                <div class="controls">
+                    <input type="text" name="InstituteId" disabled="true" value="<?php echo $institute; ?>"/>
+                    <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>"/>
+                </div>
+            </div>
+
+            <br/> 
+            <div class="control-group">
+
+                <label class="control-label" for="OrgaId">Organaization Name</label>
+
+                <div class="controls">
+                    <input type="text" name="OrgaId" disabled="true" value="<?php echo $organization; ?>"/>
+                    <input type="hidden" name="OrgaId" value="<?php echo $og_id; ?>"/>
+                </div>
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="CourseCode">Course Code</label>
+
+                <div class="controls">
+
+                    <select name="CourseCode">
+
+                        <?php foreach ($coursestarteds as $i): ?>
+
+                        <option value="<?php echo $i->CourseCode; ?>"><?php echo $i->CourseCode; ?></option>
+
+                        <?php endforeach; ?>
+
+
+                    </select>
+
+                </div>
+            </div>
+             <div class="control-group">
+
+                <label class="control-label" for="ModuleId">Module Name</label>
+
+                <div class="controls">
+
+                    <select name="ModuleId">
+                        <option value="" >None</option>    
+                        <?php foreach ($modules as $i): ?>
+
+                        <option value="<?php echo $i->ModuleId; ?>"><?php echo $i->ModuleName; ?></option>
+
+                        <?php endforeach; ?>
+
+
+                    </select>
+
+                </div>
+            </div>
+           
+            <div class="control-group">
+
+                <label class="control-label" for="Student_Id">Trainee No</label>
+
+                <div class="controls">
+                    <input type="text" name="Student_Id"  />
+                </div>
+
+            </div> 
+
+            <div class="control-group">
+
+                <label class="control-label" for="Assignment_No">Assignment No</label>
+
+                <div class="controls">
+                    <input type="text" name="Assignment_No"  />
+                </div>
+
+            </div> 
+            <div class="control-group">
+
+                <label class="control-label" for="Marks">Marks</label>
+
+                <div class="controls">
+                    <input type="text" name="Marks"  />
+                </div>
+
+            </div> 
+             <div class="control-group">
+
+                <label class="control-label" for="Grade">Grades</label>
+
+                <div class="controls">
+                    <input type="text" name="Grade"  />
+                </div>
+
+            </div> 
+            <div class="control-group">
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Save</button>
+
+                </div>
+            </div>
+
+
+            </form>
+
+
+
+
+        </div><!--/.span-->
+
+
+
+
+        <!--/span 4 for error handling -->
+
+        <div class="span4">
+
+            <!-- Error Handling --!>
+
+                    <?php if($errors->has()): ?>
+                    
+                          <?php foreach($errors->all() as $msg): ?>
+
+            <!-- Error Message --!>
+
+              <div class="alert alert-error">
+
+                 <button type="button" class="close" data-dismiss="alert">
+                         <i class="icon-remove"></i>
+                 </button>
+
+                 <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+              </div>
+
+            <!-- Error Message --!>
+
+      <?php endforeach; ?>
+
+  <?php endif; ?>
+
+            <!-- Error Handling --!>
+              
+            
+
+
+
+    
+</div>
+            <!--/span 4-->
+
+
+
+
+
+            <!--PAGE CONTENT ENDS-->
+
+        </div><!--/.row-fluid-->
+    </div><!--/.page-content-->
+
+
+    <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+    <script>
+
+<?php if (isset($done)): ?>
+
+        $.gritter.add({title: "", text: "Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+<?php endif; ?>
+
+    </script>
+
+    <script type="text/javascript">
+
+
+                $(document).ready(function()
+        {
+            $("#selector").change(function()
+            {
+
+
+
+                if ('FT' == $(this).val())
+                {
+                    $("#CourseCode").val(20);
+                }
+                if ('PT' == $(this).val())
+                {
+                    $("#CourseCode").val('');
+                }
+
+
+            });
+
+        });
+
+
+    </script>
+
+<!-- <script type="text/javascript">
+
+
+$(document).ready(function()
+{
+
+
+$('#type').change(function() 
+{  
+   var myval = $(this).val();
+   
+   
+  
+   
+   if(myval == 'FT')
+   {
+   
+   $("#Coursestarted_CourseCode").hide();
+     alert("Full Time");     
+
+   }
+   
+ 
+   
+});
+
+});
+         
+<script type="text/javascript">
+
+$(document).ready(function()
+{
+alert("loaded");
+});
+
+</script>            
+      
+
+
+    -->
+    <script type="text\javascript">
+
+
+
+
+
+
+    </script>
+
+
+
+

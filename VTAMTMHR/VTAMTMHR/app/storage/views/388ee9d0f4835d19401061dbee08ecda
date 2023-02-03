@@ -1,0 +1,133 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('searchEntry'); ?>> << Back to Qualification </a> 
+
+<?php endif; ?>
+
+<div class="page-content">
+                                    
+    <div class="row-fluid">
+	
+	<div class="page-header position-relative">
+
+                <h1>
+                    Course			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        View Assigned Qualification
+                    </small>			
+                </h1>
+
+</div>
+												
+												<form name='search' action="<?php echo url('findEntry'); ?>" method='get'>
+                                                
+                                             Search Qualification <input type='text' name="serachkey"/>   <input type='submit' value='Search'/>
+                                             
+                                             <a href=<?php echo url('createEntry'); ?>><input type='button' value='Create Qualification' /></a>
+                                              
+                                             
+                                             
+                                            </form>
+											
+        
+        <div class="span12">
+		<!--PAGE CONTENT BEGINS-->
+
+
+
+
+		<table class="table">
+
+
+		<tr>
+                    <th>Qualification_ID</th>
+					<th>Qualification</th>
+					<th>Active</th>
+		
+                
+                                                                                         
+
+		</tr>
+                <?php if(isset ($courses)): ?>
+
+		<?php foreach ($courses as $c): ?>
+
+		<tr>
+                                                                                                
+                                                                                            
+                                                                                            
+                    <td><a  href="<?php echo url('editEntry?Qualification_ID='.$c->Qualification_ID); ?>"><?php echo $c->Qualification_ID; ?></a></td>
+					<td><?php echo $c->qualification; ?></td>
+					<td><?php echo $c->active; ?></td>
+                
+                
+                <td>
+				
+				
+              <form id="deleteform"  action=<?php echo url('deleteEntry'); ?> method="POST" onsubmit="return doConfirm('<?php echo $c->qualification; ?>',this)">
+                                                                                                                     
+                                                                                                                     
+                 <input type="hidden" name='Qualification_ID' value=<?php echo $c->Qualification_ID; ?> />
+                                                                                                                      
+                 <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                                                                                                                      
+                                                                                                                 
+               
+               </form>
+			   
+                </td>
+                                                                                                                
+                                                                                                             
+    </tr>
+
+
+<?php endforeach; ?>
+
+	<?php endif; ?>
+
+	</table>
+
+								
+								
+                                                                                                                                                
+
+
+							<!--PAGE CONTENT ENDS-->
+						</div><!--/.span-->
+					</div><!--/.row-fluid-->
+				</div><!--/.page-content-->
+
+			<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+    
+  
+        function doConfirm(qualification,formobj)
+        {
+            
+            
+            bootbox.confirm("Are you sure you want to remove "+qualification, function(result) 
+            {
+                   if(result) 
+                   {
+                        formobj.submit();
+							
+                    }
+                    
+                    
+            });
+            
+         
+            return false;  // by default do nothing hack :D
+        }
+          
+   
+         
+         
+        
+
+    
+</script> 

@@ -1,0 +1,58 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>O/L Subject<small><i class="icon-double-angle-right"></i>Edit</small></h1>
+            </div>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error">
+                <strong> <?php echo Session::get('message'); ?></strong>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error">
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+            <form class="form-horizontal" action="<?php echo url('EditOLSubject'); ?>" method="POST">
+                <input type="hidden" value="<?php echo $subject->id; ?>" name="id"/>
+                <div class="control-group">
+                    <label class="control-label" for="Subject"></label>Subject : </label>
+                    <div class="controls">
+                        <input type="text" name="SubjectName" value="<?php echo $subject->SubjectName; ?>"/>
+                    </div>
+                </div>
+				<div class="control-group">
+                    <label class="control-label" for="SubName"></label>ShortSubName : </label>
+                    <div class="controls">
+                        <input type="text" name="ShortSubName" value="<?php echo $subject->ShortSubName; ?>"/>
+                    </div>
+                </div>
+				<div class="control-group">
+                    <label class="control-label" for="Subjecttype"></label>type : </label>
+                    <div class="controls">
+					<select name="type" required="required">
+								<option value="<?php echo $subject->type; ?>"><?php echo $subject->type; ?></option>
+								<option >-------</option>
+                                <option value="core">Core</option>
+                                <option value="language">Language</option>
+								<option value="optional">Optional</option>
+								<option value="relegion">Religion</option>
+                            </select>
+					
+                        
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Edit Subject</button>
+                    </div>
+                </div>
+            </form>            
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

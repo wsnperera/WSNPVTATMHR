@@ -1,0 +1,236 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<a href=<?php echo url('searchInstructor'); ?>> << Back to Instructor </a> 
+
+
+
+
+
+                
+
+
+<div class="page-content">
+                                    
+	<div class="row-fluid">
+                                            
+                                           
+                                        
+                                            
+                                            
+                                    <div class="span12">
+							
+                                        <!--PAGE CONTENT BEGINS-->
+
+                                        
+                                        <!--/.page-header-->
+                                        
+                                        <div class="page-header position-relative">
+                                            
+				<h1>
+				Course			
+				<small>
+					<i class="icon-double-angle-right"></i>
+					Edit
+				</small>			
+				</h1>
+		</div><!--/.page-header-->
+
+
+                			  <!--Write your code here start-->
+                
+                				
+                                                
+                                           <form class="form-horizontal" action="<?php echo url('editInstructor'); ?>" method="POST"/>
+                                           
+                                           
+                                                 <!-- Hold the primary key -->
+                                                 
+                                                 <input type="hidden" name="id" value=<?php echo Request::get('id'); ?> />
+                                                <!-- Choose Institute -->
+
+                                                    <div class="control-group">
+
+                                                            <label class="control-label" for="InstituteId">Institue </label>
+
+                                                            <div class="controls">
+
+                                                               
+                                                                    
+                                                                        
+                                                                   
+                                                                    
+                                                                   <input type="text" name="" value="<?php echo $instrctor->InstituteId; ?> " readonly />
+                                                                      
+                                                
+                                                                  
+                                                            </div>
+                                         
+                                                <!-- Choose Institute --!>
+                                                
+                                                <br/>
+                                                <!-- Choose Institute -->
+                                         
+                                       <div class="control-group">
+                                            
+                                                <label class="control-label" for="OrgaId">Organisation</label>
+                                               
+                                                <div class="controls">
+                                                    
+                                                    <input type="text" name="OrgaId" value="<?php echo $instrctor->OrgaId; ?>"  readonly/>
+                                                    
+                                                </div>
+                                         
+                                         <!-- Choose Institute -->
+                                         <!-- List code -->
+                                         <br/>
+
+                                                <div class="control-group">
+                                                    
+							<label class="control-label" for="CourseCode">Course Code</label>
+
+							<div class="controls">
+                                                            <input type="text" name="CourseCode"  value="<?php echo $instrctor->CourseCode; ?>" readonly/>
+							</div>
+                                                        
+						</div>
+
+                                          <!-- List code -->
+                                          
+                                          
+                                          <!-- designation -->
+                                         
+
+                                                <div class="control-group">
+                                                    
+							<label class="control-label" for="Designation">Employee Type</label>
+
+							<div class="controls">
+                                                            <input type="text" name="Designation"  value="<?php echo $instrctor->Designation; ?>" readonly/>
+							</div>
+                                                        
+						</div>
+
+                                          <!-- designation -->
+                                          <!--emp id -->
+
+                                                <div class="control-group">
+                                                    
+							<label class="control-label" for="EmpId">Emp ID</label>
+
+							<div class="controls">
+								<input type="text" name="EmpId" value="<?php echo $instrctor->EmpId; ?>" readonly/>
+							</div>
+                                                        
+						</div>
+
+                                           <!-- emp id-->
+                                           <!-- start date -->
+
+                                                <div class="control-group">
+                                                    
+							<label class="control-label" for="StartDate">Start Date</label>
+
+                                                         <div class="controls">
+
+                                                           <input type="date" name="StartDate" value="<?php echo $instrctor->StartDate; ?>"  />
+
+                                                         </div>
+                                                        
+						</div>
+                                           
+                                           <!-- EndDate -->
+
+                                                <div class="control-group">
+                                                    
+							<label class="control-label" for="EndDate">End Date</label>
+
+                                                         <div class="controls">
+
+                                                           <input type="date" name="EndDate"  value="<?php echo $instrctor->EndDate; ?>"  />
+
+                                                         </div>
+                                                        
+						</div>
+
+                                           <!-- EndDate -->
+                                           
+                                           <!-- current -->
+
+                                                <div class="control-group">
+                                                    
+							<label class="control-label" for="Current">Current Availability</label>
+
+                                                         <div class="controls">
+
+                                                            <select name="Current">
+
+                                                                  <option value="Yes" selected>Yes </option>
+                                                                  <option value="No">No</option>
+                                                                  
+
+                                                            </select>
+
+                                                         </div>
+                                                        
+						</div>
+
+                                           <!-- Current -->
+
+                                           
+
+                                                
+
+
+                                          
+
+
+
+                                         
+
+                                        <!-- Submit Button -->
+
+                                             <div class="control-group">
+                                                    
+                                                     <div class="controls">
+
+                                                         <button type="submit" class="btn btn-small btn-primary">Update</button>
+
+                                                     </div>
+                                             </div>
+                                            
+
+                                             <!-- Submit Button -->
+
+
+                                           
+                                            </form>
+                                          
+                                          
+                                          
+
+
+					 <!--Write your code here end-->
+                
+                                        
+                                        <!--PAGE CONTENT ENDS-->
+                                                                    
+                                                                                                                                                
+                                  </div><!--/.span-->
+
+							
+						
+	</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+    
+  
+         
+         
+        
+
+    
+</script>

@@ -1,0 +1,236 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<link rel="stylesheet" href="assets/css/bootstrap-timepicker.css" />
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/colorpicker.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Employee Movement			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Apply Movement
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error">
+                <strong><i class="icon-remove"></i> <?php echo Session::get('message'); ?></strong>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error">
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+            <form name="leave" action="<?php echo url('applyMovement'); ?>" method="POST">
+
+                <table>  
+                    <tr>
+                    <div class="control-group">
+                        <td width="140px">
+                            <label class="control-label" for="form-field-1">Name</label>
+                        </td>
+                        <td colspan="3">
+                            <div class="controls">
+                                <input id="form-field-1" type="text" value="<?php echo $employeename; ?>" readonly="">
+                            </div>
+                        </td>
+                    </div>
+                    </tr>
+                    <tr>
+                    <div class="control-group">
+                        <td>
+                            <label class="control-label" for="form-field-1">Date</label>
+                        </td>
+                        <td colspan="3">
+                            <div class="controls">
+                                <input id="form-field-1" type="text" name="DateApply" value="<?php echo $today; ?>" readonly="">
+                            </div>
+                        </td>
+                    </div>
+                    </tr>
+                    <tr>
+                        <td width="100x">
+                            <div class="row-fluid">
+                                <label for="id-date-range-picker-1">Movement Period</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50x" style="text-align: right;">From: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td  colspan="3" width="200px">
+                            <div class="control-group">
+                                <div class="row-fluid input-append">
+                                    <input class="span10 date-picker" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd" name="fromdate"/>
+                                    <span class="add-on">
+                                        <i class="icon-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                        <td  colspan="3">
+                            <div class="control-group">
+                                <div class="input-append bootstrap-timepicker">
+                                    <input id="timepicker1" type="text" class="input-small" name="fromtime"/>
+                                    <span class="add-on">
+                                        <i class="icon-time"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                    <div class="control-group">
+                        <td width="50x" style="text-align:right">To: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td  colspan="3" width="200px">
+                            <div class="control-group">
+                                <div class="row-fluid input-append">
+                                    <input class="span10 date-picker" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd" name="todate"/>
+                                    <span class="add-on">
+                                        <i class="icon-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                        <td  colspan="3">
+                            <div class="control-group">
+                                <div class="input-append bootstrap-timepicker">
+                                    <input id="timepicker2" type="text" class="input-small" name="totime"/>
+                                    <span class="add-on">
+                                        <i class="icon-time"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>                        
+                    </div>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                    <div class="control-group">
+                        <td>
+                            <label class="control-label" for="form-field-1">Reason</label>
+                        </td>
+                        <td colspan="6">
+                            <div class="controls">
+                                <input id="form-field-1" type="text" name="Reason">
+                            </div>
+                        </td>
+                    </div>
+                    </tr>
+                    <tr>
+                        <td>Approval</td>
+                        <td colspan="3">
+                            <select id="form-field-select-2" name="designation" >
+                                <option value="">Select Designation</option>
+                                <?php foreach($designationlist as $dl): ?>
+                                <option value="<?php echo $dl->EmpCode; ?>"><?php echo $dl->Designation; ?></option>
+                                <?php endforeach; ?>Select Person
+                            </select>    
+                        </td>                        
+                        <td colspan="3" id="approveselect">&nbsp;&nbsp;&nbsp;
+                            <select id="form-field-select-3" name="ApprovePerson" >
+                                <option value="">Select Person</option>
+                            </select> 
+                        </td>
+                    </tr>
+                    <tr height="10px"></tr>
+                    <tr>
+                        <td class="center" colspan="7">
+                            <button type="submit" class="btn btn-small btn-primary">Submit</button>
+
+                        </td>                        
+                    </tr>
+                </table>
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/fuelux/fuelux.spinner.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/bootstrap-colorpicker.min.js"></script>
+<script src="assets/js/jquery.knob.min.js"></script>
+<script src="assets/js/jquery.autosize-min.js"></script>
+<script src="assets/js/jquery.inputlimiter.1.3.1.min.js"></script>
+<script src="assets/js/jquery.maskedinput.min.js"></script>
+<script src="assets/js/bootstrap-tag.min.js"></script>
+
+
+<script type="text/javascript">
+$(function() {
+
+
+    $('.date-picker').datepicker().next().on(ace.click_event, function() {
+        $(this).prev().focus();
+    });
+    $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function() {
+        $(this).next().focus();
+    });
+
+    $('#timepicker1').timepicker({
+        minuteStep: 1,
+        showSeconds: true,
+        showMeridian: false
+    })
+    $('#timepicker2').timepicker({
+        minuteStep: 1,
+        showSeconds: true,
+        showMeridian: false
+    })
+
+
+});
+</script>
+
+
+
+<script type="text/javascript">
+    $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function() {
+        $(this).next().focus();
+    });
+</script>
+<script type="text/javascript">
+
+    $("#form-field-select-2").change(function() {
+
+        var designation = document.getElementById('form-field-select-2').value;
+
+        $.ajax
+                ({
+                    url: "<?php echo url::to('loadApprovePerson'); ?>",
+                    data: {designation: designation},
+                    success: function(result)
+                    {
+                        document.getElementById('approveselect').innerHTML = result;
+                    }
+                });
+
+    });
+
+
+
+
+</script>

@@ -1,0 +1,145 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />       
+<?php if(isset($Issearch)): ?>
+<a href="<?php echo url('ViewHREmployeeServiceLettersIssued'); ?>"> << Back to HR - Employee ServiceLetters  </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="page-header position-relative">
+        <h1>
+           HR -  Employee Service Letters
+            <small>
+                
+                
+                <i class="icon-double-angle-right"></i>
+                View
+            </small>
+        </h1>
+    </div><!--/.page-header-->
+    <div class="row-fluid">
+       <?php if($user->hasPermission('CreateHREmployeeServiceLetters')): ?>
+             <form name='search' action="<?php echo url('CreateHREmployeeServiceLetters'); ?>" method='get'>
+				<button type="submit" id="submit" class="btn btn-pink">
+                <i class="icon-pencil bigger-100"></i>Create Employee Service Letter</button>
+			 </form>
+	    <?php endif; ?>
+		
+		 <hr/>
+        <div class="span10">
+            <!--PAGE CONTENT BEGINS-->
+			<?php if(isset ($quorga)): ?>
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Employee Name</th>
+                        <th>NIC </th>
+                        <th>EPF</th>
+						<th>Date Issued</th>
+						<th>Address To</th>
+						<th>Personal File No</th>
+						<th>Issued By</th>
+						<th>Remove</th>
+                    </tr>
+                   
+                </thead>
+                <tbody>
+                    
+                    <?php $i = 1; ?>
+                    <?php foreach ($quorga as $eq): ?>
+
+                    <tr>
+                        <td> <?php echo $i++ ?></td>
+                        <td><?php echo $eq->Initials; ?> <?php echo $eq->LastName; ?></td>
+                        <td><?php echo $eq->NIC; ?></td>
+						<td><?php echo $eq->EPFNo; ?></td>
+						<td><?php echo $eq->DateIssued; ?></td>
+						<td><?php echo $eq->AddressTo1; ?>,<br/><?php echo $eq->AddressTo2; ?>,<br/><?php echo $eq->AddressTo3; ?>,<br/><?php echo $eq->AddressTo4; ?>,<br/><?php echo $eq->AddressTo5; ?>,<br/><?php echo $eq->AddressTo6; ?></td>
+						<td><?php echo $eq->FileNo; ?></td>
+						<td><?php echo $eq->userinitials; ?> <?php echo $eq->userlastname; ?></td>
+                        <td>
+						<?php if($user->hasPermission('DeleteHREmployeeServiceLetter')): ?>
+							 <form id="deleteform"  action='DeleteHREmployeeServiceLetter' method="POST" onsubmit="return doConfirm('<?php echo $eq->Initials; ?> <?php echo $eq->LastName; ?>',this)">
+                                <input type="hidden" name='id' value="<?php echo $eq->id; ?>" />
+                                <button type="submit" class="btn btn-danger btn-small"><i class="icon-trash icon-1x icon-only"></i></button>
+                            </form>
+						<?php endif; ?>
+						</td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+                                                function doConfirm(empqua, formobj) {
+                                                bootbox.confirm("Are you sure you want to remove O/L results of the Employee Attempt " + empqua, function(result) {
+                                                if (result) {
+                                                formobj.submit();
+                                                }
+                                                });
+                                                        return false; // by default do nothing hack :D
+                                                }
+
+                                         $('#sample-table-2').dataTable({
+                                        "aoColumns": [
+                                        {"bSortable": false}, {"bSortable": false},
+                                        {"bSortable": false},{"bSortable": false}, 
+										{"bSortable": false},{"bSortable": false},
+										{"bSortable": false},{"bSortable": false},
+										{"bSortable": false},
+                                        ]});
+                                               
+												
+
+</script>
+<script type="text/javascript">
+$(".pink").click(function(){
+
+     var id = this.id;
+    // alert(id);
+	 
+     $.ajax({
+                    url: "<?php echo url::to('HREmployeeOLResultsSheet'); ?>",
+                    data: {id: id},
+                     dataType: "json", 
+                   success: function(result) {
+					   var c=1;
+						var x = '<form id="infos" action=""><div class="control-group">'
+						  + '<div  class="controls"><table '
+						  + 'class="table table-striped table-bordered table-hover" style="width:100%" style="border-style: solid;border-color: green green green green;border-width: thick;;"><thead><tr>'
+						  + '<th>No</th>'
+						  +'<th>Subject</th>'
+						  +'<th>Result</th>'
+						  +'</tr></thead><tbody>';
+                         $.each(result, function(i, item)
+                        {
+
+							x +='<tr><td>'+ c +'</td>'
+							+'<td>'+item.Subject+'</td>'
+							+'<td>'+item.Grade+'</td></tr>';
+							
+
+							c = c +1;
+
+
+                        });   
+						x+='</tbody</table</div></div></form>';
+                        bootbox.alert(x,'Close');
+                        }
+
+                         
+                    
+                });
+
+   }); 
+</script>

@@ -1,0 +1,470 @@
+
+
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if (Session::has('done')): ?>
+ 
+  <div class="alert alert-block alert-success">
+
+       
+                 <strong> <i class="icon-ok"></i><?php echo Session::get('done'); ?></strong>
+
+   </div>
+  
+      
+ <?php endif; ?>
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+
+
+
+
+        <div class="span12">
+
+            <!--PAGE CONTENT BEGINS-->
+
+
+
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    NVQ RPL First Interview			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+
+
+
+            <form class="form-horizontal" action="<?php echo url('schedulePreAssesment'); ?>" method="POST" id="my_form">
+
+                <div class="control-group">
+                    <table height="500" width="500">
+                    <tr>
+                        <td>
+                            <label class="control-label" for="form-field-2">Event Name</label></td>
+                            <div class="controls">
+                            <td>
+                            <select name="EventId" required="required">
+                                    <option></option>
+
+
+                                    <option value="36">Pre Interview</option>
+                                </select>
+                            </td>
+                            </div>
+                            </tr>
+                             <tr>
+                                <td><label class="control-label" for="form-field-14">Mode</label></td>
+                                <td><select name="EventType" required="required" id="NVQmode">
+                                    <option></option>
+                                    <option value="RPL">RPL</option>
+                                    <option value="CBT">CBT</option>
+                                    <option value="Enterprise">Enterprise</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><label class="control-label" for="form-field-14">Scheduled Date</label></td>
+                                <td><input type="date" name="ScheduledDate" id="ScheduledDate" onchange="dates()" /></td>
+                            </tr>
+
+                            <tr>
+                                <td><label class="control-label" for="form-field-5">From</label></td>
+                                <td><input type="time" name="From" id="From"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label" for="form-field-6">To</label></td>
+                                <td><input type="time" name="To" id="To" onblur="checktime()"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label" for="form-field-7">Description</label></td>
+                                <td> <textarea rows="4" cols="5" name="Description"  ></textarea></td>
+                            </tr>
+
+                            
+                            <tr>
+                                <td>
+                                    <label class="control-label" for="form-field-9">District</label></td>
+                            <div class="controls">
+                                <td>
+                                    <select name="District" id="district">
+                                        <option></option>
+                                        <?php foreach ($districts as $c): ?>
+
+                                        <option value="<?php echo $c->DistrictCode; ?>"><?php echo $c->DistrictName; ?></option>
+
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>
+                            </div>
+                            </tr>
+
+
+
+                             <tr  id="centerNameRPL">
+                                <td>
+                                    <label class="control-label" for="form-field-10">Center Name</label></td>
+                            <div class="controls" >
+                                <td >
+                                    <select name="CenterId" id="addressRPL">
+                                        <option></option>
+                                    </select>
+
+                                </td>
+                            </div>
+
+                            
+                            <td id="Caddress">
+                                <textarea rows="4" cols="10" id="Caddress" name="Caddress"></textarea>
+                            </td>
+
+                           
+                            </tr>
+              <!-- Center Name RPL -->
+                      
+
+
+
+                            <tr>
+                                <td>
+                                    <label class="control-label" for="form-field-9">Course Name</label></td>
+                            <div class="controls">
+                                <td id="courseCode">
+                                    <select name="CourseCode" id="CourseCode">
+                                        <option></option>
+                                    </select>
+                                </td></div>
+                            </tr>
+                            </br>
+
+
+                         
+                            <tr>
+                                <td><label class="control-label" for="form-field-10">Assessor 1</label></td>
+                                <td>
+                                   <select name="Assessor1" id="Assessor1" >
+                                        <option></option>
+                                        <?php foreach ($assessors as $a): ?>
+
+                                        <option value="<?php echo $a->id; ?>"><?php echo $a->NameWithInitials; ?></option>
+
+                                        <?php endforeach; ?>
+
+                                    </select>
+                                    
+                                </td>
+                                   <td> <button type="button" class="btn btn-small btn-primary" id="NewAssr">Add New</button></td>
+                            </tr>
+                            
+
+                           
+
+
+
+                            <tr>
+                                <td align="right"><input type="submit" class="btn-grey"  value="Submit"  /></td>
+                                <td align="center"><input type="reset" value="Clear" class="btn-grey"/></td>
+                            </tr>
+                    </table>
+                </div>
+
+            </form>
+
+
+ <?php if($errors->has()): ?>
+                            <?php foreach($errors->all() as $msg): ?>
+                            <!-- Error Message -->
+
+                            <div class="alert alert-error">
+
+                                <button type="button" class="close" data-dismiss="alert">
+                                    <i class="icon-remove"></i>
+                                </button>
+
+                                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+                            </div>
+
+                            <!-- Error Message -->
+
+                            <?php endforeach; ?>
+
+                            <?php endif; ?>
+
+            <!--PAGE CONTENT ENDS-->
+
+
+        </div><!--/.span-->
+
+
+
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+ 
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script type="text/javascript">
+
+  $("#NewAssr").click(function() {
+           
+        bootbox.dialog('<form class="form-horizontal" style="height:200px"><div class="control-group">'
+                + '                    <label class = "control-label" >Name With Initials</label>'
+
+                + '                    <div class = "controls" >'
+                + '        <input type = "text" id = "NameWithInitials" /><span style="color:red">*</span>'
+                + '                    </div>'
+                + '                  </div>'
+                + '<div class="control-group">'
+                + '                    <label class = "control-label" >First Name</label>'
+
+                + '                    <div class = "controls" >'
+                + '        <input type = "text" id = "FName" /><span style="color:red">*</span>'
+                + '                    </div>'
+                + '                  </div>'
+                + '<div class="control-group">'
+                + '                    <label class = "control-label" >Last Name</label>'
+
+                + '                    <div class = "controls" >'
+                + '        <input type = "text" id = "LName" /><span style="color:red">*</span>'
+                + '                    </div>'
+                + '                  </div>'
+                 + '<div class="control-group">'
+                + '                    <label class = "control-label" >Telephone Number</label>'
+
+                + '                    <div class = "controls" >'
+                + '        <input type = "text" id = "Telephone" /><span style="color:red">*</span>'
+                + '                    </div>'
+                + '                  </div>'
+                +'</form>',
+                [{
+                        "label": "Save",
+                        "class": "btn btn-small btn-success",
+                        "callback": function() {
+                            var NameWithInitials = $("#NameWithInitials").val();
+                            var FName = $("#FName").val();
+                            var LName = $("#LName").val();
+                            var Telephone = $("#Telephone").val();
+
+                            $.ajax
+                                    ({
+                                        url: "<?php echo URL::to('createAssessorAjax'); ?>",
+                                        data: {NameWithInitials: NameWithInitials, FName: FName, LName: LName, Telephone:Telephone},
+                                        success: function(result)
+                                        {
+                                            if (result == "Failed") {
+                                                alert("FAILED:Follwing Errors May Have Occured  1.All fields should be required 2.Element Code Already Entered");
+                                                return false;
+                                            } else {
+                                                //$("#courseid").html(result);
+                                                //$("#courseid.chzn-select").trigger("liszt:updated");
+                                                alert("Added Successful");
+                                            }
+                                        }
+
+                                    });
+                        }
+                    }, {
+                        "label": "Cancel",
+                        "class": "btn btn-small btn-danger",
+                        "callback": function() {
+                        }
+                    }]
+                );
+
+    });
+
+
+$("#district").change(function (){
+         
+       
+        var district = document.getElementById('district').value;
+        $.ajax({
+        url:"<?php echo url::to('loadDistrictAjaxNVQ'); ?>",
+        data: {dist: district},
+        success: function (result) {
+
+                document.getElementById('addressRPL').innerHTML=result;
+            }
+        });
+    });
+
+$("#addressRPL").change(function (){                 //Change Course Code According to Center
+         
+       //alert('sdadsad');
+        // var CName = document.getElementById('district').value;
+        // $.ajax({
+        // url:"<?php echo url::to('loadDistrictAjaxNVQ'); ?>",
+        // data: {dist: district},
+        // success: function (result) {
+
+        //         document.getElementById('addressRPL').innerHTML=result;
+        //     }
+        // });
+    });
+
+
+
+
+    function checktime() {
+        //start time
+        var From = document.getElementById('From').value;
+        //end time
+        var To = $("#To").val();
+
+        if (From < To)
+        {
+            return true;
+        }
+        else if (From > To) {
+            $("#From").after('<span class="error" ><br><h5 style="color:red" >*Start-time must be smaller then End-time.</h5></span>');
+            $("#To").after('<span class="error"><br><h5 style="color:red" >*End-time must be bigger then Start-time.</h5></span>');
+            return false;
+        }
+    }
+    $("#CourseListCode").change(function() {
+
+        var co_li_code = document.getElementById('CourseListCode').value;
+
+        $.ajax({
+            url: "<?php echo url::to('clcLoadajax'); ?>",
+            data: {co_li_code: co_li_code},
+            success: function(res) {
+                document.getElementById('courseCode').innerHTML = res;
+
+            }
+
+        });
+
+    });
+
+    function dates()
+    {
+        var d = new Date(); //creates a new date
+        var d1 = d.getDate(); //retrieves the date from the system
+        var m1 = d.getMonth() + 1; //retrieves the month JS starts counting at zero, so add a 1 to start January at 1
+        var y1 = d.getFullYear(); //retrieves the year
+//var now = y1 + "-" + m1 + "-" + d1; //formats the date*/
+        var sd = document.getElementById('ScheduledDate').value;
+
+        var a = sd.split('-');
+
+        var d2 = a[2]; //retrieves the date from the system
+        var m2 = a[1]; //retrieves the month JS starts counting at zero, so add a 1 to start January at 1
+        var y2 = a[0];
+        if (y2 - y1 >= 0 && m2 - m1 >= 0 && d2 - d1 >= 0)
+        {
+            return true;
+        }
+        else if (y2 - y1 >= 0 && m2 - m1 > 0)
+        {
+            return true;
+        }
+        else if (y2 - y1 > 0)
+        {
+            return true;
+        }
+        else
+        {
+            alert('You cannot select a day earlier than today!');
+        }
+    }
+
+    $("#address").change(function() {
+
+        var id = document.getElementById('address').value;
+
+         $.ajax({
+            url: "<?php echo url::to('loadCCodeNVQ'); ?>",
+            data: {center: id},
+            success: function(result) {
+
+                //alert('done');
+                document.getElementById('CourseCode').value = result;
+            }
+        });
+
+
+        $.ajax({
+            url: "<?php echo url::to('loadCenterAddress1'); ?>",
+            data: {center: id},
+            success: function(result) {
+                document.getElementById('address1').value = result;
+            }
+        });
+
+
+
+
+
+    });
+
+
+    $("#NVQmode").change(function() {
+       var mode = document.getElementById('NVQmode').value;
+      // alert(mode);
+       
+       if(mode==='CBT'){
+         $("#centerNameCBT").show();
+             $("#centerNameRPL").show(); 
+        }
+        else if(mode==='RPL'){
+             $("#centerNameCBT").hide();
+             $("#centerNameRPL").show();
+             $("#Caddress").hide();
+             
+        }
+    });
+
+
+     $("#addressRPL").change(function() {
+
+           //alert('Address RPL');
+        var cAddress = document.getElementById('addressRPL').value;
+         //alert(cAddress);
+
+        $.ajax({
+            url: "<?php echo url::to('loadCCodeNVQ'); ?>",
+            data: {center: cAddress},
+            success: function(result) {
+
+                
+                document.getElementById('CourseCode').innerHTML = result;
+            }
+        });
+
+        //     $.ajax({
+        //     url: "<?php echo url::to('loadCentrAddrNVQ'); ?>",
+        //     data: {center: cAddress},
+        //     success: function(result) {
+
+        //         alert(result);
+        //         document.getElementById('Caddress').value = result;
+        //     }
+        // });
+
+
+    });
+
+
+
+
+</script>
+
+

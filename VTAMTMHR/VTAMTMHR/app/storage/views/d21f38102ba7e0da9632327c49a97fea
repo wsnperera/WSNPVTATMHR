@@ -1,0 +1,499 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<a href=<?php echo url('searchInstructor'); ?>> << Back to Instructor </a> 
+
+<div class="page-content">
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>Course			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+
+
+
+            <form class="form-horizontal" action="<?php echo url('createInstructor'); ?>" method="POST" onsubmit="return myvalidator()"/>
+
+
+              
+                <!-- Choose Institute -->
+
+                <div class="control-group">
+
+                    <label class="control-label" for="OrgaId">Organisation</label>
+
+                    <div class="controls">
+
+
+
+                        <?php foreach ($trades as $i): ?>
+
+
+                        <input name="Orga" type="text" value="<?php echo $i->OrgaName; ?> " readonly />
+						<input name="OrgaId" id="OrgaId"type="hidden" value="<?php echo $i->id; ?> " >
+
+
+                        <?php endforeach; ?>
+
+
+
+
+                    </div>
+
+                    <!-- Choose Institute -->
+
+
+
+                    <br/>
+
+
+
+                    <!-- course code -->
+
+                    <div class="control-group">
+
+                        <label class="control-label" for="CourseCode">Course Code</label>
+
+                        <div class="controls">
+
+
+                            <select name="CourseCode" id="CourseCode" required>
+							<option value="">--- select course--- </option>
+
+                                <?php foreach ($course as $c): ?>
+
+
+                                <option value="<?php echo $c->CourseCode; ?>"><?php echo $c->CourseCode; ?> </option>
+
+                                <?php endforeach; ?>
+
+
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <!-- course code -->
+					<!-- module-->
+					<div class="control-group">
+
+                        <label class="control-label" for="ModuleId" >Module Name</label>
+
+                        <div class="controls">
+
+                            <select name="ModuleId" id="ModuleId">
+
+                                <?php foreach ($module as $m): ?>
+
+
+                                <option value="<?php echo $m->ModuleId; ?>"><?php echo $m->ModuleName; ?></option>
+
+                                <?php endforeach; ?>
+
+
+                            </select>
+
+                        </div>
+						<!-- module-->
+
+                   
+                        <br/>
+                        <!-- designation -->
+						
+						<span id="replace">
+
+                        <div class="control-group">
+
+                            <label class="control-label" for="Designation">Employee Type</label>
+
+                            <div class="controls">
+
+                                <select name="Designation" id="Designation">
+
+                                    
+
+									<option value=""></option>
+                                    <option value="Center">Center</option>
+									<option value="Visiting">Visiting</option>
+									<option value="Other">Other</option>
+
+                                </select>
+
+                            </div>
+
+                            <!-- designation-->
+                            <br/>
+
+
+
+
+                            <!--emp id -->
+
+                            <div class="control-group">
+
+                                <label class="control-label" for="EmpId">Employee Name</label>
+
+                                <div class="controls">
+                                    <select id="EmpId" name="EmpId">
+                                        <?php foreach($emp as $b): ?>
+                                        <option value="<?php echo $b->id; ?>"><?php echo $b->Name; ?></option>
+                                        <?php endforeach; ?>
+
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <!-- emp id-->
+
+
+
+
+
+                            <!-- start date -->
+
+                            <div class="control-group">
+
+                                <label class="control-label" for="StartDate">Start Date</label>
+
+                                <div class="controls">
+
+                                    <input type="date" name="StartDate" id="StartDate" />
+
+                                </div>
+
+                            </div>
+
+                            <!-- Course Type -->
+                            <!-- EndDate -->
+
+                            <div class="control-group">
+
+                                <label class="control-label" for="EndDate">End Date</label>
+
+                                <div class="controls">
+
+                                    <input type="date" name="EndDate"  id="EndDate"/>
+
+                                </div>
+
+                            </div>
+
+                            <!-- EndDate -->
+
+                            <!-- current -->
+
+                            <div class="control-group">
+
+                                <label class="control-label" for="Current">Current Availability</label>
+
+                                <div class="controls">
+
+                                    <select name="Current" id="Current">
+
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+							<div class="control-group">
+
+                                <label class="control-label" for="Current">Type</label>
+
+                                <div class="controls">
+
+                                    <select name="Type" id="Type" required>
+										<option value="">---select type---</option>
+                                        <option value="Regular">Regular</option>
+                                        <option value="Visiting">Visiting</option>
+
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Current -->
+
+
+
+
+
+
+
+
+
+
+                            <!-- Submit Button -->
+
+                            <div class="control-group">
+
+                                <div class="controls">
+
+                                    <button type="submit" class="btn btn-small btn-primary">Save</button>
+
+                                </div>
+                            </div>
+
+
+                            <!-- Submit Button -->
+
+							</span>
+
+
+
+
+
+                        </div>
+
+                        </form>
+
+
+
+
+
+
+
+                    </div><!--/.span-->
+
+
+
+
+                    <!--/span 4 for error handling -->
+
+                    <div class="span4">
+
+                        <!-- Error Handling -->
+
+                        <?php if($errors->has()): ?>
+
+                        <?php foreach($errors->all() as $msg): ?>
+
+                        <!-- Error Message -->
+
+                        <div class="alert alert-error">
+
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+
+                            <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+                        </div>
+
+                        <!-- Error Message -->
+
+                        <?php endforeach; ?>
+
+                        <?php endif; ?>
+
+                        <!-- Error Handling -->
+
+
+
+
+
+
+                    </div>
+                    <!--/span 4-->
+
+
+
+
+
+                    <!--PAGE CONTENT ENDS-->
+
+                </div><!--/.row-fluid-->
+            </div><!--/.page-content-->
+
+
+            <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+            <script>
+
+                <?php if (isset($done)): ?>
+
+                        $.gritter.add({title: "", text: "Instructor Assigned Successfully", class_name: "gritter-info gritter-center"});
+
+                <?php endif; ?>
+
+				
+				
+						$("#Designation").bind('change',function(){
+						
+						
+							if($(this).val() == 'Other'){
+							
+								window.location.href = "sasa?courseCode="+$("#CourseCode").val()+"&moduleid="+$("#ModuleId").val()+"&orgid="+$("#OrgaId").val()+"&desother="+$("#Designation").val();
+								
+							}
+						
+						});
+
+
+                        function  myvalidator()
+                        {
+
+                            var startdate = document.getElementById('StartDate');
+                            var enddate = document.getElementById('EndDate');
+							
+
+                            if (startdate.value >= enddate.value)
+                            {
+
+                                alert("End Date must be grater than Start Date ");
+                                return false;
+
+                            }
+							
+
+
+
+                        }
+
+
+
+                $(document).ready(function()
+                {
+
+                    $("#CourseCode").change(function()
+                    {
+
+                        var cid = $("#CourseCode").val();
+                        $("#ModuleId").html('');
+						
+
+                        $.ajax
+                                ({
+                                    type: "GET",
+                                    url: "<?php echo Url('getmodule'); ?>",
+                                    data: {corseid: cid},
+                                    dataType: "json",
+                                    success: function(result)
+                                    {
+
+                                        $.each(result, function(i, item)
+                                        {
+
+
+
+                                            $("#ModuleId").append("<option value=" + item.ModuleId + ">" + item.ModuleName + "  (" + item.Type + ")</option>");
+
+
+
+                                        });
+
+
+                                    }
+                                });
+
+
+
+
+                    });
+
+                    //////////////////////////////////////////////////////////////////////////////
+
+                    $("#Designation").change(function()
+                    {
+
+
+                        var emp = $("#Designation").val();
+				
+						 var org = $("#OrgaId").val();
+						  //alert(ins);
+                        $("#EmpId").html('');
+
+						if(emp == 'Center')
+						{
+							$.ajax
+                                ({
+                                    type: "GET",
+                                    url: "<?php echo Url('getcempcode'); ?>",
+                                    data: {empid: emp,orgid: org},
+                                    dataType: "json",
+                                    success: function(result)
+                                    {
+										//alert(result.length);
+										
+                                        $.each(result, function(i, item)
+                                        {
+
+											//alert(item.EmpName);
+
+                                            $("#EmpId").append("<option value=" + item.id + ">" + item.Name + "</option>");
+
+
+
+                                        });
+
+
+                                    }
+                                });
+								 //alert(emp);
+						}
+						else if(emp == 'Visiting')
+						{
+                        $.ajax
+                                ({
+                                    type: "GET",
+                                    url: "<?php echo Url('getvempcode'); ?>",
+                                    data: {empid: emp,orgid: org},
+                                    dataType: "json",
+                                    success: function(result)
+                                    {
+
+                                        $.each(result, function(i, item)
+                                        {
+
+
+
+                                            $("#EmpId").append("<option value=" + item.id + ">" + item.Name + "</option>");
+
+
+
+                                        });
+
+
+                                    }
+                                });
+
+
+						}
+
+                    });
+
+
+
+                });
+
+            </script>
+
+
+
+
+
+
+
+
+
+

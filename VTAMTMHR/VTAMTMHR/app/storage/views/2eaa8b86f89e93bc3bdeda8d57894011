@@ -1,0 +1,211 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Employability    
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Students Details With Course
+                    </small>            
+                </h1>
+            </div>
+
+            <form action="" method="POST" id="form_go">
+                <table>
+                    <td>
+               <div class="control-group">
+
+                   <label class="control-label" for="year"><b>Year</b></label>
+                    
+                </td>
+                 <td>&nbsp;</td>
+                <td>
+                    <div class="controls">
+                        
+                            
+                       <select name="year" id="year">
+                        
+                        
+                            <option value="">-SelectYear-</option>
+                             <?php foreach ($year as $y): ?>
+                            <option value="<?php echo $y->YearStart; ?>"><?php echo $y->YearStart; ?></option>
+                             <?php endforeach; ?>
+                        </select>
+                       
+                        <span id="ajax_img3"></span>
+                          
+                 </td>
+                 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                 <td>
+                <div class="control-group">
+
+                    <label class="control-label" for="courscode" id="course1" style="display: none"><b>Coursecode</b></label>
+                </td>
+                <td>&nbsp;</td>
+                <td>
+                    <div class="controls">
+                        <select name="course" id="course" onchange="getstudentDetails()" style="display: none">
+                            
+                        </select>
+                       
+                        </table>
+                        <span id="ajax_img3"></span>
+                    </div>
+                </td>
+				
+                <div class="control-group" style="display: none" id="btn1" >
+                        <div class="controls">
+                            
+                            <button type="button" class="btn btn-primary" onclick="downloadReport()">Download Report</button>
+                        </div>
+                    </div>
+
+      
+                    
+					
+				</div>
+		
+            </form>
+			<div id="table1"></div> 
+        </div>
+    </div>
+   
+</div>
+</div>
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+
+<script type="text/javascript">
+
+     $("#year").change(function() {
+      
+
+                                    document.getElementById('course').innerHTML = "";
+                                    var year = document.getElementById('year').value;
+								
+                                    $.ajax({
+                                        url:'courseajax',
+                                        data: {Year: year},
+                                        beforeSend: function() {
+                                            document.getElementById('ajax_img3').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                           
+                                        },
+                                        success: function(result) {
+                                            document.getElementById('course').innerHTML = result;
+                                             $("#course").show();
+                                             $("#course1").show();
+                                              $("#table1").hide(); 
+                                               $("#btn1").hide();
+                                             
+                                        },
+                                        complete: function() {
+                                            document.getElementById('ajax_img3').innerHTML = "";
+                                        }
+                                    });
+                                });
+</script>
+<script type="text/javascript">
+ function getstudentDetails() {
+
+                            //  alert(1);
+                            var course =  document.getElementById('course').value;
+                           //alert(stafftype);
+                            $('#table').html('');
+                           //alert('sduhg');
+                                $.ajax
+                                        ({
+                                            beforeSend: function()
+                                            {
+                                                $("#loding").html('<br><br><img height="50%" width="25%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                                            },
+                                            type: "GET",
+                                            url: "<?php echo Url('getstudentdetails'); ?>",
+                                            data: {course: course},
+                                            success: function(result)
+                                            {
+												//alert(result);
+                                               $("#loding").html('');
+                                                $('#table1').html(result);
+							                    tableModify();
+											
+                                               
+                                            },
+                                                    
+                                            complete: function() {
+
+                                                $("#loding").html('');
+                                                 $("#btn1").show();
+                                                 $("#table1").show();
+                                                 $('#table1').show(); 
+                                            },
+                                        });
+
+                            
+                          
+                        }
+  
+</script>
+
+
+</script>
+
+<script>
+
+                            /*    function tableModify() {
+                                   $('#sample').dataTable({
+                                   "bPaginate": false,
+                                   "aaSorting": [],
+                                   "aoColumns": [
+                                   null, null, {"bSortable": false}, {"bSortable": false},{"bSortable": false}, {"bSortable": false},{"bSortable": false}
+                                  ]});
+                                }*/
+</script>
+
+<script>
+function downloadReport() {
+        var course = $("#course").val();
+        var year = $("#year").val();
+
+        window.location.replace("CosecodewiseStudentDetailsDownload?course=" + course + "&year =" + year + "");
+        
+
+
+    }
+
+</script>
+
+<script type="text/javascript">
+
+ function tableModify() {
+        $('#sample-table-2').dataTable({
+            "bPaginate": false,
+            "bLengthChange": 25,
+            "aoColumns": [
+			     null, 
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                 null,
+                {"bSortable": false},
+                {"bSortable": false}
+             
+               
+            ]});
+			}
+</script>
+
+
+
+

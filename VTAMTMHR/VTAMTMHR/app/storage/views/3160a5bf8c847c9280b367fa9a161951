@@ -1,0 +1,131 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+    <div class="page-content">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="page-header position-relative">
+                    <h1>
+                        2nd year Batch			
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            Create
+                        </small>			
+                    </h1>
+                </div>
+                <form class="form-horizontal" method="POST"/>
+                    <div class="control-group">
+                        <label class="control-label" for="InstituteId">Institute Name</label>
+                            <div class="controls">
+                                <input type="text" name="InstituteId" disabled="true" value="<?php echo $institute; ?>"/>
+                                <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>"/>
+                            </div>
+                    </div>
+                    <br/> 
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="OrgaId">Organization Name</label>
+                            <div class="controls">
+                                <input type="text" name="OrgaId" disabled="true" value="<?php echo $organization; ?>"/>
+                                <input type="hidden" name="OrgaId" value="<?php echo $og_id; ?>"/>
+                            </div>
+                    </div>
+                    <br/> 
+
+                    <div class="control-group">
+                        <label class="control-label" for="CourseCode">Course Code</label>
+                            <div class="controls">
+                                <select name="CourseCode" id="CourseCode">
+                                    <?php foreach ($course as $c): ?>
+                                        <option value="<?php echo $c->CourseCode; ?>"><?php echo $c->CourseCode; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                    </div>
+                    <br/> 
+
+                    <div class="control-group">
+                        <label class="control-label" for="BatchCode">Batch Code</label>
+                            <div class="controls">
+                                <select name="BatchCode"id="Batch_Code">
+                                </select>
+                            </div>
+                    </div>
+                    <br/> 
+
+                    <div class="control-group">
+                        <label class="control-label" for="StudentID">Student ID</label>
+                            <div class="controls">
+                                <select name="StudentID" id="StudentID">
+                                </select>
+                            </div>
+                    </div>
+                    <br/> 
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="Year">Year</label>
+                            <div class="controls">
+                                <input type="Text" name="Year" id="Year"/> 
+                            </div>
+                    </div>
+                    <br/> 
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-small btn-primary">Save</button>
+                        </div>
+                    </div>
+                    <br/>
+                </form>
+            </div>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="icon-remove"></i>
+                        </button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script>
+    <?php if (isset($done)): ?>
+        $.gritter.add({title: "", text: "Batch Added Successfully", class_name: "gritter-info gritter-center"});
+    <?php endif; ?>
+    $("#CourseCode").change(function() {
+        var cut = document.getElementById('CourseCode').value;
+        $.ajax
+            ({
+                url: "<?php echo url::to('tradeajax'); ?>",
+                data: {CourseCode: cut},
+                success: function(result)
+                {
+                    //alert(result);
+                    document.getElementById('Batch_Code').innerHTML = result;
+                }
+            });
+        });
+
+
+    $("#Batch_Code").on("change", function() {
+//            alert("Sas");
+        var cut = document.getElementById('Batch_Code').value;
+        $.ajax
+            ({
+                url: "<?php echo url::to('yearajax'); ?>",
+                data: {Batch_Code: cut},
+                success: function(result)
+                {
+//                            alert(result);
+                    var a = result.split("|");
+                    var a1 = a[0];
+                    var a2 = a[1];
+                    document.getElementById('Year').value = a1;
+                    document.getElementById('StudentID').innerHTML = a2;
+                }
+            });
+        });
+</script>

@@ -1,0 +1,522 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href=<?php echo url('ViewTrainingPlanUpdateDisNVTIDOTO'); ?>> << Back to View </a>
+                <h1>Training Plan Edit(District/NVTI)<small><i class="icon-double-angle-right"></i>Edit</small></h1>
+            </div>
+            <form id="TestForm" class="form-horizontal" action='' method="POST">
+                <input type='hidden' name='id' id='id' value='<?php echo $CourseYearPlan->id; ?>' />
+				<input type="hidden" value="<?php echo $CenterIDD; ?>" name="CenterIDD" id="CenterIDD"/>
+				<input type="hidden" value="<?php echo $YearD; ?>" name="YearD" id="YearD"/>
+				<input type="hidden" value="<?php echo $BatchD; ?>" name="BatchD" id="BatchD"/>
+				<input type="hidden" value="<?php echo $districtD; ?>" name="districtD" id="districtD"/>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Organisation : </label>
+                        <div class="controls">
+                        <input type="text" name="CourseListCode" id="CourseListCode"  value="<?php echo CourseYearPlan::getOrganizatinName($CourseYearPlan->OrgId); ?>" readonly />
+                    </div>
+                </div>
+				<!-- Edit by Amila 2017-05-09 -->
+               
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Year : </label>
+                        <div class="controls">
+						<input type="text" name="Year" value="<?php echo $CourseYearPlan->Year; ?>" readonly/>
+                          
+                        </div>
+                </div>
+                
+				
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course List Code : </label>
+                        <div class="controls">
+						<input type="text" name="CourseListCode" value="<?php echo $CourseYearPlan->CourseListCode; ?>" readonly/>
+                           
+                        </div>
+                </div>
+               
+				 <div class="control-group">
+                    <label class="control-label" for="CourseLevel">Course Level : </label>
+                        <div class="controls">
+						<input type="text" name="CourseListCode" value="<?php echo $CourseYearPlan->CourseLevel; ?>" readonly/>
+                            
+                        </div>
+                </div>
+				
+				
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Batch : </label>
+                        <div class="controls">
+						<input type="text" name="CourseListCode" value="<?php echo $CourseYearPlan->batch; ?>" readonly/>
+                           
+                        </div>
+                </div>
+               
+				
+				
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Parallel Batch : </label>
+                        <div class="controls">
+						 
+						<input type="text" name="CourseListCode" value="<?php echo $CourseYearPlan->parallelGroups; ?>" readonly/>
+						
+                        </div>
+                </div>
+               
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Medium : </label>
+                        <div class="controls">
+							<input type="text" name="CourseListCode" value="<?php echo $CourseYearPlan->medium; ?>" readonly/>
+                            
+                        </div>
+                </div>
+				
+				
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Max Capacity : </label>
+                    <div class="controls">
+					<input type="text" name="CourseListCode" value="<?php echo $CourseYearPlan->maxCapacity; ?>" readonly/>
+                  
+                    </div>
+                </div>
+               
+				
+				
+                
+               
+			<div class="control-group">
+                    <label class="control-label" for="attachedCenter">Attached Centre : </label>
+                        <div class="controls">
+						<input type="text" name="CourseListCode" value="<?php echo $CourseYearPlan->attachedCenter; ?>" readonly/>
+                            
+                        </div>
+                </div>
+                 <?php
+						   $CD_IDm = Course::where('CourseListCode','=',$CourseYearPlan->CourseListCode)->where('Deleted','=',0)->pluck('CD_ID');
+						   $getAccredit = AccreditationDetails::getAccreditation($CourseYearPlan->OrgId,$CD_IDm);
+						   $AccCount = count($getAccredit);
+						   $AccreditM = '';
+						   $AccreditRec = '';
+						   $AccreditFrom = '';
+						   $AccreditTo = '';
+						   foreach($getAccredit as $aa)
+						   {
+							   $AccreditM = $aa->Accredit;
+							   $AccreditRec = $aa->AccreditRecommandedDate;
+							   $AccreditFrom = $aa->AccreditDate;
+							   $AccreditTo = $aa->AccreditationValidDate;
+						   }
+						   ?>
+               
+                <div class="control-group">
+                    <label class="control-label" for="attachedCenter">Accredit  : </label>
+                        <div class="controls">
+							<input type="text" name="CourseListCode" value="<?php echo $AccreditM; ?>" readonly/>
+                         
+                        </div>
+                </div>
+				<?php if($AccreditM == 'Yes'): ?>
+					
+				<div class="control-group" id="rec">
+                    <label class="control-label" for="AccreditDate">Accredit Recommended Date : </label>
+                        <div class="controls">
+                           <input type="text" name="AccreditRecommendDate" id="AccreditRecommendDate" value="<?php echo $AccreditRec; ?>" readonly/>
+                        </div>
+                </div>
+					 <div class="control-group" style="visibility: show" id="xyz">
+                    <label class="control-label" for="AccreditDate">Accredit Date : </label>
+                        <div class="controls">
+                           <input type="text" name="AccreditDate" id="AccreditDate" value="<?php echo $AccreditFrom; ?>" readonly/>
+                        </div>
+                </div>
+				
+				<div class="control-group" style="visibility: show" id="xyz1">
+                    <label class="control-label" for="AccreditationValidDate">Accredit Valid Date : </label>
+                        <div class="controls">
+                           <input type="text" name="AccreditationValidDate" id="AccreditationValidDate" value="<?php echo $AccreditTo; ?>" readonly/>
+                        </div>
+                </div>
+				<?php elseif($AccreditM== 'Recommended'): ?>
+				<div class="control-group" id="rec">
+                    <label class="control-label" for="AccreditDate">Accredit Recommended Date : </label>
+                        <div class="controls">
+                           <input type="text" name="AccreditRecommendDate" id="AccreditRecommendDate" value="<?php echo $AccreditRec; ?>" readonly/>
+                        </div>
+                </div>
+				<?php elseif($AccreditM== 'Expired'): ?>
+				<div class="control-group" style="visibility: show" id="xyz1">
+                    <label class="control-label" for="AccreditationValidDate">Accredit Valid Date : </label>
+                        <div class="controls">
+                           <input type="text" name="AccreditationValidDate" id="AccreditationValidDate" value="<?php echo $AccreditTo; ?>" readonly/>
+                        </div>
+                </div>
+				<?php else: ?>
+					
+				<?php endif; ?>
+				
+				<div class="control-group">
+                    <label class="control-label" for="attachedCenter">Started Status(Yes/No) </label>
+                        <div class="controls">
+                            <select name='StartedStatus' id='StartedStatus' required="true">
+							<option value="" >---Select---</option>
+                                <?php if($CourseYearPlan->StartedStatus == '0'): ?>
+                                <option value="0" selected="">No</option>
+                                <option value="1">Yes</option>
+								<option value="2">Pending</option>
+                                <?php elseif($CourseYearPlan->StartedStatus == '1'): ?>
+                                <option value="0">No</option>
+                                <option value="1" selected>Yes</option>
+								<option value="2">Pending</option>
+								<?php else: ?>
+								<option value="0">No</option>
+                                <option value="1" >Yes</option>
+								<option value="2" selected>Pending</option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                </div>
+				
+				<div class="control-group" id="reas">
+                    <label class="control-label" for="ReasonForNotStarted">Reason For Not Started : </label>
+                        <div class="controls">
+                           <textarea  name="ReasonForNotStarted" id="ReasonForNotStarted" ><?php echo $CourseYearPlan->ReasonForNotStarted; ?></textarea>
+                        </div>
+                </div>
+                <div class="control-group" id="ins">
+                        
+                            <label class="control-label" for="Medium">Instructors</label>
+                                <div  class="controls">
+								 <div id="table_instructor">
+                                   <select id="NVQPackage" name="NVQPackage[]" multiple="multiple" class="chzn-select" data-placeholder="Choose Instructors..." >
+								   <?php foreach($AddedInstructors as $t): ?>
+									
+                                    <option value="<?php echo $t->id; ?>" selected="true"> <?php echo $t->EPFNo; ?> - <?php echo $t->Name; ?></option>
+								  
+                                    <?php endforeach; ?>
+                                    <?php foreach($Instructors as $t): ?>
+									
+                                    <option value="<?php echo $t->id; ?>"><?php echo $t->EPFNo; ?> - <?php echo $t->Name; ?></option>
+								  
+                                    <?php endforeach; ?>
+                                    </select>
+									</div>
+									<br/>
+                                <input type="button"  value="Add New Instructor" class="btn btn-small btn-warning" name="NewModule" id="NewModule" onclick="addModule()" />
+                            </div>
+                </div>
+		<div class="control-group" hidden="" id="addModule" style="padding-top: 10px;padding-bottom: 10px;margin-right: 200px;margin-left: 100px;margin-top:25px;margin-bottom:25px; border: 1px solid #009ceb;width:460px">
+
+				<div class="control-group">
+                   
+                   
+                      <center><b style="color: red">Note: Don't Enter ' 0 ' as a EPF Number</b></center>
+                   
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Instructor Name</label>
+                    <div class="controls">
+                        <input id="Name" placeholder="" type="text"><b style="color: red">*</b>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">EPF No</label>
+                    <div class="controls">
+                        <input id="EPF" placeholder="" type="text" /><b style="color: red">*</b>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="button" value="Create"  onclick="fillModule()" class="btn btn-small btn-primary"/>
+                    </div>
+                </div>  
+
+            </div>
+
+				
+               
+			  
+
+        
+             <div class="control-group" id="trc">
+                    <label class="control-label" for="CourseListCode">Trainee Count : </label>
+                    <div class="controls">
+                    <input type="number" name="TCount" id="TCount" min="0" value="<?php echo $CourseYearPlan->NoOfTrainees; ?>" />
+                    <span class="lbl" style="color: red"><b></b></span>
+                    </div>
+                </div>
+                <div class="control-group" id="drc">
+                    <label class="control-label" for="CourseListCode">Dropout Count : </label>
+                    <div class="controls">
+                    <input type="number" name="DCount" id="DCount" min="0" value="<?php echo $CourseYearPlan->Dropout; ?>" />
+                    <span class="lbl" style="color: red"><b></b></span>
+                    </div>
+                </div>
+				
+				 <div class="control-group" id="">
+                    <label class="control-label" for="CourseListCode"> Estimated Cost: </label>
+                    <div class="controls">
+                    <input type="number" name="TMEstimatedCost" id="TMEstimatedCost" min="0" value="<?php echo $CourseYearPlan->TMEstimatedCost; ?>" />
+                    <span class="lbl" style="color: red"><b></b></span>
+                    </div>
+                </div>
+				<hr/>
+				
+
+_                <div class="control-group">
+                    <div class="controls">
+                       <input type="button" class="btn btn-block btn-success"  onclick="saveAll()" value="Save" />
+                    </div>
+                </div>
+                   
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+
+
+<script type="text/javascript">
+   jQuery(document).ready(function() {
+   
+$(".chzn-select").trigger("liszt:activate");
+$(".chzn-select").chosen(); 
+
+	
+	
+	});
+    
+</script>
+
+<script type="text/javascript">
+function saveAll()
+{
+			  
+        var StartedStatus = document.getElementById('StartedStatus').value;
+        var NVQPackage = document.getElementById('NVQPackage').value;
+        var ReasonForNotStarted = document.getElementById('ReasonForNotStarted').value; 
+		var TCount = document.getElementById('TCount').value; 
+		var DCount = document.getElementById('DCount').value; 
+		//alert('sdfegf');
+		
+		if(StartedStatus == " ")
+		{
+			bootbox.alert('Please Enter the Course Started Satus!!!!');
+		}
+		else
+		{
+			if(StartedStatus == 1)
+			{
+				
+				  if(NVQPackage == '' || TCount == '' || DCount == '')
+				  {
+					  bootbox.alert('Please Fill Instructor detais,Trainee Count & Dropout Count Properly to proceed..');
+				  }
+				  else
+				  {
+					 //TestForm form id 
+					 document.forms["TestForm"].submit();
+				  }
+			}
+			else if(StartedStatus == 0)
+			{
+				//started Staus== No
+				if(ReasonForNotStarted == '')
+				  {
+					  bootbox.alert('Please Fill Reason for Not Started to proceed..');
+				  }
+				  else
+				  {
+					 //TestForm form id 
+					 document.forms["TestForm"].submit();
+				  }
+				
+			}
+			else
+			{
+				document.forms["TestForm"].submit();
+				
+				
+
+			}
+			
+		}
+		
+		  /* if(EmpId == '' || Criteria == '' || Fweight == '')
+		  {
+			  bootbox.alert('Please Fill all the details required!!!!');
+		  }
+		  else if(Fweight == 0)
+		  {
+			  bootbox.alert('Weight must be greater than 0 !!!!');
+		  }
+       else
+	   {
+        
+        $.ajax({
+            type: "POST",
+            url: "<?php echo url::to('KPICriteriasaveAll'); ?>",
+            data: {EmpId: EmpId,Criteria: Criteria,Fweight: Fweight},
+            dataType: 'json',
+            success: function(result) {
+
+                //$('#ajaxerror').html(result.done);
+				bootbox.alert(result.done);
+				document.getElementById('Criteria').value = "";
+				document.getElementById('Fweight').value = "";
+				
+              
+
+            }
+            });
+			
+	   } */
+
+    }                     
+</script>
+
+      
+  <script type="text/javascript">
+  
+   
+ function addModule() {
+        $.ajax  ({
+                    url: "<?php echo url::to(''); ?>",
+                    success: function(result) {
+                        if ($('#addModule').is(':hidden')) {
+                            $('#addModule').show();
+                        } else {
+                            $('#addModule').hide();
+                        }
+                    }
+                });
+    }
+	function addModule1() {
+        $.ajax  ({
+                    url: "<?php echo url::to(''); ?>",
+                    success: function(result) {
+                        if ($('#addModule1').is(':hidden')) {
+                            $('#addModule1').show();
+                        } else {
+                            $('#addModule1').hide();
+                        }
+                    }
+                });
+    }
+    function fillModule() {
+        var Name = document.getElementById('Name').value;
+        var EPF = document.getElementById('EPF').value;
+		var id = document.getElementById('id').value;
+       // var msg = '--- Select Instructor---';
+       // $("#InstructorList").html('');
+		//$("#InstructorList1").html('');
+		if(Name == '' || EPF == '' || EPF == 0)
+		{
+			bootbox.alert('Please Enter Instructor Name & Valid and Correct EPF Number!!!!!');
+		}
+		else
+		{
+        $.ajax({
+                    url: "<?php echo url::to('SaveMOInstructor'); ?>",
+                    data: {Name: Name, EPF: EPF},
+                    dataType: 'json',
+                    success: function(result) {
+                      
+                            
+                            $('#addModule').hide();
+                            $('#ajaxerror').html(result.done);
+                         
+							$.ajax({
+                                        type: "GET",
+                                        url: "<?php echo url::to('LoadMoinstructorListDis'); ?>",
+                                        data: {id: id},
+                                        //dataType: "json", 
+                                         success: function(result)
+                                        {
+                                        var html='<select id="NVQPackage" name="NVQPackage[]" multiple="multiple" class="chzn-select" data-placeholder="Choose Instructors..." required="true">'+result+'</select>';
+                                            
+                                             $("#table_instructor").html('');
+                                            $("#table_instructor").append(html);
+                                            $("#NVQPackage.chzn-select").trigger("liszt:updated");
+                                            $(".chzn-select").chosen(); 
+                                            
+                                        }
+                                });            
+
+                                                        
+                                   
+
+                        
+                        }
+                    
+                });
+		}
+    }
+
+    $('#Accredit').click(function() {
+                                    var s = $('#Accredit').val();
+                                    //alert(s);
+                                    if(s == 'Yes')
+                                    {
+                                      document.getElementById('xyz').style.visibility = 'visible';
+									  document.getElementById('xyz1').style.visibility = 'visible';
+                                      
+                                    }
+                                    else
+                                    {
+                                        document.getElementById('xyz').style.visibility = 'hidden';
+										document.getElementById('xyz1').style.visibility = 'hidden';
+                                    }
+                                    
+                                    
+                                    
+                                  
+                                });
+
+</script> 
+       
+               
+               
+               
+      
+        
+        
+
+    

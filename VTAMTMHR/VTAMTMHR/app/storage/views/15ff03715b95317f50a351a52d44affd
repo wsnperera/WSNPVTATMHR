@@ -1,0 +1,617 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<a href=<?php echo url('ViewOfflineStudentAttendence'); ?>> << Back to Student Attendence </a> 
+
+<div class="page-content">
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>Student Attendence	
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Mark Attendence
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+
+
+
+            <form class="form-horizontal" action="<?php echo url('CreateOfflineStudentAttendence'); ?>" method="POST" onsubmit="return myvalidator()"/>
+
+			<input type="hidden" value="Academic" name="type" id="type"/>
+
+
+            <!-- Choose Institute -->
+
+            <div class="control-group">
+
+                <label class="control-label" for="InstituteId"> Institue Name </label>
+
+                <div class="controls">
+
+
+
+                  
+
+                    <input type="text" id="InstituteId" name="InstituteId" value="<?php echo $institutes; ?>" readonly/>
+
+                  
+
+
+
+
+                </div>
+
+                <!-- Choose Institute -->
+				<br/>
+				<!-- organisation -->
+				<div class="control-group">
+
+                    <label class="control-label" for="OrgaID">Organisation</label>
+
+                    <div class="controls">
+
+
+
+                        <?php foreach ($trades as $i): ?>
+
+
+                        <input name="Orga" type="text" value="<?php echo $i->OrgaName; ?> " readonly />
+						<input name="OrgaID" id="OrgaID"type="hidden" value="<?php echo $i->id; ?> " >
+
+
+                        <?php endforeach; ?>
+
+
+
+
+                    </div>
+				 </div>
+				<!-- organisation -->
+				<div class="control-group">
+
+                        <label class="control-label" for="CurrentDate" >Date</label>
+
+                        <div class="controls">
+
+							 <input type="date" name="CurrentDate" id="CurrentDate"/>
+                        </div>
+					</div>
+
+                
+                
+				
+
+
+                    
+
+
+
+                   
+					<!-- module-->
+					
+					<div class="control-group">
+
+                        <label class="control-label" for="FromSlot" >From Slot</label>
+
+                        <div class="controls">
+
+                            <select name="FromSlot" id="FromSlot">
+								<option value="">---Select Start Slot---</option>
+                                <?php foreach ($slot as $s): ?>
+
+
+                                <option value="<?php echo $s->id; ?>"><?php echo $s->Name; ?></option>
+								
+								
+                                <?php endforeach; ?>
+
+
+                            </select>
+
+                        </div>
+					</div>
+					
+					<div class="control-group">
+
+                        <label class="control-label" for="ToSlot" >To Slot</label>
+
+                       <div class="controls" id='ToSlotTable'>
+		
+				
+							
+
+                            </div>
+					</div>
+					
+					<div class="control-group">
+
+                        <label class="control-label" for="CourseCode" >Course</label>
+
+                        <div class="controls">
+
+                            <select name="CourseCode" id="CourseCode">
+								<option value="">---Select Course---</option>
+                                <?php foreach ($course as $m): ?>
+
+
+                                <option value="<?php echo $m->CS_ID; ?>"><?php echo $m->CourseCode; ?></option>
+								
+								
+                                <?php endforeach; ?>
+
+
+                            </select>
+
+                        </div>
+					</div>
+						<!-- module-->
+						
+						<!-- module-->
+					<div class="control-group">
+
+                        <label class="control-label" for="ModuleID" >Module</label>
+
+                        <div class="controls" id="ModuleID">
+
+                           
+
+                        </div>
+						
+						
+						 </div>
+						 
+						 <div class="control-group">
+
+						<label class="control-label" for="CourseCode" ></label>
+
+                        <div class="controls">
+
+                            <input type="button" name="total" id="total" value="View Instructor" />
+
+                        </div>
+					</div>
+						 
+						 
+						<!-- module-->
+						<div class="control-group">
+
+                        <label class="control-label" for="Instructor" >Instructor</label>
+
+                        <div class="controls" >
+
+                             <select id="EmpId" name="EmpId">
+                                        
+                                        <option value="">----Select Instructor---</option>
+                                       
+
+                                    </select>
+
+                        </div>
+						
+						
+						 </div>
+					
+
+
+                   
+                       
+                       
+						
+                           
+
+
+
+
+                           
+
+
+
+
+
+                           
+                            
+
+                            
+							
+							
+							
+
+                               
+
+                                <div class="controls" id='table'>
+		
+				
+							
+
+                            </div>
+
+
+
+
+
+
+
+                            <!-- Submit Button -->
+
+                            <!--<div class="control-group">
+
+                                <div class="controls">
+
+                                    <button type="submit" class="btn btn-small btn-primary">Save</button>
+
+                                </div>
+                            </div>-->
+
+
+                            <!-- Submit Button -->
+
+							</span>
+
+
+
+
+
+                        </div>
+
+                        </form>
+
+
+
+
+
+
+
+                    </div><!--/.span-->
+
+
+
+
+                    <!--/span 4 for error handling -->
+
+                    <div class="span4">
+
+                        <!-- Error Handling -->
+
+                        <?php if($errors->has()): ?>
+
+                        <?php foreach($errors->all() as $msg): ?>
+
+                        <!-- Error Message -->
+
+                        <div class="alert alert-error">
+
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+
+                            <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+                        </div>
+
+                        <!-- Error Message -->
+
+                        <?php endforeach; ?>
+
+                        <?php endif; ?>
+
+                        <!-- Error Handling -->
+
+
+
+
+
+
+                    </div>
+                    <!--/span 4-->
+
+
+
+
+
+                    <!--PAGE CONTENT ENDS-->
+
+                </div><!--/.row-fluid-->
+            </div><!--/.page-content-->
+
+
+            <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+          <script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+                <?php if (isset($done)): ?>
+
+                        $.gritter.add({title: "", text: "Attendence Sheet Added Successfully", class_name: "gritter-info gritter-center"});
+				
+
+                <?php endif; ?>
+				 <?php if (isset($not)): ?>
+
+                        $.gritter.add({title: "", text: "Attendence Sheet Already added for current date", class_name: "gritter-info gritter-center"});
+				
+
+                <?php endif; ?>
+				 
+
+				
+				
+						$("#Designation").bind('change',function(){
+						
+						
+							if($(this).val() == 'Other'){
+							
+								window.location.href = "sasa?courseCode="+$("#CourseCode").val()+"&moduleid="+$("#ModuleId").val()+"&orgid="+$("#OrgaId").val()+"&desother="+$("#Designation").val();
+								
+							}
+						
+						});
+
+
+                        function  myvalidator()
+                        {
+
+                            var startdate = document.getElementById('StartDate');
+                            var enddate = document.getElementById('EndDate');
+							
+
+                            if (startdate.value >= enddate.value)
+                            {
+
+                                alert("End Date must be grater than Start Date zzzzzzzz");
+                                return false;
+
+                            }
+							
+
+
+
+                        }
+						function table() {
+    var oTable1 = $('#sample-table-2').dataTable({
+        "bPaginate": false,
+        "aoColumns": [
+            null, null, {"bSortable": false}
+        ]});
+
+    $('table th input:checkbox').on('click', function() {
+        var that = this;
+        $(this).closest('table').find('tr > td:nth-child(3) input:checkbox')
+                .each(function() {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+    });
+}
+
+
+
+                $(document).ready(function()
+                {
+					$("#total").click(function()
+                {
+
+                        
+						
+						 var ModuleID1 = $("#ModuleID1").val(); 
+						 var CourseCode = $("#CourseCode").val(); 
+						//alert(ModuleID1);
+                      $("#EmpId").html('');
+					   
+
+					
+					
+                        $.ajax
+                                ({
+                                    type: "GET",
+                                    url: "<?php echo Url('GetModuleInstructor'); ?>",
+									dataType: "json",
+                                    data: {ModuleID1: ModuleID1,CourseCode: CourseCode},
+                                    
+                                    success: function(result)
+                                    {
+										
+											
+											$("#EmpId").append("<option>---select Instructor---</option>");
+                                        $.each(result, function(i, item)
+                                        {
+
+											//alert('dis');
+
+                                            $("#EmpId").append("<option value=" + item.id + ">" + item.Initials +"&nbsp;"+item.Name+"&nbsp;"+item.LastName+ "</option>");
+
+
+
+                                        });
+
+
+
+                                        
+
+
+                                    }
+                                });
+
+
+
+
+					
+					
+					
+				});
+				
+				////////////////////////////////////////////////////////////////////////////
+
+                    $("#CourseCode").change(function()
+                    {
+
+                        var cid = $("#CourseCode").val();
+						var CurrentDate = $("#CurrentDate").val();
+						var FromSlot = $("#FromSlot").val();
+						 
+						 
+						 
+						//alert(cid);
+                       $("#ModuleID").html('');
+
+
+                        $.ajax
+                                ({
+                                    type: "GET",
+                                    url: "<?php echo Url('getModules'); ?>",
+                                    data: {corseid: cid,CurrentDate: CurrentDate,FromSlot: FromSlot},
+                                  
+                                    success: function(result)
+                                    {
+											//alert('dddddddddd');
+										$('#ModuleID').html(result);
+
+                                    }
+                                });
+
+
+
+
+                    });
+					
+					//////////////////////////////////////////////////////////////////////////////
+					$("#EmpId").change(function()
+                    {
+
+                         var ModuleID1 = $("#ModuleID1").val(); 
+						 var CourseCode = $("#CourseCode").val(); 
+						 var EmpId = $("#EmpId").val(); 
+						 var CurrentDate = $("#CurrentDate").val(); 
+						 var FromSlot = $("#FromSlot").val(); 
+						 var ToSlot = $("#ToSlotTableID").val(); 
+						 
+						 if(ModuleID1 == "")
+						 {
+							alert('Please Select Module');
+						 }
+						 else if(CourseCode == "")
+						 {
+							alert('Please Select CourseCode');
+						 }
+						 else if(EmpId == "")
+						 {
+							alert('Please Select Instructor');
+						 }
+						 else if(CurrentDate == "")
+						 {
+							alert('Please Select Date');
+						 }
+						 else if(FromSlot == "")
+						 {
+							alert('Please Select Start Slot');
+						 }
+						 else if(ToSlot == "")
+						 {
+							alert('Please Select End Slot');
+						 }
+						 else
+						 {
+							$("#table").html('');
+
+
+							$.ajax
+                                ({
+                                    type: "GET",
+                                    url: "<?php echo Url('getStudents1'); ?>",
+                                    data: {ModuleID1: ModuleID1,CourseCode: CourseCode,EmpId:EmpId,CurrentDate:CurrentDate,FromSlot:FromSlot,ToSlot:ToSlot},
+                                    
+                                    success: function(result)
+                                    {
+										//alert('ddddddddddd');
+                                        
+											//alert('ddddddddddd');
+											$('#table').html(result);
+											table();
+											$('.date-picker').datepicker().next().on(ace.click_event, function() {
+												$(this).prev().focus();
+											});
+
+
+                                        
+
+
+                                    }
+                                });
+						 
+						}
+						 
+						//alert(cid);
+						
+                        
+
+							
+
+
+                    });
+
+
+                    //////////////////////////////////////////////////////////////////////////////
+
+                    $("#FromSlot").change(function()
+                    {
+
+
+                        var FromSlot = $("#FromSlot").val();
+				
+						 
+						  //alert(FromSlot);
+                        $("#ToSlotTable").html('');
+
+						
+							$.ajax
+                                ({
+                                    type: "GET",
+                                    url: "<?php echo Url('getToSlot'); ?>",
+                                    data: {FromSlot: FromSlot},
+                                   
+                                    success: function(result)
+                                    {
+										//alert(result.length);
+										$('#ToSlotTable').html(result);
+
+
+                                    }
+                                });
+								 //alert(emp);
+						
+						
+                        
+
+						
+
+                    });
+					
+					//////////////////////////////////////////////////////////////////////////////////////////////////////////
+					 
+
+
+
+                });
+
+            </script>
+
+
+
+
+
+
+
+
+
+

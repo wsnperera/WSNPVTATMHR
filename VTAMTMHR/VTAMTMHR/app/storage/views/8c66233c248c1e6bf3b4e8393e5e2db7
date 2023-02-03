@@ -1,0 +1,668 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+	<div class="span12">
+       <div class="span8" style="width: 100%">
+            <div class="page-header position-relative">
+                <!--<a href=<?php echo url('ViewAndDownloadAssessor'); ?>> << Back to Assessor View</a>-->
+                <h1>Training Plan Update 2016/2017(Testing & Evaluation)<small><i class="icon-double-angle-right"></i>View</small></h1>
+            </div>
+		 </div>	
+            <form class="form-horizontal" action='' method="POST"  id='NewModule'>
+                  
+                 
+				
+				<div class="control-group">
+                    <label class="control-label" >District : </label>
+                        <div class="controls" id="Trade">
+                            <select name="District" id="District">
+                                 <option value="">--Select District--</option>
+								  <option value="All">All</option>
+                                <?php foreach($Districts as $d): ?>
+                                <option value="<?php echo $d->District; ?>"><?php echo $d->District; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                           
+                        </div>         
+                 </div>
+				
+                <div class="control-group">
+                    <label class="control-label" >Centre : </label>
+                        <div class="controls" id="Trade">
+                            <select name="CenterID" id="CenterID" required>
+                                 <option value="">--Select Centre--</option>
+								
+								  <option value="All">All</option>
+							   
+                                <?php foreach($Centers as $v): ?>
+                                <option value="<?php echo $v->Centre; ?>"><?php echo $v->Centre; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                           
+                        </div>         
+                 </div> 
+				  <div class="control-group">
+                    <label class="control-label" >Course : </label>
+                        <div class="controls" id="Trade">
+                            <select name="Course" id="Course" required>
+                                 <option value="">--Select Course--</option>
+								
+								  <option value="All">All</option>
+							   
+                                <?php foreach($Courses as $v): ?>
+                                <option value="<?php echo $v->CourseListCode; ?>"><?php echo $v->Course; ?> - <?php echo $v->CourseListCode; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                           
+                        </div>         
+                 </div> 
+                <div class="control-group">
+                    <label class="control-label" for="centers">Year</label>
+                    <?php  $year = date("Y"); ?>
+                    <div class="controls">
+                      <select name="Year" id="Year" required>
+                            <option value="" required>--- Select Year ---</option>
+                            <option value="2016">2016</option>
+                            <option value="2017">2017</option>
+                          
+                           
+                          
+                        </select> 
+                    </div>
+                </div>
+				 <div class="control-group">
+                    <label class="control-label" for="centers">Batch:</label>
+                    <div class="controls">
+                        <select name="Batch" id="Batch" required>
+                            <option value="" >--- Select Batch ---</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+							
+                          
+                        </select>
+                        <span id='img4'></span>
+                    </div>
+                </div>
+                <!-- <div class="control-group">
+                    <label class="control-label" >Course Year Plan : </label>
+                        <div class="controls" id="Trade">
+                            <select name="CourseYearPlanID" id="CourseYearPlanID" required>
+                                 <option value="">--Select Course--</option>
+                               
+                            </select>
+                           
+                        </div>         
+                 </div> 
+                 <div class="control-group">
+                    <label class="control-label" >Date : </label>
+                        <div class="controls" id="Trade">
+                           <input type="date" name="DatePlanned" id="DatePlanned" required>
+                           
+                           
+                        </div>         
+                 </div>  
+                 <div class="controls" id='table1'>
+                            </div>
+							
+							-->
+               
+         <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-small btn-primary">Search</button>
+                </div>
+            </div>             
+
+            </form>
+			 <?php if(isset($trplans)): ?>
+        
+    <table>
+    <tr>
+		 <!--<td>
+           <form> 
+                            <input type="hidden" value="<?php echo $CenterIDD; ?>" name="CenterIDD" id="CenterIDD"/>
+                            <input type="hidden" value="<?php echo $YearD; ?>" name="YearD" id="YearD"/>
+                            <input type="hidden" value="<?php echo $BatchD; ?>" name="BatchD" id="BatchD"/>
+							<input type="hidden" value="<?php echo $districtD; ?>" name="districtD" id="districtD"/>
+                            <button type="button" id="upload1" class="btn btn-pink">
+                            <i class="icon-print bigger-100"></i>Print PDF</button>
+                           
+               </form> 
+                       
+            </td>-->
+			<td>
+				<form name='search' action="<?php echo url('PrintExcelTrainingPlanReportByTestingEva1OLD'); ?>" method='POST' class="form-horizontal">
+					<input type="hidden" value="<?php echo $CenterIDD; ?>" name="CenterIDD" id="CenterIDD"/>
+					<input type="hidden" value="<?php echo $YearD; ?>" name="YearD" id="YearD"/>
+					<input type="hidden" value="<?php echo $BatchD; ?>" name="BatchD" id="BatchD"/>
+					<input type="hidden" value="<?php echo $districtD; ?>" name="districtD" id="districtD"/>
+					<input type="hidden" value="<?php echo $CourseD; ?>" name="CourseD" id="CourseD"/>
+					
+					<button type="submit" id="search" class="btn btn-warning">
+					<i class="icon-download-alt bigger-100"></i>Download Excel</button>
+				   
+				</form> 
+			</td>
+		<td>
+		 <span id='img7'></span>
+		</td>
+    </tr>
+    </table>
+        
+
+        <?php endif; ?>
+		
+		 <div class="span12">
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                 <thead>
+                <tr>
+						<th class="center">No</th>
+						<th class="center">Edit</th>
+						<th class="center">District</th>
+						<th class="center">Centre</th>
+                        <th class="center">Year</th>
+                        <th class="center">Batch</th>
+						<th class="center">Main Trade</th>
+						<th class="center">Trade</th>
+                        <th class="center">Course</th>
+				        <th class="center">CourseListCode</th>
+						<th class="center">CourseType</th>
+                        <th class="center">NVQ/NON-NVQ</th>
+                        <th class="center">NVQ Level</th>
+                        <th class="center">Duration</th>
+                        <th class="center">Medium</th>
+						<th class="center">Start Date</th>
+						<th class="center">End Date</th>
+						<th class="center">Instructors</th>
+						
+						<th class="center">No of Trainees Registered</th>
+						<th class="center">No of Trainees Dropout</th>
+						<th class="center">No of Repeaters</th>
+						
+						<th class="center">No of OJT Placed</th>
+						<th class="center">No of  OJT Completed</th>
+						
+						
+						<th class="center">Assessor Nominated Date</th>
+						<th class="center">Assessor Renominated</th>
+						<th class="center">Assessor1</th>
+						<th class="center">Assessor2</th>
+						<th class="center">NoOf trainees faced for common Exam</th>
+						<th class="center">Eligibility Test Date</th>
+						<th class="center">No of Trainees For Eligibility Test</th>
+						<th class="center">Finaal Assessment Status</th>
+						<th class="center">Final Assessment Date</th>
+						<th class="center">No of Trainees Final Assessed</th>
+					
+						
+						
+						
+						
+						<th class="center">No of Trainees Not Competent</th>
+						<th class="center">No of Trainees Competent (NVQ)</th>
+						<th class="center">Unit Only</th>
+						<th class="center">NVQ L1</th>
+						<th class="center">NVQ L2</th>
+						<th class="center">NVQ L3</th>
+						<th class="center">NVQ L4</th>
+						<th class="center">NVQ L5</th>
+						<th class="center">ROA</th>
+							<th class="center">No Of trainees Job Placed</th>
+						<th class="center">CourseCompleted</th>
+						<th class="center">Comments</th>
+                </tr>
+                 </thead>
+                 <?php $tt=1; ?>
+                 <tbody>
+                <?php if(isset($trplans)): ?>
+                    <?php foreach($trplans as $mm): ?>
+                    <tr>
+                     
+                       <td class="center"><?php echo $tt++; ?></td>
+					   <td class="center"><?php if($user->hasPermission('editCourseYearPlanTestingEvaOld')): ?>
+                                <form id="editform"  action='editCourseYearPlanTestingEvaOld' method="GET" >
+                                    <input type="hidden" name='edit_id' value='<?php echo $mm->id; ?>' />
+									<input type="hidden" value="<?php echo $CenterIDD; ?>" name="CenterIDD" id="CenterIDD"/>
+									<input type="hidden" value="<?php echo $YearD; ?>" name="YearD" id="YearD"/>
+									<input type="hidden" value="<?php echo $BatchD; ?>" name="BatchD" id="BatchD"/>
+									<input type="hidden" value="<?php echo $districtD; ?>" name="districtD" id="districtD"/>
+									<input type="hidden" value="<?php echo $CourseD; ?>" name="CourseD" id="CourseD"/>
+                                    <button type="Submit" class="btn btn-info btn-mini"><i class="icon-edit icon-2x icon-only"></i></button>
+                                </form>
+                                <?php endif; ?></td>
+					    <td class="center"><?php echo $mm->District; ?></td>
+						<td class="center"><?php echo $mm->Centre; ?></td>
+                        <td class="center"><?php echo $mm->Year; ?></td>
+                        <td class="center"><?php echo $mm->Batch; ?></td>
+						<td class="center"><?php echo $mm->Ctrade; ?></td>
+						<td class="center"><?php echo $mm->Trade; ?></td>
+                        <td class="center"><?php echo $mm->Course; ?></td>
+					    <td class="center"><?php echo $mm->CourseListCode; ?></td>
+                        <td class="center"><?php echo $mm->CourseType; ?></td>
+                        <td class="center"><?php echo $mm->NVQType; ?></td>
+                        <td class="center"><?php echo $mm->NVQLevel; ?></td>
+                        <td class="center"><?php echo $mm->Duration; ?></td>
+                        <td class="center"><?php echo $mm->Medium; ?></td>
+						<td class="center"><?php echo $mm->StartDate; ?></td>
+						<td class="center"><?php echo $mm->EndDate; ?></td>
+						<?php
+						$ppp = "select oldmoinstructor.id,oldmoinstructor.Name,oldmoinstructor.EPFNo
+						  from oldmoinstructorcourse
+						  left join oldmoinstructor
+						  on oldmoinstructorcourse.InstructorID=oldmoinstructor.id
+						  where oldmoinstructorcourse.CourseYearPlanID='".$mm->id."'
+						  and oldmoinstructorcourse.Active='Yes'";
+                          $Ins=DB::select(DB::raw($ppp));
+						  
+						?>
+						<td class="left">
+						<?php foreach($Ins as $i): ?>
+						<span><?php echo $i->Name; ?>(<?php echo $i->EPFNo; ?>)</br></span>
+						<?php endforeach; ?>
+						</td>
+						<td class="center"><?php echo $mm->NoOfRegistered; ?></td>
+						<td class="center"><?php echo $mm->NoOfDropout; ?></td>
+						<td class="center"><?php echo $mm->NoOfRepeaters; ?></td>
+				        <td class="center"><?php echo $mm->NoOFOJTPlaced; ?></td>
+						<td class="center"><?php echo $mm->NoOFOJTCompleted; ?></td>
+						<td class="center"><?php echo $mm->AssessorNominatedDate; ?></td>
+						<td class="center"><?php echo $mm->AssessorReNominated; ?></td>
+						<td class="center"><?php echo $mm->Assessor1; ?></td>
+						<td class="center"><?php echo $mm->Assessor2; ?></td>
+						<td class="center"><?php echo $mm->NoOftraineesforcommonexam; ?></td>
+						<td class="center"><?php echo $mm->PreAssessedDate; ?></td>
+						<td class="center"><?php echo $mm->NoOfTraineesPreAssessed; ?></td>
+						<td class="center"><?php echo $mm->FinalExamHeld; ?></td>
+						<td class="center"><?php echo $mm->FinalAssessmentDate; ?></td>
+						<td class="center"><?php echo $mm->NoOfTraineesFinalAssessed; ?></td>
+					    <td class="center"><?php echo $mm->NoOfTraineesNotCompetent; ?></td>
+						<td class="center"><?php echo $mm->NoOfTraineesCompetentNVQ; ?></td>
+						<td class="center"><?php echo $mm->UnitOnly+$mm->UnitOnlyII+$mm->UnitOnlyIII; ?></td>
+						<td class="center"><?php echo $mm->L1+$mm->L1II+$mm->L1III; ?></td>
+						<td class="center"><?php echo $mm->L2+$mm->L2II+$mm->L2III; ?></td>
+						<td class="center"><?php echo $mm->L3+$mm->L3II+$mm->L3III; ?></td>
+						<td class="center"><?php echo $mm->L4+$mm->L4II+$mm->L4III; ?></td>
+						<td class="center"><?php echo $mm->L5+$mm->L5II+$mm->L5III; ?></td>
+						<td class="center"><?php echo $mm->ROA+$mm->ROAII+$mm->ROAIII; ?></td>
+						<td class="center"><?php echo $mm->NoOfJobPlaaced; ?></td>
+						<td class="center"><?php echo $mm->CourseCompleted; ?></td>
+						<td class="center"><?php echo $mm->Comment; ?></td>
+                        
+                   </tr>
+                        <?php endforeach; ?>
+                    <?php if($trplans=='[]'): ?>
+                        <center>Data Not Found</center>
+                    <?php endif; ?>
+                <?php endif; ?>
+        </tbody>
+            </table>
+             
+        </div><!--/.span-->
+		
+		</div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+                                            function doConfirm(course, formobj)
+                                            {
+                                            bootbox.confirm("Are you sure you want to remove Course Year Plan with Course List Code : " + course, function(result)
+                                            {
+                                            if (result)
+                                            {
+                                            formobj.submit();
+                                            }
+                                            });
+                                                    return false; // by default do nothing hack :D
+                                            }
+
+                                    $('#sample-table-2').dataTable({
+                                    "aoColumns": [
+                                          
+                                   {"bSortable": false},
+                                   {"bSortable": false},
+									null,
+									null,
+                                    null,
+									null,
+									null,
+							        null,
+                                    null,
+                                    {"bSortable": false},
+                                    null,
+                                    null,
+                                     null,
+                                    {"bSortable": false},
+                                    {"bSortable": false},
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									
+                                    ]});
+                                            $('table th input:checkbox').on('click', function() {
+                                    var that = this;
+                                            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                                            .each(function() {
+                                            this.checked = that.checked;
+                                                    $(this).closest('tr').toggleClass('selected');
+                                            });
+                                    });
+                                            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+                                            function tooltip_placement(context, source) {
+                                            var $source = $(source);
+                                                    var $parent = $source.closest('table')
+                                                    var off1 = $parent.offset();
+                                                    var w1 = $parent.width();
+                                                    var off2 = $source.offset();
+                                                    var w2 = $source.width();
+                                                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                                                    return 'right';
+                                                    return 'left';
+                                            }
+
+
+</script>
+<script>
+
+    <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+	
+	
+
+
+       $("#CenterID").change(function() {
+        var CenterID = $("#CenterID").val();
+        var District = $("#District").val();
+        var msg = '--- Select Course ---';
+		var all = 'All';
+		$("#Course").html('');
+       
+           
+                          $.ajax({
+                                        type: "GET",
+                                        url: "<?php echo url::to('loaddistrictcourseinTCOld'); ?>",
+                                        data: {CenterID: CenterID,District: District},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#Course").append("<option value=''>" + msg + "</option>");
+											 $("#Course").append("<option value='All'>" + all + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#Course").append("<option value=" + item.CourseListCode + ">" +item.Course + " - "+ item.CourseListCode + "(" + item.CourseType + " " + item.NVQType+ "-" +item.NVQLevel+")</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+          
+       
+    });
+
+    
+  
+    
+    $('#DatePlanned').change(function(){
+
+        //alert('dg');
+       var DatePlanned = document.getElementById('DatePlanned').value;
+       var CenterID = document.getElementById('CenterID').value;
+       var CourseYearPlanID = document.getElementById('CourseYearPlanID').value; 
+      // var msg = '--- Select Working Place ---';
+        //$("#WorkingPlace").html('');
+       $.ajax  ({
+                    url: "<?php echo url::to('MOCMCheckPlanneddate'); ?>",
+                    data: {DatePlanned: DatePlanned,CenterID: CenterID,CourseYearPlanID: CourseYearPlanID},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        if(result.module == 1)
+                        {
+                             document.getElementById('DatePlanned').value = "";
+                             $('#table1').html(result.html);
+                             
+                        }
+                        else
+                        {
+                             $("#table1").html('');
+                        }
+                       
+                        
+                                        
+                        
+                        }
+
+
+                    
+                });
+        
+
+
+       
+    });
+
+    function fillModule1() {
+
+        //alert('dfhgftrghy');
+        var WorkingPlaceName = document.getElementById('WorkingPlaceName').value;
+        var WorkingPlaceAddress = document.getElementById('WorkingPlaceAddress').value;
+        var InstituteId = document.getElementById('M_Code').value;
+        var ContactNo = document.getElementById('ContactNo').value;
+        $.ajax({
+                    url: "<?php echo url::to('saveAssessorWorkingPlace'); ?>",
+                    data: {WorkingPlaceName: WorkingPlaceName, WorkingPlaceAddress: WorkingPlaceAddress, InstituteId: InstituteId,ContactNo: ContactNo},
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.ModuleId !== 0) {
+                            $("#ModuleDiv1").html(result.html);
+                            $('#addModule1').hide();
+                            $('#ajaxerror').html(result.done);
+                            
+                           //var InstititeId = result.InstituteAddress;
+                           // $("#WorkingPlace").html('');
+                              /*  $.ajax({
+                                            url: "<?php echo url::to('getModuleId'); ?>",
+                                            data: {ModuleCode: ModuleCode},
+                                            success: function(re) {
+                                                  document.getElementById("AjaxModuleId").value = re;
+                                                               }
+                                       });*/
+
+                        /* $.ajax  ({
+                                    url: "<?php echo url::to('getWorkingPlace'); ?>",
+                                    data: { InstititeId: InstititeId},
+                                    dataType: "json", 
+                                    success: function(result) {
+
+                                        //alert(result);
+                                        $("#WorkingPlace").append("<option value=''>" + msg + "</option>");
+                                         $.each(result, function(i, item)
+                                        {
+
+
+
+                                            $("#WorkingPlace").append("<option value=" + item.id + ">" + item.Placename + "  (" + item.Address + ")</option>");
+
+
+
+                                        });
+                                                        
+                                        
+                                        }
+
+
+                                    
+                                });*/
+
+                        } else {
+                            $('#ajaxerror').html(result.html);
+                            window.scrollTo(0, 0);
+                        }
+                    }
+                });
+    }
+	
+	
+	
+	
+	$("#District").change(function() 
+	{
+        var District = $("#District").val();
+        $("#CenterID").html('');
+        //$("#CourseYearPlanID").html('');
+        var msg = '--- Select Centre ---';
+		var all = 'All';
+       
+                          $.ajax({
+                                        type: "GET",
+                                        url: "<?php echo url::to('loaddistrictcentersinTCOld'); ?>",
+                                        data: {District: District},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#CenterID").append("<option value=''>" + msg + "</option>");
+											 $("#CenterID").append("<option value='All'>" + all + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#CenterID").append("<option value=" + item.Centre + ">" +item.Centre+ "</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            
+     
+    });
+	
+	$('#upload').click(function()
+    {
+      
+        var CenterIDD = $("#CenterIDD").val(); 
+		 var YearD = $("#YearD").val(); 
+		  var BatchD = $("#BatchD").val(); 
+		   var districtD = $("#districtD").val(); 
+       
+      //alert(CD_ID);
+      
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            
+                            document.getElementById('img7').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+                        type: "POST",
+                        url: "<?php echo Url('PrintPDFTrainingPlanReportByTestingEva'); ?>",
+                        data: {CenterIDD: CenterIDD,YearD:YearD,BatchD:BatchD,districtD:districtD},
+                        success:function response(responseText, statusText, xhr, $form)
+                        {
+       
+                               var printWin = window.open("","printSpecial");
+                                printWin.document.open();
+                                printWin.document.write(responseText);
+                                printWin.document.close();
+                                printWin.print();
+       
+   
+                         
+
+                        },
+                        complete: function() {
+                            document.getElementById('img7').innerHTML ="";
+
+                        }
+                    });
+        
+    }
+    );
+$('#upload1').click(function()
+    {
+      
+        var CenterIDD = $("#CenterIDD").val(); 
+		 var YearD = $("#YearD").val(); 
+		  var BatchD = $("#BatchD").val(); 
+		   var districtD = $("#districtD").val(); 
+       
+      //alert(CD_ID);
+      
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            
+                            document.getElementById('img7').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+                        type: "POST",
+                        url: "<?php echo Url('PrintPDFTrainingPlanReportByTestingEva1'); ?>",
+                        data: {CenterIDD: CenterIDD,YearD:YearD,BatchD:BatchD,districtD:districtD},
+                        success:function response(responseText, statusText, xhr, $form)
+                        {
+       
+                               var printWin = window.open("","printSpecial");
+                                printWin.document.open();
+                                printWin.document.write(responseText);
+                                printWin.document.close();
+                                printWin.print();
+       
+   
+                         
+
+                        },
+                        complete: function() {
+                            document.getElementById('img7').innerHTML ="";
+
+                        }
+                    });
+        
+    }
+    );
+    </script>
+
+

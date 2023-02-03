@@ -1,0 +1,262 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Report       
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                         Progress Report
+                    </small>            
+                </h1>
+            </div>
+
+            <form action="<?php echo url('districtwisePrograssReport'); ?>" method="POST" id="form_go">
+                <table>
+                    <tr>
+                        <td>Year :</td>
+                        <td>
+                            <input type="text" id="my_year" name="year" style="width: 100px; margin: 0" placeholder="Year" required />&nbsp;&nbsp;
+                        </td>
+                        
+                      <td>District : </td> 
+                                    <td>
+                            <select name="district" id="district" style="margin: 0px;" required>
+                                <option value=""></option>
+                                <?php if($type == 'HO'): ?>
+                                     <option value="All">All</option> 
+                                <?php endif; ?>
+
+                                <?php foreach($district as $d): ?>
+                                    <option value="<?php echo $d->DistrictCode; ?>"><?php echo $d->DistrictName; ?></option>
+                                <?php endforeach; ?>
+
+                            </select>&nbsp;&nbsp;
+                        </td>
+
+                       
+                       
+
+                        <td>
+                            <input type="button" id="btn_go" value="Search" style="height: 30px;" onclick="getDataTable()"/>
+                            <span id="ajax_img"></span>
+                        </td>
+                    </tr>
+                </table>
+                 <div id="loding">                    
+                </div>
+            </form>
+        </div>
+    </div>
+      <div class="controls" id='table'>
+      </div>
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+
+
+$('#my_year').keyup(function () {
+    var d = new Date();
+    var yy = d.getFullYear();
+    var y = $('#my_year').val();
+    if (isNaN(y)) {
+        $('#my_year').val('');
+        alert('Sorry, Year must be a number!');
+    } else if (y.length === 4) {
+        if (y == yy || y == (yy + 1) || y == (yy - 1)) {
+
+            //clc();
+
+        } else {
+            $('#my_year').val('');
+            alert('Sorry, You enter invalid Year!');
+        }
+    } else if (y.length > 4) {
+        $('#my_year').val('');
+        alert('Sorry, You enter invalid Year!');
+    }
+
+
+});
+
+// function clc() {
+//     var y = $('#my_year').val();
+//     /* $.ajax({
+//      url: "<?php echo url::to('AppAjaxLoadCLC'); ?>",
+//      beforeSend: function() {
+//      document.getElementById('ajax_img').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+//      },
+//      data: {y: y},
+//      success: function(res) {*/
+//     //document.getElementById('clc').innerHTML = res;
+//     document.getElementById('ajax_img').innerHTML = "";
+//     $.ajax({
+//         url: "<?php echo url::to('AppAjaxLoadOrga'); ?>",
+//         data: {y: y},
+//         success: function (result) {
+//             document.getElementById('organisation').innerHTML = result;
+//         }
+//     });
+//     /* }
+//      });*/
+// }
+
+// $("#organisation").change(function ()
+// {
+
+
+//     var organisation = $("#organisation").val();
+//     var y = $('#my_year').val();
+
+//     if (organisation == "")
+//     {
+//         alert('Please Select Institute');
+//     }
+//     else
+//     {
+
+
+
+//         //alert('fgxfhd');
+//         $.ajax({
+//             url: "<?php echo url::to('AppAjaxLoadCLC'); ?>",
+//             data: {y: y, organisation: organisation},
+//             success: function (res)
+//             {
+//                 document.getElementById('clc').innerHTML = res;
+
+//             }
+//         });
+//     }
+
+
+
+// });
+
+// $('#btn_go').click(function () {
+//      var district=$("#district").val();
+//     var my_year=$("#my_year").val();
+    
+  
+//     if (district !== '' && my_year !== '' ) {
+//         $('#form_go').submit();
+//     }
+// });
+
+    function tableModify_1() {
+        $('#sample-table-2').dataTable({
+            "bPaginate": false,
+            "bLengthChange": false,
+            "aoColumns": [
+                {"bSortable": false},
+                null,
+                null,
+                {"bSortable": false},
+                {"bSortable": false},
+                 {"bSortable": false},
+                {"bSortable": false},
+                 {"bSortable": false},
+                {"bSortable": false},
+                 {"bSortable": false},
+                {"bSortable": false},
+                 {"bSortable": false},
+                {"bSortable": false},
+                 {"bSortable": false},
+                {"bSortable": false},
+                 {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},              
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false}, 
+                {"bSortable": false},
+                null,
+                null,
+                null,
+                null,
+                null,
+            
+                {"bSortable": false}
+            ]});
+    }
+    }
+
+</script>
+<script type="text/javascript">
+
+function getDataTable(){
+    var district=$("#district").val();
+    var my_year=$("#my_year").val();
+    
+
+    //alert(my_year);
+    if(district != "" && my_year != "" )
+                        {
+                              
+
+
+
+                                       $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            $("#loding").html('<br><br><img height="40%" width="20%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                           
+                        },
+                        type: "GET",
+                       url: "<?php echo Url('districtwisePrograssReport'); ?>",
+                       data: {district: district,my_year: my_year},
+                        
+                        success: function(result)
+                        {
+                            //alert('dddddddddd');
+                            $('#table').html(result);
+
+                           
+                          //  tableModify_1();
+                           
+                        },
+                        complete: function() {
+                            $("#loding").html('');
+                        }
+                    }
+                    );                  
+
+
+
+    }
+    if(district =="" && my_year != "" ){
+        bootbox.alert("Please Enter District !!!");
+    }
+    if(district !="" && my_year == "" ){
+        bootbox.alert("Please Enter Year  !!!");
+    }
+    
+     if(district =="" && my_year == "")
+    {
+        bootbox.alert("Please Enter District Name and Year !!!");
+    }
+
+}
+   
+</script>

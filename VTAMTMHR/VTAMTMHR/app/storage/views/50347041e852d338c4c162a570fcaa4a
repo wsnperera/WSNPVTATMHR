@@ -1,0 +1,153 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>Course Year Plan<small><i class="icon-double-angle-right"></i>Create</small></h1>
+                <a href=<?php echo url('viewCourseYearPlan'); ?>> << Back to View </a>
+            </div>
+            <form class="form-horizontal" action='' method="POST">
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Year : </label>
+                        <div class="controls">
+                            <select name='Year' required="true" >
+                                <option></option>
+                                <option><?php echo date('Y'); ?></option>
+                                <option><?php echo date('Y')+1; ?></option>
+                            </select>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course List Code : </label>
+                        <div class="controls">
+                            <select name='CourseListCode' onchange="ajaxFee(this)" required="true">
+                                <option></option>
+                                <?php foreach($CourseListCode as $clc): ?>
+                                    <option><?php echo $clc->CourseListCode; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Batch : </label>
+                        <div class="controls">
+                            <select name='batch' required="true">
+                                <option></option>
+                                <option>1</option>
+                                <option>2</option>
+                            </select>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Parallel Groups : </label>
+                        <div class="controls">
+                            <select name='parallelGroups' required="true">
+                                <option></option>
+                                <option>Yes</option>
+                                <option>No</option>
+                            </select>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Medium : </label>
+                        <div class="controls">
+                            <select name='medium' required="true">
+                                <option>English</option>
+                                <option>Sinhala</option>
+                                <option>Tamil</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                </div>
+                <div class="control-group" id='fee'>
+                    <label class="control-label" for="CourseListCode">Fee : </label>
+                        <div class="controls">
+                            <input type="number" name="Fee"  id='feeValue'/>
+                        </div>
+                </div>
+                <div class="control-group" >
+                    <label class="control-label" for="CourseListCode">Max Capacity : </label>
+                    <div class="controls">
+                        <input type="number" name="maxCapacity" required="true"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Aptitude Test : </label>
+                        <div class="controls">
+                            <select name='AptitudeTest' required="true">
+                                <option>No</option>
+                                <option>Yes</option>
+                            </select>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Start Date : </label>
+                        <div class="controls">
+                            <input type="date" name="startDate"  min="<?php echo date('Y-m-d'); ?>" required="true"/>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" class="btn btn-small btn-primary" value="Create"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type='text/javascript'>
+    $( document ).ready(function()
+    {
+        $("#fee").hide();
+    });
+    function ajaxFee(x)
+    {
+        if(x.value=='')
+        {
+            $("#fee").hide();
+        }
+        else
+        {
+            $.ajax
+            ({
+                type: "GET",
+                url: 'ajaxGetFeePartFull',
+                data:{ couseListCode :x.value},
+                success: function(result)
+                {
+                    if(result=='Full')
+                    {
+                        $("#fee").hide();
+                        $("#feeValue").val('0');
+                    }
+                    else
+                    {
+                        $("#fee").show();
+                        $("#feeValue").val('0');
+                    }
+                }
+            });
+        }
+     }
+</script>
+      
+           
+               
+               
+               
+      
+        
+        
+
+    

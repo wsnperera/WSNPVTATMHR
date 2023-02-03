@@ -1,0 +1,78 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<a href=<?php echo url('viewALSubject'); ?>> << Back to A/L Subject </a> 
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    A/L Subject		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+
+            <!--Write your code here start-->
+            <form class="form-horizontal" action="<?php echo url('editALSubject'); ?>" method="POST" />
+            <input type="hidden" name="id" value="<?php echo $ALSubject->id; ?> "/>
+            <br/>
+
+            <div class="control-group">
+                <label class="control-label" for="Stream">Stream</label>
+                <div class="controls">
+                    <input type="text" name="Stream"  value="<?php echo $ALSubject->Stream; ?>" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="SubjectName">Subject Name</label>
+                <div class="controls">
+                    <input type="text" name="SubjectName" value="<?php echo $ALSubject->SubjectName; ?>" />
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="ShortSubName">Short Subject Name</label>
+                <div class="controls">
+                    <input type="text" name="ShortSubName" value="<?php echo $ALSubject->ShortSubName; ?>" />
+                </div>
+            </div>
+
+
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-small btn-primary">Update</button>
+                </div>
+            </div>
+            </form>
+        </div>
+        <!--/span 4 for error handling -->
+
+        <div class="span4">
+
+
+
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type="text/javascript">
+
+</script>

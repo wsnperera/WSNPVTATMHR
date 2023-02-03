@@ -1,0 +1,195 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+
+        <div class="span12">
+
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    NVQ First Assessment	
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Assess Students
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->   
+            <?php if($issearch=="True"): ?>             
+            <form class="form-horizontal" action="<?php echo url('AssesStudentPreAssgnmnt'); ?>" method="POST">        
+                <div class="control-group">
+
+                    <table>
+                        <tr>
+
+                            <td>
+                                <label class="control-label" for="form-field-2">Course Code</label></td>
+                            <td>
+                                <select name="CCode" required="required" id="CCode">
+                                    <option></option>
+                                    <?php foreach($CCode as $c): ?>
+                                    <option value="<?php echo $c->coursecode; ?>"><?php echo $c->coursecode; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>  
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <label class="control-label" for="form-field-2">Pre Interview Description</label></td>
+                            <td>
+                                <select  required="required" id="Descrip" name="Descrip">
+                                  <?php foreach($preInt as $evnt): ?>
+                                  <option value="<?php echo $evnt->EP_ID; ?>"><?php echo $evnt->Description; ?></option> 
+                                  <?php endforeach; ?>
+                                </select>
+                            </td>  
+                            
+                        </tr>
+
+                    </table>   
+                    <div class="control-group">
+
+                        <div class="controls">
+
+                            <button type="submit" class="btn btn-small btn-primary">View Students</button>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <?php endif; ?> 
+            <?php if($issearch!="True"): ?> 
+
+            <form class="form-horizontal" action="<?php echo url('AssesStudentPreAssgnmntConfirm'); ?>" method="POST">
+                <table class="table">
+
+
+                    <tr>
+
+                        <th>Select<lable>
+                        <input class='checkVP' type="checkbox"  /><span class="lbl"></span></lable></th>
+                    <th>Trainee No</th>
+                    <th>Name With Initials</th>
+
+
+
+
+
+                    <th></th>
+
+                    </tr>
+                    <?php if(isset ($Students)): ?>
+
+                    <?php foreach ($Students as $c): ?>
+
+                    <tr>
+                        <td><lable>
+                        <input class='checkVP' name="ds[checkVP][<?php echo $c->id; ?>]" type="checkbox" value="<?php echo $c->studentid; ?>" /><span class="lbl"></span></lable></td>
+                    <td><?php echo $c->studentid; ?>
+                        <input type="hidden" name="ds[Student_No][<?php echo $c->id; ?>]" value="<?php echo $c->studentid; ?>" class="coursecode" id="coursecode" >
+                    </td>
+
+                  
+                    <td>
+                    <?php echo NvqPreAssesmentResult::getName($c->studentid,$c->mode); ?>
+                    </td>
+                  
+
+
+                    </tr>
+
+
+                    <?php endforeach; ?>
+
+                    <?php endif; ?>
+
+                </table>
+                <input type="hidden" name="Ccode" value="<?php echo $CCode; ?>">
+                <input type="hidden" name="date" value=""> 
+                <div class="control-group">
+
+                    <div class="controls">
+
+                        <button type="submit" class="btn btn-small btn-primary">Confirm Students</button>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<?php endif; ?>
+
+
+
+
+
+
+
+
+
+
+
+
+</div><!--/.span-->
+
+
+
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+ <?php if (Session::has('done')): ?>
+ 
+  <div class="alert alert-block alert-success">
+    <strong> <i class="icon-ok"></i><?php echo Session::get('done'); ?></strong>
+  </div>
+  
+      
+ <?php endif; ?>
+  
+
+
+
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+
+
+
+
+<script type="text/javascript">
+
+$("#CCode").change(function() {
+
+
+    var CCode = $("#CCode").val();
+
+
+    $.ajax({
+        url: "<?php echo url('NVQ1STAssignmentAjax'); ?>",
+        type: "GET",
+        data: {CCode: CCode},
+        success: function(result) {
+            
+            document.getElementById('Descrip').innerHTML=result;
+            
+        }
+    });
+
+});    
+
+
+
+
+
+</script>

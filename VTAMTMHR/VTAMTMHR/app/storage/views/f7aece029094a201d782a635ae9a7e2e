@@ -1,0 +1,173 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<div class="page-content">
+                                    
+	<div class="row-fluid">
+                             
+                                    <div class="span12">
+				                                        
+                                        <div class="page-header position-relative">
+                                            
+				<h1>
+				Completed			
+				<small>
+					<i class="icon-double-angle-right"></i>
+					Batch
+				</small>			
+				</h1>
+		</div><!--/.page-header-->
+
+
+                			  <!--Write your code here start-->
+                                          <form class="form-horizontal" method="POST" action="<?php echo url('completebatch'); ?>"/>
+                                  
+                                          
+                                                 <div class="control-group">
+                                                    
+							<label class="control-label" for="BatchCode">Batch code</label>
+
+							<div class="controls">
+                                                            <select name="BatchCode">
+                                                        
+                                                                        <?php foreach ($batch as $b): ?>
+
+                                                                            <option value="<?php echo $b->BatchCode; ?>"><?php echo $b->BatchCode; ?></option>
+
+                                                                        <?php endforeach; ?>
+
+
+                                                                </select>
+							</div>
+                                                        
+						</div>
+                                                
+                                                <br/> 
+                                                <div class="control-group">
+                                                    
+							<label class="control-label" for="Completed">Completed</label>
+
+                                                         <div class="controls">
+                                                         
+                                                            <select name="Completed">
+                                                                  <option value=""></option>
+                                                                  <option value="YES">Yes</option>
+                                                                  <option value="ABN">ABN</option>
+
+                                                            </select>
+
+                                                         </div>
+                                                        
+						</div>
+                                                          
+                                                            <br/> 
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                <div class="control-group">
+                                                    
+							<label class="control-label" for="CompleteDate">Completed Date</label>
+
+							<div class="controls">
+                                                            <input type="date" name="CompleteDate"  />
+							</div>
+                                                        
+						</div>
+                                            
+                                               
+                                                
+                                              
+
+
+
+
+                                            
+
+                                             <div class="control-group">
+                                                    
+                                                     <div class="controls">
+
+                                                         <button type="submit" class="btn btn-small btn-primary">Save</button>
+
+                                                     </div>
+                                             </div>
+                                                
+                                                
+                                                <br/>
+                      
+                                        </div>
+
+                                </form>
+                
+                
+                
+                                        
+                                       
+                                                                    
+                                                                                                                                                
+                                  </div>
+                                  
+                                  
+                                  
+                                  
+                              
+                                  
+                                  <div class="span4">
+                                     
+                                  
+
+                                              <?php if($errors->has()): ?>
+                                              
+                                                    <?php foreach($errors->all() as $msg): ?>
+
+                                                     
+
+                                                           <div class="alert alert-error">
+
+                                                              <button type="button" class="close" data-dismiss="alert">
+                                                                      <i class="icon-remove"></i>
+                                                              </button>
+
+                                                              <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+                                                           </div>
+
+                                                     
+
+                                                   <?php endforeach; ?>
+
+                                               <?php endif; ?>
+
+                                        
+                                                
+                                              
+
+
+
+                                      
+                                  </div
+                                   
+              
+                                   
+                                   
+				
+                                
+                                       
+	</div>
+</div>
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+
+<script>
+    
+    <?php if(isset($done)): ?>
+        
+    $.gritter.add({ title: "", text: "Successfully Added", class_name: "gritter-info gritter-center" });
+
+    <?php endif; ?>
+      
+</script>
+                                           

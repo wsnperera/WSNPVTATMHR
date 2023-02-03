@@ -1,0 +1,93 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('ViewTradeStudent'); ?>> << Back to Trade Student </a> 
+<?php endif; ?>
+<div class="page-content">
+<div class="row-fluid">
+    <div class="page-header position-relative">
+
+                <h1>
+                    Trade Student			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        View Trade Student
+                    </small>			
+                </h1>
+            </div>
+    <div>
+    <form name='search' action="<?php echo url('SearchTradeStudent'); ?>" method='get'>
+        Course Code&nbsp;&nbsp;<select name="Couse_Code" style="margin: 0; width: 150px;">
+			<option></option>
+            <?php if(isset($course_code)): ?>
+            <?php foreach($course_code as $course_code): ?>
+            <option value="<?php echo $course_code->CourseCode; ?>"><?php echo $course_code->CourseCode; ?></option>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </select>
+        &nbsp;&nbsp;Student No&nbsp;&nbsp;<input type='text' name="stud_no" placeholder="Student No" style="margin: 0; width: 120px;"/>   <input type='submit' value='Search' style="height: 30px;"/>
+        <a href=<?php echo url('CreateTradeStudent'); ?>><input type='button' value='Add Trade Student' style="height: 30px;"/></a>
+    </form>
+    </div>    
+<div class="span12">
+<!--PAGE CONTENT BEGINS-->
+            <table class="table">
+            <tr>
+            <th>Student NO</th>
+            <th>Institute Name</th>
+            <th>Organisation Name</th>
+            <th>Course Code</th>
+            <th>Choice 1</th>
+            <th>Choice 2</th>
+            <th>Choice 3</th>
+            <th>Choice 4</th>
+            <th>Remove</th>
+            </tr>
+            <?php if(isset($tardeStudent)): ?>
+            <?php foreach ($tardeStudent as $t): ?>
+            <tr>
+            <td>
+                <?php if($t->selectedTrade == ""): ?>
+                <a href="<?php echo url('EditTradeStudent?id='.$t->student_no); ?>"><?php echo $t->student_no; ?></a>
+                <?php else: ?>
+                <a><?php echo $t->student_no; ?></a>
+                <?php endif; ?>
+            </td>
+            <td><?php echo $t->Institue->InstituteName; ?></td>
+            <td><?php echo $t->Organisation->OrgaName; ?></td>
+            <td><?php echo $t->CourseCode; ?></td>
+            <td><?php echo $t->choice1; ?></td>
+            <td><?php echo $t->choice2; ?></td>
+            <td><?php echo $t->choice3; ?></td>
+            <td><?php echo $t->choice4; ?></td>
+            <td>
+            <form id="deleteform"  action="<?php echo url('DeleteTradeStudent'); ?>" method="POST" onsubmit="return doConfirm('<?php echo $t->student_no; ?>',this)">
+            <input type="hidden" name='tid' value="<?php echo $t->student_no; ?>" />
+            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+            </form>
+            </td>
+            </tr>
+            <?php endforeach; ?>
+            <?php endif; ?>
+            
+    </table>
+<!--PAGE CONTENT ENDS-->
+</div><!--/.span-->
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+    <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+    
+<script type="text/javascript">
+    
+function doConfirm(applicant,formobj){
+    
+    bootbox.confirm("Are you sure you want to remove "+applicant, function(result) 
+        {
+            if(result) 
+               {
+                   formobj.submit();
+                }
+            });
+        return false;
+        }
+</script>

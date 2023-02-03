@@ -1,0 +1,195 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<a href=<?php echo url('employeedependence'); ?>> << Back to Employee Dependency</a> 
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+
+
+
+
+        <div class="span12">
+
+            <!--PAGE CONTENT BEGINS-->
+
+
+
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Employee		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Dependence
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+
+
+
+            <form class="form-horizontal" action="<?php echo url('createEmployeedependence'); ?>" method="POST" name="form1" />
+
+            <div class="control-group">
+                <table height="500" width="500">
+                  <!--  <tr>
+                         <td>
+                             <label class="control-label" for="form-field-1">Organisation id</label></td>
+                         <td> <input type="text" name="id"/></td>
+                     </tr>-->
+                    <tr>
+                        <td>
+                            <label class="control-label" for="form-field-2">Institute Name</label></td>
+                    <div class="controls">
+                        <td>
+                            <input type="hidden" value="<?php echo $user->instituteId; ?>" name="instituteId" />
+                            <input type="text" value="<?php echo Institute::where('InstituteId', "=", $user->instituteId)->pluck('InstituteName');; ?>"  readonly="true"/>
+
+                        </td>
+                    </div>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label" for="form-field-3">Organisation Name</label></td>
+                        <td>
+                            <input type="hidden" value="<?php echo $user->organisationId; ?>" name="organisationId" />
+                            <input type="text" value="<?php echo Organisation::where('id', "=", $user->organisationId)->pluck('OrgaName');; ?>"  readonly="true"/>
+
+                        </td>
+                    </tr>
+                    <?php if($errors->has()): ?>
+                    <?php foreach($errors->all() as $msg): ?>
+                    <!-- Error Message -->
+
+                    <div class="alert alert-error">
+
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="icon-remove"></i>
+                        </button>
+
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+                    </div>
+
+                    <!-- Error Message -->
+
+                    <?php endforeach; ?>
+
+                    <?php endif; ?>
+
+<!--                    <tr>
+                        <td>
+                            <label class="control-label" for="form-field-4">Employee Name</label></td>
+                        <td> <input type="text"  name="Name" /></td>
+                    </tr>-->
+                   
+                    <tr>
+                        <td>
+                            <label class="control-label" for="form-field-5">Employee EPF No</label></td>
+                        <td> <input type="text" name="EPF"  id="EPF"/></td>
+
+
+                    </tr>
+                     <tr>
+                        <td>
+                        <td> <input type="hidden" name="E_ID" id="E_ID" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label" for="form-field-6">Employee Dependence Name</label></td>
+                        <td> <input type="text" name="ED_Name" required="required"/></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label" for="form-field-8">Relation</label></td>
+                        <td> <input type="text" name="Relation" required="required"/></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label" for="form-field-7">DOB</label></td>
+                        <td> <input type="date" name="DOB" required="required"/></td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <label class="control-label" for="form-field-9">Occupation</label></td>
+                        <td> <input type="text" name="Occupation" /></td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <!--    <label class="control-label" for="form-field-10">Date Closed</label></td>
+                            <td> <input type="date" name="DateClosed"/></td>
+                             </tr>-->
+
+                    <tr>
+                        <td>
+                            <label class="control-label" for="form-field-12">Name Of Employer</label></td>
+                        <td> <input type="text" name="NameOfEmployer" /></td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label" for="form-field-12">Employer Address</label></td>
+                        <td> <textarea name="EmployerAddress" rows="4"></textarea> </td>
+
+                    </tr>
+                    <tr >
+                        <td align="right"><input type="submit" class="btn-grey"  value="Submit" ></td>
+                        <td align="center"><input type="reset" value="Clear" class="btn-grey"/></td>
+                    </tr>
+                </table>
+            </div>
+
+            </form>
+
+
+
+
+            <!--PAGE CONTENT ENDS-->
+
+
+        </div><!--/.span-->
+
+
+
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script type="text/javascript">
+
+     $("#EPF").change(function() {
+
+        var epf = document.getElementById('EPF').value;
+
+        $.ajax({
+            url: "<?php echo url::to('epfLoadajax'); ?>",
+            data: {epf: epf},
+            success: function(re) {
+                document.getElementById('E_ID').value = re;
+
+            }
+
+
+        });
+
+    });
+
+
+</script>
+
+

@@ -1,0 +1,638 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+	<div class="span12">
+        <div class="span8" style="width: 100%">
+            <div class="page-header position-relative">
+                <!--<a href=<?php echo url('ViewAndDownloadAssessor'); ?>> << Back to Assessor View</a>-->
+                <h1>View OJT Placed Students<small><i class="icon-double-angle-right"></i>View</small></h1>
+            </div>
+			 </div>
+            <form class="form-horizontal" action='<?php echo url("ViewOJTPlacedStudents"); ?>' method="POST"  id='NewModule'>
+                   
+               
+				<div class="control-group">
+                    <label class="control-label" >District : </label>
+                        <div class="controls" id="Trade">
+                            <select name="District" id="District">
+							
+                                 <option value="">--Select District--</option>
+								  <?php if($OrgaType == 'HO' || $OrgaType == 'PO'): ?>
+								 <option value="All">All</option>
+							   <?php endif; ?>
+                                <?php foreach($Districts as $d): ?>
+                                <option value="<?php echo $d->DistrictCode; ?>"><?php echo $d->DistrictName; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                           
+                        </div>         
+                 </div>
+				 
+                <div class="control-group">
+                    <label class="control-label" >Centre : </label>
+                        <div class="controls" id="Trade">
+                            <select name="CenterID" id="CenterID" required>
+                                 <option value="">--Select Centre--</option>
+								 <?php if($OrgaType == 'HO' || $OrgaType == 'PO' || $OrgaType == 'DO' ): ?>
+								  <option value="All">All</option>
+							     <?php endif; ?>
+                                <?php foreach($Centers as $v): ?>
+                                <option value="<?php echo $v->id; ?>"><?php echo $v->OrgaName; ?> - <?php echo $v->Type; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                           
+                        </div>         
+                 </div> 
+                <div class="control-group">
+                    <label class="control-label" for="centers">Year</label>
+                    <?php  $year = date("Y"); ?>
+                    <div class="controls">
+                      <select name="Year" id="Year" required>
+                            <option value="" required>--- Select Year ---</option>
+							<option value="<?php echo $year-2; ?>"><?php echo $year-2; ?></option>
+							<option value="<?php echo $year-1; ?>"><?php echo $year-1; ?></option>
+                            <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                            <option value="<?php echo $year+1; ?>"><?php echo $year+1; ?></option>
+                            <option value="<?php echo $year+2; ?>"><?php echo $year+2; ?></option>
+                            <option value="<?php echo $year+3; ?>"><?php echo $year+3; ?></option>
+                           
+                          
+                        </select> 
+                    </div>
+                </div>
+				 <div class="control-group">
+                    <label class="control-label" for="centers">Batch:</label>
+                    <div class="controls">
+                        <select name="Batch" id="Batch" required>
+                            <option value="" >--- Select Batch ---</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="1.2">1.2</option>
+							<option value="2.2">2.2</option>
+                        </select>
+                        <span id='img4'></span>
+                    </div>
+                </div>
+               <div class="control-group">
+                    <label class="control-label" >Course Year Plan : </label>
+                        <div class="controls" id="Trade">
+                            <select name="CourseYearPlanID" id="CourseYearPlanID" required>
+                                 <option value="">--Select Course--</option>
+                               
+                            </select>
+                           
+                        </div>         
+                 </div> 
+                  <!-- <div class="control-group">
+                    <label class="control-label" >Date : </label>
+                        <div class="controls" id="Trade">
+                           <input type="date" name="DatePlanned" id="DatePlanned" required>
+                           
+                           
+                        </div>         
+                 </div>  
+                 <div class="controls" id='table1'>
+                            </div>
+							
+							-->
+               
+         <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-small btn-primary">Search</button>
+                </div>
+            </div>             
+
+            </form>
+			 <?php if(isset($trplans)): ?>
+        
+    <table>
+    <tr>
+       
+        <td>
+            <form name='search' action="<?php echo url('PrintOJTPlacedStudents'); ?>" method='POST' class="form-horizontal">
+                <input type="hidden" value="<?php echo $CenterIDD; ?>" name="CenterIDD" id="CenterIDD"/>
+                <input type="hidden" value="<?php echo $YearD; ?>" name="YearD" id="YearD"/>
+                <input type="hidden" value="<?php echo $BatchD; ?>" name="BatchD" id="BatchD"/>
+				<input type="hidden" value="<?php echo $districtD; ?>" name="districtD" id="districtD"/>
+				<input type="hidden" value="<?php echo $CYIPD; ?>" name="CYIPD" id="CYIPD"/>
+                <button type="submit" id="search" class="btn btn-success">
+                <i class="icon-download-alt bigger-200"></i>Download</button>
+               
+            </form> 
+        </td>
+    </tr>
+    </table>
+        
+
+        <?php endif; ?>
+		
+		 <div class="span12">
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                 <thead>
+                <tr>
+						<th class="center">No</th>
+						<th class="center">Mark OJT Completion</th>
+						<th class="center">District</th>
+						<th class="center">Centre</th>
+                        <th class="center">Year</th>
+                        <th class="center">Batch</th>
+                        <th class="center">Course</th>
+						<th class="center">CourseListCode</th>
+						<th class="center">Instructors</th>
+                        <th class="center">CourseType</th>
+                        <th class="center">NVQ/NON-NVQ</th>
+                        <th class="center">NVQ Level</th>
+						<th class="center">Duration</th>
+                        <th class="center">Name With Initials</th>
+                        <th class="center">Full Name</th>
+						<th class="center">NIC</th>
+						<th class="center">MIS Number</th>
+                        <th class="center">Mobile</th>
+					    <th class="center">Address</th>
+						<th class="center">Gender</th>
+						<th class="center">Company Name</th>
+						<th class="center">Address</th>
+						<th class="center">Job Category</th>
+						<th class="center">Start Date</th>
+						<th class="center">End Date</th>
+						<th class="center">Allowence Per Month</th>
+						<th class="center">OJT Completed</th>
+						<th class="center">OJT Dropout</th>
+						
+						
+                </tr>
+                 </thead>
+                 <?php $tt=1; ?>
+                 <tbody>
+                <?php if(isset($trplans)): ?>
+                    <?php foreach($trplans as $mm): ?>
+                    <tr>
+                     
+                       <td class="center"><?php echo $tt++; ?></td>
+					  
+					
+					   <td class='center'> 
+					   <?php if($user->hasPermission('MarkOJTCompletion')): ?>
+						   <?php if($mm->OJTDropout == 0 && $mm->OJTCompleted == 0): ?>
+					        <font color="green"><a class="green"  id="<?php echo $mm->ojtplaceiD; ?>"> <i class="icon-thumbs-up bigger-200"></i></a> </font>
+						   <?php elseif($mm->OJTDropout == 1): ?>
+							<font color="red">This Student Already Dropout During the OJT</font>  
+						   <?php else: ?>
+							<font color="blue">This Student Already Completed the OJT</font>  
+				          <?php endif; ?>
+				       <?php endif; ?>
+					   </td>
+					
+					    
+					    <td class="center"><?php echo $mm->DistrictName; ?></td>
+						 <td class="center"><?php echo $mm->OrgaName; ?>-(<?php echo $mm->Type; ?>)</td>
+                        <td class="center"><?php echo $mm->Year; ?></td>
+                        <td class="center"><?php echo $mm->batch; ?></td>
+                        <td class="center"><?php echo $mm->CourseName; ?></td>
+						<td class="center"><?php echo $mm->CourseListCode; ?></td>
+						
+						<?php
+						//$endDate = MOCenterMonitoringPlan::getEndDate($mm->RealstartDate,$mm->Duration);
+						//$Packages = MOCenterMonitoringPlan::getPackages($mm->CD_ID);
+						//$monitoringDate = MOCenterMonitoringPlan::getMonitoringDates($mm->id);
+						
+						 $ppp = "select moinstructor.id,moinstructor.Name,moinstructor.EPFNo
+						  from moinstructorcourse
+						  left join moinstructor
+						  on moinstructorcourse.InstructorID=moinstructor.id
+						  where moinstructorcourse.CourseYearPlanID='".$mm->CourseYearPlanID."'
+						  and moinstructorcourse.Active='Yes'";
+                          $Ins=DB::select(DB::raw($ppp));
+						  
+						?>
+						<td class="left">
+						<?php foreach($Ins as $i): ?>
+						<span><?php echo $i->Name; ?>(<?php echo $i->EPFNo; ?>)</br></span>
+						<?php endforeach; ?>
+						</td>
+                        <td class="center"><?php echo $mm->CourseType; ?></td>
+                        <td class="center"><?php echo $mm->Nvq; ?></td>
+                        <td class="center"><?php echo $mm->CourseLevel; ?></td>
+                        <td class="center"><?php echo $mm->Duration; ?></td>
+                        <td class="center"><?php echo $mm->NameWithInitials; ?></td>
+						<td class="center"><?php echo $mm->FullName; ?></td>
+						<td class="center"><?php echo $mm->NIC; ?></td>
+						<td class="center"><?php echo $mm->MISNumber; ?></td>
+						<td class="center"><?php echo $mm->Mobile; ?></td>
+						<td class="center"><?php echo $mm->Address; ?></td>
+						<td class="center"><?php echo $mm->Gender; ?></td>
+					
+						<td><?php echo $mm->CompanyName; ?></td>
+						<td><?php echo $mm->CAddress; ?></td>
+                        <td><?php echo $mm->Category; ?></td>
+						<td><?php echo $mm->StartingDate; ?></td>
+						<td><?php echo $mm->EndDate; ?></td>
+						<td><?php echo $mm->Salary; ?></td>
+						<td class="center">
+						
+						<?php if($mm->OJTCompleted == 0): ?>
+						<font color="red"><i class="icon-remove bigger-130"></i></font>
+						<?php else: ?>
+					    <font color="green"><i class="icon-ok bigger-130"></i></font>
+						<?php endif; ?>
+						
+						</td>
+						<td class="center">
+						
+						<?php if($mm->OJTDropout == 0): ?>
+						<font color="green"><i class="icon-remove bigger-130"></i></font>
+						<?php else: ?>
+						<font color="red"><i class="icon-ok bigger-130"></i></font>
+						
+						<?php endif; ?>
+						
+						</td>
+                       
+						
+						
+                        
+                   </tr>
+                        <?php endforeach; ?>
+                    <?php if($trplans=='[]'): ?>
+                        <center>Data Not Found</center>
+                    <?php endif; ?>
+                <?php endif; ?>
+				
+				
+				
+        </tbody>
+            </table>
+             
+        </div><!--/.span-->
+		</div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+                                            function doConfirm(course, formobj)
+                                            {
+                                            bootbox.confirm("Are you sure you want to remove Course Year Plan with Course List Code : " + course, function(result)
+                                            {
+                                            if (result)
+                                            {
+                                            formobj.submit();
+                                            }
+                                            });
+                                                    return false; // by default do nothing hack :D
+                                            }
+
+                                    $('#sample-table-2').dataTable({
+                                    "aoColumns": [
+                                          
+                                    {"bSortable": false},
+                                    {"bSortable": false},
+                                    {"bSortable": false},
+									{"bSortable": false},
+                                            null,
+											null,
+									
+											null,
+												null,
+                                            null,
+                                    {"bSortable": false},
+                                            null,
+											null,
+											null,
+											null,null,
+											null,
+											null,
+											null,
+											null,
+											null,
+											null,
+											null,
+											null,
+											null,
+											null,null,null,null,
+                                   // {"bSortable": false},
+                                   
+                                   
+                                   
+                                    ]});
+                                            $('table th input:checkbox').on('click', function() {
+                                    var that = this;
+                                            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                                            .each(function() {
+                                            this.checked = that.checked;
+                                                    $(this).closest('tr').toggleClass('selected');
+                                            });
+                                    });
+                                            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+                                            function tooltip_placement(context, source) {
+                                            var $source = $(source);
+                                                    var $parent = $source.closest('table')
+                                                    var off1 = $parent.offset();
+                                                    var w1 = $parent.width();
+                                                    var off2 = $source.offset();
+                                                    var w2 = $source.width();
+                                                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                                                    return 'right';
+                                                    return 'left';
+                                            }
+
+
+</script>
+<script>
+
+    <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+	
+	
+
+
+      /*  $("#CenterID").change(function() {
+        var cid = $("#CenterID").val();
+        $("#table").html('');
+        $("#CourseYearPlanID").html('');
+        var msg = '--- Select Course ---';
+        $.ajax({
+            type: "GET",
+            url: "<?php echo url::to('FilterCourseYearPlans'); ?>",
+            data: {CourseListCode: cid},
+            success: function(result) {
+                $('#table').html(result);
+
+            },
+            complete: function() {
+                          $.ajax({
+                                        type: "GET",
+                                        url: "<?php echo url::to('FilterCourseYearPlans1'); ?>",
+                                        data: {CourseListCode: cid},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#CourseYearPlanID").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#CourseYearPlanID").append("<option value=" + item.id + ">" +item.CourseName + "-"+ item.CourseListCode +  "[Year - " + item.Year + "][Batch - " + item.batch+"]Duration-("+ item.Duration+")-(" + item.RealstartDate + ")</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            }
+        });
+    }); */
+
+    
+     $("#Batch").change(function() {
+        var Batch = $("#Batch").val();
+		var Year = $("#Year").val();
+		var cid = $("#CenterID").val();
+         var dis = $("#District").val();
+        //$("#table").html('');
+        $("#CourseYearPlanID").html('');
+        var msg = '--- Select Course ---';
+			var all = 'All';
+       
+           
+           
+                          $.ajax({
+                                        type: "GET",
+                                        url: "<?php echo url::to('IRFilterCourseYearPlans1'); ?>",
+                                        data: {CourseListCode: cid,Year: Year,Batch: Batch,dis: dis},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#CourseYearPlanID").append("<option value=''>" + msg + "</option>");
+											  $("#CourseYearPlanID").append("<option value='All'>" + all + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#CourseYearPlanID").append("<option value=" + item.id + ">" +item.CourseName + "-"+ item.CourseListCode +  "[Year - " + item.Year + "][Batch - " + item.batch+"]Duration-("+ item.Duration+")-(" + item.RealstartDate + "-" + item.CourseType + "NVQ Level - " + item.CourseLevel +")</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            
+       
+    });
+    
+    $('#DatePlanned').change(function(){
+
+        //alert('dg');
+       var DatePlanned = document.getElementById('DatePlanned').value;
+       var CenterID = document.getElementById('CenterID').value;
+       var CourseYearPlanID = document.getElementById('CourseYearPlanID').value; 
+      // var msg = '--- Select Working Place ---';
+        //$("#WorkingPlace").html('');
+       $.ajax  ({
+                    url: "<?php echo url::to('MOCMCheckPlanneddate'); ?>",
+                    data: {DatePlanned: DatePlanned,CenterID: CenterID,CourseYearPlanID: CourseYearPlanID},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        if(result.module == 1)
+                        {
+                             document.getElementById('DatePlanned').value = "";
+                             $('#table1').html(result.html);
+                             
+                        }
+                        else
+                        {
+                             $("#table1").html('');
+                        }
+                       
+                        
+                                        
+                        
+                        }
+
+
+                    
+                });
+        
+
+
+       
+    });
+
+    function fillModule1() {
+
+        //alert('dfhgftrghy');
+        var WorkingPlaceName = document.getElementById('WorkingPlaceName').value;
+        var WorkingPlaceAddress = document.getElementById('WorkingPlaceAddress').value;
+        var InstituteId = document.getElementById('M_Code').value;
+        var ContactNo = document.getElementById('ContactNo').value;
+        $.ajax({
+                    url: "<?php echo url::to('saveAssessorWorkingPlace'); ?>",
+                    data: {WorkingPlaceName: WorkingPlaceName, WorkingPlaceAddress: WorkingPlaceAddress, InstituteId: InstituteId,ContactNo: ContactNo},
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.ModuleId !== 0) {
+                            $("#ModuleDiv1").html(result.html);
+                            $('#addModule1').hide();
+                            $('#ajaxerror').html(result.done);
+                            
+                           //var InstititeId = result.InstituteAddress;
+                           // $("#WorkingPlace").html('');
+                              /*  $.ajax({
+                                            url: "<?php echo url::to('getModuleId'); ?>",
+                                            data: {ModuleCode: ModuleCode},
+                                            success: function(re) {
+                                                  document.getElementById("AjaxModuleId").value = re;
+                                                               }
+                                       });*/
+
+                        /* $.ajax  ({
+                                    url: "<?php echo url::to('getWorkingPlace'); ?>",
+                                    data: { InstititeId: InstititeId},
+                                    dataType: "json", 
+                                    success: function(result) {
+
+                                        //alert(result);
+                                        $("#WorkingPlace").append("<option value=''>" + msg + "</option>");
+                                         $.each(result, function(i, item)
+                                        {
+
+
+
+                                            $("#WorkingPlace").append("<option value=" + item.id + ">" + item.Placename + "  (" + item.Address + ")</option>");
+
+
+
+                                        });
+                                                        
+                                        
+                                        }
+
+
+                                    
+                                });*/
+
+                        } else {
+                            $('#ajaxerror').html(result.html);
+                            window.scrollTo(0, 0);
+                        }
+                    }
+                });
+    }
+	$("#District").change(function() 
+	{
+        var District = $("#District").val();
+        $("#CenterID").html('');
+        //$("#CourseYearPlanID").html('');
+        var msg = '--- Select Centre ---';
+		var all = 'All';
+       
+                          $.ajax({
+                                        type: "GET",
+                                        url: "<?php echo url::to('loaddistrictcentersin'); ?>",
+                                        data: {District: District},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#CenterID").append("<option value=''>" + msg + "</option>");
+											 $("#CenterID").append("<option value='All'>" + all + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#CenterID").append("<option value=" + item.id + ">" +item.OrgaName + "(" + item.Type + ")</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            
+     
+    });
+	
+	$('#upload').click(function()
+    {
+      
+        var CenterIDD = $("#CenterIDD").val(); 
+		 var YearD = $("#YearD").val(); 
+		  var BatchD = $("#BatchD").val(); 
+		   var districtD = $("#districtD").val(); 
+       
+      //alert(CD_ID);
+      
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            
+                            document.getElementById('img7').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+                        type: "POST",
+                        url: "<?php echo Url('PrintPDFTrainingPlanReportCheck'); ?>",
+                        data: {CenterIDD: CenterIDD,YearD:YearD,BatchD:BatchD,districtD:districtD},
+                        success:function response(responseText, statusText, xhr, $form)
+                        {
+       
+                               var printWin = window.open("","printSpecial");
+                                printWin.document.open();
+                                printWin.document.write(responseText);
+                                printWin.document.close();
+                                printWin.print();
+       
+   
+                         
+
+                        },
+                        complete: function() {
+                            document.getElementById('img7').innerHTML ="";
+
+                        }
+                    });
+        
+    }
+    );
+	
+	 $(".green").click(function(){
+
+     var id = this.id;
+     //alert(id);
+
+
+      $.ajax  ({
+                    url: "<?php echo url::to('MarkOJTCompletion'); ?>",
+                    data: { id: id},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       location.reload();          
+                        
+                        }
+
+
+                    
+                }); 
+  
+});
+    
+
+    </script>
+
+

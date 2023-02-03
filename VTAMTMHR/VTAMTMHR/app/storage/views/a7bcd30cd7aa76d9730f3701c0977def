@@ -1,0 +1,151 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Transfer Student			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        View
+                    </small>			
+                </h1>
+            </div>
+            <form class="form-horizontal" method="POST" action="<?php echo url('CTran_Transfer'); ?>">
+                <div class="control-group">
+                    <label class="control-label" for="InstituteId">Institute Name</label>
+                    <div class="controls">
+                        <input type="text" name="InstituteId" disabled="true" value="<?php echo $institute; ?>"/>
+                        <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="control-group">
+                    <label class="control-label" for="NIC">Search NIC</label>
+                    <div class="controls">
+                        <input type="text" name="nic" id="nic" placeholder="Search by Nic"/>
+                    </div>
+                </div>
+                <br/> 
+                <div class="control-group">
+                    <label class="control-label" for="studentid">Student NO</label>
+                    <div class="controls">
+                        <input type="text" name="studentid" readonly id="studentid"/>
+                    </div>
+                </div>
+                <br/> 
+                <div class="control-group">
+                    <label class="control-label" for="fromcenter">Current Center</label>
+                    <div class="controls">
+                        <input type="text" name="fromcenter" readonly id="fromcenter"/>
+                        <input type="hidden" name="fromcenter" id="rest"/>
+                    </div>
+                </div>
+                <br/> 
+                <div class="control-group">
+                    <label class="control-label" for="fromcourse">Current Course Code</label>
+                    <div class="controls">
+                        <input type="text" name="fromcourse" readonly id="fromcourse"/>
+                    </div>
+                </div>
+                <br/> 
+                <div class="control-group">
+                    <label class="control-label" for="tocenter">To Center</label>
+                    <div class="controls">
+                        <select name="tocenter" id="tocenter">
+                            <option></option>
+                            <?php foreach($center as $c): ?>
+                            <option value="<?php echo $c->id; ?>"><?php echo $c->OrgaName; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <br/>
+                <div class="control-group">
+                    <label class="control-label" for="tocourse">To Course</label>
+                    <div class="controls">
+                        <select name="tocourse" id="tocourse">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+                <br/>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary" id="transfer">Transfer</button>
+                    </div>
+                </div>
+                <br/>
+            </form>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script>
+    $("#nic").change(function() {
+        var nic = document.getElementById("nic").value;
+
+        $.ajax
+                ({
+                    url: "<?php echo url::to('CTran_Searchnic'); ?>",
+                    data: {nic: nic},
+                    success: function(result)
+                    {
+                        var a = result.split(',');
+                        var stid = a[0];
+                        var cen = a[1];
+                        var cou = a[2];
+                        var id = a[3];
+                        document.getElementById("studentid").value = stid;
+                        document.getElementById("fromcenter").value = cen;
+                        document.getElementById("fromcourse").value = cou;
+                        document.getElementById('rest').value = id;
+                    }
+                });
+
+    });
+
+    $("#tocourse").change(function() {
+        var fromcenter = document.getElementById("rest").value;
+        var fromcourse = document.getElementById("fromcourse").value;
+        var tocenter = document.getElementById("tocenter").value;
+        var tocourse = document.getElementById("tocourse").value;
+//        alert(tocourse+fromcourse+fromcenter+tocenter);
+        if (fromcenter === tocenter && fromcourse === tocourse) {
+            document.getElementById("transfer").style.visibility = "hidden";
+            alert("pissuda OIIII.......");
+        } else {
+            document.getElementById("transfer").style.visibility = "";
+        }
+
+    });
+    $('#tocenter').change(function() {
+        var tocenter = document.getElementById("tocenter").value;
+        $.ajax({
+            url: "<?php echo url::to('CTran_getCourseCode'); ?>",
+            data: {tocenter: tocenter},
+            dataType: "json",
+            beforeSend: function() {
+                $("body").css("cursor", "progress");
+                $("body input").css("cursor", "progress");
+            },
+            success: function(result) {
+//                alert(result);
+                $("#tocourse").find('option:gt(0)').remove();
+                    $.each(result, function(index, value) {
+                        $("#tocourse").append('<option value="' + value.CourseCode + '">' + value.CourseCode +  '</option>');
+                    });
+            },
+            complete: function() {
+                $("body").css("cursor", "default");
+                $("body input").css("cursor", "default");
+            }
+        });
+    });
+
+
+
+
+
+
+</script>

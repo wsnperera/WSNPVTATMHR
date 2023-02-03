@@ -1,0 +1,321 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css"/>
+<link rel="stylesheet" href="assets/css/chosen.css"/>
+<link rel="stylesheet" href="assets/css/ace.min.css"/>
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css"/>
+<link rel="stylesheet" href="assets/css/ace-skins.min.css"/>
+
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>VTA
+                    <small><i class="icon-double-angle-right"></i>View All Island Dropout Summary</small>
+                </h1>
+
+                <div id="ReturnMessages">
+                    <?php if(Session::has('message')): ?>
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-ok"></i>
+                                <?php echo Session::get('message'); ?>
+                            </strong>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <!--center's drop down-->
+
+                <form class="form-horizontal" id="main_from" action='' name="fully[]" method="POST"
+                      enctype="multipart/form-data">
+
+                   <div class="control-group">
+                        <label class="control-label" for="Year">Year : </label>
+                        <div class="controls">
+                            <select id="Year" name="Year"  data-toggle="tooltip" title="Select A Year  වර්ෂය තෝරාගන්න">
+                                <option value="0">-- Select Year --</option>
+                                <option value="ALL">All</option>
+                                <?php foreach($Year as $y): ?>
+                                <option value="<?php echo $y->YearStart; ?>"><?php echo $y->YearStart; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <b style="color: red">*</b>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">District :</label>
+                        <div class="controls">
+                            <select id="District" name="District" data-toggle="tooltip" title="Select A District දිස්ත්‍රික්කය තෝරාගන්න">
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="divCenter">
+                        <input type="hidden" value="ALL" id="Center" name="Center">
+                    </div>
+                    <div id="divCourse">
+
+                    </div>
+                    <div id="divBatch">
+                       
+                    </div>
+
+                    <div class="control-group" id="divButtons" name="divButtons" hidden>
+                        <div class="controls">
+                            <button type="button" class="btn btn-primary " onclick="" id="View" name="View" data-toggle="tooltip" title="View Summary Report  සාරාංශ වාර්තාව බැලීම ">
+                                View</button>
+                            <button type="button" class="btn btn-primary" id="DownloadReport" name="DownloadReport" data-toggle="tooltip" title="Download Summary Report  සාරාංශ වාර්තාව භාගතකිරීම">Download Report
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <!--display loading-->
+                    <div id="loding">
+                    </div>
+                    <!--set display none-->
+
+                    <!--Details table-->
+                    <div id="table1">
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script>
+ /*    function getTable() {
+        var center = $("#center").val();
+        var year = $("#year").val();
+
+
+        $.ajax
+        ({
+            type: "GET",
+            url: "<?php echo Url('centerwisedropoutdetailsDisplay'); ?>",
+            data: {center: center,year: year},
+            dataType: 'json',
+            success: function (result) {
+                if (result.Count > 0) {
+                    $('#table').html(result.Table);
+                }
+                else {
+                    alert("data not found");
+                }
+
+            }
+        });
+
+    }
+    function downloadReport() {
+        var center = $("#center").val();
+        var year = $("#year").val();
+
+        window.location.replace("centerwisedropoutdetailsDownload?instituteID=" + center + "&year=" + year + "");
+        bootbox.alert('Please wait few seconds');
+
+
+    } */
+
+    $(document).ready(function () {
+        var a = "<?php if(isset($a)): ?> <?php endif; ?>";
+        if (a) {
+            var b = a.trim();
+            $('#center').attr('disabled', 'disabled');
+            //$("#module").val(b).change();
+        }
+
+    });
+
+
+</script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+<script>
+    $("#District").change(function () {
+        $("#divButtons").hide();
+        $('#table1').html('');
+        var District = $("#District").val();
+        var Center = $("#Center").val();
+        var Year = $("#Year").val();
+        $("#divCourse").html('');
+        $("#divBatch").html('');
+        $('#table1').html('');
+        $("#divCenter").html('<input type="hidden" value="ALL" id="Center" name="Center">');
+        if (District != 0) {
+            if (District != 'ALL') {
+                $.ajax({
+                    url: 'loadCentersForDistrict',
+                    data: {District: District},
+                    success: function (result) {
+                        $("#divCenter").html(result);
+                    },
+                    error: function (result) {
+                        alert(result.responseText);
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: 'loadCoursesForCenter',
+                    data: {Center: Center, Year: Year, District: District},
+                    success: function (result) {
+                        $("#divCenter").html('<input type="hidden" value="ALL" id="Center" name="Center">');
+                        $("#divCourse").html(result);
+                    },
+                    error: function (result) {
+                        alert(result.responseText);
+                    }
+                });
+            }
+        } else {
+
+        }
+    });
+</script>
+<script>
+    $("#divCenter").on("change", "#Center", function () {
+        var Center = $("#Center").val();
+        var Year = $("#Year").val();
+        $('#table1').html('');
+        $("#divCourse").html('');
+        $("#divBatch").html('');
+        $('#table1').html('');
+        var District = $("#District").val();
+        $("#divButtons").hide();
+        if (Center != 0) {
+            $.ajax({
+                url: 'loadCoursesForCenter',
+                data: {Center: Center, Year: Year, District: District},
+                success: function (result) {
+                    $("#divCourse").html(result);
+                },
+                error: function (result) {
+                    alert(result.responseText);
+                }
+            });
+        }
+    });
+</script>
+<script>
+    $("#divCourse").on("change", "#Course", function () {
+        var Course = $("#Course").val();
+        $("#divButtons").hide();
+        $('#table1').html('');
+        $("#divBatch").html('');
+        $('#table1').html('');
+        if (Course != 0) {
+            $.ajax({
+                url: 'loadBatchForCourseStart',
+                data: {},
+                success: function (result) {
+                    $("#divBatch").html(result);
+                },
+                error: function (result) {
+                    alert(result.responseText);
+                }
+            });
+        }
+    });
+</script>
+<script>
+    $("#Year").change(function () {
+        var Year = $("#Year").val();
+        $("#divButtons").hide();
+        $('#table1').html('');
+        $('#divCourse').html('');
+        $('#divBatch').html('');
+        $("#divCenter").html('<input type="hidden" value="ALL" id="Center" name="Center">');
+        if (Year == 0) {
+            $('#table1').html('');
+            $('#Course').html('');
+            $('#Batch').html('');
+        } else {
+            $("#divCenter").html('<input type="hidden" value="ALL" id="Center" name="Center">');
+            $('#District').html('<?php echo $District; ?>');
+        }
+    });</script>
+<script>
+    $("#divBatch").on("change", "#Batch", function () {
+        $('#table1').html('');
+        if ($("#divButtons").is(":hidden")) {
+            $("#divButtons").show();
+        }
+    });</script>
+<script>
+    $("#View").click(function () {
+        $('#table1').html('');
+        var District = $("#District").val();
+        var Center = $("#Center").val();
+        var Course = $("#Course").val();
+        var Batch = $("#Batch").val();
+        var Year = $("#Year").val();
+        if (Year != 0 && District != 0 && Course != 0 && Batch != 0 && Center != 0) {
+            $.ajax({
+                url: 'loadCenterWiseDropoutReport',
+                data: {District: District, Center: Center, Course: Course, Batch: Batch, Year: Year},
+                beforeSend: function () {
+                    $("#table1").html("<img src='<?php echo Url('assets/images/ajax-loader.gif'); ?>' style='width:200px;height:200px;'/>");
+                },
+                success: function (result) {
+                    $('#table1').html(result);
+                    ab();
+                },
+                error: function (res) {
+                    bootbox.alert(res.responseText);
+                }
+            })
+        } else {
+            bootbox.alert("Please Enter Valid Inputs");
+        }
+    });
+    function ab() {
+        $('#dropoutSummary').dataTable({
+            "aoColumns": [
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false}
+            ]});
+    }
+
+</script>
+<script>
+    //downloadCenterWiseDropoutReport   DownloadReport
+    $("#DownloadReport").click(function () {
+
+        var District = $("#District").val();
+        var Center = $("#Center").val();
+        var Course = $("#Course").val();
+        var Batch = $("#Batch").val();
+        var Year = $("#Year").val();
+        if (Year != 0 && District != 0 && Course != 0 && Batch != 0 && Center != 0) {
+            window.location.replace('downloadCenterWiseDropoutReport?District=' + District + '&Center=' + Center + '&Course=' + Course + '&Batch=' + Batch + '&Year=' + Year);
+        } else {
+            bootbox.alert("Please Enter Valid Inputs");
+        }
+    });
+</script>

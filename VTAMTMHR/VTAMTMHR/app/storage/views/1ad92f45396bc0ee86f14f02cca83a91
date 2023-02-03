@@ -1,0 +1,227 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>
+                Total Daily Attendance Percentage  		
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    View
+                </small>			
+            </h1>
+        </div><!--/.page-header-->  
+
+        <div class="well well-small">
+            <center>
+        		<?php if($type == 'HO'): ?>
+            		<form method="get">
+                        </br>
+                        <table> 
+                        <tr>
+                            <td><b>District</b></td>
+                            <td width="10%"></td>
+                            <td><b>Organisation</b></td>
+                            <td width="10%"></td>
+                            <td><b>Date</b></td>
+                        </tr> 
+
+                        <tr height="10"></tr>
+
+                        <tr>
+                            <td>
+                                <select id="dis" name="dis" >
+                                    <option value="">Select District</option>   
+                                    <option value="All">All</option>   
+                                    <?php foreach ($district as $d): ?>
+                                        <option  value="<?php echo $d->DistrictCode; ?>"><?php echo $d->DistrictName; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                            <td width="10%"></td>
+                            <td>
+                                <select id="organ" name="organ" >
+                                    <option value="">Select Organisation</option>  
+                                </select>
+                            </td>
+                            <td width="10%"></td>
+                            <td>
+                                <div class="control-group">
+                                    <div class="row-fluid input-prepend">
+                                        <span class="add-on"><i class="icon-calendar"></i></span>
+                                        <input class="span10" type="text" name="date-range-picker" id="id-date-range-picker-1" />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td height="10px"></td>
+                        </tr>
+
+                        </table>  
+
+                        <div align="center">
+                            <input class="btn btn-small btn-primary" id="btn_Check" value="Get Attendance Percentage" style="width:95%"></input>
+                        </div>
+    
+                    </form>
+        		<?php endif; ?>
+
+            </center>
+        </div>
+
+        <?php if(isset ($dropouts)): ?>
+    		<form class="form-horizontal"  action="<?php echo url('downloadDropout'); ?>" method="get">
+                <input type="submit" class="btn btn-large pull-right" value="Download"/>
+    		  <input type="hidden" value="<?php echo $ccode; ?>" name="ccode"/>
+    		</form>
+		<?php endif; ?>
+
+        <span id="loding">
+        </span>
+
+        <div id="table" class="row-fluid span20" style="margin: 0px;" overflow="auto">
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead> 
+                    <th><b>Date</b></th> 
+                    <th><b>organisation Name</b></th> 
+                    <th><b>Total Trainee Count In Course</b></th>
+                    <th><b>Total Number Of Attendance</b></th>
+                    <th><b>Attendance Percentage</b></th>
+                </thead>
+
+                <tbody id="table-body">
+                </tbody>
+            </table>   
+        </div>
+
+        <div>
+
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+
+<script type="text/javascript">
+
+//*****************************************************************
+$("#dis").change(function()
+{
+    var d_Code = $("#dis").val();
+                         
+    //alert(d_Code);
+
+    $("#organ").html('');
+
+    $.ajax
+        ({
+            type: "GET",
+            url: "<?php echo Url('loadOrganisation'); ?>",
+            data: {d_Code: d_Code},
+            dataType: "json",
+            success: function(result)
+            {
+                //alert('dddddddddd');
+                                            
+                $("#organ").append("<option>--- Select Institute ---</option>");
+                $("#organ").append("<option>All</option>");
+
+                $.each(result, function(i, item)
+                {
+                    //alert('item');
+
+                    $("#organ").append("<option value=" + item.id + ">" +item.OrgaName + "</option>");
+
+                });
+
+            }
+        });
+});
+//********************************************************************
+
+//*****************************************************************
+$("#btn_Check").click(function()
+{
+    //alert("Plz");
+
+    var District = $("#dis").val();
+    var Organisation = $("#organ").val();
+    var Date = $("#id-date-range-picker-1").val();
+
+    //alert(District);
+    //alert(Organisation);
+    //alert(CourseCode);
+    //alert(Module);
+
+    //$("#module").html('');
+
+    $.ajax
+    ({
+        beforeSend: function() 
+        {
+            document.getElementById('loding').innerHTML = "<br><br><img height='80%' width='50%' src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+        },
+
+        type: "GET",
+        url: 'ajaxGetStudentDailyAttendanceDetails',
+        data:{District :District,Organisation :Organisation,Date :Date,},
+
+        success: function(result) 
+        {
+            if(result == null)
+            {
+                document.getElementById('loding').innerHTML = "<font style='margin-left: 200px;' >----------<b>No Date Found</b>----------</font>";
+            }
+            else
+            {
+                document.getElementById('loding').innerHTML ="";
+                document.getElementById('table-body').innerHTML =result;
+                $('#table').show();
+            }
+        },
+    });
+});
+//*****************************************************************
+
+$(document).ready(function()
+{
+    $('#table').hide();
+});
+
+</script>
+
+<script type="text/javascript">
+
+/* ------------------------------------------------------------------------------- */
+
+$('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
+                    $(this).next().focus();
+                });
+/* ------------------------------------------------------------------------------- */
+
+</script>
+
+
+

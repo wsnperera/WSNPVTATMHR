@@ -1,0 +1,162 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<?php if(isset($Issearch)): ?>
+<a href="<?php echo url('courses'); ?>"> << Back to Dropouts </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>
+                Dropout 
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    Add
+                </small>			
+            </h1>
+        </div>                            
+
+        <form class="form-horizontal"  action="<?php echo url('createDropout1'); ?>" method="get">
+            <div class="control-group">
+                <label class="control-label" for="form-field-2">Select Course Code </label>
+                <div class="controls">
+                    <select id="coursecode" name="coursecode" onchange="javascript:submit()">
+                        <option value="">Select Course Code</option>   
+                        <?php foreach ($coursecodes as $i): ?>
+                        <option <?php if($i->CourseCode == $cou_co): ?> selected  <?php endif; ?> value="<?php echo $i->CourseCode; ?>"><?php echo $i->CourseCode; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+        </form>
+
+        <!--        <form name='search' action="<?php echo url('searchDropout1'); ?>" method='get'>                         
+                    Search Training No <input type='text' name="searchkey"/>   <input type='submit' value='Search'/>
+                    <input type="hidden" name="course_c" value="<?php echo $cou_co; ?>"/>
+                </form>    -->
+
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Training No</th>
+                        <th>Name With Initials</th>
+                        <th>NIC</th>
+                        <th>Index No</th>
+                        <th>Course Code</th>
+                        <th>Add to Dropouts</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <?php if(isset ($trainees)): ?>
+                    <?php foreach ($trainees as $c): ?>
+                    <tr>
+                        <td><?php echo $c->training_no; ?></td>
+                        <td><?php echo $c->NameWithInitials; ?></td>
+                        <td><?php echo $c->NIC; ?></td>
+                        <td><?php echo $c->IndexNo; ?></td>
+                        <td><?php echo $c->CourseCode; ?></td>
+                        <td>
+                            <form id="deleteform"  action="<?php echo url('deleteDropout1?NIC='.$c->training_no); ?>" method="POST" onsubmit="return doConfirm('<?php echo $c->training_no; ?>','<?php echo $c->NameWithInitials; ?>', this)">
+                                <input type="hidden" name='cid' value="<?php echo $c->training_no; ?>"/>
+                                <input type="hidden" name='Reason' id='Reason'/>
+                                <input type="hidden" name='DropoutDate' id='DropoutDate'/>
+                                <button type="submit" class="btn btn-danger btn-small"><i class="icon-reply icon-only"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+                                                function doConfirm(training_no, NameWithInitials, formobj) {
+                                                bootbox.dialog("<h3>Drop out Reason & Date...!<\h3>\
+                                                                <form id='formobj' action='' class='form-horizontal'>\
+                                                                <div class='control-group'>\
+                                                                <label class='control-label' for='form-field-2'> Name with Initials: </label>\
+                                                                <div class='controls'> \
+                                                                <input type='text' name='NameWithInitials' id='NameWithInitials' readonly value='" + NameWithInitials + "'/>\
+                                                                </div>\
+                                                                </div>\
+                                                                <div class='control-group'>\
+                                                                <label class='control-label' for='form-field-2'> Training No: </label>\
+                                                                <div class='controls'> \
+                                                                <input type='text' name='training_no' id='training_no' readonly value='" + training_no + "'/>\
+                                                                </div>\
+                                                                </div>\
+                                                                <div class='control-group'>\
+                                                                <label class='control-label' for='form-field-2'>\<b>Reason for Dropout?:</b> </label>\
+                                                                <div class='controls'> \
+                                                                <input type='text' name='Reason1' id='Reason1' placeholder='Enter a Reason' />\
+                                                                </div>\
+                                                                </div>\
+                                                                <div class='control-group'>\
+                                                                <label class='control-label' for='form-field-2'>\<b> Dropout Date:</b> </label>\
+                                                                <div class='controls'> \
+                                                                <input type='date' name='DropoutDate1' id='DropoutDate1'  />\
+                                                                </div>\
+                                                                </div>\
+                                                                </form>",
+                                                        [{
+                                                        "label" : "Drop Out!",
+                                                                "class" : "btn-success",
+                                                                "callback": function() {
+                                                                document.getElementById("deleteform").elements[1].value = document.getElementById("formobj").elements[2].value;
+                                                                        document.getElementById("deleteform").elements[2].value = document.getElementById("formobj").elements[3].value;
+                                                                        if (document.getElementById("deleteform").elements[1].value !== '' && document.getElementById("deleteform").elements[2].value !== ''){
+                                                                formobj.submit();
+                                                                } else{
+                                                                bootbox.alert('Drop Out Reason & Date are should be entered, Before PRESS Drop Out')
+                                                                }
+                                                                }
+                                                        }, {
+                                                        "label" : "Cancel!",
+                                                                "class" : "btn-primary",
+                                                                "callback": function() {
+                                                                //Example.show("Primary button");
+                                                                }
+                                                        }]);
+                                                        return false; // by default do nothing hack :D
+                                                }
+
+
+
+
+                                        $("#coursecode").change(function() {
+                                        window.location = "createDropout1?coursecode=" + $("#coursecode").val();
+                                        });
+                                        
+                                                $('#sample-table-2').dataTable({
+                                        "aoColumns": [ null, null, null, null, {"bSortable": false}, {"bSortable": false}]});
+                                                $('table th input:checkbox').on('click', function() {
+                                        var that = this;
+                                                $(this).closest('table').find('tr > td:first-child input:checkbox')
+                                                .each(function() {
+                                                this.checked = that.checked;
+                                                        $(this).closest('tr').toggleClass('selected');
+                                                });
+                                        });
+                                                $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+                                                function tooltip_placement(context, source) {
+                                                var $source = $(source);
+                                                        var $parent = $source.closest('table')
+                                                        var off1 = $parent.offset();
+                                                        var w1 = $parent.width();
+                                                        var off2 = $source.offset();
+                                                        var w2 = $source.width();
+                                                        if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                                                        return 'right';
+                                                        return 'left';
+                                                }
+</script>
+

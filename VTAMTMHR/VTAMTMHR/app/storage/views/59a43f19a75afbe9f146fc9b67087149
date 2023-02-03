@@ -1,0 +1,174 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+
+
+    
+                
+
+
+				<div class="page-content">
+                                    
+					<div class="row-fluid">
+                                            
+                                           
+                                            
+                                            <form name='search' action="<?php echo url('ViewFinalAssesmentAssesors'); ?>" method='POST'>
+                                                
+                                             Search Interview Date<input type='date' name="date"/>   <input type='submit' value='Search'/>
+                                             
+                                            
+                                            </form>
+                                            
+                                           
+                                            
+                                            
+                                            
+						<div class="span12">
+							<!--PAGE CONTENT BEGINS-->
+
+
+
+
+								<table class="table">
+
+
+										<tr>
+
+											<th>Event Id</th>
+                                                                                        <th>Discription</th>
+                                                                                        <th>Date</th>
+                                                                                        <th>From</th>
+                                                                                        <th>To</th>
+                                                                                        <th>Assessors</th>
+                                                                                        
+											<th>Print</th>
+
+										</tr>
+<?php if(isset ($interviews)): ?>
+
+            <?php foreach ($interviews as $c): ?>
+
+                <tr>
+                            <td><?php echo $c->EP_ID; ?></td>
+                            <td><?php echo $c->Description; ?></td>
+                            <td><?php echo $c->ScheduledDate; ?></td>
+                            <td><?php echo $c->From; ?></td>
+                            <td><?php echo $c->To; ?></td>
+                        
+                            
+                            <td>
+                               <?php if(isset ($pannel)): ?>  
+                               <?php foreach($pannel as $p): ?>
+                               <?php if($c->EP_ID == $p->EventId): ?>
+                               <?php echo NVQQualificationSelectController::getAssrName($p->AssessorId); ?></br>
+                               <?php endif; ?>
+                               <?php endforeach; ?>
+                               <?php endif; ?>
+                            
+                            </td>
+                               
+
+                           
+                                     
+
+                                         <input type="hidden" name='Event' value= "<?php echo $c->EP_ID; ?>" id="Event" />
+                                         
+                                        
+                                       
+                                         
+                               <td>         
+                                   <a href="<?php echo url('printAsrLttrFinal?eid='.$c->EP_ID.'&CCode='.$c->CourseCode); ?>"><button type="button" class="btn btn-app btn-light btn-mini" id="AssesorLttr"><i class="icon-print bigger-160"></i></button></a>
+
+                               </td>
+
+                </tr>
+
+
+            <?php endforeach; ?>
+
+    <?php endif; ?>
+
+								</table>
+
+								
+								
+                                                                                                                                                
+
+
+							<!--PAGE CONTENT ENDS-->
+						</div><!--/.span-->
+					</div><!--/.row-fluid-->
+				</div><!--/.page-content-->
+
+			<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+                        
+
+<script type="text/javascript">
+    
+  
+        function doConfirm(holiday,formobj)
+        {
+            
+            
+            bootbox.confirm("Are you sure you want to remove "+holiday, function(result) 
+            {
+                   if(result) 
+                   {
+                        formobj.submit();
+							
+                    }
+                    
+                    
+            });
+            
+         
+            return false;  // by default do nothing hack :D
+        }
+          
+//         $("#AssesorLttr").click(function() {
+//                   // var id = "<?php echo 1; ?>";
+//                   var id=document.getElementById('Event').value;
+//                   alert(id);
+//                    $.ajax({
+//                        url: "<?php echo url('PrintFinalAsgnmntAssesor'); ?>",
+//                        data: {id: id},
+//                        success: function(result) {
+//                            response(result);
+//                        }
+//                    });
+//                });
+         
+         function print(){
+             
+              var id=document.getElementById('Event').value;
+                   alert(id);
+                    $.ajax({
+                        url: "<?php echo url('PrintFinalAsgnmntAssesor'); ?>",
+                        data: {id: id},
+                        success: function(result) {
+                            response(result);
+                        }
+                    }); 
+             
+             
+             
+             
+             
+             
+             
+         }
+         
+         
+         
+        
+
+                function response(data)
+                {
+                    var printWin = window.open("", "printSpecial");
+                    printWin.document.open();
+                    printWin.document.write(data);
+                    printWin.document.close();
+                    printWin.print();
+                }
+    
+</script>

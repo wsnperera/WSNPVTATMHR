@@ -1,0 +1,115 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+    <a href=<?php echo url('inplantview'); ?>> << Back to View </a> 
+<?php endif; ?>
+
+<div class="page-content">
+    <div class="page-header position-relative">
+        <h1>
+            Inplant Organization			
+            <small>
+                <i class="icon-double-angle-right"></i>
+                View
+            </small>			
+        </h1>
+    </div>
+    <div class="row-fluid">
+        <form name='search' action="<?php echo url('searchinplant'); ?>" method='get'>
+                    <table>
+                        <tr>
+                            <td style="text-align: center;">Order By :&nbsp;&nbsp;
+                                <select style="width: 120px;" name="order_by" style="margin: 0">
+                                    <option value="">Order By</option>
+                                    <option value="id">index</option>
+                                    <option value="InstituteId">Institute wise</option>
+                                    <option value="OrgaName">Organization wise</option>
+                                    <option value="DistrictCode">District wise</option>
+                                </select>
+                            </td>
+                            <td style="text-align: center;">&nbsp;&nbsp;
+                                Search &nbsp;&nbsp;<input type='text' name="serachkey" placeholder="Tele No" style="margin: 0"/>
+                            </td>
+                            <td style="text-align: center;"><input type='submit' value='Search' style='height: 30px;'" /></td>
+                            <td style="text-align: center;"><a href=<?php echo url('createinplant'); ?>><input type='button' value='Create' style='height: 30px;'" /></a></td>
+                        </tr>
+                    </table>
+        </form>
+
+        <div class="span12">
+       
+            <table class="table">
+                <tr>
+                    <th>Inplant ID</th>
+                    <th>Institute Name</th>
+                    <th>Country Name</th>
+                    <th>Organization Name</th>
+                    <th>Address</th>
+                    <th>Telephone</th>
+                    <th>Email</th>
+                    <th>District</th>
+                    <th>Active</th>
+                    <th>Remove</th>
+                </tr>
+                <?php if(isset ($inorg)): ?>
+                    <?php foreach ($inorg as $io): ?>
+
+                        <tr>
+
+                            <td><a href="<?php echo url('editinplant?bid='.$io->id); ?>"><?php echo $io->id; ?></td>
+                            <td><?php echo $io->getInstitute->InstituteName; ?></td>
+                            <td><?php echo $io->getCountry->CountryName; ?></td>
+                            <td><?php echo $io->OrgaName; ?></td>
+                            <td><?php echo $io->Address; ?></td>
+                            <td><?php echo $io->Tel; ?></td>
+                            <td><?php echo $io->Email; ?></td>
+                            <td><?php if(!is_null($io->getDistrict)): ?><?php echo $io->getDistrict->DistrictName; ?> <?php endif; ?></td>
+                            <td><?php echo $io->Active; ?></td>
+                            <td>
+                                <form id="deleteform"  action=<?php echo url('deleteinplant'); ?> method="POST" onsubmit="return doConfirm('<?php echo $io->id; ?>', this)">
+                                  
+                                    <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                                </form>
+        
+                            </td>
+
+                        </tr>
+
+
+
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+            </table>
+          
+        </div>
+    </div>
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+
+
+            function doConfirm(batch, formobj)
+            {
+
+
+            bootbox.confirm("Are you sure you want to remove " + batch, function(result)
+            {
+            if (result)
+            {
+            formobj.submit();
+            }
+
+
+            });
+                    return false; // by default do nothing hack :D
+            }
+
+
+
+
+
+
+
+</script>

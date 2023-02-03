@@ -1,0 +1,226 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<div class="page-content">
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+          <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Holiday			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+
+
+
+            <form class="form-horizontal" action="<?php echo url('createHoliday'); ?>" method="POST"/>
+
+            <div class="control-group">
+
+                <label class="control-label" for="HolidayYear">Holiday Day</label>
+
+                <div class="controls">
+                    <input type='date' name='HolidayYear' />
+                </div>
+
+            </div><!--
+               <div class="control-group">
+                
+                    <label class="control-label" for="HolidayMonth">Holiday Month</label>
+
+                    <div class="controls">
+                            <input type="text" name="HolidayMonth"  />
+                    </div>
+                    
+            </div>
+
+     
+   
+           <div class="control-group">
+                
+                    <label class="control-label" for="HolidayDay">Holiday Day</label>
+
+                    <div class="controls">
+            <?php
+            //echo Form::selectRange('HolidayDay', 1, 31);
+            ?>
+                       <input type="text" name="HolidayDay"  />
+                    </div>
+                    
+            </div>
+            -->
+
+            <div class="control-group">
+
+                <label class="control-label" for="HTId">Choose Holiday Type</label>
+
+                <div class="controls">
+
+                    <select name="HTId">
+
+                        <?php foreach ($holidaytypes as $i): ?>
+
+                        <option value="<?php echo $i->HTId; ?>"><?php echo $i->HTName; ?></option>
+
+                        <?php endforeach; ?>
+
+
+                    </select>
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="FullTime">Full Time</label>            
+                <div class="controls">     
+                    <?php
+                    echo Form::select('FullTime', array('1' => 'Yes', '0' => 'No'), '1');
+                    ?>
+
+
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="PartTime">Part Time</label>            
+                <div class="controls">     
+                    <?php
+                    echo Form::select('PartTime', array('1' => 'Yes', '0' => 'No'), '1');
+                    ?>
+
+
+                </div>
+            </div>        
+
+
+            <div class="control-group">
+                <label class="control-label" for="PublicIn">Public/Institute</label>            
+                <div class="controls">     
+                    <?php
+                    echo Form::select('PublicIn', array('Public' => 'Public', 'Institute' => 'Institute'), 'Choose');
+                    ?>
+
+
+                </div>
+            </div>               
+
+
+
+            <div class="control-group">
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Save</button>
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+        </form>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <!--/span 4 for error handling -->
+
+    <div class="span4">
+
+        
+
+                <?php if($errors->has()): ?>
+                
+                      <?php foreach($errors->all() as $msg): ?>
+
+        
+
+          <div class="alert alert-error">
+
+             <button type="button" class="close" data-dismiss="alert">
+                     <i class="icon-remove"></i>
+             </button>
+
+             <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+          </div>
+
+        
+
+  <?php endforeach; ?>
+
+<?php endif; ?>
+
+        
+          
+        
+
+
+
+
+</div>
+        <!--/span 4-->
+
+
+
+
+
+        <!--PAGE CONTENT ENDS-->
+
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css" />
+
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script>
+
+<?php if (isset($done)): ?>
+
+        $.gritter.add({title: "", text: "Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+<?php endif; ?>
+
+</script>
+
+
+
+
+
+
+
+
+
+

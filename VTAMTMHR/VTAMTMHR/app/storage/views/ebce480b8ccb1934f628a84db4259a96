@@ -1,0 +1,150 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Cutoff Mark			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Student Selection
+                    </small>			
+                </h1>
+            </div>
+            <div class="control-group">
+                <form name='calculate' action="<?php echo url('quota'); ?>" method='post'>
+                    <table>
+                        <th> <label class="control-label" for="CourseCode">Choose Course Code</label>&nbsp;&nbsp;&nbsp; </th>
+                        <td>
+                            <div class="controls">
+                                <select name="CourseCode" id="c_code">
+                                    <?php foreach ($course as $c): ?>
+                                    <option value="<?php echo $c->CourseCode; ?>"><?php echo $c->CourseCode; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </td>
+
+                        <th> <label class="control-label" for="StudentLimlt">Student Limlt</label>&nbsp;&nbsp;&nbsp; </th>
+                        <td>
+                            <div class="controls">
+                                <input type="text" name="StudentLimlt" id="selected" onkeyup="check();"/>&nbsp;&nbsp;
+                            </div>
+                        </td>
+                        <th></th>
+                        <td>
+                            <input type='submit' value='Calculate'  class="btn btn-small btn-primary"/>
+                        </td>
+                    </table>
+
+                </form>
+                <form name="finalize" action="<?php echo url('finalize'); ?>" method="post">
+                    <label class="control-label" for="Cutoff Mark">Cutoff Mark</label>
+                    <div class="controls">
+                        <label class="control-label" for="Cutoff Mark"><?php if(isset($cutoff)): ?><?php echo $cutoff; ?><?php endif; ?></label>
+                        <?php if(isset($cutoff)): ?>
+                        <input type="hidden" name="CutoffMark" value="<?php echo $cutoff; ?>"/>
+                        <?php endif; ?>
+                    </div>
+                    <br>
+
+                    <input type="hidden" name="CourseCode" id="Course_Code"/>
+                    <label class="control-label" for="TotalSelection">Total Selection</label>
+                    <div class="controls">
+                        <label class="control-label" for="TotalSelection" id="total1"><?php if(isset($total)): ?><?php echo $total; ?><?php endif; ?></label>
+                        <?php if(isset($total)): ?>
+                        <input type="hidden" name="TotalSelection" value="<?php echo $total; ?>" id="total2"/>
+                        <span id="ajax_img1"></span>
+                        <?php endif; ?>
+                    </div>
+                    <br>
+
+                    <label class="control-label" for="Rural">Rural Limit</label>
+                    <div class="controls">
+                        <label class="control-label" for="Rural" id="rural1"><?php if(isset($rural)): ?><?php echo $rural; ?><?php endif; ?></label>
+                        <span id="ajax_img2"></span>
+                        <?php if(isset($rural)): ?>
+                        <input type="hidden" name="Rural" value="<?php echo $rural; ?>" id="rural2"/>
+                        <?php endif; ?>
+                    </div>
+                    <br>
+
+                    <label class="control-label" for="Other">Other Limit</label>
+                    <div class="controls">
+                        <label class="control-label" for="Other"><?php if(isset($other)): ?><?php echo $other; ?><?php endif; ?></label>
+                        <?php if(isset($other)): ?>
+                        <input type="hidden" name="Other" value="<?php echo $other; ?>" id="Other"/>
+                        <?php endif; ?>
+                    </div>
+                    <br>
+
+                    <label class="control-label" for="Rural">Rural</label>
+                    <div class="controls">
+                        <label class="control-label" for="Rural" id="cut_mark1"></label>
+                        <input type="text" name="CutoffMark1" id="CutoffMark1" onkeyup="num1();"/>
+                    </div>
+                    <input type='button' value='Change' id="Change"  class="btn btn-small btn-primary"/>
+                    <input type="submit" value="Finalize" id="Finalize"  class="btn btn-small btn-primary"/>
+                    <br>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+    $("#Change").click(function() {
+        var cutoff_1 = document.getElementById('CutoffMark1').value;
+        $.ajax
+                ({
+                    url: "<?php echo url::to('ajax'); ?>",
+                    data: {cutoff_1: cutoff_1},
+                    beforeSend: function() {
+                        document.getElementById('ajax_img1').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>"
+                        document.getElementById('ajax_img2').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                    },
+                    success: function(result)
+                    {
+                        var res = result;
+                        var a = document.getElementById('total1').innerHTML;
+                        document.getElementById('total1').innerHTML = a - res;
+                        document.getElementById('rural1').innerHTML = res;
+                        document.getElementById('total2').value = a - res;
+                        document.getElementById('rural2').value = res;
+                        document.getElementById('Other').value;
+                        document.getElementById('CutoffMark1').value = "";
+                    },
+                    complete: function() {
+                        document.getElementById('ajax_img1').innerHTML = "";
+                        document.getElementById('ajax_img2').innerHTML = "";
+                    }
+                });
+    });
+//
+//    function num1()
+//    {
+//        var n1 = document.getElementById('CutoffMark1').value;
+//
+//        if (isNaN(n1)) {
+//            document.getElementById('CutoffMark1').value = "";
+//        }
+//    }
+//
+//    function check()
+//    {
+//        var n = document.getElementById('selected').value;
+//
+//        if (isNaN(n)) {
+//            document.getElementById('selected').value = "";
+//        }
+//    }
+
+
+    $("#c_code").change(function() {
+        var c_code = document.getElementById('c_code').value;
+        document.getElementById('Course_Code').value = c_code;
+    });
+</script>

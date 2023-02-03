@@ -1,0 +1,136 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<!--page specific plugin styles-->
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<!--ace styles-->
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>
+                    Organization Incharge			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div>
+            <form class="form-horizontal" method="POST" action="<?php echo url('Org_Edit'); ?>"/>
+            <input type="hidden" name="id" value="<?php echo Request::get('id'); ?> "/>
+            <div class="control-group">
+                <label class="control-label" for="OrgaId">Organization Name</label>
+                <div class="controls">
+                    <select name="OrgaId" id="OrgaId">
+                        <option value=""></option>
+                        <?php foreach ($organization as $o): ?>
+                        <option value="<?php echo $o->id; ?>" <?php if($o->id == $org_inc->OrgaId): ?> selected <?php endif; ?>><?php echo $o->OrgaName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <br/> 
+
+            <div class="control-group">
+                <label class="control-label" for="EmpId">Employee Name</label>
+                <div class="controls">
+                    <select name="EmpId" id="EmpId">
+                        <option value=""></option>
+                        <?php foreach ($employee as $e): ?>
+                        <option value="<?php echo $e->id; ?>" <?php if($e->id == $org_inc->EmpId): ?> selected <?php endif; ?>><?php echo $e->Initials.' '.$e->LastName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <br/>      
+
+            <div class="control-group">
+                <label class="control-label">Start Date</label>
+                <div class="controls">
+                    <div class="row-fluid input-append">
+                        <input class="span10 date-picker" id="StartDate" name="StartDate" data-date-format="yyyy-mm-dd" type="text" style="width:193px" value="<?php echo $org_inc->StartDate; ?>" />
+                        <span class="add-on">
+                            <i class="icon-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <br/>
+
+            <div class="control-group">
+                <label class="control-label">End Date</label>
+                <div class="controls">
+                    <div class="row-fluid input-append">
+                        <input class="span10 date-picker" id="EndDate" name="EndDate" data-date-format="yyyy-mm-dd" type="text" style="width:193px" value="<?php echo $org_inc->EndDate; ?>" />
+                        <span class="add-on">
+                            <i class="icon-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <br/>                              
+
+            <div class="control-group">
+                <label class="control-label" for="Date">Active</label>
+                <div class="controls">
+                    <select name="CurrentRecord" id="CurrentRecord">
+                        <option></option>
+                        <option value="YES"  <?php if($org_inc->CurrentRecord == 'YES'): ?> selected <?php endif; ?>>YES</option>
+                        <option value="NO">NO</option>
+                    </select>
+                </div>
+            </div>
+            <br/>                            
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-small btn-primary">Update</button>
+                </div>
+            </div>
+            <br/>
+            </form>                                
+        </div>
+    </div>
+    <div class="span4">
+        <?php if($errors->has()): ?>
+        <?php foreach($errors->all() as $msg): ?>
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="icon-remove"></i>
+            </button>
+            <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+        </div>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+</div>
+
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+
+<script>
+
+<?php if (isset($done)): ?>
+
+        $.gritter.add({title: "", text: "Record Added Successfully", class_name: "gritter-info gritter-center"});
+        <?php endif; ?>
+
+        $(function() {
+            $(".chzn-select").chosen();
+        });
+
+$('.date-picker').datepicker().next().on(ace.click_event, function() {
+    $(this).prev().focus();
+});
+
+
+
+</script>

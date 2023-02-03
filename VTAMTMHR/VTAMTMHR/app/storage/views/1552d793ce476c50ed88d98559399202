@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>VTA Monitoring System</title>
+	<link rel="shortcut icon" href="assets/vtaicon.ico" type="image/x-icon" />
+
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="assets/css/chosen.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+        <link rel="stylesheet" href="assets/css/ace.min.css" />
+        <link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+        <link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    </head>
+    <body>
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a href="<?php echo Url('dashboard'); ?>" class="brand">
+                        <small>
+                            <i class="icon-leaf"></i>
+                            Welcome to the Monitoring System :-
+                            <?php echo $user->userName; ?>
+                        </small>
+                    </a>
+                   <!-- <a href="generatedNIC" class="brand">
+                        <small>
+                            <i class="icon-tasks"></i>
+                            NIC Number Generator
+                        </small>
+                    </a>-->
+                    <!--/.brand-->
+					
+				
+					<ul class="nav ace-nav pull-right">
+					<!--<li class="green dropdown-modal">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+								<i class="icon-envelope"></i>
+								<span class="badge badge-success">5</span>
+							</a>
+
+							<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+								<li class="dropdown-header">
+									<i class="icon-envelope"></i>
+									5 Messages
+								</li>
+
+								<li class="dropdown-content">
+									<ul class="dropdown-navbar navbar-pink">
+										<li>
+											<a href="#" >
+												<img src="assets/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar" />
+												aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+												
+											</a>
+										</li>
+										
+										<li>
+											<a href="#" >
+												<img src="assets/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar" />
+												aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+												
+											</a>
+										</li>
+									
+									</ul>
+								</li>
+
+								<li class="dropdown-footer">
+									<a href="#">
+										See all messages
+										<i class="ace-icon fa fa-arrow-right"></i>
+									</a>
+								</li>
+							</ul>
+						</li>-->
+						
+			
+                    
+                        <li class="light-orange">
+                            <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                                <img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Jason's Photo" />
+                                <span class="user-info">
+                                    <small>Welcome,</small>
+                                    <?php echo $user->userName; ?>
+                                </span>
+                                <i class="icon-caret-down"></i>
+                            </a>
+                            <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
+                               <!-- <li>
+                                    <a href="<?php echo Url('viewEmployeeDetails'); ?>">
+                                        <i class="icon-user"></i>
+                                        Profile
+                                    </a>
+                                </li>-->
+                                <li>
+                                    <a href="<?php echo Url('changePassword'); ?>">
+                                        <i class="icon-lock"></i>
+                                        Change Password
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo Url('logout'); ?>">
+                                        <i class="icon-off"></i>
+                                        Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul><!--/.ace-nav-->
+                </div><!--/.container-fluid-->
+            </div><!--/.navbar-inner-->
+        </div>
+        <div class="main-container container-fluid">
+            <a class="menu-toggler" id="menu-toggler" href="#">
+                <span class="menu-text"></span>
+            </a>
+            <div class="sidebar" id="sidebar">
+                <ul class="nav nav-list"> 
+                    <?php if($user->hasPermission(array('institute','organisation'))): ?>
+                    <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text"> Organization </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('institute')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('InstituteController@viewInstitute'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Institute
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('organisation')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('OrganisationController@viewOrganisation'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Center
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+
+                  <?php if($user->hasPermission(array('courses','viewCourseYearPlan','viewTrades','AssignQPackageModules','ViewTrainingPlanReportCheck','ViewTrainingPlanUpdateDisNVTIDOTO'))): ?>
+                   <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text"> Course </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                                <?php if($user->hasPermission(array('viewTrades'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Trades  </span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('viewTrades')): ?>
+                                    <li>
+                                        <a href=<?php echo URL::action('Trade1Controller@viewTrades'); ?>>
+                                           <i class="icon-double-angle-right"></i>
+                                            Trades
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+
+                                    
+                                </ul>
+                            </li>
+                            <?php endif; ?>  
+                            <?php if($user->hasPermission('courses')): ?>
+                            <li>
+                                <a href=<?php echo URL::action('CourseController@viewCourses'); ?>>
+                                   <i class="icon-double-angle-right"></i>
+                                    Course Details
+                                </a>
+                            </li>
+                            <?php endif; ?>
+							<?php if($user->hasPermission('ViewCompetemcyStandard')): ?>
+                            <li>
+                                <a href='ViewCompetemcyStandard'>
+                                   <i class="icon-double-angle-right"></i>
+                                    View Competency Standards
+                                </a>
+                            </li>
+                            <?php endif; ?>
+							<?php if($user->hasPermission('ViewNVQQualificationPackages')): ?>
+                            <li>
+                                <a href='ViewNVQQualificationPackages'>
+                                   <i class="icon-double-angle-right"></i>
+                                    View NVQ Qualification Packages
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                             <?php if($user->hasPermission('AssignQPackageModules')): ?>
+                            <li>
+                                <a href='AssignQPackageModules'>
+                                   <i class="icon-double-angle-right"></i>
+                                    Assign Qualification Package Modules
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                             <?php if($user->hasPermission('viewCourseYearPlan')): ?>
+                            <li>
+                                <a href='viewCourseYearPlan'>
+                                    <i class="icon-double-angle-right"></i>
+                                    View Training Plan(HO)
+                                </a>
+                            </li>
+                            <?php endif; ?>
+							<?php if($user->hasPermission('ViewTrainingPlanUpdateDisNVTIDOTO')): ?>
+                            <li>
+                                <a href='ViewTrainingPlanUpdateDisNVTIDOTO'>
+                                    <i class="icon-double-angle-right"></i>
+                                    View & Update Training Plan(Dsitrict/NVTI)
+                                </a>
+                            </li>
+                            <?php endif; ?>
+							<?php if($user->hasPermission('ViewTrainingPlanReportCheck')): ?>
+                            <li>
+                                <a href='ViewTrainingPlanReportCheck'>
+                                    <i class="icon-double-angle-right"></i>
+                                    View & Download Training Plan Report
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                            
+
+
+                         <!--   <?php if($user->hasPermission('ViewAccreditRequest')): ?>
+                            <li>
+                                <a href='ViewAccreditRequest'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Course Accreditation
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+
+                           
+                            <?php if($user->hasPermission('ConfirmCourseYearPlanFirstPage')): ?>
+                            <li>
+                                <a href="ConfirmCourseYearPlanFirstPage" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    Assigned Course Year Plan
+                                    <br><span class="badge badge-primary"><?php echo CourseYearPlan::getNOConfirm(); ?></span>
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('searchEntry')): ?>    
+                            <li>
+                                <a href=<?php echo Url('searchEntry'); ?>>
+                                    <i class="icon-double-angle-right"></i>
+                                    Entry Qualifications
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('viewCourseStarted')): ?>
+                            <li>
+                                <a href="<?php echo url('viewCourseStarted'); ?>">
+                                    <i class="icon-double-angle-right"></i>
+                                    Course Started View
+                                </a>
+                            </li>
+                            <?php endif; ?>-->
+
+						</ul>
+						</li> 
+						<?php endif; ?>
+
+
+						<?php if($user->hasPermission(array('ViewModule','ViewModuleCourse','ViewModuleTask','ViewModuleTaskSeq','ViewTask'))): ?>
+                        <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text"> Module Course & Task Details</span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('ViewModule')): ?>
+                            <li>
+                                <a href='ViewModule'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Module
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                             <?php if($user->hasPermission('ViewModuleCourse')): ?>
+                         <li>
+                                <a href='ViewModuleCourse'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Module Courses
+                                </a>
+                            </li>
+                            <?php endif; ?>
+							<?php if($user->hasPermission('ViewModuleTask')): ?>
+                             <li>
+                                <a href='CreateModuleTask'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Create Module Task
+                                </a>
+                            </li> 
+                             <?php endif; ?> 
+                            <?php if($user->hasPermission('ViewModuleTask')): ?>
+                             <li>
+                                <a href='ViewModuleTask'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Module Task
+                                </a>
+                            </li> 
+                             <?php endif; ?> 
+                             <?php if($user->hasPermission('ViewModuleTaskSeq')): ?>
+                            <li>
+                                <a href='ViewModuleTaskSeq'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Module Task Sequence
+                                </a>
+                            </li> 
+                            <?php endif; ?>  
+                            <?php if($user->hasPermission('ViewTask')): ?>
+                             <li>
+                                <a href='ViewTask'>
+                                    <i class="icon-double-angle-right"></i>
+                                     Task 
+                                </a>
+                             </li>  
+                             <?php endif; ?>  
+							 	<?php if($user->hasPermission('HistoryViewModuleTaskSeq')): ?>
+                            <li>
+                                <a href='HistoryViewModuleTaskSeq'>
+                                    <i class="icon-double-angle-right"></i>
+                                    History Module Task Sequence
+                                </a>
+                            </li> 
+                            <?php endif; ?> 
+
+
+                         </ul>
+                    </li>
+					<?php endif; ?>
+					 <?php if($user->hasPermission(array('holiday','HolidayType','CreateActualTimeTable','GenarateActualTimeTable','ViewActualTimeTable','ViewWeekTimeTable'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">  Actual Time Table</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">                                    
+                                 <?php if($user->hasPermission('holiday')): ?>
+                                    <li>
+                                        <a href='holiday'>
+                                           <i class="icon-double-angle-right"></i>
+                                            Holidays
+                                        </a>
+                                    </li>
+                                 <?php endif; ?>    
+
+                                  <?php if($user->hasPermission('HolidayType')): ?> 
+                                    <li>
+                                         <a href='HolidayType'>
+                                           <i class="icon-double-angle-right"></i>
+                                            Holiday Types
+                                        </a>
+                                    </li>
+                                     <?php endif; ?>
+                                     <?php if($user->hasPermission('CreateActualTimeTable')): ?>    
+                                    <li>
+                                            <a href='CreateActualTimeTable'>
+                                                <i class="icon-double-angle-right"></i>
+                                                Create Batch Calender
+                                            </a>
+                                    </li> 
+                                    <?php endif; ?>
+                                    <?php if($user->hasPermission('GenarateActualTimeTable')): ?>   
+                                    <li>
+                                            <a href='GenarateActualTimeTable'>
+                                                <i class="icon-double-angle-right"></i>
+                                                Generate Actual TimeTable
+                                            </a>
+                                    </li> 
+                                    <?php endif; ?>
+                                    <?php if($user->hasPermission('ViewActualTimeTable')): ?>
+                                    <li>
+                                            <a href='ViewActualTimeTable'>
+                                                <i class="icon-double-angle-right"></i>
+                                                View Actual TimeTable
+                                            </a>
+                                    </li> 
+                                    <?php endif; ?>
+                                    <?php if($user->hasPermission('ViewWeekTimeTable')): ?>
+                                     <li>
+                                            <a href='ViewWeekTimeTable'>
+                                                <i class="icon-double-angle-right"></i>
+                                                View Week TimeTable
+                                            </a>
+                                    </li> 
+                                    <?php endif; ?>
+                                    
+                                </ul>
+                            </li>
+							<?php endif; ?>
+							<?php if($user->hasPermission(array('CreateMOCenterMonitoringPlan','ViewTOMOCenterMonitoringPlan','ViewDDADMOCenterMonitoringPlan'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">Plan-Course Monitoring</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('CreateMOCenterMonitoringPlan')): ?>
+                                        <li>
+                                            <a href='CreateMOCenterMonitoringPlan'>
+                                                <i class="icon-double-angle-right"></i>
+                                                Create Course Monitoring Plan(TO/AD/DD)
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+                                    <?php if($user->hasPermission('ViewTOMOCenterMonitoringPlan')): ?>
+                                        <li>
+                                            <a href='ViewTOMOCenterMonitoringPlan'>
+                                                <i class="icon-double-angle-right"></i>
+                                                View Course Monitoring Plan(TO/AD/DD)
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+                                    <?php if($user->hasPermission('ViewDDADMOCenterMonitoringPlan')): ?>
+                                        <li>
+                                            <a href='ViewDDADMOCenterMonitoringPlan'>
+                                                <i class="icon-double-angle-right"></i>
+                                                View & Approve Course Monitoring Plan(DD/AD)
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+                                </ul>   
+                            </li>
+							<?php endif; ?> 
+							<?php if($user->hasPermission(array('CreateMOCenterNewMonitoringPlan','ViewTOMONewCenterMonitoringPlan','ViewDDADMONewCenterMonitoringPlan'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">Plan-Center Monitoring</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('CreateMOCenterNewMonitoringPlan')): ?>
+                                        <li>
+                                            <a href='CreateMOCenterNewMonitoringPlan'>
+                                                <i class="icon-double-angle-right"></i>
+                                                Create Center Monitoring Plan(TO/AD/DD)
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+                                    <?php if($user->hasPermission('ViewTOMONewCenterMonitoringPlan')): ?>
+                                        <li>
+                                            <a href='ViewTOMONewCenterMonitoringPlan'>
+                                                <i class="icon-double-angle-right"></i>
+                                                View Center Monitoring Plan(TO/AD/DD)
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+                                    <?php if($user->hasPermission('ViewDDADMONewCenterMonitoringPlan')): ?>
+                                        <li>
+                                            <a href='ViewDDADMONewCenterMonitoringPlan'>
+                                                <i class="icon-double-angle-right"></i>
+                                                View & Approve Center Monitoring Plan(DD/AD)
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+                                </ul>   
+                            </li>
+							<?php endif; ?> 
+							<?php if($user->hasPermission(array('ViewCriteriaCategory','ViewCriteriaEmpType','ViewCriteriaClass','ViewCriterias'))): ?>
+                             <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">Course Criteria</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                   
+                                    <?php if($user->hasPermission('ViewCriteriaEmpType')): ?>
+                                        <li>
+                                            <a href='ViewCriteriaEmpType'>
+                                                <i class="icon-double-angle-right"></i>
+                                                Course Criteria Employee Type
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?>
+                                    <?php if($user->hasPermission('ViewCriteriaClass')): ?>
+                                        <li>
+                                            <a href='ViewCriteriaClass'>
+                                                <i class="icon-double-angle-right"></i>
+                                                Course Criteria Classes
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?>
+									 <?php if($user->hasPermission('ViewCriteriaCategory')): ?>
+                                        <li>
+                                            <a href='ViewCriteriaCategory'>
+                                                <i class="icon-double-angle-right"></i>
+                                                Course Criteria category
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+                                    <?php if($user->hasPermission('ViewCriterias')): ?>
+                                        <li>
+                                            <a href='ViewCriterias'>
+                                                <i class="icon-double-angle-right"></i>
+                                                 Sub Course Criterias
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?>
+                                   
+                                </ul>   
+                            </li>
+							<?php endif; ?>
+							<!-- Center Criteris -->
+							<?php if($user->hasPermission(array('ViewCenterCriteriaClass','ViewCenterCriteriaEmpType','ViewCenterCriteriaCategory','ViewCenterCriterias'))): ?>
+                             <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">Center Criteria</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    
+                                    <?php if($user->hasPermission('ViewCenterCriteriaEmpType')): ?>
+                                        <li>
+                                            <a href='ViewCenterCriteriaEmpType'>
+                                                <i class="icon-double-angle-right"></i>
+                                               Center Criteria Employee Type
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?>
+                                    <?php if($user->hasPermission('ViewCenterCriteriaClass')): ?>
+                                        <li>
+                                            <a href='ViewCenterCriteriaClass'>
+                                                <i class="icon-double-angle-right"></i>
+                                                Center Criteria Classes
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?>
+									<?php if($user->hasPermission('ViewCenterCriteriaCategory')): ?>
+                                        <li>
+                                            <a href='ViewCenterCriteriaCategory'>
+                                                <i class="icon-double-angle-right"></i>
+                                                Center Criteria category
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+                                    <?php if($user->hasPermission('ViewCenterCriterias')): ?>
+                                        <li>
+                                            <a href='ViewCenterCriterias'>
+                                                <i class="icon-double-angle-right"></i>
+                                                 Center Sub Criterias
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?>
+                                   
+                                </ul>   
+                            </li>
+							<?php endif; ?>
+							<!-- Center Criteris -->
+							<?php if($user->hasPermission(array('DoMonitor','DoNewCenterMonitor'))): ?>
+                             <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">Monitoring</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('DoMonitor')): ?>
+                                        <li>
+                                            <a href='DoMonitor'>
+                                                <i class="icon-double-angle-right"></i>
+                                                Course Monitor
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+									<?php if($user->hasPermission('DoNewCenterMonitor')): ?>
+                                        <li>
+                                            <a href='DoNewCenterMonitor'>
+                                                <i class="icon-double-angle-right"></i>
+                                                Center Monitor
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+                                    
+                                </ul>   
+                            </li>
+							<?php endif; ?>
+							<?php if($user->hasPermission(array('DoMonitor','DoNewCenterMonitor'))): ?>
+                             <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">Comment Handling</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('ViewComments')): ?>
+                                        <li>
+                                            <a href='ViewComments'>
+                                                <i class="icon-double-angle-right"></i>
+                                                View Monitoring Comments
+												<img  src="assets/new.gif" alt="Jason's Photo" style="width:50%;height:50%" class="img-rounded"/>
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+									<?php if($user->hasPermission('ViewMyComments')): ?>
+                                        <li>
+                                            <a href='ViewMyComments'>
+                                                <i class="icon-double-angle-right"></i>
+                                                View My Monitoring Comments
+												<img  src="assets/new.gif" alt="Jason's Photo" style="width:50%;height:50%" class="img-rounded"/>
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+									 
+                                    
+                                </ul>   
+                            </li>
+							<?php endif; ?>
+							<?php if($user->hasPermission(array('ViewQuestions','CreateQuestions'))): ?>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">Question Bank</span>
+                                    <b class="arrow icon-angle-down"></b>
+
+                                 </a>
+                                <ul class="submenu">
+                                    <?php if($user->hasPermission('ViewQuestions')): ?>
+                                        <li>
+                                            <a href='ViewQuestions'>
+                                                <i class="icon-double-angle-right"></i>
+                                                View Questions
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+									<?php if($user->hasPermission('CreateQuestions')): ?>
+                                        <li>
+                                            <a href='CreateQuestions'>
+                                                <i class="icon-double-angle-right"></i>
+                                                Create Questions
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+									<?php if($user->hasPermission('DownloadRandomQuestionPaper')): ?>
+                                        <li>
+                                            <a href='DownloadRandomQuestionPaper'>
+                                                <i class="icon-double-angle-right"></i>
+                                                Download Question Paper
+                                            </a>
+                                        </li>  
+                                    <?php endif; ?> 
+                                    
+                                   
+                                </ul>   
+                            </li>
+							<?php endif; ?>
+						
+                             <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="icon-desktop"></i>
+                                    <span class="menu-text">Reports</span>
+                                    <b class="arrow icon-angle-down"></b>
+                                </a>
+                                <ul class="submenu">
+                                    <li>
+                                        <a href="#" class="dropdown-toggle">
+                                            <i class="icon-desktop"></i>
+                                            <span class="menu-text">Time Table Reports</span>
+                                            <b class="arrow icon-angle-down"></b>
+                                        </a>
+                                            <ul class="submenu">
+                                                <?php if($user->hasPermission('ViewModuleTaskSeq')): ?>
+                                                <li>
+                                                    <a href='ViewModuleTaskSeq'>
+                                                        <i class="icon-double-angle-right"></i>
+                                                        Module Task Sequence Report
+                                                    </a>
+                                                </li> 
+                                                <?php endif; ?>
+                                                <?php if($user->hasPermission('ViewActualTimeTable')): ?>
+                                                <li>
+                                                        <a href='ViewActualTimeTable'>
+                                                            <i class="icon-double-angle-right"></i>
+                                                            Actual Time Table
+                                                        </a>
+                                                </li> 
+                                                <?php endif; ?>
+                                                <?php if($user->hasPermission('ViewWeekTimeTable')): ?>
+                                                 <li>
+                                                        <a href='ViewWeekTimeTable'>
+                                                            <i class="icon-double-angle-right"></i>
+                                                             Week Time Table
+                                                        </a>
+                                                </li> 
+                                                <?php endif; ?>
+                                            </ul>
+                                        </li>
+                                       <li>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="icon-desktop"></i>
+                                                <span class="menu-text">Course Plan Reports</span>
+                                                <b class="arrow icon-angle-down"></b>
+                                            </a>
+                                                <ul class="submenu"> 
+                                                     <?php if($user->hasPermission('ViewCoursePlanReport')): ?>
+                                                     <li>
+                                                            <a href='ViewCoursePlanReport'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 Course Plan Report(Days Wise)
+                                                            </a>
+                                                    </li> 
+                                                    <?php endif; ?>
+                                                    <?php if($user->hasPermission('ViewCoursePlanReportW')): ?>
+                                                     <li>
+                                                            <a href='ViewCoursePlanReportW'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 Course Plan Report(Weeks Wise)
+                                                            </a>
+                                                    </li> 
+                                                    <?php endif; ?>
+                                                </ul>
+                                         </li>
+                                         <li>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="icon-desktop"></i>
+                                                <span class="menu-text">Monitoring Progress Reports</span>
+                                                <b class="arrow icon-angle-down"></b>
+                                            </a>
+                                                <ul class="submenu"> 
+													<?php if($user->hasPermission('ViewTrainingPlanReportCheck')): ?>
+												<li>
+													<a href='ViewTrainingPlanReportCheck'>
+														<i class="icon-double-angle-right"></i>
+														I).View Training Plan with monitoring status
+													</a>
+												</li>
+												<?php endif; ?>
+                                                    <?php if($user->hasPermission('ViewDistrictWiseMonitoringProgress')): ?>
+                                                     <li>
+                                                            <a href='ViewDistrictWiseMonitoringProgress'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 II).District Wise Course Monitoring Progress
+                                                            </a>
+                                                    </li> 
+                                                    <?php endif; ?>
+                                                     <?php if($user->hasPermission('ViewDistrictWiseMonitoringProgressSummary')): ?>
+                                                     <li>
+                                                            <a href='ViewDistrictWiseMonitoringProgressSummary'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 III).District Wise Course Monitoring Progress summary 
+                                                            </a>
+                                                    </li> 
+                                                    <?php endif; ?>
+													<?php if($user->hasPermission('ViewDistrictWiseMonitoringProgressSummaryCenter')): ?>
+                                                     <li>
+                                                            <a href='ViewDistrictWiseMonitoringProgressSummaryCenter'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 IV).Centre Wise Course Monitoring Progress summary
+																 
+                                                            </a>
+															 
+															
+                                                    </li> 
+                                                    <?php endif; ?>
+                                                     <?php if($user->hasPermission('ViewCourseMonitoringDetailswithMarksReport')): ?>
+                                                     <li>
+                                                            <a href='ViewCourseMonitoringDetailswithMarksReport'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 V).Course Monitoring Details(Marks) Report 
+                                                            </a>
+                                                    </li> 
+                                                    <?php endif; ?>
+                                                    <?php if($user->hasPermission('ViewAverageCourseMonitoringDetailswithMarksReport')): ?>
+                                                     <li>
+                                                            <a href='ViewAverageCourseMonitoringDetailswithMarksReport'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 VI)Average Course Monitoring Marks Report 
+                                                            </a>
+                                                    </li> 
+                                                    <?php endif; ?>
+													<?php if($user->hasPermission('ViewCriteariaWiseMonitoringProgressReport')): ?>
+                                                     <li>
+                                                            <a href='ViewCriteariaWiseMonitoringProgressReport'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 VII).Monitoring Critearia Wise Progress Report 
+                                                            </a>
+                                                    </li> 
+                                                    <?php endif; ?>
+													<?php if($user->hasPermission('ViewSubCriteariaWiseMonitoringProgressReport')): ?>
+                                                     <li>
+                                                            <a href='ViewSubCriteariaWiseMonitoringProgressReport'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 VIII).Monitoring Sub Critearia Wise Progress Report 
+                                                            </a>
+                                                    </li> 
+                                                    <?php endif; ?>
+													<?php if($user->hasPermission('ViewCenterCriteariaWiseMonitoringProgressReport')): ?>
+                                                     <li>
+                                                            <a href='ViewCenterCriteariaWiseMonitoringProgressReport'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 IX).Center Monitoring Critearia Wise Progress Report 
+                                                            </a>
+                                                    </li> 
+                                                    <?php endif; ?>
+													<?php if($user->hasPermission('ViewCenterSubCriteariaWiseMonitoringProgressReport')): ?>
+                                                     <li>
+                                                            <a href='ViewCenterSubCriteariaWiseMonitoringProgressReport'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 X).Center Monitoring Sub Critearia Wise Progress Report 
+                                                            </a>
+                                                    </li> 
+													<?php endif; ?>
+													<?php if($user->hasPermission('ViewDistrictWiseCenterMonitoringProgress')): ?>
+                                                     <li>
+                                                            <a href='ViewDistrictWiseCenterMonitoringProgress'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 XI).District Wise Center Monitoring Progress
+                                                            </a>
+                                                    </li> 
+                                                    <?php endif; ?>
+													<?php if($user->hasPermission('ViewcoursewisemonitoringCountReport')): ?>
+                                                     <li>
+                                                            <a href='ViewcoursewisemonitoringCountReport'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 XII).Course Wise Monitoring Count Report
+                                                            </a>
+                                                    </li> 
+                                                    <?php endif; ?>
+													<?php if($user->hasPermission('ViewDistrictWisePercentageReport')): ?>
+                                                     <li>
+                                                            <a href='ViewDistrictWisePercentageReport'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 XIII).District Wise rank(Percentage)
+                                                            </a>
+                                                    </li> 
+                                                    <?php endif; ?>
+                                                </ul>
+                                               
+                                            </li>
+                                    <li>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="icon-desktop"></i>
+                                                <span class="menu-text">Accreditation Reports</span>
+                                                <b class="arrow icon-angle-down"></b>
+                                            </a>
+                                                <ul class="submenu"> 
+                                                  
+                                                    <li>
+                                                            <a href='ViewAccreditationDistrictWiseReport'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 District Wise Accreditation Summary
+                                                            </a>
+                                                    </li> 
+													 <li>
+                                                            <a href='ViewAccreditationCourseWiseReport'>
+                                                                <i class="icon-double-angle-right"></i>
+                                                                 Course Wise Accreditation Summary
+                                                            </a>
+                                                    </li> 
+                                                   
+                                                </ul>
+                                         </li>
+                                </ul>   
+                            </li>
+							
+                            
+                            
+                       
+							<?php if($user->hasPermission(array('viewEmployee','searchEmployee','createEmployee'))): ?>
+                             <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">  Employee  </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('viewEmployee')): ?>
+                            <li>
+                                <a href='viewEmployee'>
+                                   <i class="icon-double-angle-right"></i>
+                                    View
+                                </a>
+                            </li>
+                            <?php endif; ?>  
+                             <?php if($user->hasPermission('searchEmployee')): ?>
+                            <li>
+                                <a href='searchEmployee'>
+                                   <i class="icon-double-angle-right"></i>
+                                    Search
+                                </a>
+                            </li>
+                            <?php endif; ?>   
+                            <?php if($user->hasPermission('createEmployee')): ?>
+                            <li>
+                                <a href='createEmployee'>
+                                   <i class="icon-double-angle-right"></i>
+                                    Create
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                           
+                        </ul>
+                       </li>
+					 <?php endif; ?>
+					 <?php if($user->hasPermission(array('viewUserRoleAssign','viewUsers','viewUserType','ViewUserTypeRole','viewActivity'))): ?>
+                <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">User</span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('viewUserRoleAssign')): ?>
+                            <li>
+                                
+								<a href='viewUserRoleAssign'>
+                                   <i class="icon-double-angle-right"></i>
+                                    User Role Assign
+                                </a>
+                            </li>  
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewUsers')): ?>
+                            <li>
+                                <a href='viewUsers'>
+                                   <i class="icon-double-angle-right"></i>
+                                    Users
+                                </a>
+                            </li> 
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('viewUserType')): ?>
+                            <li>
+                               <a href='viewUserType'>
+                                   <i class="icon-double-angle-right"></i>
+                                    User Type 
+                                </a>
+                            </li> 
+                            <?php endif; ?>
+                            <?php if($user->hasPermission('ViewUserTypeRole')): ?>
+                            <li>
+                                <a href='ViewUserTypeRole'>
+                                    <i class="icon-double-angle-right"></i>
+                                    User Type Role
+                                </a>
+                            </li> 
+                            <?php endif; ?>
+
+                            <?php if($user->hasPermission('viewActivity')): ?>
+                            <li>
+                               <a href='viewActivity'>
+                                   <i class="icon-double-angle-right"></i>
+                                    Activity
+                                </a>
+                            </li> 
+                            <?php endif; ?>
+                        </ul>
+                    </li> 
+                   <?php endif; ?> 
+				<?php if($user->hasPermission(array('ViewTrainingPlanUpdateTestingEva','ViewTrainingPlanUpdateDisNVTI'))): ?>
+                        <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">Testing & Evaluation</span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('ViewTrainingPlanUpdateTestingEva')): ?>
+                            <li>
+                                <a href='ViewTrainingPlanUpdateTestingEva'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Update Training Plan Details
+                                </a>
+                            </li>
+                            <?php endif; ?>
+							<?php if($user->hasPermission('ViewTrainingPlanUpdateDisNVTI')): ?>
+                            <li>
+                                <a href='ViewTrainingPlanUpdateDisNVTI'>
+                                    <i class="icon-double-angle-right"></i>
+                                    View & Update Training Plan(TO)
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                             
+                         </ul>
+                    </li>
+					<?php endif; ?>
+					<?php if($user->hasPermission(array('ViewAccreditationNew','CreateAccreditationNew'))): ?>
+                        <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">Accreditation</span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('ViewAccreditationNew')): ?>
+                            <li>
+                                <a href='ViewAccreditationNew'>
+                                    <i class="icon-double-angle-right"></i>
+                                    View Accreditation Details
+                                </a>
+                            </li>
+                            <?php endif; ?>
+							 <?php if($user->hasPermission('CreateAccreditationNew')): ?>
+                            <li>
+                                <a href='CreateAccreditationNew'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Enter Accreditation Details
+                                </a>
+                            </li>
+                            <?php endif; ?>
+							<?php if($user->hasPermission('ViewAccreditationPaymentNew')): ?>
+                             <li>
+                                <a href='ViewAccreditationPaymentNew'>
+                                    <i class="icon-double-angle-right"></i>
+                                    View Application & payment details
+                                </a>
+                            </li>
+							 <?php endif; ?>
+							 <?php if($user->hasPermission('CreateAccreditationPaymentNew')): ?>
+							<li>
+                                <a href='CreateAccreditationPaymentNew'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Enter Application & payment details
+                                </a>
+                            </li>
+							<?php endif; ?>
+                         </ul>
+                    </li>
+					<?php endif; ?>
+					<?php if($user->hasPermission(array('ViewTrainingPlanUpdateTestingEvaOld'))): ?>
+                        <li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-desktop"></i>
+                            <span class="menu-text">2016/2017 Data</span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <?php if($user->hasPermission('ViewTrainingPlanUpdateTestingEvaOld')): ?>
+                            <li>
+                                <a href='ViewTrainingPlanUpdateTestingEvaOld'>
+                                    <i class="icon-double-angle-right"></i>
+                                    Update 2016/2017 Details 
+                                </a>
+                            </li>
+                            <?php endif; ?>
+							
+                             
+                         </ul>
+                    </li>
+					<?php endif; ?>
+					
+                       
+
+                   
+                         
+                </ul><!--/.nav-list-->
+                <div class="sidebar-collapse" id="sidebar-collapse">
+                    <i class="icon-double-angle-left"></i>
+                </div>
+            </div>
+            <div class="main-content">    
+                <div class="breadcrumbs" id="breadcrumbs">
+                </div>
+                <?php if(URL::full() == Url('authuser')): ?>
+                <div style="margin-right: auto;margin-top: 0px; margin-bottom: 0px;" class="row-fluid">
+                  <!--  <div class="span7 infobox-container">
+                        <div class="infobox infobox-grey  ">
+                            <div class="infobox-icon">
+                                <i class="icon-tasks"></i>
+                            </div>
+                          <!--  <div class="infobox-data">
+                                <?php $cyp = CourseYearPlan::getNOConfirm(); ?>
+                                <a href="ConfirmCourseYearPlan">
+                                    <span class="infobox-data-number"><?php echo $cyp; ?></span>
+                                    <div class="infobox-content">Course Year Plan</div>
+                                </a>
+                            </div>-->
+                        </div>
+                       
+                        
+                    
+                    </div> -->
+                </div>
+                <?php endif; ?> 

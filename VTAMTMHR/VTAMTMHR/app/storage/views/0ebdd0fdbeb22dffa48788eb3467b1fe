@@ -1,0 +1,129 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('holiday'); ?>> << Back to Holidays </a> 
+
+
+
+<?php endif; ?>
+
+
+    
+                
+
+
+				<div class="page-content">
+                                    
+					<div class="row-fluid">
+                                            
+                                           
+                                            
+                                            <form name='search' action="<?php echo url('findHoliday'); ?>" method='get'>
+                                                
+                                             Search Holiday By Year <input type='text' name="key"/>   <input type='submit' value='Search'/>
+                                             
+                                             <a href=<?php echo url('createHoliday'); ?>><input type='button' value='Create Holiday' /></a>
+                                              
+                                             
+                                             
+                                            </form>
+                                            
+                                           
+                                            
+                                            
+                                            
+						<div class="span12">
+							<!--PAGE CONTENT BEGINS-->
+
+
+
+
+								<table class="table">
+
+
+										<tr>
+
+											<th>HID</th>
+                                                                                        <th>Holiday Year</th>
+											<th>Holiday Month</th>
+                                                                                        <th>Holiday Day</th>
+                                                                                       
+                                                                                        
+                                                                                             <th>Remove</th>
+
+										</tr>
+<?php if(isset ($holidays)): ?>
+
+            <?php foreach ($holidays as $c): ?>
+
+                <tr>
+<td><a href="<?php echo url('editHoliday?cid='.$c->H_ID); ?>"><?php echo $c->H_ID; ?></a></td>
+                            
+                            <td><?php echo $c->HolidayYear; ?></td>
+                            <td><?php echo $c->HolidayMonth; ?></td>
+                             <td><?php echo $c->HolidayDay; ?></td>
+
+                                 <td>
+                                     <form id="deleteform"  action=<?php echo url('deleteHoliday'); ?> method="POST" onsubmit="return doConfirm('<?php echo $c->HolidayYear; ?>',this)">
+
+                                         <input type="hidden" name='cid' value= "<?php echo $c->H_ID; ?>" />
+                                       
+                                         
+                                         
+                                          <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+
+                                     </form>
+
+                                 </td>
+
+                </tr>
+
+
+            <?php endforeach; ?>
+
+    <?php endif; ?>
+
+								</table>
+
+								
+								
+                                                                                                                                                
+
+
+							<!--PAGE CONTENT ENDS-->
+						</div><!--/.span-->
+					</div><!--/.row-fluid-->
+				</div><!--/.page-content-->
+
+			<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+                        
+
+<script type="text/javascript">
+    
+  
+        function doConfirm(holiday,formobj)
+        {
+            
+            
+            bootbox.confirm("Are you sure you want to remove "+holiday, function(result) 
+            {
+                   if(result) 
+                   {
+                        formobj.submit();
+							
+                    }
+                    
+                    
+            });
+            
+         
+            return false;  // by default do nothing hack :D
+        }
+          
+   
+         
+         
+        
+
+    
+</script>

@@ -1,0 +1,143 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('employeedependence'); ?>> << Back to Employee Dependece </a> 
+
+<?php endif; ?>
+
+
+
+
+
+
+<div class="page-content">
+     
+                                        <div class="page-header position-relative">
+                                            
+                                            <h1>
+                                           Employee		
+                                            <small>
+                                                    <i class="icon-double-angle-right"></i>
+                                                    Dependence
+                                                    <i class="icon-double-angle-right"></i>
+                                                    View
+                                            </small>			
+                                            </h1>
+                                            
+		</div><!--/.page-header-->
+
+    <div class="row-fluid">
+
+
+        <div class="row-fluid">
+
+
+
+
+            <form name='search' action="<?php echo url('findEmployeedependence'); ?>" method='get'>
+
+                Search Dependence <input type='text' name="serachkey" placeholder="Search by Employee Name..."/>   <input type='submit' value='Search'/> &nbsp;
+
+
+                <a href=<?php echo url('createEmployeedependence'); ?>><input class="btn-small" type="button" value="Create Dependency"/></a>
+
+
+            </form>
+
+
+
+
+
+            <div class="span12">
+                <!--PAGE CONTENT BEGINS-->
+
+
+
+
+                <table class="table">
+
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Employee Name</th>
+                        <th>EPF No</th>
+                        <th>Dependency Name</th>
+                        <th>Relation</th>
+                        <th>DOB</th>
+                        <th>Occupation</th>
+                        <th>Name Of Employer</th>
+                        <th>Employer address</th>
+                        <th>Remove</th>
+
+                    </tr>
+                    <?php if(isset ($dependency)): ?>
+
+                    <?php foreach ($dependency as $ed): ?>
+
+                    <tr>
+
+                        <td><a href="<?php echo url('editEmployeedependence?id='.$ed->ED_ID); ?>"><?php echo $ed->ED_ID; ?></a></td>
+
+                        <td><?php if(!is_null($ed->getEmployee)): ?><?php echo $ed->getEmployee->Name; ?> <?php endif; ?></td>
+                        <td><?php echo $ed->EPF; ?></td>
+                        <td><?php echo $ed->ED_Name; ?></td>
+                        <td><?php echo $ed->Relation; ?></td>
+                        <td><?php echo $ed->DOB; ?></td>
+                        <td><?php echo $ed->Occupation; ?></td>
+                        <td><?php echo $ed->NameOfEmployer; ?></td>
+                        <td><?php echo $ed->EmployerAddress; ?></td>
+                        <td>
+                            <form id="deleteform"  action=<?php echo url('deleteEmployeedependence'); ?> method="POST" onsubmit="return doConfirm('<?php echo $ed->ED_ID; ?>', this)">
+
+                                <input type="hidden" name='edid' value=<?php echo $ed->ED_ID; ?> />
+                                <button type="submit" class="btn btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+
+                    <?php endforeach; ?>
+
+                    <?php endif; ?>
+
+                </table>
+
+
+
+
+
+
+                <!--PAGE CONTENT ENDS-->
+            </div><!--/.span-->
+        </div><!--/.row-fluid-->
+    </div><!--/.page-content-->
+
+    <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+    <script type="text/javascript">
+
+
+                function doConfirm(dependency, formobj)
+                {
+
+
+                bootbox.confirm("Are you sure you want to remove " + dependency, function(result)
+                {
+                if (result)
+                {
+                formobj.submit();
+                }
+
+
+                });
+                        return false; // by default do nothing hack :D
+                }
+
+
+
+    </script>

@@ -1,0 +1,143 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('Results'); ?>> << Back to Results </a> 
+
+<?php endif; ?>
+
+
+    
+                
+
+
+	<div class="page-content">
+                                    
+	   <div class="row-fluid">
+                                           
+                                           
+                                            
+                      <form name='download' action="<?php echo url('download'); ?>" method='get'>
+             
+<!--                            <a href="<?php echo url('download'); ?>" class="btn btn-large pull-right"><i class="icon-download-alt"> </i> Download </a>-->
+                            <a href="<?php echo url('faildownload'); ?>" class="btn btn-large pull-right"><i class="icon-download-alt"> </i> Download Fail Student </a>   
+                            <a href="<?php echo url('passdownload'); ?>" class="btn btn-large pull-right"><i class="icon-download-alt"> </i> Download Pass Student </a>
+                                              
+                                             
+                                             
+                        </form>
+                                            
+                                           
+                                            
+                                            
+                        <div class="span12">
+			<!--PAGE CONTENT BEGINS-->
+
+
+
+
+			<table class="table">
+
+
+		<tr>
+                        <th>NIC</th>	
+			<th>Paper1</th>								
+                        <th>Paper2</th>
+                        <th>Remarks</th>
+                        <th>Result</th>
+                   
+											
+                </tr>
+                        
+                <?php if(isset ($valueP)): ?>
+                
+                    <?php foreach ($valueP as $c): ?>
+
+                        <tr>
+                                <td><?php echo $c->NIC; ?></td>
+                                <td><?php echo $c->Paper1; ?></td>
+                                <td><?php echo $c->Paper2; ?></td>
+                                <td><?php echo $c->Remarks; ?></td>
+                                <td><?php echo $c->Result; ?></td>
+
+                                
+                        </tr>
+
+
+
+								
+                    <?php endforeach; ?>
+                    
+                <?php endif; ?>
+                
+                <?php if(isset ($valueF)): ?>
+                
+                    <?php foreach ($valueF as $c): ?>
+
+                        <tr>
+                                <td><?php echo $c->NIC; ?></td>
+                                <td><?php echo $c->Paper1; ?></td>
+                                <td><?php echo $c->Paper2; ?></td>
+                                <td><?php echo $c->Remarks; ?></td>
+                                <td><?php echo $c->Result; ?></td>
+
+                                
+                        </tr>
+
+
+
+								
+                    <?php endforeach; ?>
+                    
+                <?php endif; ?>
+                
+                
+                
+                
+                
+                
+                
+                
+</table>
+
+								
+								
+                                                                                                                                                
+
+
+							<!--PAGE CONTENT ENDS-->
+						</div><!--/.span-->
+					</div><!--/.row-fluid-->
+				</div><!--/.page-content-->
+
+			<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+    
+  
+        function doConfirm(course,formobj)
+        {
+            
+            
+            bootbox.confirm("Are you sure you want to remove "+course, function(result) 
+            {
+                   if(result) 
+                   {
+                        formobj.submit();
+							
+                    }
+                    
+                    
+            });
+            
+         
+            return false;  // by default do nothing hack :D
+        }
+          
+   
+         
+         
+        
+
+    
+</script>

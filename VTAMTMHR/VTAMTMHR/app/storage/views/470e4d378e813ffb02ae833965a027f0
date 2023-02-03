@@ -1,0 +1,387 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<a href=<?php echo url('createInstructor'); ?>> << Back to Instructor </a> 
+
+<div class="page-content">
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>Course			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+
+
+
+            <form class="form-horizontal" action="<?php echo url('sasa'); ?>" method="POST" onsubmit="return myvalidator()"/>
+
+
+
+
+					<input type="hidden" id="CourseCode" value="<?php echo Input::get('courseCode'); ?>" name="CourseCode"/>
+					<input type="hidden" id="ModuleId" value="<?php echo Input::get('moduleid'); ?>" name="ModuleId"/>
+					<input type="hidden" id="OrgaId" value="<?php echo Input::get('orgid'); ?>" name="OrgaId"/>
+					<input type="hidden" id="Designation" value="<?php echo Input::get('desother'); ?>" name="Designation"/>
+                
+
+					
+					<div class="control-group">
+
+                        <label class="control-label" for="OrgaI" >Organisation</label>
+
+                        <div class="controls">
+
+                            <select name="OrgaI" id="OrgaI">
+
+                                <?php foreach ($trades as $m): ?>
+
+
+                                <option value="<?php echo $m->id; ?>"><?php echo $m->OrgaName; ?></option>
+
+                                <?php endforeach; ?>
+
+
+                            </select>
+
+                        </div>
+						
+                       <br/>
+                        <!-- designation -->
+						
+						<span id="replace">
+
+                        <div class="control-group">
+
+                            <label class="control-label" for="Designation1">Employee Type</label>
+
+                            <div class="controls">
+
+                                <select name="Designation1" id="Designation1">
+									<option value=""></option>
+                                     <option value="Center">Center</option>
+									<option value="Visiting">Visiting</option>
+									
+									
+									 
+
+
+                                </select>
+
+                            </div>
+
+                            <!-- designation-->
+                            <br/>
+
+
+
+
+                            <!--emp id -->
+
+                            <div class="control-group">
+
+                                <label class="control-label" for="EmpId">Employee Name</label>
+
+                                <div class="controls">
+                                    <select id="EmpId" name="EmpId">
+                                        <?php foreach($emp as $b): ?>
+                                        <option value="<?php echo $b->id; ?>"><?php echo $b->Name; ?></option>
+                                        <?php endforeach; ?>
+
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <!-- emp id-->
+
+
+
+
+
+                            <!-- start date -->
+
+                            <div class="control-group">
+
+                                <label class="control-label" for="StartDate">Start Date</label>
+
+                                <div class="controls">
+
+                                    <input type="date" name="StartDate" id="StartDate" />
+
+                                </div>
+
+                            </div>
+
+                            <!-- Course Type -->
+                            <!-- EndDate -->
+
+                            <div class="control-group">
+
+                                <label class="control-label" for="EndDate">End Date</label>
+
+                                <div class="controls">
+
+                                    <input type="date" name="EndDate"  id="EndDate"/>
+
+                                </div>
+
+                            </div>
+
+                            <!-- EndDate -->
+
+                            <!-- current -->
+
+                            <div class="control-group">
+
+                                <label class="control-label" for="Current">Current Availability</label>
+
+                                <div class="controls">
+
+                                    <select name="Current" id="Current">
+										<option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+									</select>
+
+                                </div>
+
+                            </div>
+							<div class="control-group">
+
+                                <label class="control-label" for="Current">Type</label>
+
+                                <div class="controls">
+
+                                    <select name="Type" id="Type" required>
+										<option value="">---select type---</option>
+                                        <option value="Regular">Regular</option>
+                                        <option value="Visiting">Visiting</option>
+
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Current -->
+
+
+
+
+
+
+
+
+
+
+                            <!-- Submit Button -->
+
+                            <div class="control-group">
+
+                                <div class="controls">
+
+                                    <button type="submit" class="btn btn-small btn-primary">Save</button>
+
+                                </div>
+                            </div>
+
+
+                            <!-- Submit Button -->
+
+							</span>
+
+
+
+
+
+                        </div>
+
+                        </form>
+
+
+
+
+
+
+
+                    </div><!--/.span-->
+
+
+
+
+                    <!--/span 4 for error handling -->
+
+                    <div class="span4">
+
+                        <!-- Error Handling -->
+
+                        <?php if($errors->has()): ?>
+
+                        <?php foreach($errors->all() as $msg): ?>
+
+                        <!-- Error Message -->
+
+                        <div class="alert alert-error">
+
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+
+                            <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+                        </div>
+
+                        <!-- Error Message -->
+
+                        <?php endforeach; ?>
+
+                        <?php endif; ?>
+
+                        <!-- Error Handling -->
+
+
+
+
+
+
+                    </div>
+                    <!--/span 4-->
+
+
+
+
+
+                    <!--PAGE CONTENT ENDS-->
+
+                </div><!--/.row-fluid-->
+            </div><!--/.page-content-->
+
+
+            <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+            <script>
+
+                <?php if (isset($done)): ?>
+
+                        $.gritter.add({title: "", text: "Instructor Assigned Successfully", class_name: "gritter-info gritter-center"});
+
+                <?php endif; ?>
+
+				
+				
+						
+
+
+                        function  myvalidator()
+                        {
+
+                            var startdate = document.getElementById('StartDate');
+                            var enddate = document.getElementById('EndDate');
+
+                            if (startdate.value >= enddate.value)
+                            {
+
+                                alert("End Date must be grater than Start Date");
+                                return false;
+
+                            }
+
+
+
+                        }
+
+
+
+                $(document).ready(function()
+                {
+
+                    
+
+                    $("#Designation1").change(function()
+                    {
+
+
+                        var emp = $("#Designation1").val();
+						var org = $("#OrgaI").val();
+						
+						
+						
+                        $("#EmpId").html('');
+
+						if(emp == 'Center')
+						{
+                        $.ajax
+                                ({
+                                    type: "GET",
+                                    url: "<?php echo Url('getcempcode'); ?>",
+                                    data: {empid: emp,orgid: org},
+                                    dataType: "json",
+                                    success: function(result)
+                                    {
+
+                                        $.each(result, function(i, item)
+                                        {
+
+
+
+                                            $("#EmpId").append("<option value=" + item.id + ">" + item.Name + "</option>");
+
+
+
+                                        });
+
+
+                                    }
+                                });
+
+						}
+						else if(emp == 'Visiting')
+						{
+                        $.ajax
+                                ({
+                                    type: "GET",
+                                    url: "<?php echo Url('getvempcode'); ?>",
+                                    data: {empid: emp,orgid: org},
+                                    dataType: "json",
+                                    success: function(result)
+                                    {
+
+                                        $.each(result, function(i, item)
+                                        {
+
+
+
+                                            $("#EmpId").append("<option value=" + item.id + ">" + item.Name + "</option>");
+
+
+
+                                        });
+
+
+                                    }
+                                });
+
+
+						}
+
+
+                    });
+
+
+
+                });
+
+            </script> 

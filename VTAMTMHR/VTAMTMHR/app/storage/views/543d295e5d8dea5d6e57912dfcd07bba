@@ -1,0 +1,50 @@
+<!--
+* Created By Amila
+* 2017-04-28
+-->
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>View Non NVQ Year Plans<small><i class="icon-double-angle-right"></i></small></h1>
+            </div>
+			<a href="ViewNonNvqModules"><h4><i class="icon-double-angle-left"></i> Back</h4></a>
+			<div class="control-group">
+				<div class="controls" >
+					<?php echo $cyptable; ?>
+				</div>
+			</div>
+            <div id="viewTable">
+				
+			</div>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
+
+		
+<script>
+	$('#nonnvqcourses').dataTable({
+		'bPaginate': true,
+		'aoColumns': [
+			{'bSortable': false},
+			{'bSortable': true},
+			{'bSortable': true},
+			{'bSortable': true},
+			{'bSortable': false},
+			{'bSortable': false},
+			{'bSortable': false}
+							   
+		]});
+
+</script>

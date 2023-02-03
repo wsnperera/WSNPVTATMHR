@@ -1,0 +1,136 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('courses'); ?>> << Back to Holidays </a> 
+
+<?php endif; ?>
+
+				<div class="page-content">
+                                    
+					<div class="row-fluid">
+
+   <div class="page-header position-relative">
+
+                <h1>
+                   Dropouts			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Confirm
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->  
+                
+
+
+                             <a href="<?php echo url('downloadDropout'); ?>" class="btn btn-large pull-right"><i class="icon-download-alt"> </i> Download </a>                
+                                           
+                                            
+                                           
+                                            
+                                           
+                                            
+                                            
+                                            
+						<div class="span12">
+							<!--PAGE CONTENT BEGINS-->
+
+
+
+
+								<table class="table">
+
+
+										<tr>
+
+											
+<!--                                                                                        <th>Trainee Name</th>-->
+                                                                                        <th>Trainee ID</th>
+											<th>Organisation Name</th>
+                                                                                        <th>Institute Name</th>
+                                                                                        <th>Course Code</th>
+                                                                                        <th>Reason</th>
+                                                                                        <th>Confirm</th>
+
+										</tr>
+<?php if(isset ($dropouts)): ?>
+
+            <?php foreach ($dropouts as $c): ?>
+
+                <tr>
+
+                            
+
+                            <td><?php echo $c->Training_No; ?></td>
+                            <td><?php echo $c->OrgaId; ?></td>
+                            <td><?php echo $c->InstituteId; ?></td> 
+                            <td><?php echo $c->CourseCode; ?></td>
+                            <td><?php echo $c->Reason; ?></td>
+                                 <td>
+                                     <form id="deleteform"  action=<?php echo url('deleteDropout'); ?> method="POST" onsubmit="return doConfirm('<?php echo $c->Training_No; ?>',this)">
+
+                                         <input type="hidden" name='cid' value= "<?php echo $c->Training_No; ?>" />
+                                       
+                                         
+                                         
+                                          <button type="submit" class="btn btn-grey btn-small"><i class="icon-cloud-download"></i></button>
+
+                                     </form>
+
+                                 </td>
+
+                </tr>
+
+
+            <?php endforeach; ?>
+
+    <?php endif; ?>
+
+								</table>
+
+								
+								
+                                                                                                                                                
+
+
+							<!--PAGE CONTENT ENDS-->
+						</div><!--/.span-->
+					</div><!--/.row-fluid-->
+				</div><!--/.page-content-->
+
+			<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+                        
+
+<script type="text/javascript">
+    
+  
+        function doConfirm(holiday,formobj)
+        {
+            
+            
+            bootbox.confirm("Are you sure you want to remove "+holiday, function(result) 
+            {
+                   if(result) 
+                   {
+                        formobj.submit();
+							
+                    }
+                    
+                    
+            });
+            
+         
+            return false;  // by default do nothing hack :D
+        }
+          
+   
+         
+         
+        
+
+    
+</script>
+
+
+

@@ -1,0 +1,154 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>      
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('NVQPackageUnit'); ?>> << Back to View NVQ Package Unit</a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>NVQ Package Unit<small><i class="icon-double-angle-right"></i>View</small></h1>
+        </div>
+        <form name='search' action="<?php echo url('CreateNVQUnits'); ?>" method='get'>
+           
+           <!-- <a href=<?php echo url('#'); ?>><input type='button' value='Create Module' /></a>-->
+            <button type="submit" id="submit" class="btn btn-primary">
+                            Assign NVQ Packages Units</button>
+        </form>
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+        <div class="span12">
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                 <thead>
+                <tr>
+                            <th>No</th>
+                            <th>Edit</th>
+                            <th>Trade</th>
+                            <th>Competency Standard Code</th>
+                            <th>Competency Standard Name</th>
+                            <th>Qualification Package Code</th>
+                            <th>Unit Code</th>
+                            <th>Unit Name</th>
+							  <th>Unit Version</th>
+                            <th>Unit Status</th>
+                            <th>Active</th>
+                            <th>Delete</th>
+                </tr>
+                 </thead>
+                 <tbody>
+                        <?php $i = 1; ?>
+                            <?php if(isset ($NVQUNITS)): ?>
+                                <?php foreach($NVQUNITS as $m): ?>
+                                <tr>
+                                <td><?php echo $i++; ?></td>
+                                <td><form id="editform"  action="<?php echo url('EditNVQUnits'); ?>" method="GET" >
+                                                <input type="hidden" name='id' value='<?php echo $m->id; ?>' />
+                                                <button type="Submit" class="btn btn-success btn-mini"><i class="icon-edit icon-2x icon-only"></i></button>
+                                            </form></td>
+                                    <td><?php echo $m->TradeName; ?></td>
+                                    <td><?php echo $m->code; ?></td>
+                                    <td><?php echo $m->name; ?></td>
+                                    <td><?php echo $m->packagecode; ?></td>
+                                    <td><?php echo $m->UnitCode; ?></td>
+                                    <td><?php echo $m->UnitName; ?></td>
+									<td><?php echo $m->UnitVersion; ?></td>
+                                    <td>
+                                    
+                                         <?php if($m->UnitStatus == "C"): ?>
+                                         Compulsory
+                                         <?php else: ?>
+                                         Optional
+                                         <?php endif; ?> 
+                                     
+							 
+							    
+                                    </td>
+                                    
+                                    <td>
+                                        <?php if($m->Active == "1"): ?>
+                                    <font color="green"><i class="icon-ok bigger-130"></i></font>
+                                        <?php endif; ?>
+                                        <?php if($m->Active == "0"): ?>
+                                        <font color="red"><i class="icon-remove bigger-130"></i></font>
+                                        <?php endif; ?>
+                                    </td>
+
+                                    <td>
+                                        <form id="deleteform"  action='DeletePackage' method="POST" onsubmit="return doConfirm('<?php echo $m->UnitName; ?>',this)">
+                                            <input type="hidden" name='id' value="<?php echo $m->id; ?>" />
+                                            <button type="submit" class="btn btn-danger btn-mini"><i class="icon-trash icon-2x icon-only"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                                <?php if($NVQUNITS=='[]'): ?>
+                                    </table><center>Data Not Found</center>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                    </tbody>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+        <div class="span4" id="ajaxerror">
+            
+        </div>
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+     
+
+    function doConfirm(course,formobj)  {
+        bootbox.confirm("Are you sure you want to remove "+course, function(result) 
+        {
+            if(result) 
+            {
+                formobj.submit();
+            }
+         });
+         return false;  // by default do nothing hack :D
+     }
+     
+      <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+$('#sample-table-2').dataTable({
+    "aoColumns": [
+            {"bSortable": false}, 
+            null, 
+              null,
+             null, 
+			 null,  null,  null,  null, null,null,null,null,
+             
+    ]});
+            $('table th input:checkbox').on('click', function() {
+    var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function() {
+            this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+            });
+    });
+            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+            function tooltip_placement(context, source) {
+            var $source = $(source);
+                    var $parent = $source.closest('table')
+                    var off1 = $parent.offset();
+                    var w1 = $parent.width();
+                    var off2 = $source.offset();
+                    var w2 = $source.width();
+                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                    return 'right';
+                    return 'left';
+            }
+
+
+ </script>

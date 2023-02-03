@@ -1,0 +1,86 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('vocationalPlacement'); ?>> << Back to Main View </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>Vocational Placement<small><i class="icon-double-angle-right"></i>View</small></h1>
+        </div>
+        <form name='search' action="<?php echo url('findVP'); ?>" method='get'>
+            Search By Index Number <input type='text' name="key"/>   <input type='submit' value='Search'/>
+            <a href=<?php echo url('createVP'); ?>><input type='button' value='Create Vocational Placement' /></a>
+        </form>
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table class="table">
+                <tr>
+                    <th>Name With Initials</th>
+                    <th>Full Name</th>
+                    <th>NIC</th>
+                    <th>Institute</th>
+                    <th>Organization</th>
+                    <th>Vocational Course Name</th>
+                    <th>Start Date</th>
+                    <th>Expected End Date</th> 
+                </tr>
+                <?php if(isset ($vp)): ?>
+                    <?php foreach($vp as $v): ?>
+                    <tr><?php $val=VocationalPlacement::Trainee($v->StudentID); ?>
+                        <?php if(VocationalPlacement::getEditDetelete($v->ID)): ?>
+                            <td><b><u><a href="<?php echo url('editVP?id='.$v->ID); ?>"><?php echo $val->NameWithInitials; ?></a></u><b></td>
+                        <?php else: ?>
+                            <td><?php echo $val->NameWithInitials; ?></td>
+                        <?php endif; ?>
+                        <td><?php echo $val->FullName; ?></td>
+                        <td><?php echo $val->NIC; ?></td>
+                        <?php if(isset($v->VocationalInstitute->InstituteName)): ?>
+                            <td><?php echo $v->VocationalInstitute->InstituteName; ?></td>
+                        <?php else: ?>
+                            <td></td>
+                        <?php endif; ?>
+                        <?php if(isset($v->VocationalOrganisation->Organization)): ?>   
+                            <td><?php echo $v->VocationalOrganisation->Organization; ?></td>
+                        <?php else: ?>
+                            <td></td>
+                        <?php endif; ?>
+                        <?php if(isset($v->VocationalCourse->CourseName)): ?>
+                            <td><?php echo $v->VocationalCourse->CourseName; ?></td>
+                        <?php else: ?>
+                            <td></td>
+                        <?php endif; ?>
+                        <td><?php echo $v->StartDate; ?></td>
+                        <td><?php echo $v->ExpectedCompleted; ?></td>
+                        <?php if(VocationalPlacement::getEditDetelete($v->ID)): ?>
+                            <td>
+                                <form id="deleteform"  action='deleteVP' method="POST" onsubmit="return doConfirm('<?php echo $val->NameWithInitials; ?>',this)">
+                                    <input type="hidden" name='id' value='<?php echo $v->ID; ?>' />
+                                    <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                                </form>
+                            </td>
+                        <?php endif; ?>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php if($vp=='[]'): ?>
+                        </table><center>Data Not Found</center>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type="text/javascript">
+    function doConfirm(course,formobj)
+    {
+        bootbox.confirm("Are you sure you want to remove "+course, function(result) 
+        {
+            if(result) 
+            {
+                formobj.submit();
+            }
+         });
+         return false;  // by default do nothing hack :D
+     }
+ </script>

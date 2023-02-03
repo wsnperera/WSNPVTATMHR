@@ -1,0 +1,145 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('courses'); ?>> << Back to Holidays </a> 
+
+<?php endif; ?>
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+		<div class="page-header position-relative">
+
+                <h1>
+                    Scholarship		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        View
+                    </small>			
+                </h1>
+            </div>
+    
+                
+
+
+				<div class="page-content">
+                                    
+					<div class="row-fluid">
+                                            
+                                           
+                                            
+                                            <form name='search' action="<?php echo url('searchScholarship'); ?>" method='get'>
+                                                
+                                             Search Scholarship Employee ID <input type='text' name="key"/>   <input type='submit' value='Search'/>
+                                             
+                                             <a href=<?php echo url('createScholarship'); ?>><input type='button' value='Create Scholarship' /></a>
+                                              
+                                             
+                                             
+                                            </form>
+                                            
+                                           
+                                            
+                                            
+                                            
+						<div class="span12">
+							<!--PAGE CONTENT BEGINS-->
+
+
+
+
+								<table class="table">
+
+
+										<tr>
+
+											<th>Employee ID</th>
+                                                                                        <th>Course Name</th>
+											<th>Country</th>
+                                                                                        <th>Agency</th>
+                                                                                        <th>Start Date</th>
+                                                                                        <th>End Date</th>
+                                                                                        <th>Remove</th>
+
+										</tr>
+<?php if(isset ($scholarships)): ?>
+
+            <?php foreach ($scholarships as $c): ?>
+
+                <tr>
+<td><a href="<?php echo url('editScholarship?cid='.$c->id); ?>"><?php echo $c->emp_id; ?></a></td>
+                            
+                          
+                            <td><?php echo $c->CourseName; ?></td>
+                             <td><?php echo $c->Country()->CountryName;; ?></td>
+                             <td><?php echo $c->Agency; ?></td>
+                             <td><?php echo $c->StartDate; ?></td>
+                             <td><?php echo $c->EndDate; ?></td>
+                                 <td>
+                                     <form id="deleteform"  action=<?php echo url('deleteScholarship'); ?> method="POST" onsubmit="return doConfirm('<?php echo $c->emp_id; ?>',this)">
+
+                                         <input type="hidden" name='cid' value= "<?php echo $c->id; ?>" />
+                                       
+                                         
+                                         
+                                          <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+
+                                     </form>
+
+                                 </td>
+
+                </tr>
+
+
+            <?php endforeach; ?>
+
+    <?php endif; ?>
+
+								</table>
+
+								
+								
+                                                                                                                                                
+
+
+							<!--PAGE CONTENT ENDS-->
+						</div><!--/.span-->
+					</div><!--/.row-fluid-->
+				</div><!--/.page-content-->
+
+			<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+                        
+
+<script type="text/javascript">
+    
+  
+        function doConfirm(holiday,formobj)
+        {
+            
+            
+            bootbox.confirm("Are you sure you want to remove "+holiday, function(result) 
+            {
+                   if(result) 
+                   {
+                        formobj.submit();
+							
+                    }
+                    
+                    
+            });
+            
+         
+            return false;  // by default do nothing hack :D
+        }
+          
+   
+         
+         
+        
+
+    
+</script>
+
+

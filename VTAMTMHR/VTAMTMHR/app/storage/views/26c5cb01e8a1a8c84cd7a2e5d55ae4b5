@@ -1,0 +1,245 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Exam Type			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+            </div>
+            <form class="form-horizontal" method="POST" id="myform" action="<?php echo url('ExamType_create'); ?>">
+                <div class="control-group">
+                    <label class="control-label" for="InstituteId">Institute Name</label>
+                    <div class="controls">
+                        <input type="text" name="InstituteId" disabled="true" value="<?php echo $institute; ?>"/>
+                        <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>" id="InstituteId"/>
+                    </div>
+                </div>
+                <br/> 
+
+                <div class="control-group">
+                    <label class="control-label" for="OrgaId">Organization Name</label>
+                    <div class="controls">
+                        <select name="OrgaId[]" id="OrgaId" multiple="" class="chzn-select" data-placeholder="Choose Organization...">
+                            <option value=""></option>
+                            <?php foreach ($orga as $o): ?>
+                            <option value="<?php echo $o->id; ?>"><?php echo $o->OrgaName; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" name="form-field-checkbox" id="OrgaId-all" value="all"></input>
+                        <span class="lbl">
+                            All Organization
+                        </span>
+                    </div>
+                </div>
+                <br/> 
+
+                <div class="control-group">
+                    <label class="control-label" for="CourseCode">Course Code</label>
+                    <div class="controls">
+                        <select name="CourseCode" id="CourseCode">
+                            <option value=""></option>
+                            
+                        </select>
+                    </div>
+                </div>
+                <br/>
+
+
+                <div class="control-group">
+                    <label class="control-label" for="type">Exam Type</label>
+                    <div class="controls">
+                        <input type="text" name="examtypeid" id="examtypeid" autocomplete="off"/>
+                    </div>
+                    <div id="my_select">
+
+                    </div>
+                </div>
+                <br/>  
+
+                <div class="control-group">
+                    <label class="control-label" for="dateheld">Exam Month/Year</label>
+                    <div class="controls">
+                        <div class="row-fluid input-append"> 
+                            <div style="float:left;padding-right: 0.5in">
+                                <select name="Month" id="Month" style="width: 100px">
+                                    <option value=""></option>
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select> 
+                            </div>
+                            <div>
+                                <?php
+                                $date = date('Y', strtotime(\Carbon\Carbon::now()));
+                                $min = $date - 5;
+                                ?>
+                                <select name="Year" id="Year" style="width: 100px">
+                                    <option></option>
+                                    <?php for($i = 0; $i < 15; $i++): ?>
+                                    <option value="<?php echo $min; ?>"  <?php if($min == $date): ?> selected <?php endif; ?>><?php echo $min++; ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Save</button>
+                    </div>
+                </div>
+                <br/>
+            </form>                                
+        </div>
+    </div>
+    <div class="span4">
+        <?php if($errors->has()): ?>
+        <?php foreach($errors->all() as $msg): ?>
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="icon-remove"></i>
+            </button>
+            <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+        </div>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+</div>
+
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+
+<script>
+$("#OrgaId").change(function() {
+    var mul = document.getElementById("OrgaId").value;
+    var all = document.getElementById("OrgaId-all").value;
+    if (mul !== "") {
+        $('#OrgaId-all').prop('disabled', true);
+    } else {
+        $('#OrgaId-all').prop('disabled', false);
+    }
+});
+$("#OrgaId-all").click(function() {
+    var mul = document.getElementById("OrgaId").value;
+    if ($("#OrgaId-all").prop("checked") === true) {
+        var all = $("#OrgaId-all:checked").val();
+    } else {
+        var all = "";
+    }
+//    alert(all);
+    if (all !== "") {
+        $('#OrgaId').prop('disabled', true);
+        $('#OrgaId_chzn').hide();
+    } else {
+        $('#OrgaId').prop('disabled', false);
+        $('#OrgaId_chzn').show();
+    }
+});
+</script>
+<script>
+    $("#examtypeid").keyup(function() {
+        var aaa = " <select id=\"dale_training\" multiple=\"multiple\" style=\"margin-left: 180px;\" onclick=\"my();\"></select>";
+        var x = document.getElementById('examtypeid').value;
+        $.ajax({
+            url: "<?php echo url::to('ExamType_Ajax'); ?>",
+            data: {x: x},
+            success: function(res) {
+//            alert(res);
+                if (res === "Dale") {
+                    document.getElementById('my_select').innerHTML = '';
+                } else {
+                    document.getElementById('my_select').innerHTML = aaa;
+                    document.getElementById('dale_training').innerHTML = res;
+                }
+            }
+
+        });
+
+    });
+
+    $("#my_select").on('change', '#dale_training', function() {
+        var select = document.getElementById('dale_training').value;
+        document.getElementById('examtypeid').value = select;
+        document.getElementById('my_select').innerHTML = '';
+    });
+
+
+
+    $(".chzn-select").chosen();
+            <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Record Added Successfully", class_name: "gritter-info gritter-center"});
+            <?php endif; ?>
+
+    $(".chzn-select").chosen().change(function() {
+        var value = $(this).val();
+        var lastval = value[(value.length - 1)];
+        $.ajax({
+            url: "<?php echo url::to('ExamType_getmulorga'); ?>",
+            data: {lastval: lastval},
+            dataType: 'json',
+            success: function(result) {
+//                alert(result);
+                    $.each(result, function($index, $value) {
+                    $("#CourseCode").append('<option value="' + $value.CourseCode + '">' + $value.CourseCode + '</option>');
+                })
+            }
+
+        });
+    });
+    $("#OrgaId-all").click(function() {
+        var org = document.getElementById("OrgaId-all").value;
+        $.ajax({
+            url: "<?php echo url::to('ExamType_getallorga'); ?>",
+//            data: {org: org},
+            dataType: 'json',
+            success: function(result) {
+//                alert(result);
+                     $("#CourseCode").find('option:gt(0)').remove();
+                    $.each(result, function(index, value) {
+                    $("#CourseCode").append('<option value="' + value.type + '">' + value.type + '</option>');
+                })
+            }
+
+        });
+    });
+
+
+
+
+
+
+</script>
+<!--<script>
+    $('.date-picker').datepicker().next().on(ace.click_event, function() {
+        $(this).prev().focus();
+    });
+</script>-->

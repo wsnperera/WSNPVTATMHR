@@ -1,0 +1,567 @@
+@include('includes.bar')
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<!--ace styles-->
+
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <a href={{url('ViewHrServiceCategory')}}> << Back to Service Category</a>
+                <h1>Service Category<small><i class="icon-double-angle-right"></i>Create Service Category</small></h1>
+            </div>
+
+            <form class="form-horizontal"  action="" method="POST" id='NewModule'/>
+            <div class="control-group">
+                   
+                    <div class="controls">
+
+                @if(Session::has('done'))
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-ok"></i>
+                               Service Category Added Successfully 
+                            </strong>
+                            <br>
+                        </div>
+                    @endif
+                     </div>
+                   
+                </div>
+            <div class="control-group">
+                <label class="control-label" for="CourseListCode">Year : </label>
+                <div class="controls">
+                    <input type="Text" name="Year" id="Year" required="true" />
+				<!--	Duration <input id="Duration" placeholder="" type="text"> -->
+                </div>
+            </div> 
+
+         
+			
+            <div class="control-group">
+                    <label class="control-label" >Service Category: </label>
+                        <div class="controls" id="Trade">
+                            <textarea name="ServiceCategory" id="ServiceCategory" required="true"></textarea> 
+                           
+                        </div>         
+            </div> 
+            <div class="control-group">
+                    <label class="control-label">Salary Code:</label>
+                    <div class="controls">
+                       
+                        <textarea id="SalaryCode" name="SalaryCode" type="text" required></textarea>
+                    </div>
+            </div>
+             <div class="control-group">
+                    <label class="control-label">Salary Scale:</label>
+                    <div class="controls">
+                       
+                        <textarea id="SalaryScale" name="SalaryScale" type="text" required></textarea>
+                    </div>
+            </div>
+			 <div class="control-group">
+                    <label class="control-label">Salary Amount:</label>
+                    <div class="controls">
+                       
+                        <input id="BasicSalary" name="BasicSalary" type="text" required/>
+                    </div>
+            </div>
+			
+                  
+                    
+			<table>
+			<tr><th>No of Steps & Step Amount</th></tr>
+			<tr>
+			<td>
+			 
+			<div id="ncc_id1">
+                    <div class="control-group">
+                       
+                        <div class="controls">
+                           
+                               
+                               <input  type="text" class="ns" name="NoOFSteps[]" onclick="dale_ncc(1)" id="NoOFSteps1" placeholder="No Of Steps..." />
+							   <input  type="text" class="na" name="AmountList[]" onclick="dale_ncc(1)" id="AmountList1" placeholder="Step Amount..." />
+                               <button  class="btn btn-warning" style="margin: 0; height: 30px; border: 0; hidden="" type="button" id="add_ncc"><i class="icon-plus bigger-100"></i>Add Step</button>
+                               <button class="btn btn-danger" style="margin: 0; height: 30px; border: 0;  hidden="" type="button" id="remove_ncc"><i class="icon-remove bigger-100"></i>Remove Step</button>
+                            
+                        </div>
+                    </div>
+                </div>
+				</td>
+			</tr>
+			<tr>
+			<td>
+			<div id="ncc_id2" hidden="">
+                    <div class="control-group">
+                       
+                        <div class="controls">
+                           
+                               
+                               <input  type="text" class="ns" name="NoOFSteps[]"  id="NoOFSteps2" placeholder="No Of Steps..." />
+							   <input  type="text" class="na" name="AmountList[]"  id="AmountList2" placeholder="Step Amount..." />
+                               
+                            
+                        </div>
+                    </div>
+                </div>
+				</td>
+			</tr>
+			<tr>
+			<td>
+			<div id="ncc_id3" hidden="">
+                    <div class="control-group">
+                       
+                        <div class="controls">
+                           
+                               
+                               <input  type="text" class="ns" name="NoOFSteps[]"  id="NoOFSteps3" placeholder="No Of Steps..." />
+							   <input  type="text" class="na" name="AmountList[]"  id="AmountList3" placeholder="Step Amount..." />
+                               
+                            
+                        </div>
+                    </div>
+                </div>
+				</td>
+			</tr>
+			<tr>
+			<td>
+			<div id="ncc_id4" hidden="">
+                    <div class="control-group">
+                       
+                        <div class="controls">
+                           
+                               
+                               <input  type="text" class="ns" name="NoOFSteps[]"  id="NoOFSteps4" placeholder="No Of Steps..." />
+							   <input  type="text" class="na" name="AmountList[]"  id="AmountList4" placeholder="Step Amount..." />
+                               
+                            
+                        </div>
+                    </div>
+                </div>
+				</td>
+			</tr>
+			<tr>
+			<td>
+			<div id="ncc_id5" hidden="">
+                    <div class="control-group">
+                       
+                        <div class="controls">
+                           
+                               
+                               <input  type="text" class="ns" name="NoOFSteps[]"  id="NoOFSteps5" placeholder="No Of Steps..." />
+							   <input  type="text" class="na" name="AmountList[]"  id="AmountList5" placeholder="Step Amount..." />
+                               
+                            
+                        </div>
+                    </div>
+                </div>
+				</td>
+			</tr>
+			<tr>
+			<td>
+			<div id="ncc_id6" hidden="">
+                    <div class="control-group">
+                       
+                        <div class="controls">
+                           
+                               
+                               <input  type="text" class="ns" name="NoOFSteps[]"  id="NoOFSteps6" placeholder="No Of Steps..." />
+							   <input  type="text" class="na" name="AmountList[]"  id="AmountList6" placeholder="Step Amount..." />
+                               
+                            
+                        </div>
+                    </div>
+                </div>
+				</td>
+			</tr>
+			</table>
+			  
+           <input type="hidden" id="dale_ncc_id" value="1"/>
+		   
+		    <input type="hidden" id="dale_EB_id" value="1"/>
+                    <div class="control-group" id="EB1">
+                       <label class="control-label">EB Step No:</label>
+                        <div class="controls">
+                           
+                               
+                               <input  type="text" class="ne" name="EBSteps[]" onclick="dale_EB(1)" id="EBSteps1" placeholder="EB Step No..." />
+							   
+                               <button  class="btn btn-success" style="margin: 0; height: 30px; border: 0; hidden="" type="button" id="add_EB"><i class="icon-plus bigger-100"></i>Add EB Step No</button>
+                               <button class="btn btn-danger" style="margin: 0; height: 30px; border: 0;  hidden="" type="button" id="remove_EB"><i class="icon-remove bigger-100"></i>Remove EB Step No</button>
+                            
+                        </div>
+                    </div>
+					<div class="control-group" id="EB2" hidden="">
+                       <label class="control-label">EB Step No:</label>
+                        <div class="controls">
+                           
+                               
+                               <input  type="text" class="ne" name="EBSteps[]"  id="EBSteps2" placeholder="EB Step No..." />
+							   
+                              
+                            
+                        </div>
+                    </div>
+					<div class="control-group" id="EB3" hidden="">
+                       <label class="control-label">EB Step No:</label>
+                        <div class="controls">
+                           
+                               
+                               <input  type="text" class="ne" name="EBSteps[]"  id="EBSteps3" placeholder="EB Step No..." />
+							   
+                              
+                            
+                        </div>
+                    </div>
+                
+			<div class="control-group">
+                    <label class="control-label">Grades Available:</label>
+                    <div class="controls">
+                     <label>
+                     @foreach($gradesList as $g)
+					  <input class="ids" name="ids[]" value="{{$g->id}}" type="checkbox" @if($g->Compulsory == 1) checked="true" required="true" @endif />
+                        <span class="lbl">&nbsp;&nbsp;&nbsp;{{$g->Grade}}</span><br/>
+					 @endforeach
+                    </label>
+                    </div>
+            </div>
+            <div class="control-group">
+                    <label class="control-label">Active Status:</label>
+                    <div class="controls">
+                       
+                        <select name="Active" id="Active" required="true">
+						<option value="">--- Select Active Status---</option>
+						<option value="1">Yes</option>
+						<option value="0">No</option>
+						</select>
+                    </div>
+            </div>
+          
+            
+
+            <div class="control-group">
+                <div class="controls">
+                        <input type="button" value="Save"  id="saveme" class="btn btn-small btn-primary"/> <span id='img4'></span>
+                    </div>
+            </div>  
+        <div class="control-group">
+                <div class="controls" id="msg">
+                       
+                 </div>
+            </div>  			
+
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+       
+    
+             </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+@include('includes.footer')
+ <script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+  <script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+
+    @if (isset($done))
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    @endif
+	function dale_ncc(x) 
+	{
+		var a = parseInt(x);
+		 $('#add_ncc').show();		
+         $('#remove_ncc').hide();		 
+		//document.getElementById('add_ncc').style.visibility = 'visible';
+
+
+	}
+	
+	function dale_EB(x) 
+	{
+		var a = parseInt(x);
+		 $('#add_EB').show();		
+         $('#remove_EB').hide();		 
+		//document.getElementById('add_ncc').style.visibility = 'visible';
+
+
+	}
+	 $('#add_EB').click(function() {
+                                    var s = parseInt($('#dale_EB_id').val());
+                                    //alert(s);
+                                    if(s == 1)
+                                    {
+                                      
+									   $('#EB2').show();
+									   document.getElementById('dale_EB_id').value = 2;
+									    $('#remove_EB').show();
+									 
+                                    }
+                                    else if(s == 2)
+                                    {
+                                    
+									  $('#EB3').show();
+									   document.getElementById('dale_EB_id').value = 3;
+									    $('#remove_EB').show();
+									  
+                                    }
+                                  
+                                  
+                                });
+								 $('#remove_EB').click(function() {
+                                    var s = parseInt($('#dale_EB_id').val());
+                                    if(s == 1)
+                                    {
+                                      
+                                    }
+                                     else if(s == 2)
+                                    {
+                                      
+									  $('#EB2').hide();
+									   document.getElementById('dale_EB_id').value = 1;
+									    $('#remove_EB').hide();
+                                    }
+                                     else if(s == 3)
+                                    {
+                                      
+									   $('#EB3').hide();
+									   document.getElementById('dale_EB_id').value = 2;
+									    $('#remove_EB').show();
+                                    }
+                                   
+
+                                    
+                                });
+	 $('#add_ncc').click(function() {
+                                    var s = parseInt($('#dale_ncc_id').val());
+                                    //alert(s);
+                                    if(s == 1)
+                                    {
+                                      /* document.getElementById('ncc_id2').style.visibility = 'visible';
+                                      document.getElementById('dale_ncc_id').value = 2;
+                                      document.getElementById('remove_ncc').style.visibility = 'visible'; */
+									   $('#ncc_id2').show();
+									   document.getElementById('dale_ncc_id').value = 2;
+									    $('#remove_ncc').show();
+									 
+                                    }
+                                    else if(s == 2)
+                                    {
+                                      /* document.getElementById('ncc_id3').style.visibility = 'visible';
+                                      document.getElementById('dale_ncc_id').value = 3;
+                                      document.getElementById('remove_ncc').style.visibility = 'visible'; */
+									  $('#ncc_id3').show();
+									   document.getElementById('dale_ncc_id').value = 3;
+									    $('#remove_ncc').show();
+									  
+                                    }
+                                    else if(s == 3)
+                                    {
+                                      /* document.getElementById('ncc_id4').style.visibility = 'visible';
+                                      document.getElementById('dale_ncc_id').value = 4;
+                                      document.getElementById('remove_ncc').style.visibility = 'visible'; */
+									  $('#ncc_id4').show();
+									   document.getElementById('dale_ncc_id').value = 4;
+									    $('#remove_ncc').show();
+									 
+                                    }
+                                    else if(s == 4)
+                                    {
+                                     /*  document.getElementById('ncc_id5').style.visibility = 'visible';
+                                      document.getElementById('dale_ncc_id').value = 5;
+                                      document.getElementById('remove_ncc').style.visibility = 'visible'; */
+									   $('#ncc_id5').show();
+									   document.getElementById('dale_ncc_id').value = 5;
+									    $('#remove_ncc').show();
+									  
+                                    }
+                                    else if(s == 5)
+                                    {
+                                      /* document.getElementById('ncc_id6').style.visibility = 'visible';
+                                      document.getElementById('dale_ncc_id').value = 6;
+                                      document.getElementById('remove_ncc').style.visibility = 'visible'; */
+									   $('#ncc_id6').show();
+									   document.getElementById('dale_ncc_id').value = 6;
+									    $('#remove_ncc').show();
+									   
+                                    }
+                                  
+                                });
+                               $('#remove_ncc').click(function() {
+                                    var s = parseInt($('#dale_ncc_id').val());
+                                    if(s == 1)
+                                    {
+                                      
+                                    }
+                                     else if(s == 2)
+                                    {
+                                      /* document.getElementById('ncc_id2').style.visibility = 'hidden';
+                                      document.getElementById('dale_ncc_id').value = 1;
+                                      document.getElementById('remove_ncc').style.visibility = 'hidden'; */
+									  $('#ncc_id2').hide();
+									   document.getElementById('dale_ncc_id').value = 1;
+									    $('#remove_ncc').hide();
+                                    }
+                                     else if(s == 3)
+                                    {
+                                      /* document.getElementById('ncc_id3').style.visibility = 'hidden';
+                                      document.getElementById('dale_ncc_id').value = 2;
+                                      document.getElementById('remove_ncc').style.visibility = 'visible'; */
+									   $('#ncc_id3').hide();
+									   document.getElementById('dale_ncc_id').value = 2;
+									    $('#remove_ncc').show();
+                                    }
+                                    else if(s == 4)
+                                    {
+                                      /* document.getElementById('ncc_id4').style.visibility = 'hidden';
+                                      document.getElementById('dale_ncc_id').value = 3;
+                                      document.getElementById('remove_ncc').style.visibility = 'visible'; */
+									   $('#ncc_id4').hide();
+									   document.getElementById('dale_ncc_id').value = 3;
+									    $('#remove_ncc').show();
+                                    }
+                                    else if(s == 5)
+                                    {
+                                      /* document.getElementById('ncc_id5').style.visibility = 'hidden';
+                                      document.getElementById('dale_ncc_id').value = 4;
+                                      document.getElementById('remove_ncc').style.visibility = 'visible'; */
+									  $('#ncc_id5').hide();
+									   document.getElementById('dale_ncc_id').value = 4;
+									    $('#remove_ncc').show();
+                                    }
+                                    else if(s == 6)
+                                    {
+                                      /* document.getElementById('ncc_id6').style.visibility = 'hidden';
+                                      document.getElementById('dale_ncc_id').value = 5;
+                                      document.getElementById('remove_ncc').style.visibility = 'visible'; */
+									  $('#ncc_id6').hide();
+									   document.getElementById('dale_ncc_id').value = 5;
+									    $('#remove_ncc').show();
+                                    }
+
+                                    
+                                });
+    $('#saveme').click(function()
+    {
+       var ids = [];
+        var Year = $("#Year").val();
+		var ServiceCategory = $("#ServiceCategory").val();
+		var SalaryCode = $("#SalaryCode").val();
+		var SalaryScale = $("#SalaryScale").val();
+		var Active = $("#Active").val();
+		var BasicSalary = $("#BasicSalary").val();
+		$('.ids:checked').serialize();
+		
+		$('.ids:checked').each(function(i, e) {
+			ids.push($(this).val());
+		});
+		
+		//var noofsteps = [];
+		var noofsteps = [];
+		var noofstepsamount = [];
+		var EBSteps = [];
+		noofsteps = $('input[name="NoOFSteps[]"]').serializeArray();
+		noofstepsamount = $('input[name="AmountList[]"]').serializeArray();
+		EBSteps = $('input[name="EBSteps[]"]').serializeArray();
+		 
+		
+		
+		
+		//alert(Grade_ids);
+		
+        
+		
+		if(Year == '' || ServiceCategory == ''  || SalaryCode == '' || SalaryScale == '' || Active == '' || BasicSalary == '' || noofsteps.length == 0 || noofstepsamount.length == 0 || EBSteps.length == 0)
+		{
+			bootbox.alert("Please Fill all the details required,Otherwise You can't enter this Service Category.....!!!!!!!");
+		}
+		
+		else
+		{
+			 $.ajax({
+		   
+		   beforeSend: function()
+                        {
+                            
+                            document.getElementById('img4').innerHTML = "<img src=\"{{Url('assets/images/abc.gif')}}\"/>";
+                        },
+            type: "POST",
+            url: "{{url::to('ServiceCategorySaveAll')}}",
+            data: {Year: Year,ServiceCategory: ServiceCategory,SalaryCode: SalaryCode,SalaryScale: SalaryScale,Active: Active,Grade_ids:ids,noofsteps:noofsteps,noofstepsamount:noofstepsamount,BasicSalary:BasicSalary,EBSteps:EBSteps},
+           dataType: 'json',
+            success: function(result) {
+
+                
+				document.getElementById('ServiceCategory').value = '';
+				document.getElementById('SalaryCode').value = '';
+				document.getElementById('SalaryScale').value = '';
+				document.getElementById('BasicSalary').value = '';
+				document.getElementById('dale_EB_id').value = 1;
+				document.getElementById('dale_ncc_id').value = 1;
+				document.getElementById('NoOFSteps1').value = '';
+				document.getElementById('AmountList1').value = '';
+				document.getElementById('NoOFSteps2').value = '';
+				document.getElementById('AmountList2').value = '';
+				document.getElementById('NoOFSteps3').value = '';
+				document.getElementById('AmountList3').value = '';
+				document.getElementById('NoOFSteps4').value = '';
+				document.getElementById('AmountList4').value = '';
+				document.getElementById('NoOFSteps5').value = '';
+				document.getElementById('AmountList5').value = '';
+				document.getElementById('NoOFSteps6').value = '';
+				document.getElementById('AmountList6').value = '';
+				document.getElementById('EBSteps1').value = '';
+				document.getElementById('EBSteps2').value = '';
+				document.getElementById('EBSteps3').value = '';
+				
+				 $('#ncc_id2').hide();
+				 $('#ncc_id3').hide();
+				 $('#ncc_id4').hide();
+				 $('#ncc_id5').hide();
+				 $('#ncc_id6').hide();
+				 $('#EB2').hide();
+				 $('#EB3').hide();
+				 
+				  $('#remove_ncc').hide();
+				  $('#remove_EB').hide();
+				$('#msg').html(result.done);
+               
+
+            },
+                        complete: function() {
+                            document.getElementById('img4').innerHTML ="";
+
+                        }
+            });
+		}
+		
+       //alert(CD_ID);
+      
+ 
+        
+    });
+     
+      
+        
+    
+       
+
+   
+    
+   
+   
+    
+   
+  
+</script>
+
+

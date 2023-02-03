@@ -1,0 +1,302 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+
+<?php endif; ?>
+<div class="page-content">
+    <div class="page-header position-relative">
+
+        <h1>
+            HR - Employee Increments 	
+            <small>
+                <i class="icon-double-angle-right"></i>
+                View
+            </small>			
+        </h1>
+
+    </div><!--/.page-header-->
+    <div class="row-fluid">
+			<form class="form-horizontal" action="" method="POST" name="form1"  >
+				<table>
+					<tr>
+					<td>
+					  <div class="control-group">
+							<label class="control-label" for="form-field-1"></label>
+								<div class="controls">
+								<select id="SType" name="SType" required>
+								<option value="">---Select Type---</option>
+								<option value="NIC">Search using NIC</option>
+								<option value="EPF">Search using EPF</option>
+								</select>
+								<input type="text" name="NIC" id="NIC" placeholder="Type NIC/EPF Here....." required/> 
+								<input type="submit"  value="Search Employee Loan" class="btn btn-small btn-warning"/>
+								</div>
+					  </div>
+					</td>
+						
+				   
+							
+				   
+						
+					</tr>
+				</table>
+			</form>
+        
+      
+	  <hr/>
+     <?php if(isset ($Employeerec)): ?>
+	  <br/>
+	   <div class="span3">   
+        <center>
+            <span class="profile-picture">
+               
+                <img id="avatar" class="editable" height="600" width="150" alt="Alex's Avatar" src="<?php echo Url($Employeerec->Photograph); ?>" />
+              
+            </span>
+
+        </br></br>
+
+        <div class="width-70 label label-info label-large arrowed-in arrowed-in-right">
+            <div class="inline position-relative">
+                <center><span class="white middle bigger-120"><?php echo $Employeerec->Initials; ?> <?php echo $Employeerec->LastName; ?></span></center>
+            </div>
+        </div>
+		<br/><br/>
+    </div>
+    <?php endif; ?>
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+			 <?php if(isset ($promotion)): ?>
+              <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead>
+                        <th class='center'>No</th>
+						<th class='center'>Deatails Edit</th>
+                        <th class='center'>Current Organisation</th>
+                       
+                        <th class='center'>NIC</th>
+						  <th class='center'>EPF No</th>
+                        <th class='center'>Designation</th>
+                        <th class='center'>Service Category</th>
+                        <th class='center'>Step No</th>
+                        <th class='center'>Increment Date</th>
+                        <th class='center'>Approve Status</th>
+                        <th class='center'>Reason To Reject</th>
+						<th class='center'>Temporary Hold Months</th>
+						<th class='center'>Reactivated Date</th>
+						<th class='center'>Gross Salary</th>
+						
+						<th class='center'><?php if($user->hasPermission('DeleteHREmployeeIncrementHistory')): ?> Remove  <?php endif; ?></th>
+                        
+                        
+                       
+                        
+                </tr>
+                </thead>
+                    <tbody>
+
+                  <?php 
+                  $SerialNo=1;
+				  $curdate = DB::select(DB::raw("select CURDATE() as curdateasa"));
+				 
+								$newdataaa =  json_decode(json_encode((array)$curdate),true);
+								$curdateo = $newdataaa[0]["curdateasa"];
+                  ?>
+               
+					
+                <?php foreach($promotion as $t): ?>
+
+               
+                
+                        <tr>
+                           <font color="red">
+                            <td class="center"><?php echo $SerialNo++; ?></td>
+								<td class="center">
+							<?php if($user->hasPermission('EditHREmployeeIncrementsHistory')): ?>
+								<?php
+								$UsetID = User::getSysUser()->userID;
+								$userTypeID = User::getSysUser()->userType;
+								$userOrgaId = User::getSysUser()->organisationId;
+								$userOrgaTypeID = Organisation::where('id', '=', $userOrgaId)->pluck('TypeId');
+								$UserTypeName = UserType::where('id','=',$userTypeID)->pluck('UType');
+								$userOrgaType = OrganisationType::where('OT_ID', '=', $userOrgaTypeID)->pluck('Type');
+								$available = HRUserEPFList::where('UserID','=',$UsetID)->where('Active','=',1)->where('Deleted','=',0)->where('EPFNo','=',$t->EPF)->get();
+							
+								?>
+								<?php if($userOrgaType === 'HO'): ?> 
+									
+									<?php if($UserTypeName == 'HR-MAPF'): ?>
+			
+										<?php if(count($available) != 0): ?>
+										<a href="<?php echo url('EditHREmployeeIncrementsHistory?id='.$t->id); ?>"><i class="icon-edit bigger-300 icon-only"></i></a>
+										<?php else: ?>
+										
+										<?php endif; ?>
+										
+									<?php else: ?>
+									<a href="<?php echo url('EditHREmployeeIncrementsHistory?id='.$t->id); ?>"><i class="icon-edit bigger-300 icon-only"></i></a>
+								
+									<?php endif; ?>
+								
+								<?php endif; ?>
+						
+						    <?php else: ?>
+							
+							<?php endif; ?>
+							
+                             
+							</td>
+                            <td class="center"><?php echo $t->OrgaName; ?>(<?php echo $t->Type; ?>)</td>
+                            <td class="center"><?php echo $t->NIC; ?></td>
+							<td class="center"><?php echo $t->EPF; ?></td>
+                            <td class="center"><?php echo $t->Designation; ?></td>
+                            <td class="center"><?php echo $t->ServiceCategory; ?></td>
+							<td class="center"><?php echo $t->StepNo; ?></td>
+                            <td class="center"><?php echo $t->NextIncrementDate; ?></td>
+							<td class="center">
+							<?php if($t->Approved == 1): ?>
+							Yes
+							<?php elseif($t->Approved == 2): ?>
+							Temporary Hold
+							<?php elseif($t->Approved == 3): ?>
+							Hold
+							<?php elseif($t->Approved == 4): ?>
+							Stop
+							<?php elseif($t->Approved == 5): ?>
+							Reactive
+							<?php else: ?>
+						    Pending
+							<?php endif; ?>
+							</td>
+							<td class="center"><?php echo $t->ReasonForHold; ?></td>
+							
+                            <td class="center">
+							<?php
+							$gettempholdmonths = HREmployeeIncrementHoldMonths::GetMonths($t->id);
+							?>
+							<?php foreach($gettempholdmonths as $an): ?>
+							<?php if($an->MonthNo == '1'): ?>
+								January<br/>
+							
+							<?php elseif($an->MonthNo == '2'): ?>
+							February<br/>
+							<?php elseif($an->MonthNo == '3'): ?>
+							March<br/>
+							<?php elseif($an->MonthNo == '4'): ?>
+							April<br/>
+							<?php elseif($an->MonthNo == '5'): ?>
+							May<br/>
+							<?php elseif($an->MonthNo == '6'): ?>
+							June<br/>
+							<?php elseif($an->MonthNo == '7'): ?>
+							July<br/>
+							<?php elseif($an->MonthNo == '8'): ?>
+							August<br/>
+							<?php elseif($an->MonthNo == '9'): ?>
+							September<br/>
+							<?php elseif($an->MonthNo == '10'): ?>
+							October<br/>
+							<?php elseif($an->MonthNo == '11'): ?>
+							November<br/>
+							<?php elseif($an->MonthNo == '12'): ?>
+							December<br/>
+							<?php else: ?>
+								<?php endif; ?>
+							<?php endforeach; ?>
+							  </td>
+							  <td><?php echo $t->ReactivatedDate; ?></td>
+							  <td><?php echo $t->GrossSalary; ?></td>
+							  
+							 
+							  <td>
+						<?php if($user->hasPermission('DeleteHREmployeeIncrementHistory')): ?>
+							 <form id="deleteform"  action='DeleteHREmployeeIncrementHistory' method="POST" onsubmit="return doConfirm('<?php echo $t->NextIncrementDate; ?> of <?php echo $t->EPF; ?>- <?php echo $t->NIC; ?>',this)">
+                                <input type="hidden" name='id' value="<?php echo $t->id; ?>" />
+                                <button type="submit" class="btn btn-danger btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                            </form>
+						<?php endif; ?>
+						</td>
+							  
+						
+                       </font>
+                            
+                        </tr>
+                
+           
+
+                
+                    
+               
+               
+                <?php endforeach; ?>
+
+               
+               
+            </tbody>
+            </table>
+			 <?php endif; ?>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+
+                                function doConfirm(promotion, formobj) {
+                                bootbox.confirm("Are you sure you want to remove Increment record of" + promotion, function(result){
+                                if (result){
+                                formobj.submit();
+                                }
+                                });
+                                        return false; // by default do nothing hack :D
+                                }
+
+                       $('#sample-table-2').dataTable({
+						   "bPaginate":false,
+								"aaSorting":[],
+                                        "aoColumns": [
+                                         
+           
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},{"bSortable": false},{"bSortable": false},{"bSortable": false},{"bSortable": false},{"bSortable": false},
+                                        ]});
+                          
+                               
+
+$("#EmpSearch").click(function() {
+    var EPFNo =$('#EPFNo').val();
+    alert(EPFNo);
+                   
+                      // var id=document.getElementById('sid').value;
+                       //var ccode=document.getElementById('CourseCode').value;
+                      // var form =$("#please").serializeArray();
+                
+                //alert('dghsg');   
+                     $.ajax({
+                        url: "<?php echo url('pleaseSubmitForm'); ?>",
+                        type: "POST",
+                        data: form,
+
+                       
+                                success: function(result) {
+                                 response(result.print);
+                             window.location.replace("<?php echo url('viewFees'); ?>");
+                             
+                                
+                                }
+                               
+                          
+                    });
+                 
+                });
+</script>
+

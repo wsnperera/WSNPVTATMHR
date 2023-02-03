@@ -1,0 +1,84 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('department'); ?>> << Back to Department </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="page-header position-relative">
+
+        <h1>
+            Department			
+            <small>
+                <i class="icon-double-angle-right"></i>
+                View
+            </small>			
+        </h1>
+
+    </div><!--/.page-header-->
+
+    <div class="row-fluD_ID">
+        <div class="row-fluD_ID">
+            <form name='search' action="<?php echo url('findDepartment'); ?>" method='get'>
+                Search Department <input type='text' name="serachkey" placeholder="Search by name..."/>   <input type='submit' value='Search'/> &nbsp;
+                
+                <a href=<?php echo url('createDepartment'); ?>><input  type="button" value="Create Department"/></a>
+                
+            </form>
+            <div class="span12">
+                <!--PAGE CONTENT BEGINS-->
+                <table class="table">
+                    <tr>
+
+                        <th>Department ID</th>
+                        <th>Institute Name</th>
+                        <th>Organisation Name</th>
+                        <th>Department Name</th>
+                        <th>Department Code</th>
+                        
+                        <th>Remove</th>
+                     
+                    </tr>
+                    <?php if(isset ($department)): ?>
+
+                    <?php foreach ($department as $de): ?>
+
+                    <tr>
+
+                        
+                        <td><a href="<?php echo url('editDepartment?id='.$de->D_ID); ?>"><?php echo $de->D_ID; ?></a></td>
+                        
+                        <td><?php if(!is_null($de->getInstitute)): ?><?php echo $de->getInstitute->InstituteName; ?><?php endif; ?></td>
+                        <td><?php if(!is_null($de->getOrganisation)): ?><?php echo $de->getOrganisation->OrgaName; ?><?php endif; ?></td>
+                        <td><?php echo $de->DepartmentName; ?></td>
+                        <td><?php echo $de->DepartmentCode; ?></td>
+                       
+                        <td>
+                            <form id="deleteform"  action=<?php echo url('deleteDepartment'); ?> method="POST" onsubmit="return doConfirm('<?php echo $de->DepartmentName; ?>', this)">
+                                <input type="hidden" name='deid' value="<?php echo $de->D_ID; ?>" />
+                                <button type="submit" class="btn btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                            </form>
+                        </td>
+                        
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
+                </table>
+                <!--PAGE CONTENT ENDS-->
+            </div><!--/.span-->
+        </div><!--/.row-fluD_ID-->
+    </div><!--/.page-content-->
+
+    <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+    <script type="text/javascript">
+                function doConfirm(department, formobj)
+                {
+               bootbox.confirm("Are you sure you want to remove Department of " + department, function(result)
+                {
+                if (result)
+                {
+                formobj.submit();
+                }
+                });
+                        return false; // by default do nothing hack :D
+                }
+    </script>

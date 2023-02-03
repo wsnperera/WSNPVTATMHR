@@ -1,0 +1,106 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('organisation'); ?>> << Back to Center </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="page-header position-relative">
+        <h1>
+           Center		
+            <small>
+                <i class="icon-double-angle-right"></i>
+                View
+            </small>			
+        </h1>
+    </div><!--/.page-header-->
+    <div class="row-fluid">
+        <div class="row-fluid">
+            <form name='search' action="<?php echo url('findOrganisation'); ?>" method='get'>
+                Search Center <input type='text' name="serachkey" placeholder="Search by Cenetr Code OR District..."/>   <input type='submit' value='Search'/> &nbsp;
+                <a href=<?php echo url('createOrganisation'); ?>><input class="btn-small" type="button" value="Create Center"/></a>
+            </form>
+            
+            <div class="span12">
+                <!--PAGE CONTENT BEGINS-->
+              <table class="table">
+                   <tr>
+                        <th>Center ID</th>
+                        <th>Institute Name</th>
+                        <th>College Name</th>
+                        <th>College Code</th>
+                        <th>College Type</th>
+                        <th>College Of Technology Name</th>
+                        <th>Address</th>
+                        <th>Telephone No</th>
+                        <th>Fax No</th>
+                        <th>Email</th>
+                        <th>Career Guidance Telephone No</th>
+                        <th>District</th>
+                        <th>Electorate</th>
+                        <th>Date Closed</th>
+                        <th>Date Entered</th>
+                        <th>Active</th>
+
+                        <th>Remove</th>
+
+                    </tr>
+
+                    <?php if(isset ($organisation)): ?>
+                    <?php foreach ($organisation as $o): ?>
+                    <tr>
+                        <td><?php if($user->hasPermission('editOrganisation')): ?>
+                            <a href="<?php echo url('editOrganisation?id='.$o->id); ?>"><?php echo $o->id; ?></a>
+                            <?php else: ?> 
+                            <?php echo $o->id; ?>  
+                            <?php endif; ?>
+                        </td>
+                        <td><?php if(!is_null($o->getInstitute)): ?><?php echo $o->getInstitute->InstituteName; ?><?php endif; ?></a></td>
+                        <td><?php echo $o->OrgaName; ?></td>
+                        <td><?php echo $o->CenterCode; ?></td>
+                        <td><?php if(!is_null($o->OrgType)): ?><?php echo $o->OrgType->Type; ?><?php endif; ?></td>
+                        <td><?php if(!is_null($o->COTType)): ?><?php echo $o->COTType->OrgaName; ?><?php endif; ?></td>
+                        <td><?php echo $o->AddL1; ?></td>
+                        <td><?php echo $o->Tel; ?></td>
+                        <td><?php echo $o->Fax; ?></td>
+                        <td><?php echo $o->Email; ?></td>
+                        <td><?php echo $o->CaGuTel; ?></td>
+                        <td><?php if(!is_null($o->getDistrict)): ?><?php echo $o->getDistrict->DistrictName; ?> <?php endif; ?></td>
+                        <td><?php if(!is_null($o->getElec)): ?><?php echo $o->getElec->ElectorateName; ?> <?php endif; ?></td>
+                        <td><?php echo $o->DateClosed; ?></td>
+                        <td><?php echo $o->DateEntered; ?></td>
+                        <td><?php echo $o->Active; ?></td>
+                         <td>
+                          <?php if($user->hasPermission('deleteOrganisation')): ?>
+                            
+                   
+
+
+                            <form id="deleteform"  action=<?php echo url('deleteOrganisation'); ?> method="POST" onsubmit="return doConfirm('<?php echo $o->OrgaName; ?>', this)">
+                                <input type="hidden" name='oid' value=<?php echo $o->id; ?> />
+                                <button type="submit" class="btn btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                           </form>
+                  <?php endif; ?>      </td>
+                    </tr>
+                    <?php endforeach; ?>
+                   <?php endif; ?>
+                </table>
+
+                <!--PAGE CONTENT ENDS-->
+            </div><!--/.span-->
+        </div><!--/.row-fluid-->
+    </div><!--/.page-content-->
+
+    <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+    <script type="text/javascript">
+                function doConfirm(organisation, formobj) {
+                bootbox.confirm("Are you sure you want to remove " + organisation, function(result) {
+                if (result){
+                formobj.submit();
+                }
+                });
+                        return false; // by default do nothing hack :D
+                }
+
+
+
+    </script>

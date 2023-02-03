@@ -1,0 +1,82 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>    
+<div class="page-content">                              
+<div class="row-fluid">
+<div class="span8">
+
+    <!--PAGE CONTENT BEGINS-->
+    <!--/.page-header-->
+
+<div class="page-header position-relative">
+<a href=<?php echo url('ViewHRUserEPFList'); ?>> << Back to User EPF List</a> 
+<h1>
+   User EPF No List	
+<small>
+        <i class="icon-double-angle-right"></i>
+        Edit
+</small>			
+</h1>
+
+        </div><!--/.page-header-->
+
+
+                
+                
+<form class="form-horizontal" action="<?php echo url('EditHRUserEPFList'); ?>" method="POST"/>
+<input type="hidden"  name="QO_ID" value="<?php echo Request::get('id'); ?>" />
+
+				
+				<div class="control-group">
+                    <label class="control-label">User :</label>
+                    <div class="controls">
+                       <select name="UserID" id="UserID" required >
+					   <option value="">--- Select User ---</option>
+					   <?php foreach($Users as $u): ?>
+					   <option <?php if($u->userID == $quorg->UserID): ?> selected="true" <?php endif; ?> value="<?php echo $u->userID; ?>"><?php echo $u->userName; ?> - <?php echo $u->Initials; ?> <?php echo $u->LastName; ?></option>
+					   <?php endforeach; ?>
+					   </select>
+                    </div>
+     </div>
+	  <div class="control-group">
+                    <label class="control-label">EPF No :</label>
+                    <div class="controls">
+                       <input type="text" name="EPFNo" id="EPFNo" value="<?php echo $quorg->EPFNo; ?>" required/>
+					   
+                    </div>
+     </div>
+	  <div class="control-group">
+                    <label class="control-label">Active :</label>
+                    <div class="controls">
+                       <select name="Active" id="Active" required/>
+					   <option value="">--- Select ---</option>
+					   <option value="1" <?php if($quorg->Active == 1): ?> selected="true" <?php endif; ?>>Yes</option>
+					    <option value="0" <?php if($quorg->Active == 0): ?> selected="true" <?php endif; ?>>No</option>
+					   </select>
+                    </div>
+     </div>
+				<div class="control-group">
+				 <div class="controls">
+				<input class="btn btn-small btn-warning" type="submit"  value="Update" />
+				 </div>
+				</div>
+
+</div>
+
+</form>
+<!--PAGE CONTENT ENDS-->
+</div><!--/.span-->
+<div class="span4">
+     <?php if ($errors->has()): ?>
+<?php foreach ($errors->all() as $error): ?>
+    <div class='bg-danger alert'><?php echo $error; ?></div>
+<?php endforeach; ?>
+<?php endif; ?>
+</div>
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script type="text/javascript">
+    
+  
+
+    
+</script>

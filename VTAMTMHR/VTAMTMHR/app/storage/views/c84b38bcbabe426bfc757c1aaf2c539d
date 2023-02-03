@@ -1,0 +1,195 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Inplant Organization			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div>
+            <form class="form-horizontal" action="<?php echo url('editinplant'); ?>" method="POST"/>
+
+            <input type="hidden" name="id" value="<?php echo Request::get('bid'); ?> "/>
+
+            <div class="control-group">
+                <label class="control-label" for="InstituteId">Institute Name</label>
+                    <div class="controls">
+                        <input type="hidden"  name="InstituteId" value="<?php echo $institute_id; ?>"/>
+                        <input type="text" value="<?php echo $institute; ?>" readonly/>
+                    </div>
+            </div>
+            <br/>
+                    
+            <div class="control-group">
+                <label class="control-label" for="CountryId">Country Name</label>
+                    <div class="controls">
+                        <input type="hidden"  name="CountryId" value="<?php echo $country_id; ?>"/>
+                        <input type="text" value="<?php echo $country; ?>" readonly/>
+                    </div>
+            </div>
+            <br/>
+            
+              <div class="control-group">
+
+                <label class="control-label" for="OrgaName">Organization Name</label>
+
+                <div class="controls">
+
+                    <input type="text" name="OrgaName" value="<?php echo $inplant->OrgaName; ?>"/>
+
+                </div>
+
+            </div>
+
+            <br/>
+                    
+                    
+            <div class="control-group">
+
+                <label class="control-label" for="Address">Address</label>
+
+                <div class="controls">
+
+                    <input type="text" name="Address" value="<?php echo $inplant->Address; ?>"/>
+
+                </div>
+
+            </div>
+
+            <br/>
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="Tel">Telephone Number</label>
+
+                <div class="controls">
+
+                    <input type="text" name="Tel" value="<?php echo $inplant->Tel; ?>"/>
+
+                </div>
+
+            </div>
+
+            <br/>
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="Email">Email Address</label>
+
+                <div class="controls">
+
+                    <input type="text" name="Email" value="<?php echo $inplant->Email; ?>"/>
+
+                </div>
+
+            </div>
+
+            <br/>
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="Active">Active</label>
+
+                <div class="controls">
+
+					<select name="Active">
+					
+						<option value="Yes">Yes</option>
+						<option value="No">No</option>
+						
+					
+					</select>
+                   
+
+                </div>
+
+            </div>
+
+            <br/>
+
+            <div class="control-group">
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Update</button>
+
+                </div>
+
+            </div>
+
+
+            </form>
+
+
+
+        </div></div></div>
+
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+
+
+
+<script type="text/javascript">
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

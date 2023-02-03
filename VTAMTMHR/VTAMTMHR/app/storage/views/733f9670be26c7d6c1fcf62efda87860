@@ -1,0 +1,364 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>Assign Course Year Plan<small><i class="icon-double-angle-right"></i>Assign Modules</small></h1>
+                <a href=<?php echo url('ConfirmCourseYearPlanFirstPage'); ?>> << Back to View </a>
+            </div>
+            <form class="form-horizontal" action="" method="POST" id="courseyearplansubmit">
+                <input type="hidden" name="cypID"   value="<?php echo $courseYearPlan->id; ?>" required="true" readonly="true"/>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course List Code : </label>
+                    <div class="controls">
+                        <input type="text" name="CourseListCode"   value="<?php echo $courseYearPlan->CourseListCode; ?>" required="true" readonly="true"/>
+                    </div>
+                </div>
+                
+                
+               
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Fee Type : </label>
+                    <div class="controls">
+                        <input class='checkVP' name='feeType' id="characterCertificate" type="radio" value="CourseFee" checked="true"/>
+                        <span class="lbl">Course Fee </span>
+                        <input class='checkVP' name='feeType' id="characterCertificate" type="radio" value="StipendFee" />
+                        <span class="lbl">Stipend Fee</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Stipend/Course-Fee</label>
+                    <div class="controls">
+                        <input type="number" name="fee" min="1" required="true"/>
+                        <span class="lbl" style="color: red"><b>*</b></span>
+                    </div>
+                </div>
+              
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCod">Instructor : </label>
+                    <div class="controls">
+                        <table >
+                            <tr>
+                                <td>
+                                    <table id="my_table" >
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                        <?php echo $htmlTableRaw; ?>
+                                    </table>
+                                    <br>
+                            <center><button style="margin: 0; height: 30px; border: 0" type="button" id="add_new_grade"><i class="icon-plus icon-2x icon-only"></i></button><button style="margin: 0; height: 30px; border: 0" type="button" id="remove_grade"><i class="icon-remove icon-2x icon-only"></i></button></center>
+                            </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+				 <div class="control-group">
+                    <label class="control-label" for="CourseListCode">TVEC Trade : </label>
+                    <div class="controls">
+                         <select  name="type"  id="form-field-select-3" data-placeholder="Choose a TVEC Trade...">
+                            <option value="">--Select TVEC Trade--</option> 
+                           <?php foreach($tradeid as $a): ?>
+                            <option value="<?php echo $a->TradeId; ?>"><?php echo $a->TradeName; ?></option>
+                            <?php endforeach; ?>
+                            
+                        </select>  
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Competency Standard :</label>
+                    <div class="controls" >
+                    <select id="form-field-select-4" multiple="multiple" >
+
+                           
+                            
+                        </select> 
+                    </div>
+                    <br>
+                    <span id='table'>
+
+                    </span>
+                    <span>
+
+                    </span>
+              
+                    <div class="control-group">
+                        <div class="controls">
+                            <input type="submit" class="btn btn-small btn-primary" value="Save" onclick="submitcourseyearplan();"/>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <?php if($errors->has()): ?>
+                        <?php foreach($errors->all() as $msg): ?>
+                        <div class="alert alert-error">
+                            <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                            <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                        </div>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>           
+            </form>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/chosen.jquery.min.js"></script>
+
+
+<script>
+$(".chzn-select").chosen();
+$("#modulebutton").click(function()
+{
+
+    var moduleid = $(".checkVP2 input:checkbox:checked").map(function() {
+        return $(this).val();
+    }).get(); // <----
+    console.log(moduleid);
+    $.ajax
+            ({
+                type: "GET",
+                url: "<?php echo Url('checkmodulepackage'); ?>",
+                data: {moduleid: moduleid},
+                success: function(result)
+                {
+
+                    // $('#table').html(result);
+                    //  tableModify_1();
+
+
+
+
+                }
+            });
+
+
+}
+);
+
+//--------------------------
+
+
+//-------------------------
+
+$('#add_new_grade').click(function()
+{
+    $('#my_table').append('<?php echo $htmlTableRaw; ?>');
+});
+
+$('#remove_grade').click(function() {
+    var rowCount = $('#my_table tr').length;
+    if (rowCount > 2) {
+        $('#my_table tr:last').remove();
+        var s = parseInt($('#mark_id').val());
+        $('#mark_id').val(s - 1);
+        var g = (s - 2) + 'g';
+        var f = (s - 2) + 'f';
+        document.getElementById(f).readOnly = false;
+        document.getElementById(g).readOnly = false;
+    }
+});
+
+
+/*
+ $('#sample-table-2').dataTable({
+ "aoColumns": [
+ {"bSortable": false},
+ {"bSortable": false},
+ {"bSortable": false},
+ {"bSortable": false}
+ ]});
+ $('table th input:checkbox').on('click', function() {
+ var that = this;
+ $(this).closest('table').find('tr > td:first-child input:checkbox')
+ .each(function() {
+ this.checked = that.checked;
+ $(this).closest('tr').toggleClass('selected');
+ });
+ });
+ $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+ function tooltip_placement(context, source) {
+ var $source = $(source);
+ var $parent = $source.closest('table')
+ var off1 = $parent.offset();
+ var w1 = $parent.width();
+ var off2 = $source.offset();
+ var w2 = $source.width();
+ if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+ return 'right';
+ return 'left';
+ }
+ 
+ //--------------------------------------------------------
+ $.ajax
+ ({
+ type: "GET",
+ url: "<?php echo Url('CoursewiseSummarySearch'); ?>",
+ data: {district: district,date1: date1,date2: date2},
+ 
+ success: function(result)
+ {
+ 
+ $('#table').html(result);
+ tableModify_1();
+ 
+ 
+ 
+ 
+ }
+ });
+ 
+ //--------------------------------------------------------
+ */
+$(".chzn-select").chosen();
+$("#module_chzn").find('input').on('change', function(e)
+{
+    var option = $("<option>").val($("#module_chzn").find('input').val()).text($("#module_chzn").find('input').val());
+// add the new option
+    $("#module.chzn-select").prepend(option);
+// automatically select it
+    $("#module.chzn-select").find(option).prop('selected', true);
+// trigger the update
+    $("#module.chzn-select").trigger("liszt:updated");
+});
+</script>
+
+<script language="JavaScript" type="text/javascript">
+
+    $("#type").change(function()
+    {
+        var cid = $("#type").val();
+        // alert(cid);
+        $("#module").html('');
+
+
+        $.ajax
+                ({
+                    type: "GET",
+                    url: "<?php echo Url('getNVQmoduleProgram'); ?>",
+                    data: {corseid: cid},
+                    dataType: "json",
+                    success: function(result)
+                    {
+                        //alert('dddddddddd');
+
+                        $("#module").append("<option value=\"\"></option>");
+                        $.each(result, function(i, item)
+                        {
+                            //alert('dis');
+                            $("#module").append("<option value=" + item.id > " +item.name + " < /option>");
+
+                        });
+                        $("#module.chzn-select").trigger("liszt:updated");
+
+                    }
+                });
+
+            });
+			
+	</script><script>		
+ $("#form-field-select-3").change(function()
+    {
+        var cid = $("#form-field-select-3").val();
+       //alert(cid);
+        $("#form-field-select-4").html('');
+
+
+        $.ajax
+                ({
+                    type: "GET",
+                    url: "<?php echo Url('getcompetencystandardnew'); ?>",
+                    data: {corseid: cid},
+                    dataType: "json",
+                    success: function(result)
+                    {
+                        //alert('dddddddddd');
+
+                        $("#form-field-select-4").append("<option value=\"\"></option>");
+                        $.each(result, function(i, item)
+                        {
+                            //alert('dis');
+                            $("#form-field-select-4").append("<option value=" + item.code +">" +item.name+"</option>");
+
+                        });
+                       
+
+                    }
+                });
+
+            });
+
+</script>
+<script>
+            $('#form-field-select-4').on("change", function()
+            {
+                var values = $("#form-field-select-4").val();
+                if (values != null) {
+                    $.ajax
+                            ({
+                                type: "GET",
+                                url: "<?php echo Url('getNVQmoduleProgram'); ?>",
+                                data: {module: values},
+                                success: function(result)
+                                {
+                                    $('#table').html(result);
+                                }
+                            });
+                }
+                else {
+                    $('#table').html('');
+                }
+            });
+            function getQualifications() {
+                var selectedmodules = [];
+                selectedmodules = $('input[name="Module_ids[]"]').serializeArray();
+                $.ajax
+                        ({
+                            type: "GET",
+                            url: "<?php echo Url('ajaxgetQualifications'); ?>",
+                            data: {selectedmodules: selectedmodules},
+                            success: function(result)
+                            {
+                                $('#qualification_package').html(result);
+
+                            }
+                        });
+            }
+               function submitcourseyearplan(){
+                 var selectedmodules = [];
+                selectedmodules = $('input[name="Module_ids[]"]').serializeArray();
+                courseyearplan = $('#courseyearplansubmit').serializeArray();
+                $.ajax
+                        ({
+                            type: "POST",
+                            url: "<?php echo Url('assignModulesToCourse'); ?>",
+                            data: {courseyearplan:courseyearplan,selectedmodules:selectedmodules},
+                            success: function(result)
+                            {
+                                //$('#qualification_package').html(result);
+
+                            }
+                        });
+            }
+</script>
+<script>
+         
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

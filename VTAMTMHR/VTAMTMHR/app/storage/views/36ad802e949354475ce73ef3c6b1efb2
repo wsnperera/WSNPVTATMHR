@@ -1,0 +1,657 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<div class="page-content">
+    <div class="row-fluid">
+	
+        <div class="span12">
+            <div class="page-header position-relative">
+               <a href=<?php echo url('ViewInstructorCriteriaForms'); ?>> << Back to View</a>
+            <h1>Instructor Monitoring<small><i class="icon-double-angle-right"></i>Create Instructor Monitoring Form</small></h1>
+                
+            </div>
+            <div class="control-group">
+                   
+                    <div class="controls">
+
+                    <?php if(Session::has('done')): ?>
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-ok"></i>
+                                 HO Centre Monitoring Form Added Successfully 
+                            </strong>
+                            <br>
+                        </div>
+                    <?php endif; ?>
+                     </div>
+					   <div class="controls">
+
+                    <?php if(Session::has('Error')): ?>
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-ok"></i>
+                                Already entered Grading Form For this Instructor 
+                            </strong>
+                            <br>
+                        </div>
+                    <?php endif; ?>
+                     </div>
+                   
+                </div>
+            <form class="form-horizontal" action='' method="POST"  id='NewModule'>
+               
+				<div class="control-group">
+                    <label class="control-label" >District : </label>
+                        <div class="controls" >
+                            <select name="District" id="District" required>
+                                 <option value="">--Select District--</option>
+                                <?php foreach($Districts as $d): ?>
+                                <option value="<?php echo $d->DistrictCode; ?>"><?php echo $d->DistrictName; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                           
+                        </div>         
+                 </div>
+				<div class="control-group">
+                    <label class="control-label" >Centre : </label>
+                        <div class="controls" >
+                            <select name="CenterID" id="CenterID" required>
+                                 <option value="">--Select Centre--</option>
+                                <?php foreach($Centers as $v): ?>
+                                <option value="<?php echo $v->id; ?>"><?php echo $v->OrgaName; ?> - <?php echo $v->Type; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                           
+                        </div>         
+                 </div> 
+				  <div class="control-group">
+                <label class="control-label" for="CourseListCode">Trade : </label>
+                <div class="controls">
+                    <select name="Trade" id="Trade" required>
+                        <option value="">--Select--</option>
+                        <?php foreach($Trades as $t): ?>
+                        <option value="<?php echo $t->TradeId; ?>"><?php echo $t->TradeCode; ?> - <?php echo $t->TradeName; ?></option>
+                        <?php endforeach; ?>
+                    </select><span id="img3"></span>
+                <!--    Duration <input id="Duration" placeholder="" type="text"> -->
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="CourseListCode">Course Name : </label>
+                <div class="controls">
+                    <select name="CourseListCode" id="CourseListCode" required>
+                        <option value="">--Select--</option>
+                       
+                    </select>
+                <!--    Duration <input id="Duration" placeholder="" type="text"> -->
+                </div>
+            </div> 
+			<div class="control-group">
+                    <label class="control-label" for="centers">Year</label>
+                    <div class="controls">
+                        <select name="Year" id="Year" required="true">
+                            <?php $year = DATE("Y"); ?>
+                            <option value="">---Select Year---</option>
+							<option value="2016">2016</option>
+							<option value="2017">2017</option>
+							<option value="2018">2018</option>
+							<option value="2019">2019</option>
+							<option value="2020">2020</option>
+                           
+						<!--	<option value="<?php echo $year-2; ?>"><?php echo $year-2; ?></option>
+								<option value="<?php echo $year-1; ?>"><?php echo $year-1; ?></option>
+								<option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+								<option value="<?php echo $year+1; ?>"><?php echo $year+1; ?></option>
+								<option value="<?php echo $year+2; ?>"><?php echo $year+2; ?></option> -->
+                            
+                        </select>
+                    </div>
+                </div>
+				<div class="control-group">
+                    <label class="control-label" for="centers">Batch</label>
+                    <div class="controls">
+                        <select name="Batch" id="Batch" required="true">
+                           
+                            <option value="">---Select Batch---</option>
+							<option value="1">1</option>
+							<option value="1.2">1.2</option>
+							<option value="2">2</option>
+							<option value="2.2">2.2</option>
+                           
+						
+                            
+                        </select>
+                    </div>
+                </div>
+			 <div class="control-group">
+                        
+                            <label class="control-label" for="Medium">Instructors</label>
+                                <div  class="controls">
+								 <div id="table_instructor">
+                                   <select id="NVQPackage" name="NVQPackage"  class="chzn-select" data-placeholder="Choose Instructors..." required>
+								    <option value="">--Select--</option>
+                                    <?php foreach($Instructors as $t): ?>
+									
+                                    <option value="<?php echo $t->id; ?>"><?php echo $t->EPFNo; ?> - <?php echo $t->Name; ?></option>
+								  
+                                    <?php endforeach; ?>
+                                    </select>
+									</div>
+									<br/>
+                                <input type="button"  value="Add New Instructor" class="btn btn-small btn-warning" name="NewModule" id="NewModule" onclick="addModule()" />
+                            </div>
+                </div>
+				<div class="control-group" hidden="" id="addModule" style="padding-top: 10px;padding-bottom: 10px;margin-right: 200px;margin-left: 100px;margin-top:25px;margin-bottom:25px; border: 1px solid #009ceb;width:460px">
+
+				<div class="control-group">
+                   
+                   
+                      <center><b style="color: red">Note: Don't Enter ' 0 ' as a EPF Number</b></center>
+                   
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Instructor Name</label>
+                    <div class="controls">
+                        <input id="Name" placeholder="" type="text"><b style="color: red">*</b>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">EPF No</label>
+                    <div class="controls">
+                        <input id="EPF" placeholder="" type="text" /><b style="color: red">*</b>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="button" value="Create"  onclick="fillModule()" class="btn btn-small btn-primary"/>
+                    </div>
+                </div>  
+
+            </div>
+				
+			
+            
+            <div class="control-group">
+            <div class="controls">
+			<?php $ii = 1;?>
+			<?php foreach($Criteris as $cc): ?>
+						<?php
+						$GetQuestion = MOInstructorCriteriaQuestion::where('Deleted','=',0)->where('Active','=',1)->where('CriteriaId','=',$cc->id)->orderBy('QOrder')->get();
+						?>
+                 <pre bgcolor="REBECCAPURPLE"><h5><b><font color="REBECCAPURPLE"> <?php echo $ii; ?>. <?php echo $cc->TypeInSinhala; ?><h6>(<?php echo $cc->TypeInEnglish; ?>)</h6></font></b></h5></pre>
+				  <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+								    <th class='center'>No</th>
+                                    <th class='center'>Question</th>
+                                    <th class='center'>Answer</th>
+                                </tr>
+								  <?php $i = 1;?>
+               <?php foreach($GetQuestion as $c): ?>
+			  
+			 
+                       
+                        
+                               
+                               
+                                <tr>
+                                    <input type="hidden" name="QuestionsID[]" id="QuestionsID[]" value="<?php echo $c->id; ?>">
+									<td ><?php echo $ii; ?>.<?php echo $i++; ?></td>
+                                    <td ><?php echo $c->QuestionInSinhala; ?></br><?php echo $c->QuestionInEnglish; ?>
+									</td>
+									<?php  $AnswerType = MOInstructorQuestionType::where('id','=',$c->AnswerTypeId)->pluck('TypeCode'); 
+									?>
+                                    <?php if($AnswerType == 'SE'): ?>
+										
+									<?php
+									$GetAnswers = MOInstructorQuestionAnswer::where('Deleted','=',0)->where('Active','=',1)->where('QuestionId','=',$c->id)->orderBy('AnswerWeight','DESC')->get();
+									?>
+                                    <td>
+                                        <select name="AnswerID[]" id="AnswerID[]"  class="chzn-select"  required>
+                                           <option value="">---Select Answer---</option>
+                                            <?php foreach($GetAnswers as $d): ?>
+                                            <option value="<?php echo $d->id; ?>"><?php echo $d->AnswerInSinhala; ?>[<?php echo $d->AnswerInEnglish; ?>] - (Marks -<?php echo $d->AnswerWeight; ?>)</option>
+											
+											
+											
+											
+											
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </td>
+                                    
+                                    <?php else: ?>
+                                    <td>
+                                        <input type="text" name="AnswerID[]" id="AnswerID[]" required="true" />
+                                            
+                                            
+                                        
+                                    </td>
+                                    <?php endif; ?>
+
+                                    
+                                </tr>
+								 
+                               <?php endforeach; ?>
+							   </thead>
+                        </table>
+                           <?php
+						   $ii++;
+						   ?>
+						    <?php endforeach; ?>
+             
+           </div>
+        </div>
+            
+		 
+
+       <div class="control-group">
+		   <label class="control-label" >Other Comments(Please Type In English): </label>
+            <div class="controls">
+				 <textarea style="width:470px; height:170px;" placeholder="Enter Reason..............." id="Dreason" name="Dreason"></textarea>
+			</div>
+		</div>
+
+       
+
+               
+                
+                
+                
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-block btn-success">Save</button>
+                </div>
+            </div>         
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+       
+        <div class="span4" id="ajaxerror">
+            
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+
+        </div>
+            </div>
+			 <!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+<script>
+   jQuery(document).ready(function() {
+   
+$(".chzn-select").trigger("liszt:activate");
+$(".chzn-select").chosen(); 
+});
+
+   
+    
+</script>
+<script>
+
+    <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+
+
+       $("#CalType").change(function() {
+
+        var CalType = document.getElementById('CalType').value;
+        //alert(CalType);
+        $("#table").html('');
+        
+        //var msg = '--- Select Course ---';
+        $.ajax({
+            type: "GET",
+            url: "<?php echo url::to('GetCalClass'); ?>",
+            data: {CalType: CalType},
+            success: function(result) {
+
+                $('#table').html(result);
+
+            }
+           
+        });
+    });
+
+    
+  
+    
+    $('#DatePlanned').change(function(){
+
+        //alert('dg');
+       var DatePlanned = document.getElementById('DatePlanned').value;
+       var CenterID = document.getElementById('CenterID').value;
+       var CourseYearPlanID = document.getElementById('CourseYearPlanID').value; 
+      // var msg = '--- Select Working Place ---';
+        //$("#WorkingPlace").html('');
+       $.ajax  ({
+                    url: "<?php echo url::to('MOCMCheckPlanneddate'); ?>",
+                    data: {DatePlanned: DatePlanned,CenterID: CenterID,CourseYearPlanID: CourseYearPlanID},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        if(result.module == 1)
+                        {
+                             document.getElementById('DatePlanned').value = "";
+                             $('#table1').html(result.html);
+                             
+                        }
+                        else
+                        {
+                             $("#table1").html('');
+                        }
+                       
+                        
+                                        
+                        
+                        }
+
+
+                    
+                });
+        
+
+
+       
+    });
+
+    function fillModule1() {
+
+        //alert('dfhgftrghy');
+        var WorkingPlaceName = document.getElementById('WorkingPlaceName').value;
+        var WorkingPlaceAddress = document.getElementById('WorkingPlaceAddress').value;
+        var InstituteId = document.getElementById('M_Code').value;
+        var ContactNo = document.getElementById('ContactNo').value;
+        $.ajax({
+                    url: "<?php echo url::to('saveAssessorWorkingPlace'); ?>",
+                    data: {WorkingPlaceName: WorkingPlaceName, WorkingPlaceAddress: WorkingPlaceAddress, InstituteId: InstituteId,ContactNo: ContactNo},
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.ModuleId !== 0) {
+                            $("#ModuleDiv1").html(result.html);
+                            $('#addModule1').hide();
+                            $('#ajaxerror').html(result.done);
+                            
+                           //var InstititeId = result.InstituteAddress;
+                           // $("#WorkingPlace").html('');
+                              /*  $.ajax({
+                                            url: "<?php echo url::to('getModuleId'); ?>",
+                                            data: {ModuleCode: ModuleCode},
+                                            success: function(re) {
+                                                  document.getElementById("AjaxModuleId").value = re;
+                                                               }
+                                       });*/
+
+                        /* $.ajax  ({
+                                    url: "<?php echo url::to('getWorkingPlace'); ?>",
+                                    data: { InstititeId: InstititeId},
+                                    dataType: "json", 
+                                    success: function(result) {
+
+                                        //alert(result);
+                                        $("#WorkingPlace").append("<option value=''>" + msg + "</option>");
+                                         $.each(result, function(i, item)
+                                        {
+
+
+
+                                            $("#WorkingPlace").append("<option value=" + item.id + ">" + item.Placename + "  (" + item.Address + ")</option>");
+
+
+
+                                        });
+                                                        
+                                        
+                                        }
+
+
+                                    
+                                });*/
+
+                        } else {
+                            $('#ajaxerror').html(result.html);
+                            window.scrollTo(0, 0);
+                        }
+                    }
+                });
+    }
+    </script>
+    <script type="text/javascript">
+	
+	 $("#Trade").change(function() {
+        var TradeId = $("#Trade").val();
+        $("#CourseListCode").html('');
+        
+        var msg = '--- Select Course ---';
+      
+            
+                          $.ajax  ({
+                     beforeSend: function()
+                                        {
+                                            
+                                            document.getElementById('img3').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                        },
+                    url: "<?php echo url::to('MOInstructorLoadCourse'); ?>",
+                    data: { TradeId: TradeId},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        $("#CourseListCode").append("<option value=''>" + msg + "</option>");
+                         $.each(result, function(i, item)
+                        {
+
+
+
+                            $("#CourseListCode").append("<option value=" + item.CD_ID + ">"+ item.CourseListCode+"-"+item.CourseName+"["+item.CourseType+"/"+item.Nvq+"/"+item.CourseLevel+"/"+item.Duration+"]</option>");
+                           // a = a +1;
+
+
+
+                        });
+                                        
+                        
+                        },
+                                        complete: function() {
+                                            document.getElementById('img3').innerHTML ="";
+
+                                        }
+
+
+                    
+                });
+              
+
+            
+       
+    });
+	
+		$("#District").change(function() 
+	{
+        var District = $("#District").val();
+        $("#CenterID").html('');
+        //$("#CourseYearPlanID").html('');
+        var msg = '--- Select Centre ---';
+       
+                          $.ajax({
+                                        type: "GET",
+                                        url: "<?php echo url::to('loaddistrictcentersin'); ?>",
+                                        data: {District: District},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#CenterID").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#CenterID").append("<option value=" + item.id + ">" +item.OrgaName + "(" + item.Type + ")</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            
+     
+    });
+
+                                function tableModify() {
+                                    $('#sample-table-3').dataTable({
+                                        "bPaginate": false,
+                                        "aaSorting": [],
+                                        "aoColumns": [
+                                            {"bSortable": false},
+                                            null,                                           
+                                            null,
+                                            null,
+                                            null,
+                                            {"bSortable": false}
+                                        ]});
+                                }
+
+
+                                 $('#sample-table-3 th input:checkbox').on('click', function() {
+                                var a = this;
+                                $(this).closest('table').find('tr td:nth-child(6) input:checkbox')
+                                        .each(function() {
+                                            this.checked = a.checked;
+                                            //$(this).closest('tr').troggleClass('selected');
+                                        });
+
+                            });
+							 function addModule() {
+        $.ajax  ({
+                    url: "<?php echo url::to(''); ?>",
+                    success: function(result) {
+                        if ($('#addModule').is(':hidden')) {
+                            $('#addModule').show();
+                        } else {
+                            $('#addModule').hide();
+                        }
+                    }
+                });
+    }
+	
+	 function fillModule() {
+        var Name = document.getElementById('Name').value;
+        var EPF = document.getElementById('EPF').value;
+		//var id = document.getElementById('id').value;
+       // var msg = '--- Select Instructor---';
+       // $("#InstructorList").html('');
+		//$("#InstructorList1").html('');
+		if(Name == '' || EPF == '' || EPF == 0)
+		{
+			bootbox.alert('Please Enter Instructor Name & Valid and Correct EPF Number!!!!!');
+		}
+		else
+		{
+        $.ajax({
+                    url: "<?php echo url::to('SaveMOInstructorGrading'); ?>",
+                    data: {Name: Name, EPF: EPF},
+                    //dataType: 'json',
+                    success: function(result) {
+                      
+                            
+                            $('#addModule').hide();
+                           // $('#ajaxerror').html(result.done);
+							
+							var html='<select id="NVQPackage" name="NVQPackage"  class="chzn-select" data-placeholder="Choose Instructors..." required="true">'+result+'</select>';
+                                            
+                                             $("#table_instructor").html('');
+                                            $("#table_instructor").append(html);
+                                            $("#NVQPackage.chzn-select").trigger("liszt:updated");
+                                            $(".chzn-select").chosen();
+                         
+						/* 	$.ajax({
+                                        type: "GET",
+                                        url: "<?php echo url::to('LoadMoinstructorListDis'); ?>",
+                                        data: {id: id},
+                                        //dataType: "json", 
+                                         success: function(result)
+                                        {
+                                        var html='<select id="NVQPackage" name="NVQPackage"  class="chzn-select" data-placeholder="Choose Instructors..." required="true">'+result+'</select>';
+                                            
+                                             $("#table_instructor").html('');
+                                            $("#table_instructor").append(html);
+                                            $("#NVQPackage.chzn-select").trigger("liszt:updated");
+                                            $(".chzn-select").chosen(); 
+                                            
+                                        }
+                                }); */            
+
+                                                        
+                                   
+
+                        
+                        }
+                    
+                });
+		}
+    }
+</script>
+
+

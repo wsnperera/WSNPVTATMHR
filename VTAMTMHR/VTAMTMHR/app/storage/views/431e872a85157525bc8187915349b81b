@@ -1,0 +1,186 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>      
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<a href='<?php echo url('ViewExamAssignment'); ?>'> << View Assignment Exam </a>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                   Exam Assignment(NON-NVQ)		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <form class="form-horizontal" action="<?php echo url('CreatExamAssignment'); ?>" method="POST"  />
+
+            <div class="control-group">
+                <label class="control-label" for="InstituteId">Institute Name</label>
+                <div class="controls">
+                    <input type="text"  readonly="readonly" value="<?php echo $institute; ?>"/>
+                    <input type="hidden"  value="<?php echo $in_id; ?>"/>
+                </div>
+            </div>
+            <div class="page-header position-relative"></div>
+            <div class="control-group">
+                <label class="control-label" for="CourseName">Course Name</label>
+                <div class="controls">
+                    <select id="CourseListCode">
+                        <option value="">--Select Course--</option>
+                        <?php foreach ($CourseName as $c): ?>
+                        <option value="<?php echo $c->CourseListCode; ?>"><?php echo $c->CourseName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <span id='ajax_img1'></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="CourseCode">Course Code</label>
+                <div class="controls">
+                   <select name="CourseStartedId" id="CourseStartedId" >
+                        <option value="">--Select Course Code--</option>
+                    </select>
+                    <span id='ajax_img2'></span>
+                </div>
+            </div>
+     
+            <div class="control-group">
+                <label class="control-label" for="ModuleName">Module Name</label>
+                <div class="controls">
+                    <select name="ModuleCourseId" id="ModuleCourseId" >
+                        <option value="">--Select Module--</option>
+                    </select>
+                </div>
+            </div>
+            
+        <div class="control-group">
+                <label class="control-label" for="Date">Date</label>
+                <div class="controls">
+                     <div class="row-fluid input-append">
+                    <input class='date-picker' name='Date' id='DateValue' type='text' data-date-format='yyyy-mm-dd' placeholder='yyyy-mm-dd' readonly/>
+                                <span class='add-on'>
+                                    <i class='icon-calendar'></i>
+                                </span>
+                     </div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="AssignmentName">Assignment Name</label>
+                <div class="controls">
+                    <input type="text" name="AssignmentName" id="AssignmentName" placeholder="Enter a Name" />
+                    <span id='ajax_img3'></span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <span id="btn_submii"></span>
+                
+            </div>
+            </form>
+        <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+        <div class="span4">
+            <!-- Error Handling -->
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <!-- Error Message -->
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+            </div>
+            <!-- Error Message -->
+            <?php endforeach; ?>
+            <?php endif; ?>
+            <!-- Error Handling -->
+        </div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+    <script>
+
+        <?php if (isset($done)): ?>
+
+                $.gritter.add({title: "", text: "StuMoTextBooks Added Successfully", class_name: "gritter-info gritter-center"});
+
+        <?php endif; ?>
+        $(document).ready(function() {
+         $('#DateValue.date-picker').datepicker({format: 'yyyy-mm-dd', autoclose: true}).next().on(ace.click_event, function() {
+                    $(this).prev().focus();
+                });
+        });
+  $('#CourseListCode').change(function() {
+      var CourseListCode = document.getElementById('CourseListCode').value;
+        if(CourseListCode !== ""){
+            $.ajax({
+                url: "<?php echo url::to('getExamAssignmentCourseCode'); ?>",
+                data: {CourseListCode: CourseListCode},
+                beforeSend: function() {
+                    document.getElementById('ajax_img1').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                },
+                success: function(result) {
+                     document.getElementById('CourseStartedId').innerHTML =result;
+                },
+                complete: function() {
+                            document.getElementById('ajax_img1').innerHTML = ""
+                }
+            });
+            }else{
+            alert('Select a Course...!');
+            }
+        });
+         $('#CourseStartedId').change(function() {
+      var CourseStartedId = document.getElementById('CourseStartedId').value;
+      var CourseListCode = document.getElementById('CourseListCode').value;
+        if(CourseStartedId !== ""){
+            $.ajax({
+                url: "<?php echo url::to('getExamAssignmentModule'); ?>",
+                data: {CourseListCode:CourseListCode,CourseStartedId: CourseStartedId},
+                beforeSend: function() {
+                    document.getElementById('ajax_img2').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                },
+                success: function(result) {
+                     document.getElementById('ModuleCourseId').innerHTML =result;
+                },
+                complete: function() {
+                            document.getElementById('ajax_img2').innerHTML = ""
+                }
+            });
+            }else{
+            alert('Select a Course Code...!');
+            }
+        });
+        
+        $('#AssignmentName').change(function() {
+      var CourseStartedId = document.getElementById('CourseStartedId').value;
+      var CourseListCode = document.getElementById('CourseListCode').value;
+      var ModuleCourseId = document.getElementById('ModuleCourseId').value;
+        if(CourseStartedId !== "" || CourseListCode !== "" || ModuleCourseId !== ""){
+            $.ajax({
+                url: "<?php echo url::to(''); ?>",
+                beforeSend: function() {
+                    document.getElementById('ajax_img3').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                },
+                success: function(result) {
+                     document.getElementById('btn_submii').innerHTML ="<input type=\'submit\' value=\'Create Exam Assinment\'/>";
+                },
+                complete: function() {
+                            document.getElementById('ajax_img3').innerHTML = ""
+                }
+            });
+            }else{
+            alert('Dont leave any fields as Empty...!');
+            }
+        });
+    </script>
+

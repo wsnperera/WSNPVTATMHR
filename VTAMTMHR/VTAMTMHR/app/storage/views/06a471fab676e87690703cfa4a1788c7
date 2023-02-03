@@ -1,0 +1,109 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        Basic Exam			
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            Add Basic Exam Records
+                        </small>			
+                    </h1>
+                </div>
+            </div>
+            <!--PAGE CONTENT BEGINS-->
+            
+            <form action="<?php echo url('LoadBasicExamResults'); ?>" method='get'>
+                <table>
+                    <tr>
+                        <td>Search By Course Code :</td>
+                        <td>
+                            <select name="CourseCode" id='CourseCode' style="width: 120px; margin: 0">
+                            <option value="">Course Code</option>
+                            <?php foreach($course_started as $cs): ?>
+                            <option value="<?php echo $cs->CourseCode; ?>"><?php echo $cs->CourseCode; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        </td>
+                        <td>
+                            <input type="submit" value="Search" style="height: 30px;"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <a href="<?php echo url('AddBasicExamResults'); ?>"><button class="btn btn-large pull-right"><i class="icon-lock"></i>Submit Results</button></a>
+    <table class="table">
+        <tr>
+            <th>Student No</th>
+            <th>Course Code</th>
+            <th>Batch Code</th>
+            <th>Science Mark</th>
+            <th>Calculation Mark</th>
+            <th>Drawing Mark</th>
+            <th>Practical Mark</th>
+            <th>Bonus Mark</th>
+            <th>Submit</th>
+            <th>State</th>
+        </tr>
+        <?php if(isset($applicants)): ?>
+        
+        
+        <?php foreach($applicants as $students): ?>
+        <form id="f" onsubmit="return callme(this)">
+        <tr>
+            <td><?php echo $students->Training_No; ?></td>
+            <td><?php echo $students->CourseCode; ?></td>
+            <td><?php echo $students->BatchCode; ?></td>
+            <td><input type="text" name="sm" style="width: 30px;"/></td>
+            <td><input type="text" name="cm" style="width: 30px;"/></td>
+            <td><input type="text" name="dm" style="width: 30px;"/></td>
+            <td><input type="text" name="pm" style="width: 30px;"/></td>
+            <td><input type="text" name="bm" style="width: 30px;"/></td>
+            <td><input id="setResult" type="submit" /><input type="hidden" name="Training_No" value="<?php echo $students->Training_No; ?>"/></td>
+            <td id="<?php echo $students->Training_No; ?>">------</td>
+        </tr>
+         </form>
+        <?php endforeach; ?>
+       
+        <?php endif; ?>
+    </table>
+            
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<script type="text/javascript">
+
+
+    function callme(form){
+        
+        var sm = form.elements["sm"].value;
+        var cm = form.elements["cm"].value;
+        var dm = form.elements["dm"].value;
+        var pm = form.elements["pm"].value;
+        var bm = form.elements["bm"].value;
+        var Training_No = form.elements["Training_No"].value;
+        
+        
+       $.ajax
+            ({
+                url: "<?php echo url::to('SetBasicExamResults'); ?>",
+                data: {sm: sm, cm: cm, dm: dm, pm: pm, bm: bm, Training_No: Training_No},
+                success: function(result)
+                {
+                   var tr = result;
+                   document.getElementById(tr).innerHTML = "OK";
+                }
+            });
+        
+        return false;
+        
+    }
+
+</script>

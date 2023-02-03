@@ -1,0 +1,99 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    User			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <form class="form-horizontal" action="<?php echo url('createUser'); ?>" method="POST">
+                <div class="control-group">
+                    <label class="control-label" for="EmpId">Employee NIC</label>
+                    <div class="controls">
+                        <input type="text" name="EmpId" placeholder="Enter NIC"  />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="userName">User Name</label>
+                    <div class="controls">
+                        <input type="text" name="userName" id="user" value="" placeholder="Create User Name" />
+                    </div>
+                </div> 
+                <div class="control-group">
+                    <label class="control-label" for="passWord">Password</label>
+                    <div class="controls">
+                        <input type="password" name="passWord" value="" id="p1" placeholder="Select Password" />
+                    </div>
+                </div> 
+                <div class="control-group">
+                    <label class="control-label" for="userType">User Type</label>
+                    <div class="controls">
+                            <!--<input type="text" name="userType"  /> -->
+                        <select name="userType">
+                            <option value="">Select Type</option>  
+                            <?php foreach($usertype as $t): ?>
+                            <option value="<?php echo $t->id; ?>"><?php echo $t->UType; ?></option>   
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div> 
+                <div class="control-group">
+                    <label class="control-label" for="TradeId">Trade</label>
+                    <div class="controls">
+                        <select name="TradeId">
+                            <option value="">Select Trade</option>  
+                            <?php foreach($trades as $t): ?>
+                            <option value="<?php echo $t->TradeId; ?>"><?php echo $t->TradeName; ?></option>    
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary" id="submit">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div><!--/.span-->
+        <!--/span 4 for error handling -->
+        <div class="span4">
+            <!-- Error Handling -->
+            <?php if($errors->has()): ?>                    
+            <?php foreach($errors->all() as $msg): ?>
+            <!-- Error Message -->
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+            </div>
+            <!-- Error Message -->
+            <?php endforeach; ?>
+            <?php endif; ?>
+            <!-- Error Handling -->
+        </div>
+        <!--/span 4-->
+        <!--PAGE CONTENT ENDS-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+<script type="text/javascript">
+                    $(document).ready(function() {
+                        $("#user").val("");
+                        $("#p1").val("");
+                    });
+                    <?php if (isset($done)): ?>
+                            $.gritter.add({title: "", text: "Course Added Successfully", class_name: "gritter-info gritter-center"});
+                            <?php endif; ?>
+</script>
+
+
+

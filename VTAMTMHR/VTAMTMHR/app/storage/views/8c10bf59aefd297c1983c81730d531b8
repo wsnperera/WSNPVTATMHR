@@ -1,0 +1,102 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('viewEmployeeDA'); ?>> << Back to Employee Disciplinary Action </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+		<div class="page-header position-relative">
+                <h1>
+                    Employee Disciplinary Action		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        View
+                    </small>			
+                </h1>
+            </div>
+
+        <form name='search' action="<?php echo url('searchEmployeeDA'); ?>" method='get'>
+            Search Employee by NIC <input type='text' name="serachkey" placeholder="Search By NIC....!"/>   <input type='submit' value='Search'/>
+            <a href=<?php echo url('createEmployeeDA'); ?>><input type='button' value='Create Employee Disciplinary Action' /></a>
+        </form>
+
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table class="table">
+                <tr>
+                    <th>Employee Disciplinary Action ID</th>
+                    <th>NIC</th>	
+                    <th>Institute Name</th>
+                    <th>Organization Name</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                    <th>Reason</th> 
+                    <th>Remove</th>	
+                </tr
+                
+                <?php if(isset ($employeeDA)): ?>
+                <?php foreach ($employeeDA as $eda): ?>
+                <tr>                    
+                    <td><a href="<?php echo url('editEmployeeDA?id='.$eda->EDA_ID); ?>"><?php echo $eda->EDA_ID; ?></a></td>
+                     <td><?php echo $eda->NIC; ?></td>
+                    <td><?php echo $eda->Institue->InstituteName; ?> </td>
+                    <td><?php if(!is_null($eda->getOrganisation)): ?><?php echo $eda->getOrganisation->OrgaName; ?><?php endif; ?></td>
+                    <td><?php echo $eda->Date; ?> </td>  
+                    <td><?php echo $eda->Action; ?> </td>
+                    <td><?php echo $eda->Reason; ?> </td>
+                    <td>
+                        <form id="deleteform"  action="<?php echo url('deleteEmployeeDA?id='.$eda->EDA_ID); ?>" method="POST" onsubmit="return doConfirm('<?php echo $eda->NIC; ?>', this)">
+
+                            <input type="hidden" name='edaid' value="<?php echo $eda->EDA_ID; ?>" />
+                            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+
+                <?php endforeach; ?>
+
+                <?php endif; ?>
+
+            </table>
+
+
+
+
+
+
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+
+
+            function doConfirm(course, formobj)
+            {
+
+
+            bootbox.confirm("Are you sure you want to remove " + course, function(result)
+            {
+            if (result)
+            {
+            formobj.submit();
+            }
+
+
+            });
+                    return false; // by default do nothing hack :D
+            }
+
+
+
+
+
+
+
+</script>

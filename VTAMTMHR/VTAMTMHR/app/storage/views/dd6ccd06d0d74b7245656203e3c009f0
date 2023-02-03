@@ -1,0 +1,267 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<a href="<?php echo url('OJTViewCompanyVacancyDetails'); ?>">
+    Go Back to Vacancy Details
+</a>  
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<!--page specific plugin styles-->
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<!--ace styles-->
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    On The Job Training			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Add Vacancy
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+            <form class="form-horizontal" name="attendance" action="<?php echo url('OJTaddCompanyVacancyDetail'); ?>" method="post" onkeypress="return event.keyCode != 13;">
+                <div class="control-group">
+                    <label class="control-label">Company Name:</label>
+                    <div class="controls">
+                        <select name="companyid" id="companyid" class="chzn-select">
+                            <option value=""></option>
+                            <?php foreach($allcompany as $ac): ?>
+                            <option value="<?php echo $ac->id; ?>"><?php echo $ac->CompanyName; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Contact Person:</label>
+                    <div class="controls">
+                        <textarea name="contactperson" id="contactperson" style="resize: none;"><?php echo isset($contactperson)?$contactperson:''; ?></textarea>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Designation:</label>
+                    <div class="controls">
+                        <input type="text" name="designation" id="designation" value="<?php echo isset($designation)?$designation:''; ?>"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Address:</label>
+                    <div class="controls">
+                        <textarea name="Address" id="Address" style="resize: none;"><?php echo isset($address)?$address:''; ?></textarea>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">District:</label>
+                    <div class="controls">
+                        <select name="District" id="District" class="chzn-select">
+                            <option value=""></option>
+                            <?php foreach($district as $dis): ?>
+                            <option value="<?php echo $dis->DistrictCode; ?>"><?php echo $dis->DistrictName; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">DS Division:</label>
+                    <div class="controls">
+                        <select name="DSDevision" id="DSDevision" class="chzn-select">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Telephone:</label>
+                    <div class="controls">
+                        <input type="text" name="Tel" id="Tel" value="" />
+                    </div>
+                </div>    
+                <div class="control-group">
+                    <label class="control-label">Fax:</label>
+                    <div class="controls">
+                        <input type="text" name="Fax" id="Fax" value="" />
+                    </div>
+                </div>                
+                <div class="control-group">
+                    <label class="control-label">E-Mail:</label>
+                    <div class="controls">
+                        <input type="text" name="Email" id="Email" value="" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Trade:</label>
+                    <div class="controls">
+                        <select name="Trade" id="Trade" class="chzn-select">
+                            <option value=""></option>
+                            <?php foreach($trade as $tr): ?>
+                            <option value="<?php echo $tr->TradeId; ?>"><?php echo $tr->TradeName; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+               <!--  <div class="control-group">
+                    <label class="control-label">Course:</label>
+                    <div class="controls">
+                        <select name="CourseListCode" id="CourseListCode" class="chzn-select">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div> -->
+                <div class="control-group">
+                    <label class="control-label">No Of Vacancy:</label>
+                    <div class="controls">
+                        <input type="text" name="noofvacancy" id="noofvacancy" value="" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="validfrom">Valid From:</label>
+                    <div class="controls"> 
+                        <div class="row-fluid input-append">
+                            <input class="date-picker" name="validfrom" id="validfrom" type="text" data-date-format="yyyy-mm-dd" readonly=""/>
+                            <span class="add-on">
+                                <i class="icon-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>   
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary btn-small">Save</button>
+                    </div>
+                </div>
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+        <div class="span4" id="error">
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-ok"></i>
+                    <?php echo Session::get('done'); ?>
+                </strong>
+                <br>
+            </div>
+            <?php endif; ?>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+                $(".chzn-select").chosen();
+                $("#companyid_chzn").find('input').on('change', function(e)
+                {
+                    var option = $("<option>").val($("#companyid_chzn").find('input').val()).text($("#companyid_chzn").find('input').val());
+                    // add the new option
+                    $("#companyid.chzn-select").prepend(option);
+                    // automatically select it
+                    $("#companyid.chzn-select").find(option).prop('selected', true);
+                    // trigger the update
+                    $("#companyid.chzn-select").trigger("liszt:updated");
+                });
+                $("#District").change(function() {
+                    var District = $("#District").val();
+                    $.ajax({
+                        url: "<?php echo url('getDSDevisionOJT'); ?>",
+                        type: "GET",
+                        data: {District: District},
+                        success: function(result) {
+                            $("#DSDevision").html(result);
+                            $("#DSDevision.chzn-select").trigger("liszt:updated");
+                        }
+                    });
+                });
+                //   $("#Trade").change(function() {
+                //     var Trade = $("#Trade").val();
+                //    // alert(Trade);
+                //     $.ajax({
+                //         url: "<?php echo url('addCompanyVacancyCourse'); ?>",
+                //         type: "GET",
+                //         data: {Trade: Trade},
+                //         success: function(result) {
+                //             $("#CourseListCode").html(result);
+                //             $("#CourseListCode.chzn-select").trigger("liszt:updated");
+                //         }
+                //     });
+                // });
+//                $("#Trade").change(function() {
+//                    var Trade = $("#Trade").val();
+//                    $.ajax({
+//                        url: "<?php echo url('getCourseListCodeOJT'); ?>",
+//                        type: "GET",
+//                        data: {Trade: Trade},
+//                        success: function(result) {
+//                            $("#CourseListCode").html(result);
+//                            $("#CourseListCode.chzn-select").trigger("liszt:updated");
+//                        }
+//                    });
+//                });
+                $("#companyid").change(function() {
+                    var companyid = $("#companyid").val();
+                    $.ajax({
+                        url: "<?php echo url('getCompanyDetailOJT'); ?>",
+                        type: "GET",
+                        dataType: "json",
+                        data: {companyid: companyid},
+                        success: function(result) {
+                            if (result !== "") {
+                                $("#contactperson").val(result.contactperson);
+                                $("#designation").val(result.designation);
+                                $("#Address").val(result.Address);
+                                $("#District").val(result.District);
+                                $("#District.chzn-select").trigger("liszt:updated");
+                                $.ajax({
+                                    url: "<?php echo url('getDSDevisionOJT'); ?>",
+                                    type: "GET",
+                                    data: {District: result.District},
+                                    success: function(response) {
+                                        $("#DSDevision").html(response);
+                                        $("#DSDevision").val($.trim(result.DSDevision));
+                                        $("#DSDevision.chzn-select").trigger("liszt:updated");
+                                    }
+                                });
+                                $("#Tel").val(result.Tel);
+                                $("#Fax").val(result.Fax);
+                                $("#Email").val(result.Email);
+                            }
+                        }
+                    });
+                });
+                $('.date-picker').datepicker().next().on(ace.click_event, function() {
+                    $(this).prev().focus();
+                });
+</script>

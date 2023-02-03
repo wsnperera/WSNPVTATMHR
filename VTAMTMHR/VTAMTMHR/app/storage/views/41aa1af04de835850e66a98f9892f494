@@ -1,0 +1,109 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<!--page specific plugin styles-->
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<!--ace styles-->
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<a href="about:blank"></a>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Transfer Student		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Confirm	
+                    </small>			
+                </h1>
+            </div>
+            <div style="height: 50px;float: right" class="sapn10">
+                
+            </div>
+            <form class="form-horizontal" method="POST">
+                <div class="row-fluid span10" style="margin: 0px" overflow="auto">
+                    <div class="table-header">
+                    </div>
+                    <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="center">Institute Name</th>
+                                <th>Student Name</th>
+                                <th>From Center</th>
+                                <th>From Course</th>
+                                <th>To Center</th>
+                                <th>To Course</th>
+                                <th>Date Transfer</th>
+                                <th>
+                                    Status&nbsp&nbsp
+                                        <label>
+                                        <input type='checkbox' />
+                                            <span class='lbl'></span>
+                                    </label>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <?php foreach($result as $e): ?>
+                            <tr>
+                                <td class="center"><?php echo $e->getInstituteName->InstituteName; ?></td>
+                                <td><?php echo $e->getStudentName->NameWithInitials; ?></td>
+                                <td><?php echo $e->getfromcenter->OrgaName; ?></td>
+                                <td><?php echo $e->fromcourse; ?></td>
+                                <td><?php echo $e->gettocenter->OrgaName; ?></td>
+                                <td><?php echo $e->tocourse; ?></td>
+                                <td><?php echo $e->datetrasfer; ?></td>
+                                <td>
+                                    <label>
+                                        <input type='checkbox' name="status[]" value="<?php echo $e->id; ?>" />
+                                        <span class='lbl'></span>
+                                    </label>
+                                </td>
+                            </tr>             
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-small btn-primary" style="float: right" id="Confirm">Confirm</button>
+                </div>
+            </form>    
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
+<script type="text/javascript">
+                                        $(function() {
+                                        var oTable1 = $('#sample-table-2').dataTable({
+                                            "bPaginate": false,
+                                        "aoColumns": [
+                                                null, null, null, null, null, null, null, {"bSortable": false}
+                                        ]});
+                                                $('table th input:checkbox').on('click', function() {
+                                        var that = this;
+                                                $(this).closest('table').find('tr > td:nth-child(8) input:checkbox')
+                                                .each(function() {
+                                                this.checked = that.checked;
+                                                        $(this).closest('tr').toggleClass('selected');
+                                                        });
+                                                });
+                                                $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+                                                function tooltip_placement(context, source) {
+                                                var $source = $(source);
+                                                        var $parent = $source.closest('table')
+                                                        var off1 = $parent.offset();
+                                                        var w1 = $parent.width();
+                                                        var off2 = $source.offset();
+                                                        var w2 = $source.width();
+                                                        if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                                                        return 'right';
+                                                        return 'left';
+                                                        }
+                                        });
+
+</script>
+

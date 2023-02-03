@@ -1,0 +1,93 @@
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--Write your code here start-->
+            <?php
+            $year = 0000;
+            $indexx = 0;
+            $b = 1;
+            ?>
+            <?php if(count($currentdata) == 0): ?>
+            <center><h3>Data Not Found</h3></center>
+            <?php else: ?>
+            <table>
+                <tr>
+                    <th class="center" width="100px">Attempt</th>
+                    <th class="center" width="100px">Index No</th>
+                    <th class="center" width="150px">Year of Sitting</th>
+                    <th class="center" width="150px">Subject Name</th>
+                    <th class="center" width="100px">Result</th>
+                    <th></th>
+                </tr>
+                <?php foreach($currentdata as $cd): ?>
+
+
+                <?php if($cd->IndexNo != $indexx && $b>1): ?>
+                <?php
+                $indexx = $cd->IndexNo;
+                $b++;
+                ?>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <a href="<?php echo url('editALResult?aplicantnic='.$nic.'&year='.$year); ?>" target="_blank">
+                            <button>Edit</button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center" ><?php echo $cd->shy; ?></td>
+                    <td class="center" ><?php echo $indexx; ?></td>                                       
+                    <td class="center" ><?php echo $cd->Year; ?></td>
+                    <?php elseif($cd->IndexNo != $indexx): ?>
+                    <?php
+                    $year = $cd->Year;
+                    $indexx = $cd->IndexNo;
+                    $b++;
+                    ?>
+                <tr>
+                    <td class="center" ><?php echo $cd->shy; ?></td>
+                    <td class="center" ><?php echo $indexx; ?></td>                                       
+                    <td class="center" ><?php echo $cd->Year; ?></td>
+                    <?php else: ?>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <?php endif; ?>
+                    <td><?php echo $cd->getSubject->SubjectName; ?></td>
+
+                    <td class="center" ><?php echo $cd->Result; ?></td>
+                    <td></td>
+                </tr>
+                <?php
+                $year = $cd->Year;
+                $indexx = $cd->IndexNo;
+                $b++;
+                ?>
+                <?php endforeach; ?>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                    <td>
+                        <a href="<?php echo url('editALResult?aplicantnic='.$nic.'&year='.$year); ?>" target="_blank">
+                            <button>Edit</button>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            <?php endif; ?>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->

@@ -1,0 +1,472 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Course Started			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <form class="form-horizontal" action="<?php echo url('createCoursestarted'); ?>" method="POST"/>
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+            <!--            
+                      <div class="control-group">
+                                  
+                                      <label class="control-label" for="InstituteId">Institute ID</label>
+                                     
+                                      <div class="controls">
+                                         
+                                          <select name="InstituteId">
+                                              
+                                              <?php foreach ($institutes as $i): ?>
+                                                 
+                                                  <option value="<?php echo $i->InstituteId; ?>"><?php echo $i->InstituteName; ?></option>
+                                              
+                                              <?php endforeach; ?>
+                                            
+                                           
+                                          </select>
+                                          
+                                      </div>
+                                     </div>
+                        
+                        
+                   
+                   
+                   
+                   <div class="control-group">
+                                  
+                                      <label class="control-label" for="OrgaId">Organisation ID</label>
+                                     
+                                      <div class="controls">
+                                         
+                                          <select name="OrgaId">
+                                              
+                                              <?php foreach ($organisations as $i): ?>
+                                                 
+                                                  <option value="<?php echo $i->id; ?>"><?php echo $i->OrgaName; ?></option>
+                                              
+                                              <?php endforeach; ?>
+                                            
+                                           
+                                          </select>
+                                          
+                                      </div>
+                                     </div>    
+            -->  <div class="control-group">
+                <label class="control-label" for="InstituteId">Institute Name</label>
+
+                <div class="controls">
+                    <input type="text" name="InstituteId" disabled="true" value="<?php echo $institute; ?>"/>
+                    <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>"/>
+                </div>
+            </div>
+
+            <br/> 
+            <div class="control-group">
+
+                <label class="control-label" for="OrgaId">Organaization Name</label>
+
+                <div class="controls">
+                    <input type="text" name="OrgaId" disabled="true" value="<?php echo $organization; ?>"/>
+                    <input type="hidden" name="OrgaId" value="<?php echo $og_id; ?>"/>
+                </div>
+            </div>
+
+
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="CourseListCode">Course List Code</label>
+
+                <div class="controls">    
+
+                    <select name="CourseListCode" id="CourseListCode">
+                       <?php if($user->getSysUser()->userType == 'DEOPT'): ?> 
+                        <?php foreach ($coursestarteds_p as $i): ?>
+                   <option value="<?php echo $i->CourseListCode; ?>"><?php echo $i->CourseListCode; ?></option>
+                        <?php endforeach; ?>
+                         <?php elseif($user->getSysUser()->userType == 'DEOHRM'): ?> 
+                           <?php foreach ($coursestarteds_f as $i): ?>
+                   <option value="<?php echo $i->CourseListCode; ?>"><?php echo $i->CourseListCode; ?></option>
+                        <?php endforeach; ?>
+                          <?php elseif($user->getSysUser()->userType == 'Admin'): ?> 
+                           <?php foreach ($coursestarteds as $i): ?>
+                   <option value="<?php echo $i->CourseListCode; ?>"><?php echo $i->CourseListCode; ?></option>
+                        <?php endforeach; ?>
+                           
+                        <?php endif; ?>
+                      
+
+
+                    </select>
+
+
+
+
+
+
+                </div>
+
+            </div>
+            <!--
+               <div class="control-group">
+                   <label class="control-label">Course Type</label>
+                   <div class="controls">
+            <?php
+            // echo Form::select('Type', array('' => '','FT' => 'Full Time', 'PT' => 'Part Time'));
+            ?>
+               </div>
+               </div>
+            -->
+
+           
+
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="CourseCode">Course Code</label>
+
+                <div class="controls">
+                    <input type="text" name="CourseCode" id="CourseCode"  />
+                </div>
+
+            </div> 
+             
+            <div class="control-group" id="Term">
+
+                <label class="control-label" for="Term">Term</label>
+
+                <div class="controls">
+                    <input type="text" name="Term" />
+                </div>
+
+            </div> 
+
+          
+            <div class="control-group">
+
+                <label class="control-label" for="StartDate">Start Date</label>
+
+                <div class="controls">
+                    <input type="date" name="StartDate"  />
+                </div>
+
+            </div> 
+            <div class="control-group">
+
+                <label class="control-label" for="YearStart">Year Start</label>
+
+                <div class="controls">
+                    <input type="number" name="YearStart" min="1" max="9999" />
+                </div>
+
+            </div>  
+            <div class="control-group">
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Save</button>
+
+                </div>
+            </div>
+
+            <div class="control-group" style="visibility: hidden">
+
+                <label class="control-label" id="selector-lbl" visible="false" for="type">Choose Type</label>   
+                <div class="controls">    								   
+                    <select name="type" id="selector">
+
+                        <option value="">Choose</option>
+                        <option value="Full">Full Time</option>
+                        <option value="Part">Part Time</option>
+                    </select>   
+
+                </div>
+            </div>
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="ExpectedCompleted"></label>
+
+                <div class="controls">
+                    <input type="hidden" name="ExpectedCompleted"  />
+                </div>
+
+            </div>                   
+            <div class="control-group">
+
+                <label class="control-label" for="Completed"></label>
+
+                <div class="controls">
+                    <input type="hidden" name="Completed"  />
+                </div>
+
+            </div>   
+
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="FinalExamHeld"></label>
+
+                <div class="controls">
+                    <input type="hidden" name="FinalExamHeld"  />
+                </div>
+
+            </div>  
+            <div class="control-group">
+
+                <label class="control-label" for="InplantPlaced"></label>
+
+                <div class="controls">
+                    <input type="hidden" name="InplantPlaced"  />
+                </div>
+
+            </div>  
+            <div class="control-group">
+
+                <label class="control-label" for="InplantCompleted"></label>
+
+                <div class="controls">
+                    <input type="hidden" name="InplantCompleted"  />
+                </div>
+
+            </div>  
+
+
+
+
+
+
+
+        </div><!--/.span-->
+
+
+        </form>      
+
+        <!--/span 4 for error handling -->
+
+        <div class="span4">
+
+            <!-- Error Handling --!>
+
+                    <?php if($errors->has()): ?>
+                    
+                          <?php foreach($errors->all() as $msg): ?>
+
+            <!-- Error Message --!>
+
+              <div class="alert alert-error">
+
+                 <button type="button" class="close" data-dismiss="alert">
+                         <i class="icon-remove"></i>
+                 </button>
+
+                 <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+              </div>
+
+            <!-- Error Message --!>
+
+      <?php endforeach; ?>
+
+  <?php endif; ?>
+
+            <!-- Error Handling --!>
+              
+            
+
+
+
+    
+</div>
+            <!--/span 4-->
+
+
+
+
+
+            <!--PAGE CONTENT ENDS-->
+
+        </div><!--/.row-fluid-->
+    </div><!--/.page-content-->
+
+
+    <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+    <script>
+
+<?php if (isset($done)): ?>
+
+        $.gritter.add({title: "", text: "Course Added Successfully", class_name: "gritter-info gritter-center"});
+        <?php endif; ?>
+
+    </script>
+
+    <script type="text/javascript">
+
+
+
+                $("#CourseListCode").change(function()
+        {
+
+
+            var cc = $("#CourseListCode").val();
+
+
+            $.ajax
+                    ({
+                        type: "GET",
+                        url: "<?php echo Url('getdata'); ?>",
+                        data: {listcode: cc},
+                        dataType: "json",
+                        success: function(result)
+                        {
+                            $("#selector").val(result.CourseType);
+                            $("#selector").css('visibility', 'hidden');
+                            $("#selector-lbl").css('visibility', 'hidden');
+
+                            switch (result.CourseType)
+                            {
+                                case 'Part':
+
+                                    $("#mode").css('display', '');
+                                    $("#coursefee").css('display', '');
+                                    $("#Term").css('display', '');
+
+
+                                    break;
+
+                                case 'Full':
+
+                                    //id="idmode"
+                                    //id="fee"
+                                    $("#mode").css('display', 'none');
+                                    $("#coursefee").css('display', 'none');
+                                    $("#Term").css('display', 'none');
+
+
+                                    break;
+
+                            }
+
+
+
+
+
+
+                        }
+
+                    });
+
+
+
+
+
+
+        });
+
+
+
+        //     $(document).ready(function()
+        //    {
+        //             $("#CourseListCode").change(function()
+        //            {
+        //                 var cc =  $("#CourseListCode").val();
+        //           
+        //          
+        //            $.ajax
+        //            ({
+        //                type: "GET",
+        //                url: "<?php echo Url('getdata'); ?>",
+        //                data:{listcode : cc},
+        //                dataType:"json",
+        //                if(result.CourseType==='Full')
+        //                {
+        //                   $("#CourseCode").val(yyyy);                       
+        //                   $("#coursefee").hide();  
+        //                    
+        //                }
+        //                
+        //                
+        //                
+        //                
+        //                
+        ////                     var today = new Date();
+        ////                     var yyyy = today.getFullYear();
+        ////            
+        ////
+        ////                    if('Full'== $(this).val())
+        ////                    {
+        ////                        $("#CourseCode").val(yyyy);
+        ////                        $("#coursefee").hide();
+        ////        
+        ////                      }
+        ////                    if('Part'== $(this).val())
+        ////                    {
+        ////                        $("#CourseCode").val('');
+        ////                        $("#coursefee").show();
+        ////                    }
+        //                   
+        //
+        //            });
+        //        
+        //    });
+        //    
+        //    
+        // </script>
+
+<!-- <script type="text/javascript">
+
+
+$(document).ready(function()
+{
+
+
+$('#type').change(function() 
+{  
+   var myval = $(this).val();
+   
+   
+  
+   
+   if(myval == 'FT')
+   {
+   
+   $("#Coursestarted_CourseCode").hide();
+     alert("Full Time");     
+
+   }
+   
+ 
+   
+});
+
+});
+         
+<script type="text/javascript">
+
+$(document).ready(function()
+{
+alert("loaded");
+});
+
+</script>            
+      
+
+
+    -->
+
+
+

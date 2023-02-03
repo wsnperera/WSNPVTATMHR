@@ -1,0 +1,753 @@
+@include('includes.bar')
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+	<div class="span12">
+        <div class="span8" style="width: 100%">
+            <div class="page-header position-relative">
+                <!--<a href={{url('ViewAndDownloadAssessor')}}> << Back to Assessor View</a>-->
+                <h1>View & Update OJT Students<small><i class="icon-double-angle-right"></i>View</small></h1>
+            </div>
+			 </div>
+            <form class="form-horizontal" action='{{url("ViewOJTStudents")}}' method="POST"  id='NewModule'>
+                   
+               
+				<div class="control-group">
+                    <label class="control-label" >District : </label>
+                        <div class="controls" id="Trade">
+                            <select name="District" id="District">
+							
+                                 <option value="">--Select District--</option>
+								  @if($OrgaType == 'HO' || $OrgaType == 'PO')
+								 <option value="All">All</option>
+							   @endif
+                                @foreach($Districts as $d)
+                                <option value="{{$d->DistrictCode}}">{{$d->DistrictName}}</option>
+                                @endforeach
+                            </select>
+                           
+                        </div>         
+                 </div>
+				 
+                <div class="control-group">
+                    <label class="control-label" >Centre : </label>
+                        <div class="controls" id="Trade">
+                            <select name="CenterID" id="CenterID" required>
+                                 <option value="">--Select Centre--</option>
+								 @if($OrgaType == 'HO' || $OrgaType == 'PO' || $OrgaType == 'DO' )
+								  <option value="All">All</option>
+							     @endif
+                                @foreach($Centers as $v)
+                                <option value="{{$v->id}}">{{$v->OrgaName}} - {{$v->Type}}</option>
+                                @endforeach
+                            </select>
+                           
+                        </div>         
+                 </div> 
+                <div class="control-group">
+                    <label class="control-label" for="centers">Year</label>
+                    <?php  $year = date("Y"); ?>
+                    <div class="controls">
+                      <select name="Year" id="Year" required>
+                            <option value="" required>--- Select Year ---</option>
+						@foreach($YearList as $yl)
+								<option value="{{$yl}}">{{$yl}}</option>
+								 @endforeach
+                           
+                          
+                        </select> 
+                    </div>
+                </div>
+				 <div class="control-group">
+                    <label class="control-label" for="centers">Batch:</label>
+                    <div class="controls">
+                        <select name="Batch" id="Batch" required>
+                            <option value="" >--- Select Batch ---</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="1.2">1.2</option>
+							<option value="2.2">2.2</option>
+                        </select>
+                        <span id='img4'></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" >Course: </label>
+                        <div class="controls" id="Trade">
+                            <select name="CourseYearPlanID" id="CourseYearPlanID" required>
+                                 <option value="">--Select Course--</option>
+                               
+                            </select>
+                           
+                        </div>         
+                 </div> 
+                <!-- <div class="control-group">
+                    <label class="control-label" >Date : </label>
+                        <div class="controls" id="Trade">
+                           <input type="date" name="DatePlanned" id="DatePlanned" required>
+                           
+                           
+                        </div>         
+                 </div>  
+                 <div class="controls" id='table1'>
+                            </div>
+							
+							-->
+               
+         <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-small btn-primary">Search</button>
+                </div>
+            </div>             
+
+            </form>
+			 @if(isset($trplans))
+        
+    <table>
+    <tr>
+       
+        <td>
+            <form name='search' action="{{url('PrintOJTStudents')}}" method='POST' class="form-horizontal">
+                <input type="hidden" value="{{$CenterIDD}}" name="CenterIDD" id="CenterIDD"/>
+                <input type="hidden" value="{{$YearD}}" name="YearD" id="YearD"/>
+                <input type="hidden" value="{{$BatchD}}" name="BatchD" id="BatchD"/>
+				<input type="hidden" value="{{$districtD}}" name="districtD" id="districtD"/>
+				<input type="hidden" value="{{$CYIPD}}" name="CYIPD" id="CYIPD"/>
+                <button type="submit" id="search" class="btn btn-success">
+                <i class="icon-download-alt bigger-200"></i>Download Excel</button>
+               
+            </form> 
+        </td>
+		 <td>
+          
+            <form> 
+                <input type="hidden" value="{{$CenterIDD}}" name="CenterIDD" id="CenterIDD"/>
+			    <input type="hidden" value="{{$YearD}}" name="YearD" id="YearD"/>
+				<input type="hidden" value="{{$BatchD}}" name="BatchD" id="BatchD"/>
+				<input type="hidden" value="{{$districtD}}" name="districtD" id="districtD"/>
+				<input type="hidden" value="{{$CYIPD}}" name="CYIPD" id="CYIPD"/>
+                <button type="button" id="upload1" class="btn btn-pink">
+                <i class="icon-print bigger-100"></i>Print Dropout Marking Sheet pdf</button>
+                 <span id="img7"></span>          
+            </form> 
+                       
+        </td>
+    </tr>
+    </table>
+        
+
+        @endif
+		
+		 <div class="span12">
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                 <thead>
+                <tr>
+						<th class="center">No</th>
+						<th class="center">Edit Student Details</th>
+						<th class="center">Assign to OJT</th>
+						
+						<th class="center">District</th>
+						<th class="center">Centre</th>
+                        <th class="center">Year</th>
+                        <th class="center">Batch</th>
+                        <th class="center">Course</th>
+						<th class="center">CourseListCode</th>
+						<th class="center">Course Started Status</th>
+						<th class="center">Instructors</th>
+                        <th class="center">CourseType</th>
+                        <th class="center">NVQ/NON-NVQ</th>
+                        <th class="center">NVQ Level</th>
+						<th class="center">Duration</th>
+                        <th class="center">Name With Initials</th>
+                        <th class="center">Full Name</th>
+						<th class="center">NIC</th>
+						<th class="center">MIS Number</th>
+                        <th class="center">Mobile</th>
+					    <th class="center">Address</th>
+						<th class="center">Gender</th>
+						<th class="center">Request to Dropout</th>
+						<th class="center">Reason for Dropout</th>
+						<th class="center">Approve Dropout</th>
+						<th class="center">Dropout During the Course</th>
+						<th class="center">OJT Placed</th>
+						<th class="center">OJT Completed</th>
+						<th class="center">OJT Dropout</th>
+						<th class="center">Job Placed</th>
+						<th class="center">Remove</th>
+                </tr>
+                 </thead>
+                 <?php $tt=1; ?>
+                 <tbody>
+                @if(isset($trplans))
+                    @foreach($trplans as $mm)
+                    <tr>
+                     
+                       <td class="center">{{$tt++}}</td>
+					   <td class="center">
+					   @if($user->hasPermission('editOJTStudents'))
+						   @if($mm->OJTPlaced == 0)
+                                <form id="editform"  action='editOJTStudents' method="GET" >
+                                    <input type="hidden" name='edit_id' value='{{$mm->id}}' />
+									<input type="hidden" value="{{$CenterIDD}}" name="CenterIDD" id="CenterIDD"/>
+									<input type="hidden" value="{{$YearD}}" name="YearD" id="YearD"/>
+									<input type="hidden" value="{{$BatchD}}" name="BatchD" id="BatchD"/>
+									<input type="hidden" value="{{$districtD}}" name="districtD" id="districtD"/>
+									<input type="hidden" value="{{$CYIPD}}" name="CYIPD" id="CYIPD"/>
+                                    <button type="Submit" class="btn btn-info btn-mini"><i class="icon-edit icon-2x icon-only"></i></button>
+                                </form>
+							@endif
+                       @endif
+					   </td>
+					   <td class="center">
+					   @if($user->hasPermission('OJTSplacementtudents'))
+					   <?php
+					   $getcountplacementfirst = 0;
+					    $getcountplacementsec = IROJTTraineePlacement::where('irtraineeID','=',$mm->id)->where('Deleted','=',0)
+						->where('Active','=',1)->where('Dropout','=',1)->where('OJTCompletedF','=',0)->get();
+						
+						$getcountplacementfirst = IROJTTraineePlacement::where('irtraineeID','=',$mm->id)->where('Deleted','=',0)->count();
+					   
+					   ?>
+					   @if($mm->Dropout != 1)
+						   @if($getcountplacementfirst == 0 || count($getcountplacementsec) > 0)
+					          <form id="deleteform"  action='OJTSplacementtudents' method="GET">
+                                <input type="hidden" name='edit_id' value="{{$mm->id}}" />
+								<input type="hidden" value="{{$CenterIDD}}" name="CenterIDD" id="CenterIDD"/>
+									<input type="hidden" value="{{$YearD}}" name="YearD" id="YearD"/>
+									<input type="hidden" value="{{$BatchD}}" name="BatchD" id="BatchD"/>
+									<input type="hidden" value="{{$districtD}}" name="districtD" id="districtD"/>
+										<input type="hidden" value="{{$CYIPD}}" name="CYIPD" id="CYIPD"/>
+                               <button type="Submit" class="btn btn-warning btn-mini"><i class="icon-edit icon-2x icon-only"></i></button>
+                                </form>
+								@endif
+								@endif
+						@endif
+							  </td>
+						
+					    <td class="center">{{$mm->DistrictName}}</td>
+						<td class="center">{{$mm->OrgaName}}-({{$mm->Type}})</td>
+                        <td class="center">{{$mm->Year}}</td>
+                        <td class="center">{{$mm->batch}}</td>
+                        <td class="center">{{$mm->CourseName}}</td>
+						<td class="center">{{$mm->CourseListCode}}</td>
+						<td class="center">
+						@if($mm->StartedStatus == 0)
+						<font color="red"><i class="icon-remove bigger-130"></i></font>
+						@elseif($mm->StartedStatus == 1)
+						<font color="green"><i class="icon-ok bigger-130"></i></font>
+						@else
+						<font color="blue"><i class="icon-legal bigger-130"></i></font>
+						@endif
+						</td>
+						<?php
+						//$endDate = MOCenterMonitoringPlan::getEndDate($mm->RealstartDate,$mm->Duration);
+						//$Packages = MOCenterMonitoringPlan::getPackages($mm->CD_ID);
+						//$monitoringDate = MOCenterMonitoringPlan::getMonitoringDates($mm->id);
+						
+						 $ppp = "select moinstructor.id,moinstructor.Name,moinstructor.EPFNo
+						  from moinstructorcourse
+						  left join moinstructor
+						  on moinstructorcourse.InstructorID=moinstructor.id
+						  where moinstructorcourse.CourseYearPlanID='".$mm->CourseYearPlanID."'
+						  and moinstructorcourse.Active='Yes'";
+                          $Ins=DB::select(DB::raw($ppp));
+						  
+						?>
+						<td class="left">
+						@foreach($Ins as $i)
+						<span>{{$i->Name}}({{$i->EPFNo}})</br></span>
+						@endforeach
+						</td>
+                        <td class="center">{{$mm->CourseType}}</td>
+                        <td class="center">{{$mm->Nvq}}</td>
+                        <td class="center">{{$mm->CourseLevel}}</td>
+                        <td class="center">{{$mm->Duration}}</td>
+                        <td class="center">{{$mm->NameWithInitials}}</td>
+						<td class="center">{{$mm->FullName}}</td>
+						<td class="center">{{$mm->NIC}}</td>
+						<td class="center">{{$mm->MISNumber}}</td>
+						<td class="center">{{$mm->Mobile}}</td>
+						<td class="center">{{$mm->Address}}</td>
+						<td class="center">{{$mm->Gender}}</td>
+						<td class="center">
+						@if($user->hasPermission('IRAddDropoutReason'))
+							@if($mm->Dropout == 0 && $mm->DropoutRequested == 0)
+							<font color="orange"><a class="orange"  id="{{$mm->id}}"> <i class="icon-exclamation-sign icon-3x"></i></a></font>
+							@elseif($mm->Dropout == 0 && $mm->DropoutRequested == 1)
+							<font color="red">Requested</font>
+							@elseif($mm->Dropout == 1 && $mm->DropoutRequested == 1)
+							<font color="blue">Dropout Approved</font>
+							@else
+								
+							@endif
+						@endif
+						</td>
+						<td class="center">
+						@if($user->hasPermission('IRAddDropoutReason') || $user->hasPermission('IRAddDropoutReasonGiveApproval'))
+							{{$mm->ReasonForDropout}}
+						@endif
+					    </td>
+						<td class="center">
+						@if($user->hasPermission('IRAddDropoutReasonGiveApproval'))
+
+							@if($mm->Dropout == 0 && $mm->DropoutRequested == 1)
+							<font color="green"><a class="green"  id="{{$mm->id}}"> <i class="icon-ok-sign icon-3x"></i></a></font>
+							@elseif($mm->Dropout == 1 && $mm->DropoutRequested == 1)
+							<font color="blue">Dropout Approved</font>
+							@else
+								
+							@endif
+						@endif
+						</td>
+						<td class="center">
+						@if($mm->Dropout == 1)
+							<font color="red"><i class="icon-ok bigger-130"></i></font>
+						@elseif($mm->Dropout == 0)
+						<font color="green"><i class="icon-remove bigger-130"></i></font>
+						@else
+							<!--<font color="blue"><i class="icon-legal bigger-130"></i></font>-->
+						@endif
+						</td>
+						<td class="center">
+						@if($mm->Dropout != 1)
+						@if($mm->OJTPlaced == 0)
+						<font color="red"><i class="icon-remove bigger-130"></i></font>
+					    @else
+						<font color="green"><i class="icon-ok bigger-130"></i></font>
+						@endif
+						@endif
+						</td>
+						<td class="center">
+						@if($mm->Dropout != 1)
+						@if($mm->OJTCompleted == 0)
+						<font color="red"><i class="icon-remove bigger-130"></i></font>
+						@else
+					    <font color="green"><i class="icon-ok bigger-130"></i></font>
+						@endif
+						@endif
+						</td>
+						<td class="center">
+						@if($mm->Dropout != 1)
+						@if($mm->OJTDropout == 0)
+						<font color="green"><i class="icon-remove bigger-130"></i></font>
+						@else
+						<font color="red"><i class="icon-ok bigger-130"></i></font>
+						
+						@endif
+						@endif
+						</td>
+                        <td class="center">
+						@if($mm->Dropout != 1)
+						@if($mm->JobPlaced == 0)
+						<font color="red"><i class="icon-remove bigger-130"></i></font>
+						@else
+						<font color="green"><i class="icon-ok bigger-130"></i></font>
+						@endif
+						@endif
+						</td>
+						<td>
+						@if($user->hasPermission('DeleteOJTStudents'))
+							 <form id="deleteform"  action='DeleteOJTStudents' method="POST" onsubmit="return doConfirm('{{$mm->NameWithInitials}}',this)">
+                                <input type="hidden" name='id' value="{{$mm->id}}" />
+                                <button type="submit" class="btn btn-danger btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                            </form>
+						@endif
+						</td>
+                        
+                   </tr>
+                        @endforeach
+                    @if($trplans=='[]')
+                        <center>Data Not Found</center>
+                    @endif
+                @endif
+        </tbody>
+            </table>
+             
+        </div><!--/.span-->
+		</div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+@include('includes.footer')
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+$( document ).ready(function() {
+	
+	 $(".orange").click(function(){
+
+     var id = this.id;
+     //alert(id);
+	 
+	  var x = '<form id="infos" action="" style="border-style: solid;border-color: red red red red;border-width: thick;">'
+      + '<table'
+      + 'boder="2" cellspacing="2"><div class="control-group"><div  class="controls"><tr>'
+      + '<td cellspacing="2"><br/>&nbsp&nbspReason for dropout:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<textarea cols="10" rows="6" name="ReasonD" id="ReasonD" required="true"></textarea></td></tr></div></div><table></form>';
+	  
+	  
+ bootbox.confirm(x, function(result) {
+        if(result)
+        {
+           
+
+         var ReasonD = $("#ReasonD").val();
+		 
+         if(ReasonD == "")
+		 {
+			 bootbox.alert('Plase Enter the dropout Reason!!!');
+		 }
+		 else
+		 {
+			 doStuffWithResults(id,ReasonD);
+		 }
+
+
+        
+        }
+});  
+
+  
+});
+
+function doStuffWithResults(id,ReasonD) {
+	
+
+
+     $.ajax  ({
+                    url: "{{url::to('IRAddDropoutReason')}}",
+                    data: { id: id,ReasonD: ReasonD},
+                    
+                   success: function(result) {
+					   
+					   
+
+					   if(bootbox.alert('Dropout reason added successfully!!!'))
+					   {
+						   window.location.reload();
+					   }
+
+                        
+                        }
+
+
+                    
+                });
+   
+}
+
+$(".green").click(function(){
+
+     var id = this.id;
+	 doStuffWithResultsApproved(id);
+	 
+	 
+});	 
+
+function doStuffWithResultsApproved(id) {
+	
+
+
+     $.ajax  ({
+                    url: "{{url::to('IRAddDropoutReasonGiveApproval')}}",
+                    data: { id: id},
+                    
+                   success: function(result) {
+					   if(bootbox.alert('Dropout Approved Successfully!!!!!')){window.location.reload();}
+
+                        
+                        }
+
+
+                    
+                });
+   
+}
+
+});
+</script>
+<script type="text/javascript">
+                                            function doConfirm(course, formobj)
+                                            {
+                                            bootbox.confirm("Are you sure you want to remove Course Year Plan with Course List Code : " + course, function(result)
+                                            {
+                                            if (result)
+                                            {
+                                            formobj.submit();
+                                            }
+                                            });
+                                                    return false; // by default do nothing hack :D
+                                            }
+
+                                    $('#sample-table-2').dataTable({
+										"bPaginate":false,
+                                    "aoColumns": [
+                                     {"bSortable": false}, 
+ {"bSortable": false}, 									 
+                                    {"bSortable": false},
+									{"bSortable": false},
+                                    {"bSortable": false},
+                                    {"bSortable": false},
+									{"bSortable": false},
+                                            null,
+											null,
+									
+											null,
+												null,
+                                            null,
+                                    {"bSortable": false},
+                                            null,
+											null,
+											null,
+											null,null,
+											null,
+											null,
+											null,
+											null,
+											null,
+											null,
+											null,
+											null,
+											null,
+											null,null,null,null,
+                                   // {"bSortable": false},
+                                   
+                                   
+                                   
+                                    ]});
+                                            $('table th input:checkbox').on('click', function() {
+                                    var that = this;
+                                            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                                            .each(function() {
+                                            this.checked = that.checked;
+                                                    $(this).closest('tr').toggleClass('selected');
+                                            });
+                                    });
+                                            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+                                            function tooltip_placement(context, source) {
+                                            var $source = $(source);
+                                                    var $parent = $source.closest('table')
+                                                    var off1 = $parent.offset();
+                                                    var w1 = $parent.width();
+                                                    var off2 = $source.offset();
+                                                    var w2 = $source.width();
+                                                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                                                    return 'right';
+                                                    return 'left';
+                                            }
+
+
+</script>
+<script>
+
+    @if (isset($done))
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    @endif
+	
+	
+
+
+     /*   $("#CenterID").change(function() {
+        var cid = $("#CenterID").val();
+        $("#table").html('');
+        $("#CourseYearPlanID").html('');
+        var msg = '--- Select Course ---';
+        $.ajax({
+            type: "GET",
+            url: "{{url::to('FilterCourseYearPlans')}}",
+            data: {CourseListCode: cid},
+            success: function(result) {
+                $('#table').html(result);
+
+            },
+            complete: function() {
+                          $.ajax({
+                                        type: "GET",
+                                        url: "{{url::to('FilterCourseYearPlans1')}}",
+                                        data: {CourseListCode: cid},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#CourseYearPlanID").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#CourseYearPlanID").append("<option value=" + item.id + ">" +item.CourseName + "-"+ item.CourseListCode +  "[Year - " + item.Year + "][Batch - " + item.batch+"]Duration-("+ item.Duration+")-(" + item.RealstartDate + ")</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            }
+        });
+    }); */
+
+        $("#Batch").change(function() {
+        var Batch = $("#Batch").val();
+		var Year = $("#Year").val();
+		var cid = $("#CenterID").val();
+		        var dis = $("#District").val();
+
+        //$("#table").html('');
+        $("#CourseYearPlanID").html('');
+        var msg = '--- Select Course ---';
+			var all = 'All';
+       
+           
+           
+                          $.ajax({
+                                        type: "GET",
+                                        url: "{{url::to('IRFilterCourseYearPlans1')}}",
+                                        data: {CourseListCode: cid,Year: Year,Batch: Batch,dis: dis},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#CourseYearPlanID").append("<option value=''>" + msg + "</option>");
+											  $("#CourseYearPlanID").append("<option value='All'>" + all + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#CourseYearPlanID").append("<option value=" + item.id + ">" +item.CourseName + "-"+ item.CourseListCode +  "[Year - " + item.Year + "][Batch - " + item.batch+"]Duration-("+ item.Duration+")-(" + item.RealstartDate + "-" + item.CourseType + "NVQ Level - " + item.CourseLevel +")</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            
+       
+    });
+  
+    
+    $('#DatePlanned').change(function(){
+
+        //alert('dg');
+       var DatePlanned = document.getElementById('DatePlanned').value;
+       var CenterID = document.getElementById('CenterID').value;
+       var CourseYearPlanID = document.getElementById('CourseYearPlanID').value; 
+      // var msg = '--- Select Working Place ---';
+        //$("#WorkingPlace").html('');
+       $.ajax  ({
+                    url: "{{url::to('MOCMCheckPlanneddate')}}",
+                    data: {DatePlanned: DatePlanned,CenterID: CenterID,CourseYearPlanID: CourseYearPlanID},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        if(result.module == 1)
+                        {
+                             document.getElementById('DatePlanned').value = "";
+                             $('#table1').html(result.html);
+                             
+                        }
+                        else
+                        {
+                             $("#table1").html('');
+                        }
+                       
+                        
+                                        
+                        
+                        }
+
+
+                    
+                });
+        
+
+
+       
+    });
+
+    
+	$("#District").change(function() 
+	{
+        var District = $("#District").val();
+        $("#CenterID").html('');
+        //$("#CourseYearPlanID").html('');
+        var msg = '--- Select Centre ---';
+		var all = 'All';
+       
+                          $.ajax({
+                                        type: "GET",
+                                        url: "{{url::to('loaddistrictcentersin')}}",
+                                        data: {District: District},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#CenterID").append("<option value=''>" + msg + "</option>");
+											 $("#CenterID").append("<option value='All'>" + all + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#CenterID").append("<option value=" + item.id + ">" +item.OrgaName + "(" + item.Type + ")</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            
+     
+    });
+	
+	$('#upload1').click(function()
+    {
+      
+        var CenterIDD = $("#CenterIDD").val(); 
+		var YearD = $("#YearD").val(); 
+		var BatchD = $("#BatchD").val(); 
+		var districtD = $("#districtD").val();
+        var CYIPD = $("#CYIPD").val();	   
+		
+      //alert(CD_ID);
+      
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            
+                            document.getElementById('img7').innerHTML = "<img src=\"{{Url('assets/images/abc.gif')}}\"/>";
+                        },
+                        type: "POST",
+                        url: "{{Url('IRDropoutListPrintPdf')}}",
+                        data: {CenterIDD: CenterIDD,YearD:YearD,BatchD:BatchD,districtD:districtD,CYIPD: CYIPD},
+                        success:function response(responseText, statusText, xhr, $form)
+                        {
+       
+                               var printWin = window.open("","printSpecial");
+                                printWin.document.open();
+                                printWin.document.write(responseText);
+                                printWin.document.close();
+                                printWin.print();
+       
+   
+                         
+
+                        },
+                        complete: function() {
+                            document.getElementById('img7').innerHTML ="";
+
+                        }
+                    });
+        
+    }
+    );
+
+    </script>
+
+

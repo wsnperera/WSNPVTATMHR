@@ -1,0 +1,58 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>    
+<div class="page-content">                              
+<div class="row-fluid">
+<div class="span8">
+
+    <!--PAGE CONTENT BEGINS-->
+    <!--/.page-header-->
+
+<div class="page-header position-relative">
+<a href=<?php echo url('ViewHRUniversity'); ?>> << Back to Universities </a> 
+<h1>
+Qualified Universities		
+<small>
+        <i class="icon-double-angle-right"></i>
+        Edit
+</small>			
+</h1>
+
+        </div><!--/.page-header-->
+
+
+                
+                
+<form class="form-horizontal" action="<?php echo url('EditHRUniversity'); ?>" method="POST"/>
+<input type="hidden"  name="QO_ID" value="<?php echo Request::get('id'); ?>" />
+ <div class="control-group">
+                    <label class="control-label">University Name:</label>
+                    <div class="controls">
+                        <textarea id="OrgaName" name="OrgaName" required="true" ><?php echo $quorg->UniversityName; ?> </textarea>
+                    </div>
+                </div>
+				<div class="control-group">
+				 <div class="controls">
+				<input class="btn btn-small btn-warning" type="submit"  value="Update" />
+				 </div>
+				</div>
+
+</div>
+
+</form>
+<!--PAGE CONTENT ENDS-->
+</div><!--/.span-->
+<div class="span4">
+     <?php if ($errors->has()): ?>
+<?php foreach ($errors->all() as $error): ?>
+    <div class='bg-danger alert'><?php echo $error; ?></div>
+<?php endforeach; ?>
+<?php endif; ?>
+</div>
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script type="text/javascript">
+    
+  
+
+    
+</script>

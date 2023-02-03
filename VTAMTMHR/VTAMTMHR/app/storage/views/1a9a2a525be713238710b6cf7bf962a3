@@ -1,0 +1,440 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<a href="<?php echo url('OLResultHome'); ?>">
+    Go Back to Home
+</a>  
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Enter OL Result			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Result
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+            <table>
+                <form name="addOLResult" action="<?php echo url($action); ?>" method="post">
+                    <tr>
+                        <td>Name:</td>
+                        <td> <input type="text" name="aplicantName" value="<?php echo $name; ?>" readonly/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>NIC:</td>
+                        <td> <input type="text" name="aplicantNIC" value="<?php echo $nic; ?>" readonly/><br/></td>
+                    </tr>
+                    <tr>
+                        <?php if(!empty($currentdata[0])): ?>
+                        <td>Year:</td> 
+                        <td><input id="year" type="text" name="year" value="<?php echo $currentdata[0]->Year; ?>" readonly/><br/></td>
+                        <?php else: ?>
+                        <td>Year:</td> 
+                        <td><input id="year" type="text" name="year" value="" /><br/></td>
+                        <?php endif; ?>
+                    </tr>                
+                    <tr>
+                        <?php if(!empty($currentdata[0])): ?>
+                        <td>Index NO:</td>
+                        <td><input type="text" name="indexno" value="<?php echo $currentdata[0]->IndexNo; ?>"/><br/></td> 
+                        <?php else: ?>
+                        <td>Index NO:</td> 
+                        <td><input type="text" name="indexno" value=""/><br/></td> 
+                        <?php endif; ?>
+                    </tr>
+                    <tr>
+                        <td>Medium:</td>
+                        <td>
+                            <select name="medium" onload="">
+                                <?php if(!empty($currentdata[0]) && $currentdata[0]->Medium == 'Sinhala'): ?>
+                                <option value="Sinhala" selected="">Sinhala</option>
+                                <?php else: ?>                                
+                                <option value="Sinhala">Sinhala</option>
+                                <?php endif; ?>
+                                <?php if(!empty($currentdata[0]) && $currentdata[0]->Medium == 'Tamil'): ?>
+                                <option value="Tamil" selected="">Tamil</option>     
+                                <?php else: ?>
+                                <option value="Tamil">Tamil</option>    
+                                <?php endif; ?>
+                                <?php if(!empty($currentdata[0]) && $currentdata[0]->Medium == 'English'): ?>
+                                <option value="English" selected="">English</option>
+                                <?php else: ?>
+                                <option value="English">English</option>
+                                <?php endif; ?>
+                            </select>                         
+                        </td>
+                    </tr>
+                    <tr height="50px"></tr>
+                    <tr>
+                        <td>Result:<br/></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php if(!empty($currentdata[0])): ?>
+                            <input type="hidden" name="olresid1" value="<?php echo $currentdata[0]->id; ?>">
+                            <?php endif; ?>
+                            <select name="subject1" onload="">
+                                <?php foreach($religon as $orel): ?>                                
+                                <?php if(!empty($currentdata[0]) && $currentdata[0]->SubjectId ==$orel->id): ?>
+                                <option value="<?php echo $orel->id; ?>" selected=""><?php echo $orel->SubjectName; ?></option>
+                                <?php else: ?>                                
+                                <option value="<?php echo $orel->id; ?>"><?php echo $orel->SubjectName; ?></option>
+                                <?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="subject" name="result1"  style="width: 100px">
+                                <option value=''>Select</option>";
+                                <option value="A" <?php if(!empty($currentdata[0]) && $currentdata[0]->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+                                <option value="B" <?php if(!empty($currentdata[0]) && $currentdata[0]->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+                                <option value="C" <?php if(!empty($currentdata[0]) && $currentdata[0]->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+                                <option value="S" <?php if(!empty($currentdata[0]) && $currentdata[0]->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+                                <option value="W" <?php if(!empty($currentdata[0]) && $currentdata[0]->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+                                <option value="+" <?php if(!empty($currentdata[0]) && $currentdata[0]->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+                                <option value="X" <?php if(!empty($currentdata[0]) && $currentdata[0]->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+                                <option value="N" <?php if(!empty($currentdata[0]) && $currentdata[0]->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+                                 <option value="D" <?php if(!empty($currentdata[0]) && $currentdata[0]->Result == 'D'): ?> selected="" <?php endif; ?> >D</option>
+                            </select>  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php if(!empty($currentdata[1])): ?>
+                            <input type="hidden" name="olresid2" value="<?php echo $currentdata[1]->id; ?>">
+                            <?php endif; ?>
+                            <select name="subject2" onload="">
+                                <?php foreach($language as $olang): ?>
+                                <?php if(!empty($currentdata[1]) && $currentdata[1]->SubjectId ==$orel->id): ?>
+                                <option value="<?php echo $olang->id; ?>" selected=""><?php echo $olang->SubjectName; ?></option>
+                                <?php else: ?>
+                                <option value="<?php echo $olang->id; ?>"><?php echo $olang->SubjectName; ?></option>
+                                <?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                        <td>    <select id="subject" name="result2"  style="width: 100px">
+                            <option value=''>Select</option>";
+                            <option value="A" <?php if(!empty($currentdata[1]) && $currentdata[1]->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+                            <option value="B" <?php if(!empty($currentdata[1]) && $currentdata[1]->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+                            <option value="C" <?php if(!empty($currentdata[1]) && $currentdata[1]->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+                            <option value="S" <?php if(!empty($currentdata[1]) && $currentdata[1]->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+                            <option value="W" <?php if(!empty($currentdata[1]) && $currentdata[1]->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+                            <option value="+" <?php if(!empty($currentdata[1]) && $currentdata[1]->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+                            <option value="X" <?php if(!empty($currentdata[1]) && $currentdata[1]->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+                            <option value="N" <?php if(!empty($currentdata[1]) && $currentdata[1]->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+                        </select>      
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <?php if(!empty($currentdata[2])): ?>
+                        <input type="hidden" name="olresid3" value="<?php echo $currentdata[2]->id; ?>">
+                        <?php endif; ?>
+                        <input type="text"value="<?php echo $english->SubjectName; ?>" readonly/><input type="hidden" name="subject3" value="<?php echo $english->id; ?>"/></td>
+                        <td>       <select id="subject" name="result3"  style="width: 100px">
+                            <option value=''>Select</option>";
+                            <option value="A" <?php if(!empty($currentdata[2]) && $currentdata[2]->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+                            <option value="B" <?php if(!empty($currentdata[2]) && $currentdata[2]->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+                            <option value="C" <?php if(!empty($currentdata[2]) && $currentdata[2]->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+                            <option value="S" <?php if(!empty($currentdata[2]) && $currentdata[2]->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+                            <option value="W" <?php if(!empty($currentdata[2]) && $currentdata[2]->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+                            <option value="+" <?php if(!empty($currentdata[2]) && $currentdata[2]->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+                            <option value="X" <?php if(!empty($currentdata[2]) && $currentdata[2]->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+                            <option value="N" <?php if(!empty($currentdata[2]) && $currentdata[2]->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <?php if(!empty($currentdata[3])): ?>
+                        <input type="hidden" name="olresid4" value="<?php echo $currentdata[3]->id; ?>">
+                        <?php endif; ?>
+                        <input type="text"value="<?php echo $maths->SubjectName; ?>" readonly/><input type="hidden" name="subject4" value="<?php echo $maths->id; ?>"/></td>
+                        <td>     <select id="subject" name="result4"  style="width: 100px">
+                            <option value=''>Select</option>";
+                            <option value="A" <?php if(!empty($currentdata[3]) && $currentdata[3]->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+                            <option value="B" <?php if(!empty($currentdata[3]) && $currentdata[3]->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+                            <option value="C" <?php if(!empty($currentdata[3]) && $currentdata[3]->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+                            <option value="S" <?php if(!empty($currentdata[3]) && $currentdata[3]->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+                            <option value="W" <?php if(!empty($currentdata[3]) && $currentdata[3]->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+                            <option value="+" <?php if(!empty($currentdata[3]) && $currentdata[3]->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+                            <option value="X" <?php if(!empty($currentdata[3]) && $currentdata[3]->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+                            <option value="N" <?php if(!empty($currentdata[3]) && $currentdata[3]->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+                        </select>  
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <?php if(!empty($currentdata[4])): ?>
+                        <input type="hidden" name="olresid5" value="<?php echo $currentdata[4]->id; ?>">
+                        <?php endif; ?>
+                        <input id="histname" type="text"value="<?php echo $history->SubjectName; ?>" readonly/><input id="histid" type="hidden" name="subject5" value="<?php echo $history->id; ?>"/></td>
+                        <td>    <select id="subject" name="result5"  style="width: 100px">
+                            <option value=''>Select</option>";
+                            <option value="A" <?php if(!empty($currentdata[4]) && $currentdata[4]->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+                            <option value="B" <?php if(!empty($currentdata[4]) && $currentdata[4]->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+                            <option value="C" <?php if(!empty($currentdata[4]) && $currentdata[4]->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+                            <option value="S" <?php if(!empty($currentdata[4]) && $currentdata[4]->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+                            <option value="W" <?php if(!empty($currentdata[4]) && $currentdata[4]->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+                            <option value="+" <?php if(!empty($currentdata[4]) && $currentdata[4]->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+                            <option value="X" <?php if(!empty($currentdata[4]) && $currentdata[4]->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+                            <option value="N" <?php if(!empty($currentdata[4]) && $currentdata[4]->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+                        </select>   
+                    </td>
+                </tr><tr>
+                <td>
+                    <?php if(!empty($currentdata[5])): ?>
+                    <input type="hidden" name="olresid6" value="<?php echo $currentdata[5]->id; ?>">
+                    <?php endif; ?>
+                    <input type="text"value="<?php echo $scinece->SubjectName; ?>" readonly/><input type="hidden" name="subject6" value="<?php echo $scinece->id; ?>"/></td>
+                    <td>    <select id="subject" name="result6"  style="width: 100px">
+                        <option value=''>Select</option>";
+                        <option value="A" <?php if(!empty($currentdata[5]) && $currentdata[5]->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+                        <option value="B" <?php if(!empty($currentdata[5]) && $currentdata[5]->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+                        <option value="C" <?php if(!empty($currentdata[5]) && $currentdata[5]->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+                        <option value="S" <?php if(!empty($currentdata[5]) && $currentdata[5]->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+                        <option value="W" <?php if(!empty($currentdata[5]) && $currentdata[5]->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+                        <option value="+" <?php if(!empty($currentdata[5]) && $currentdata[5]->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+                        <option value="X" <?php if(!empty($currentdata[5]) && $currentdata[5]->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+                        <option value="N" <?php if(!empty($currentdata[5]) && $currentdata[5]->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+                    </select>   
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <?php if(!empty($currentdata[6])): ?>
+                    <input type="hidden" name="olresid7" value="<?php echo $currentdata[6]->id; ?>">
+                    <?php endif; ?>
+                    <select name="subject7" onload="">
+                        <option selected="" value="">Select Subject</option>
+                        <?php foreach($olsubject as $os): ?>                                
+                        <?php if(!empty($currentdata[6]) && $currentdata[6]->SubjectId ==$os->id): ?>
+                        <option value="<?php echo $os->id; ?>" selected=""><?php echo $os->SubjectName; ?></option>
+                        <?php else: ?>
+                        <option value="<?php echo $os->id; ?>"><?php echo $os->SubjectName; ?></option>
+                        <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+                <td>     <select id="subject" name="result7"  style="width: 100px">
+                    <option value=''>Select</option>";
+                    <option value="A" <?php if(!empty($currentdata[6]) && $currentdata[6]->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+                    <option value="B" <?php if(!empty($currentdata[6]) && $currentdata[6]->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+                    <option value="C" <?php if(!empty($currentdata[6]) && $currentdata[6]->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+                    <option value="S" <?php if(!empty($currentdata[6]) && $currentdata[6]->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+                    <option value="W" <?php if(!empty($currentdata[6]) && $currentdata[6]->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+                    <option value="+" <?php if(!empty($currentdata[6]) && $currentdata[6]->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+                    <option value="X" <?php if(!empty($currentdata[6]) && $currentdata[6]->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+                    <option value="N" <?php if(!empty($currentdata[6]) && $currentdata[6]->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+                </select>  
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <?php if(!empty($currentdata[7])): ?>
+                <input type="hidden" name="olresid8" value="<?php echo $currentdata[7]->id; ?>">
+                <?php endif; ?>
+                <select name="subject8" onload="">
+                    <option selected="" value="">Select Subject</option>
+                    <?php foreach($olsubject as $os): ?>                                
+                    <?php if(!empty($currentdata[7]) && $currentdata[7]->SubjectId ==$os->id): ?>
+                    <option value="<?php echo $os->id; ?>" selected=""><?php echo $os->SubjectName; ?></option>
+                    <?php else: ?>
+                    <option value="<?php echo $os->id; ?>"><?php echo $os->SubjectName; ?></option>
+                    <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+            <td>     <select id="subject" name="result8"  style="width: 100px">
+                <option value=''>Select</option>";
+                <option value="A" <?php if(!empty($currentdata[7]) && $currentdata[7]->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+                <option value="B" <?php if(!empty($currentdata[7]) && $currentdata[7]->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+                <option value="C" <?php if(!empty($currentdata[7]) && $currentdata[7]->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+                <option value="S" <?php if(!empty($currentdata[7]) && $currentdata[7]->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+                <option value="W" <?php if(!empty($currentdata[7]) && $currentdata[7]->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+                <option value="+" <?php if(!empty($currentdata[7]) && $currentdata[7]->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+                <option value="X" <?php if(!empty($currentdata[7]) && $currentdata[7]->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+                <option value="N" <?php if(!empty($currentdata[7]) && $currentdata[7]->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+            </select>  
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <?php if(!empty($currentdata[8])): ?>
+            <input type="hidden" name="olresid9" value="<?php echo $currentdata[8]->id; ?>">
+            <?php endif; ?>
+            <select name="subject9" onload="">
+                <option selected="" value="">Select Subject</option>
+                <?php foreach($olsubject as $os): ?>                                
+                <?php if(!empty($currentdata[8]) && $currentdata[8]->SubjectId ==$os->id): ?>
+                <option value="<?php echo $os->id; ?>" selected=""><?php echo $os->SubjectName; ?></option>
+                <?php else: ?>
+                <option value="<?php echo $os->id; ?>"><?php echo $os->SubjectName; ?></option>
+                <?php endif; ?>
+                <?php endforeach; ?>
+            </select>
+        </td>
+        <td>       <select id="subject" name="result9"  style="width: 100px">
+            <option value=''>Select</option>";
+            <option value="A" <?php if(!empty($currentdata[8]) && $currentdata[8]->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+            <option value="B" <?php if(!empty($currentdata[8]) && $currentdata[8]->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+            <option value="C" <?php if(!empty($currentdata[8]) && $currentdata[8]->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+            <option value="S" <?php if(!empty($currentdata[8]) && $currentdata[8]->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+            <option value="W" <?php if(!empty($currentdata[8]) && $currentdata[8]->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+            <option value="+" <?php if(!empty($currentdata[8]) && $currentdata[8]->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+            <option value="X" <?php if(!empty($currentdata[8]) && $currentdata[8]->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+            <option value="N" <?php if(!empty($currentdata[8]) && $currentdata[8]->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+        </select>
+        <input type="hidden" value="" name="subject10">
+        <input type="hidden" value="" name="result10">
+    </td>
+</tr>
+<tr hidden="" id="pastsyl">
+    <td>
+        <?php if(!empty($currentdata[9])): ?>
+        <input type="hidden" name="olresid10" value="<?php echo $currentdata[9]->id; ?>">
+        <?php endif; ?>
+        <select name="subject10" onload="">
+            <option selected="" value="">Select Subject</option>
+            <?php foreach($olsubject as $os): ?>                                
+            <?php if(!empty($currentdata[9]) && $currentdata[9]->SubjectId ==$os->id): ?>
+            <option value="<?php echo $os->id; ?>" selected=""><?php echo $os->SubjectName; ?></option>
+            <?php else: ?>
+            <option value="<?php echo $os->id; ?>"><?php echo $os->SubjectName; ?></option>
+            <?php endif; ?>
+            <?php endforeach; ?>
+        </select>
+    </td>
+    <td>       
+        <select id="subject" name="result10"  style="width: 100px">
+            <option value=''>Select</option>";
+            <option value="A" <?php if(!empty($currentdata[9]) && $currentdata[9]->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+            <option value="B" <?php if(!empty($currentdata[9]) && $currentdata[9]->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+            <option value="C" <?php if(!empty($currentdata[9]) && $currentdata[9]->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+            <option value="S" <?php if(!empty($currentdata[9]) && $currentdata[9]->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+            <option value="W" <?php if(!empty($currentdata[9]) && $currentdata[9]->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+            <option value="+" <?php if(!empty($currentdata[9]) && $currentdata[9]->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+            <option value="X" <?php if(!empty($currentdata[9]) && $currentdata[9]->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+            <option value="N" <?php if(!empty($currentdata[9]) && $currentdata[9]->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+        </select>
+    </td>
+</tr>
+<tr height="30px"></tr>
+<tr>
+    <div class="controls">
+        <?php if(isset($NCC)): ?>            
+        <input type=hidden name=NCC value="<?php echo $NCC; ?>">
+        <td class="center"><button class="btn btn-primary btn-small" type="submit" onClick="return confirmSubmit()" name="button" value="submitandapplicant"><?php echo $button; ?> Results And Go to Applicant</button></td>
+        <td class="center"><button class="btn btn-primary btn-small" type="submit" onClick="return confirmSubmit()" name="button" value="submitanal"><?php echo $button; ?> Results And Go to A/L Result</button></td>
+
+        <td class="center"><button class="btn btn-primary btn-small" type="submit" onClick="return confirmSubmit()" name="button" value="submit"><?php echo $button; ?> Results</button></td>
+        <?php else: ?>
+        <td class="center"><button class="btn btn-primary btn-small" type="submit" onClick="return confirmSubmit()" name="button" value="submit"><?php echo $button; ?> Results</button></td>
+        <?php endif; ?>
+
+        <td class="center"><button class="btn btn-primary btn-small" type="submit" name="button" value="back">Back</button></td>
+    </div>
+</tr>
+
+</form>
+</table>
+<!--Write your code here end-->
+<!--PAGE CONTENT ENDS-->
+</div><!--/.span-->
+<div class="span4">
+    <?php if(Session::has('done')): ?>
+    <div class="alert alert-block alert-success">
+
+        <strong>
+            <i class="icon-ok"></i>
+            <?php echo Session::get('done'); ?>
+        </strong>
+    </div>
+    <?php endif; ?>
+    <?php if(Session::has('message')): ?>
+    <div class="alert alert-error">
+        <strong> <?php echo Session::get('message'); ?></strong>
+    </div>
+    <?php endif; ?>
+    <?php if($errors->has()): ?>
+    <?php foreach($errors->all() as $msg): ?>
+    <div class="alert alert-error">
+        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+    </div>
+    <?php endforeach; ?>
+    <?php endif; ?>
+
+</div>
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type="text/javascript">
+    $(window).load(function() {
+        var year = "<?php
+        if (isset($year)) {
+            echo $year;
+        }else{
+         echo '';
+     }
+     ?>";
+     if (year < 2007 && year !== '') {
+        $('#pastsyl').show();
+        $('#pastsyl').find('input, textarea, button, select').attr('disabled', false);
+    } else {
+        $('#pastsyl').hide();
+        $('#pastsyl').find('input, textarea, button, select').attr('disabled', 'disabled');
+    }
+
+});
+
+
+    $('#year').change(function() {
+        var year = $('#year').val();
+        var sname = "<?php
+        if (isset($socialstudies)) {
+            echo $socialstudies->SubjectName;
+        }
+        ?>";
+        var sid = "<?php
+        if (isset($socialstudies)) {
+            echo $socialstudies->id;
+        }
+        ?>";
+        var hname = "<?php
+        if (isset($history)) {
+            echo $history->SubjectName;
+        }
+        ?>";
+        var hid = "<?php
+        if (isset($history)) {
+            echo $history->id;
+        }
+        ?>";
+        if (year < 2007 && year !== '') {
+            $('#pastsyl').show();
+            $('#pastsyl').find('input, textarea, button, select').attr('disabled', false);
+            $('#histname').val(sname);
+            $('#histid').val(sid);
+        } else {
+            $('#pastsyl').hide();
+            $('#pastsyl').find('input, textarea, button, select').attr('disabled', 'disabled');
+            $('#histname').val(hname);
+            $('#histid').val(hid);
+        }
+
+    });
+
+
+function confirmSubmit()
+{
+    var agree = confirm("Are you sure you wish to continue?");
+    if (agree)
+        return true;
+    else
+        return false;
+}
+</script>

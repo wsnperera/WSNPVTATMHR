@@ -1,0 +1,125 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('Event'); ?>> << Back to Event </a> 
+
+<?php endif; ?>
+
+
+    
+                
+
+
+	<div class="page-content">
+                                    
+	   <div class="row-fluid">
+                                           
+                          <div class="page-header position-relative">
+
+                <h1>
+                    Events	
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        View
+                    </small>			
+                </h1>
+            </div>                                   
+                                            
+                      <form name='search' action="<?php echo url('searchEvent'); ?>" method='get'>
+                                                
+                       Search By Event Name <input type='text' name="serachkey"/>   <input type='submit' value='Search'/>
+                                             
+                       <a href=<?php echo url('createEvent'); ?>><input type='button' value='Create Event' /></a>
+                                              
+                                             
+                                             
+                        </form>
+                                            
+                                           
+                                            
+                                            
+                        <div class="span12">
+			<!--PAGE CONTENT BEGINS-->
+
+
+
+
+			<table class="table">
+
+
+		<tr>
+
+			<th>EventId</th>								
+                        <th>EventName</th>
+											
+                </tr>
+                        <?php if(isset ($Event)): ?>
+
+		<?php foreach ($Event as $c): ?>
+
+                <tr>
+                    									    	
+                     <td><a href="<?php echo url('editEvent?cid='.$c->EventId); ?>"><?php echo $c->EventId; ?></a></td>
+                     <td><?php echo $c->EventName; ?> </td>                                                                                
+                                                                                                           
+                 <td>
+                    <form id="deleteform"  action="<?php echo url('deleteEvent?EventId='.$c->EventId); ?>" method="POST" onsubmit="return doConfirm('<?php echo $c->EventName; ?>',this)">
+                                                                                                                     
+                    <input type="hidden" name='cid' value=<?php echo $c->EventId; ?> />
+                    <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                                                                                                                      
+                    </form>
+                                                                                                                
+                  </td>
+
+	    </tr>
+
+
+	<?php endforeach; ?>
+
+	<?php endif; ?>
+
+</table>
+
+								
+								
+                                                                                                                                                
+
+
+							<!--PAGE CONTENT ENDS-->
+						</div><!--/.span-->
+					</div><!--/.row-fluid-->
+				</div><!--/.page-content-->
+
+			<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+    
+  
+        function doConfirm(course,formobj)
+        {
+            
+            
+            bootbox.confirm("Are you sure you want to remove "+course, function(result) 
+            {
+                   if(result) 
+                   {
+                        formobj.submit();
+							
+                    }
+                    
+                    
+            });
+            
+         
+            return false;  // by default do nothing hack :D
+        }
+          
+   
+         
+         
+        
+
+    
+</script>

@@ -1,0 +1,93 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('viewWelfareMS'); ?>> << Back to WelfareMS </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+		<div class="page-header position-relative">
+                <h1>
+                    Welfare Membership		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        View
+                    </small>			
+                </h1>
+            </div>
+
+        <form name='search' action="<?php echo url('searchWelfareMS'); ?>" method='get'>
+            Search Welfare Membership by NIC <input type='text' name="serachkey"/>   <input type='submit' value='Search'/>
+            <a href=<?php echo url('createWelfareMS'); ?>><input type='button' value='Create Welfare Membership' /></a>
+        </form>
+
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table class="table">
+                <tr>
+                    <th>Welfare Membership ID</th>
+                    <th>Institute Name</th>
+                    <th>Organization Name</th>
+                    <th>NIC</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Remove</th>	
+                </tr>
+                <?php if(isset ($welfareMS)): ?>
+
+                <?php foreach ($welfareMS as $wms): ?>
+
+                <tr>
+                    <td><a href="<?php echo url('editWelfareMS?id='.$wms->WMS_ID); ?>"><?php echo $wms->WMS_ID; ?></a></td>
+                    <td><?php if(!is_null($wms->Institue)): ?><?php echo $wms->Institue->InstituteName; ?><?php endif; ?> </td>
+                    <td><?php if(!is_null($wms->getOrganisation)): ?><?php echo $wms->getOrganisation->OrgaName; ?><?php endif; ?></td>
+                    <td><?php echo $wms->NIC; ?> </td>
+                    <td><?php echo $wms->From; ?> </td>  
+                    <td><?php echo $wms->To; ?> </td>
+                    <td>
+                        <form id="deleteform"  action="<?php echo url('deleteWelfareMS?id='.$wms->WMS_ID); ?>" method="POST" onsubmit="return doConfirm('<?php echo $wms->NIC; ?>', this)">
+                            <input type="hidden" name='wmsid' value="<?php echo $wms->WMS_ID; ?>" />
+                            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+               <?php endforeach; ?>
+               <?php endif; ?>
+
+            </table>
+
+
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+
+
+            function doConfirm(course, formobj)
+            {
+
+
+            bootbox.confirm("Are you sure you want to remove " + course, function(result)
+            {
+            if (result)
+            {
+            formobj.submit();
+            }
+
+
+            });
+                    return false; // by default do nothing hack :D
+            }
+
+
+
+
+
+
+
+</script>

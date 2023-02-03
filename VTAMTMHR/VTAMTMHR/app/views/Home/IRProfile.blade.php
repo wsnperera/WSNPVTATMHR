@@ -1,0 +1,611 @@
+@include('includes.bar')  
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
+<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+<link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="assets/css/chosen.css" />
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+        <link rel="stylesheet" href="assets/css/ace.min.css" />
+        <link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+        <link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+		
+
+
+<style type="text/css">
+ body {
+            background-image:url("assets/VTA.jpg");
+            opacity: 0.9;
+			background-repeat: no-repeat;
+            background-size: 45%;
+			background-position: center;  
+}
+</style>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span10">
+            
+            <!--PAGE CONTENT BEGINS-->
+			<body>
+            <form class='form-horizontal'>
+			 <div class="control-group">
+                   
+                    <div class="controls">
+			
+						
+                
+
+									
+									
+									<div class="col-sm-5">
+										<div class="widget-box">
+											<div class="widget-header widget-header-flat widget-header-small">
+												<h5 class="widget-title">
+													<i class="ace-icon fa fa-signal"></i>
+													  <?php  $year = date("Y"); ?>
+													Trainee Progress  {{$year}} batch I (Full Time - NVQ 4 & 5)
+													
+
+												</h5>
+											</div>
+
+											<div class="widget-body">
+												<div class="widget-main">
+													<div id="piechart-placeholder" style="width: 100%; min-height: 90px; padding: 0px; ">
+													
+													<div class="legend">
+													    <div id="chartContainerbar" style="height: 370px; width: 100%;">
+														<?php
+														
+														$sql = "select 
+ 
+								  SUM(CASE
+										WHEN
+											(irtrainee.Deleted=0)
+											 THEN
+											1
+										ELSE 0
+									END) Registered,
+									SUM(CASE
+										WHEN
+											(irtrainee.Dropout=1 and irtrainee.Deleted=0)
+											 THEN
+											1
+										ELSE 0
+									END) Dropout,
+								 SUM(CASE
+										WHEN
+											(irtrainee.Dropout=0 and irtrainee.Deleted=0)
+											 THEN
+											1
+										ELSE 0
+									END) target,
+								 SUM(CASE
+										WHEN
+											(irtrainee.Dropout=0 and irtrainee.Deleted=0 and irtrainee.OJTPlaced=1)
+											 THEN
+											1
+										ELSE 0
+									END) LocalTot,
+
+								SUM(CASE
+										WHEN
+											(irtrainee.Dropout=0 and irtrainee.Deleted=0 and irtrainee.OJTPlaced=1 and irtrainee.OJTDropout=1 and irtrainee.OJTCompleted=0)
+											 THEN
+											1
+										ELSE 0
+									END) OJTDropouts,
+									SUM(CASE
+										WHEN
+											(irtrainee.Dropout=0 and irtrainee.Deleted=0 and irtrainee.OJTPlaced=1 and irtrainee.OJTDropout=0 and irtrainee.OJTCompleted=0)
+											 THEN
+											1
+										ELSE 0
+									END) OJTOngoing,
+									SUM(CASE
+										WHEN
+											(irtrainee.Dropout=0 and irtrainee.Deleted=0 and irtrainee.OJTPlaced=1 and irtrainee.OJTDropout=0 and irtrainee.OJTCompleted=1)
+											 THEN
+											1
+										ELSE 0
+									END) OJTcompleted
+								 from courseyearplan
+								  left join organisation
+								  on courseyearplan.OrgId=organisation.id
+								  left join district
+								  on organisation.DistrictCode=district.DistrictCode
+								  left join coursedetails
+								  on courseyearplan.CD_ID=coursedetails.CD_ID
+								  left join irtrainee
+								  on courseyearplan.id=irtrainee.CourseYearPlanID 
+								  left join irtraineeojtplacement
+								  on irtrainee.id=irtraineeojtplacement.irtraineeID
+								  and irtraineeojtplacement.Active='1'
+								  and irtraineeojtplacement.Deleted=0
+								  left join ircompany
+								  on irtraineeojtplacement.CompanyID=ircompany.id
+								  where courseyearplan.Deleted=0
+								  and courseyearplan.Year=$year
+								  and courseyearplan.batch like '1%'
+								  and coursedetails.Nvq in('NVQ')
+								  and courseyearplan.StartedStatus='1'
+								  and coursedetails.CourseType in('Full')
+								  and coursedetails.CourseLevel in(4,5,6)
+								  order by district.DistrictName,organisation.OrgaName";
+  $total_rec = DB::select(DB::raw($sql));
+  $registered = 0;
+$dropout = 0;
+$target = 0;
+$Local = 0;
+$Foreign = 0;
+$Total = 0;
+$OJTDropout = 0;
+$OJTOngoing = 0;
+$OJTCompleted = 0;
+foreach($total_rec as $ps) {
+	$registered = $ps->Registered;
+	$dropout = $ps->Dropout;
+	$target = $ps->target;
+	$Local = $ps->LocalTot;
+	//$Foreign = $ps->ForeignTot;
+	$Total = $Local;
+	$OJTDropout = $ps->OJTDropouts;
+	$OJTOngoing = $ps->OJTOngoing;
+	$OJTCompleted = $ps->OJTcompleted;
+}
+	 
+															$dataPointsbar = array
+															( 
+															array("y" => $registered, "label" => "Registered" ),
+															array("y" => $dropout, "label" => "Dropout" ),
+															array("y" => $target, "label" => "OJT Target" ),
+															array("y" => $Total, "label" => "OJT Placed" ),
+															array("y" => $OJTDropout, "label" => "OJT Dropout" ),
+															array("y" => $OJTOngoing, "label" => "OJT Ongoing" ),
+															array("y" => $OJTCompleted, "label" => "OJT Completed" )
+														    );
+															 
+													    ?>
+													    </div>
+										</div>
+
+													<div class="hr hr8 hr-double"></div>
+
+													<div class="clearfix">
+														<div class="grid3">
+															<span class="grey">
+																<i class="ace-icon fa fa-facebook-square fa-2x blue"></i>
+																&nbsp; Total Registered
+															</span>
+															<h4 class="bigger pull-right">{{$registered}}</h4>
+														</div>
+
+														<div class="grid3">
+															<span class="grey">
+																<i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
+																&nbsp; Total Dropout
+															</span>
+															<h4 class="bigger pull-right">{{$dropout}}</h4>
+														</div>
+														<div class="grid3">
+															<span class="grey">
+																<i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
+																&nbsp; OJT Target
+															</span>
+															<h4 class="bigger pull-right">{{$target}}</h4>
+														</div>
+														<div class="grid3">
+															<span class="grey">
+																<i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
+																&nbsp; Total OJT Placed
+															</span>
+															<h4 class="bigger pull-right">{{$Total}}</h4>
+														</div>
+														<div class="grid3">
+															<span class="grey">
+																<i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
+																&nbsp; Total OJT Dropout
+															</span>
+															<h4 class="bigger pull-right">{{$OJTDropout}}</h4>
+														</div>
+														<div class="grid3">
+															<span class="grey">
+																<i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
+																&nbsp; Total OJT Ongoing
+															</span>
+															<h4 class="bigger pull-right">{{$OJTOngoing}}</h4>
+														</div>
+														<div class="grid3">
+															<span class="grey">
+																<i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
+																&nbsp; Total OJT Completed
+															</span>
+															<h4 class="bigger pull-right">{{$OJTCompleted}}</h4>
+														</div>
+
+														
+													</div>
+												</div><!-- /.widget-main -->
+											</div><!-- /.widget-body -->
+										</div><!-- /.widget-box -->
+									</div><!-- /.col -->
+								</div><!-- /.row -->
+								
+								<!-- Pie Chart-->
+								<!--<div class="col-sm-5">
+										<div class="widget-box">
+											<div class="widget-header widget-header-flat widget-header-small">
+												<h5 class="widget-title">
+													<i class="ace-icon fa fa-signal"></i>
+													Industrial Placements
+												</h5>
+											</div>
+
+											<div class="widget-body">
+												<div class="widget-main">
+													<div id="piechart-placeholder" style="width: 70%; min-height: 120px; padding: 0px; position: relative;">
+													
+													<div class="legend">
+													<div id="chartContainer" style="height: 275px; width: 100%;">
+													<?php
+ 
+														/*$dataPoints = array( 
+															array("label"=>"Chrome", "y"=>64.02),
+															array("label"=>"Firefox", "y"=>12.55),
+															array("label"=>"IE", "y"=>8.47),
+															array("label"=>"Safari", "y"=>6.08),
+															array("label"=>"Edge", "y"=>4.29),
+															array("label"=>"Others", "y"=>4.59)
+														)
+														 */
+														?>
+                                                        
+                                                    </div>
+                                                  
+													
+													
+											</div>
+										</div>
+
+													<div class="hr hr6 hr-double"></div>
+
+													<div class="clearfix">
+														<div class="grid3">
+															<span class="grey">
+																<i class="ace-icon fa fa-facebook-square fa-2x blue"></i>
+																&nbsp; Industrial Target
+															</span>
+															<h4 class="bigger pull-right">1,255</h4>
+														</div>
+
+														<div class="grid3">
+															<span class="grey">
+																<i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
+																&nbsp; Industrial Placement
+															</span>
+															<h4 class="bigger pull-right">941</h4>
+														</div>
+														<div class="grid3">
+															<span class="grey">
+																<i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
+																&nbsp; Industrial Placement
+															</span>
+															<h4 class="bigger pull-right">941</h4>
+														</div>
+
+														
+													</div>
+												</div><!-- /.widget-main -->
+											<!--</div><!-- /.widget-body -->
+										<!--</div><!-- /.widget-box -->
+									<!--</div><!-- /.col -->
+                </div> <!-- close alert div control group -->
+				
+            </form>
+           </body>
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+@include('includes.footer') 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/excanvas.min.js"></script>
+<script src="assets/js/jquery-1.11.3.min.js"></script>
+<script src="assets/js/jquery-ui.custom.min.js"></script>
+<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="assets/js/jquery.easypiechart.min.js"></script>
+<script src="assets/js/jquery.sparkline.index.min.js"></script>
+<script src="assets/js/jquery.flot.min.js"></script>
+<script src="assets/js/jquery.flot.pie.min.js"></script>
+<script src="assets/js/jquery.flot.resize.min.js"></script>
+<script src="assets/js/ace-elements.min.js"></script>
+<script src="assets/js/ace.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/ace-elements.min.js"></script>
+<script src="assets/js/ace.min.js"></script>
+<script src="assets/js/jquery-ui.custom.min.js"></script>
+<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="assets/js/jquery.easypiechart.min.js"></script>
+<script src="assets/js/jquery.sparkline.index.min.js"></script>
+<script src="assets/js/jquery.flot.min.js"></script>
+<script src="assets/js/jquery.flot.pie.min.js"></script>
+<script src="assets/js/jquery.flot.resize.min.js"></script>
+<script src="assets/js/canvasjs.min.js"></script>
+<script type="text/javascript">
+
+
+  window.onload = function () {
+
+
+var chartbar = new CanvasJS.Chart("chartContainerbar", {
+	animationEnabled: true,
+	theme: "light2",
+	title:{
+		text: "Industrial Placements"
+	},
+	axisY: {
+		title: "Trainee Progress"
+	},
+	data: [{
+		type: "column",
+		yValueFormatString: "#,##0.## ",
+		dataPoints: <?php echo json_encode($dataPointsbar, JSON_NUMERIC_CHECK); ?>
+	}]
+});
+chartbar.render();
+}
+</script>
+
+<script type="text/javascript">
+    function doConfirm(applicant, formobj)
+    {
+        bootbox.confirm("Are you sure you want to remove " + applicant, function(result)
+        {
+        if (result)
+        {
+        formobj.submit();
+        }
+        });
+                return false;
+    }
+    
+    $('#sample-table-2').dataTable({
+    "aoColumns": [
+             null,
+            {"bSortable": false},
+            {"bSortable": false},
+             {"bSortable": false},
+
+             {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+           {"bSortable": false},
+           {"bSortable": false},
+            
+           
+    ]});
+            $('table th input:checkbox').on('click', function() {
+    var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function() {
+            this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+            });
+    });
+            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+            function tooltip_placement(context, source) {
+            var $source = $(source);
+                    var $parent = $source.closest('table')
+                    var off1 = $parent.offset();
+                    var w1 = $parent.width();
+                    var off2 = $source.offset();
+                    var w2 = $source.width();
+                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                    return 'right';
+                    return 'left';
+            }
+
+
+</script>
+
+<script>
+$("#District").change(function() 
+	{
+        var District = $("#District").val();
+        $("#center").html('');
+        //$("#CourseYearPlanID").html('');
+        var msg = '--- Select Centre ---';
+       
+                          $.ajax({
+                                        type: "GET",
+                                        url: "{{url::to('loaddistrictcentersin')}}",
+                                        data: {District: District},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#center").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#center").append("<option value=" + item.id + ">" +item.OrgaName + "(" + item.Type + ")</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            
+     
+    });
+
+  
+    
+/*$('#center').change(function(){
+
+        //alert('dg');
+       var center = document.getElementById('center').value; 
+      
+       var msg = '--- Select Course ---';
+        $("#Course").html('');
+       $.ajax  ({
+                    url: "{{url::to('GetNominatedCourses')}}",
+                    data: { center: center},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        $("#Course").append("<option value=''>" + msg + "</option>");
+                         $.each(result, function(i, item)
+                        {
+
+
+
+                            $("#Course").append("<option value=" + item.CS_ID + ">" + item.CourseCode + " (" + item.CourseName + ")</option>");
+
+
+
+                        });
+                                        
+                        
+                        }
+
+
+                    
+                });
+        
+
+
+       
+    });*/
+  
+
+
+    $('#upload').click(function()
+    {
+      
+        var CS_ID = $("#CS_ID").val(); 
+      // alert(CS_ID);
+      
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            
+                            document.getElementById('img4').innerHTML = "<img src=\"{{Url('assets/images/abc.gif')}}\"/>";
+                        },
+                        type: "POST",
+                        url: "{{Url('PrintAssessorAssignedLetter')}}",
+                        data: {CS_ID: CS_ID},
+                        success:function response(responseText, statusText, xhr, $form)
+                        {
+       
+                               var printWin = window.open("","printSpecial");
+                                printWin.document.open();
+                                printWin.document.write(responseText);
+                                printWin.document.close();
+                                printWin.print();
+       
+   
+                         
+
+                        },
+                        complete: function() {
+                            document.getElementById('img4').innerHTML ="";
+
+                        }
+                    });
+        
+    }
+    );
+    /*$('#reject').click(function()
+    {
+     
+       var TID = document.getElementById('reject').value; 
+       alert(TID);
+
+
+      
+          
+        
+    }
+    );
+    $('#reject1').click(function()
+    {
+     
+       var TID = document.getElementById('reject1').value; 
+       alert(TID);
+
+
+      
+          
+        
+    }
+    );*/
+     /* function addModule() {
+
+        var TID = document.getElementById('reject').value; 
+       alert(TID);
+
+        /*$.ajax  ({
+                    url: "{{url::to('')}}",
+                    success: function(result) {
+                        if ($('#addModule').is(':hidden')) {
+                            $('#addModule').show();
+                        } else {
+                            $('#addModule').hide();
+                        }
+                    }
+                });*/
+ //   }
+ $(".red").click(function(){
+
+     var id = this.id;
+     //alert(id);
+bootbox.confirm("<form id='infos' action=''><div class='control-group'><div class='controls'>\
+    Reason:<textarea cols='1000' rows='6' name='Reason' id='Reason'></textarea></div></div></form>", function(result) {
+        if(result)
+        {
+            //$('#infos').submit();
+           // alert(result);
+
+         var reason = $("#Reason").val();
+        // var g = $("#editComment").val();
+         //alert(reason);
+
+
+        doStuffWithResults(id,reason);
+        }
+});
+  
+});
+    
+function doStuffWithResults(id,reason) {
+
+     $.ajax  ({
+                    url: "{{url::to('DORejectAssignedAssessor')}}",
+                    data: { id: id,reason: reason},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       location.reload();          
+                        
+                        }
+
+
+                    
+                });
+   
+}
+    
+
+
+</script>

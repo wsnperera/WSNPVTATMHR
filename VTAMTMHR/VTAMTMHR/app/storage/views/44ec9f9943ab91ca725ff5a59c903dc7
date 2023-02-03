@@ -1,0 +1,77 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        Basic Field			
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            View Basic Field
+                        </small>			
+                    </h1>
+                </div>
+            </div>
+            <!--PAGE CONTENT BEGINS-->
+            <form action="<?php echo url('viewStudent'); ?>" method='post'>
+                <table>
+                    <tr>
+                        <td>Course Code :</td>
+                        <td>
+                            <select name="CourseCode" style="width: 150px; margin: 0">
+                                <option value="">Course Code</option>
+                                <?php if(isset($CourseCode)): ?>
+                                <?php foreach($CourseCode as $c): ?>
+                                <option value="<?php echo $c->CourseCode; ?>"><?php echo $c->CourseCode; ?></option>
+                                <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
+                        </td>
+                        <td>Trade Code :</td>
+                        <td>
+                            <select name="TradeCode" style="width: 150px; margin: 0">
+                                <option value="">Trade Code</option>
+                                <?php if(isset($tradeCode)): ?>
+                                <?php foreach($tradeCode as $t): ?>
+                                <option value="<?php echo $t->TradeCode; ?>"><?php echo $t->TradeCode; ?></option>
+                                <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="submit" value="Search" style="height: 30px;"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <h5 style="color: #777777;"><?php if(isset($c_code)): ?>Course Code:&nbsp;&nbsp;<?php echo $c_code; ?><?php endif; ?></h5>
+            <h5 style="color: #777777;"><?php if(isset($t_code)): ?>Trade Code:&nbsp;&nbsp;<?php echo $t_code; ?><?php endif; ?></h5>
+            <table class="table">
+                <tr>
+                    <th>No</th>
+                    <th>Student No</th>
+                    <th>Course Code</th>
+                    <th>Total Mark</th>
+                    <th>Trade Code</th>
+                </tr>
+                <?php if(isset($stud_trade)): ?>
+                <?php foreach($stud_trade as $stud_trade): ?>
+                <?php $no = $no + 1; ?>
+                <tr>
+                    <td><?php echo $no; ?></td>
+                    <td><?php echo $stud_trade->student_no; ?></td>
+                    <td><?php echo $stud_trade->CourseCode; ?></td>
+                    <td><?php echo $stud_trade->TotalMark; ?></td>
+                    <td><?php echo $stud_trade->selectedTrade; ?></td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 

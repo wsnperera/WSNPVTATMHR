@@ -1,0 +1,59 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<a href=<?php echo url('applicantUnRegistered'); ?>> << Back to Un Registered Applicants </a> 
+
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+             
+            <div class="span12">		
+                <!--PAGE CONTENT BEGINS-->
+                <!--/.page-header-->
+                <div class="page-header position-relative">
+                    <h1>
+                        Applicant		
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            Un Registered Applicant
+                            <i class="icon-double-angle-right"></i>
+                            Notify the Applicant For Registration 
+                        </small>			
+                    </h1>
+                </div>   
+                <form class="form-horizontal" method="POST" action="<?php echo @url('sendemail'); ?>">
+                    <div class="control-group">
+                        <label class="control-label" for="mail">Mail Address</label>
+                        <div class="controls">
+                            <?php if(isset($scanapp)): ?>
+                            <input type="text" name="mail" value="<?php echo $scanapp->email; ?>" readonly="readonly" />
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">           
+                        <label class="control-label" for="subject">Subject</label>
+                        <div class="controls">
+                            <input type="text" name="subject"  value="Regarding the Course Registration" readonly="readonly">
+                        </div>
+                    </div>  
+
+                    <div class="control-group">           
+                        <label class="control-label" for="message">Message</label>
+                        <div class="controls">
+                            <textarea cols ="30" rows="15" name="message" >Dear <?php if(isset($scanapp)): ?><?php echo $scanapp->FullName; ?><?php endif; ?>, &#13;&#10;&#13;&#10;You are the One of the Selected Applicant for the course but still You didn't register it.If you like to continue your academic path with us Register before the due date early as possible...!&#13;&#10;&#13;&#10;Thank You&#13;&#10;
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <input type="submit" value="send"/> 
+                    </div>
+                </form>			
+            </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script type="text/javascript">
+
+</script>

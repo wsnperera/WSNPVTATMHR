@@ -1,0 +1,59 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('OlSubjects'); ?>> << Back to O/L Subjects</a> 
+<?php endif; ?>
+
+<div class="page-content">
+  <div class="row-fluid">
+    <form name='search' action="<?php echo url('findOlSubjects'); ?>" method='get'>
+        Search O/L Subjects <input type='text' name="key"/>
+        <input type='submit' value='Search'/>
+        <a href=<?php echo url('addOlSubject'); ?>><input type='button' value='Add Subject' /></a>
+		</form>
+  
+  <?php if(Session::has('message')): ?>
+            <p><span style="color:lightgreen; font-size: 13pt;font-weight:bold"><?php echo Session::get('message'); ?></span></p>
+  <?php endif; ?>
+
+  <div class="span12">
+                                <!--PAGE CONTENT BEGINS-->
+        <table class="table">
+            <tr>
+              <th>Subject Name</th>
+            </tr>
+              <?php if(isset ($subjects)): ?>
+               <?php foreach($subjects as $sb): ?>
+
+              <tr>
+                <td>
+                  <b><u><a href="<?php echo url('editOlSubjects?id='.$sb->id); ?>"><?php echo $sb->SubjectName; ?></a></u></b>
+                </td>
+                <td>
+                  <form id="deleteform"  action=<?php echo url('deleteOlSubject'); ?> method="POST" onsubmit="return confirm('Do you really want to Delete?')">
+                      <input type="hidden" name='id' value=<?php echo $sb->id; ?> />
+                      <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                  </form>
+                </td>
+              </tr>
+                <?php endforeach; ?>
+          <?php endif; ?>
+
+                <?php if($subjects=='[]'): ?>
+                    <center>Data Not Found</center>
+                    
+                    <?php endif; ?>
+
+                                <!--PAGE CONTENT ENDS-->
+                        </div><!--/.span-->
+                </div><!--/.row-fluid-->
+        </div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+        function deleteConfirm(subject){
+
+            confirm("Are You Sure you want to delete "+subject);
+        }
+</script>

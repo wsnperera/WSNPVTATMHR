@@ -1,0 +1,506 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <!--<a href=<?php echo url('ViewAndDownloadAssessor'); ?>> << Back to Assessor View</a>-->
+                <h1>Daily Time Table Completion<small><i class="icon-double-angle-right"></i>Update</small></h1>
+            </div>
+            <form class="form-horizontal" action='' method="POST"  id='NewModule'>
+                  <div class="control-group">
+                   
+                    <div class="controls">
+
+                    <?php if(Session::has('done')): ?>
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-ok"></i>
+                                Added Successfully 
+                            </strong>
+                            <br>
+                        </div>
+                    <?php endif; ?>
+                     </div>
+                   
+                </div> 
+                 <div class="control-group">          
+                   
+                    <div class="controls">
+                            <?php if($errors->has()): ?>
+                                <?php foreach($errors->all() as $msg): ?>
+                                    <div class="alert alert-error" id="error">
+                                        <button type="button" class="close" data-dismiss="alert">
+                                            <i class="icon-remove"></i>
+                                        </button>
+                                        <strong>
+                                            <i class="icon-remove"></i>
+                                            Error!
+                                        </strong><?php echo $msg; ?>
+                                        <br>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                    </div>
+                   
+                </div> 
+				<?php if($OrgaType == 'HO' || $OrgaType == 'PO'): ?>
+				<div class="control-group">
+                    <label class="control-label" >District : </label>
+                        <div class="controls" id="Trade">
+                           
+							 <select  name="District" onload="" id="District" >
+                                  <option value="">---Select District---</option>
+                                <?php foreach($Districts as $d): ?>
+                                <option value="<?php echo $d->DistrictCode; ?>"><?php echo $d->DistrictName; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                           
+                        </div>         
+                 </div>
+				 <?php endif; ?>
+                <div class="control-group">
+                    <label class="control-label" >Centre : </label>
+                        <div class="controls" id="Trade">
+                          
+							 <select   name="CenterID" onload="" id="CenterID" required>
+                                <option value="">---Select Centre---</option> 
+                                <?php foreach($Centers as $v): ?>
+                                <option value="<?php echo $v->id; ?>"><?php echo $v->OrgaName; ?> - <?php echo $v->Type; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                           
+                        </div>         
+                 </div> 
+				  <div class="control-group">
+                    <label class="control-label" for="centers">Year</label>
+                    <?php  $year = date("Y"); ?>
+                    <div class="controls">
+                      <select name="Year" id="Year" required>
+                            <option value="" required>--- Select Year ---</option>
+                            <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                            <option value="<?php echo $year+1; ?>"><?php echo $year+1; ?></option>
+                            <option value="<?php echo $year+2; ?>"><?php echo $year+2; ?></option>
+                            <option value="<?php echo $year+3; ?>"><?php echo $year+3; ?></option>
+                           
+                          
+                        </select> 
+                    </div>
+                </div>
+				 <div class="control-group">
+                    <label class="control-label" for="centers">Batch:</label>
+                    <div class="controls">
+                        <select name="Batch" id="Batch" required>
+                            <option value="" >--- Select Batch ---</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="1.2">1.2</option>
+							<option value="2.2">2.2</option>
+                        </select>
+                        <span id='img4'></span>
+                    </div>
+                </div>
+                 
+                 <div class="control-group">
+                    <label class="control-label" >Course : </label>
+                        <div class="controls" id="Trade">
+                            <select name="CourseYearPlanID" id="CourseYearPlanID" required>
+                                 <option value="">--Select Course--</option>
+                               
+                            </select>
+                           
+                        </div>         
+                 </div> 
+				 <div class="control-group">
+                    <label class="control-label" >Instructors : </label>
+                        <div class="controls" id="Instructors">
+                            
+                           
+                        </div>         
+                 </div> 
+                 <div class="control-group">
+                    <label class="control-label" >Date : </label>
+                        <div class="controls" id="Trade">
+                           <input type="date" name="DatePlanned" id="DatePlanned" required>
+                           
+                           
+                        </div>         
+                 </div>  
+				  <div class="controls" id='table1'>
+				 
+                </div> 
+				
+				 <div class="control-group">
+                    <label class="control-label" >Instructor Attendence : </label>
+                        <div class="controls" >
+                           <select name="InsAttend" id="InsAttend" onchange="disable()" required>
+                            <option value="">--Select Attendence--</option>
+							 <option value="1">Present</option>
+							  <option value="0">Absent</option>
+							  <option value="2">Present But Not Attend to the Class</option>
+						   
+                           </select><span id='img7'></span>
+                        </div>         
+                 </div> 
+				  <div class="control-group">
+                    <label class="control-label" >No of Student Attend : </label>
+                        <div class="controls" id="Trade">
+                           <input type="text" name="NoOfStudent" id="NoOfStudent"  required>
+                           
+                           
+                        </div>         
+                 </div>
+				 <div class="control-group" hidden="" id="Reasongg">
+                    <label class="control-label" >Reason For Not Attend to the Class: </label>
+                        <div class="controls" >
+                           <textarea  name="ReasonToNot" id="ReasonToNot" ></textarea>
+                           
+                           
+                        </div>         
+                 </div>  
+				<div class="control-group">
+                <div class="controls" id='table'>
+				 
+                </div>
+				  </div>
+               
+               
+
+                
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-block btn-pink">Save</button>
+                </div>
+            </div>             
+
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+       
+        <div class="span4" id="ajaxerror">
+            
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+
+        </div>
+             </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+	$("#District").change(function() 
+	{
+		//alert('jk');
+        var District = $("#District").val();
+        $("#CenterID").html('');
+		document.getElementById('DatePlanned').value = "";
+		document.getElementById("InsAttend").value= "";
+		document.getElementById("Year").value= "";
+		document.getElementById("Batch").value= "";
+		document.getElementById("CourseYearPlanID").value= "";
+		 $("#Instructors").html('');
+		 document.getElementById("ReasonToNot").value= "";
+        //$("#CourseYearPlanID").html('');
+        var msg = '--- Select Centre ---';
+       
+                          $.ajax({
+                                        type: "GET",
+                                        url: "<?php echo url::to('loaddistrictcentersin'); ?>",
+                                        data: {District: District},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#CenterID").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#CenterID").append("<option value=" + item.id + ">" +item.OrgaName + "(" + item.Type + ")</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            
+     
+    });
+	
+	$("#Batch").change(function() {
+	
+        document.getElementById('DatePlanned').value = "";
+		document.getElementById("InsAttend").value= "";
+		$("#Instructors").html('');
+		document.getElementById("ReasonToNot").value= "";
+		 
+        var cid = $("#CenterID").val();
+		var Batch = $("#Batch").val();
+		var Year = $("#Year").val();
+        //$("#table").html('');
+        $("#CourseYearPlanID").html('');
+        var msg = '--- Select Course ---';
+       
+                          $.ajax({      
+						  
+						                beforeSend: function()
+										{
+														
+											document.getElementById('img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+										},
+                                        type: "GET",
+                                        url: "<?php echo url::to('FilterCourseYearPlansDailyTimeTable'); ?>",
+                                        data: {CourseListCode: cid,Batch:Batch,Year:Year},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#CourseYearPlanID").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#CourseYearPlanID").append("<option value=" + item.id + ">" +item.CourseName + "-"+ item.CourseListCode +  "[Year - " + item.Year + "][Batch - " + item.batch+"]Duration-("+ item.Duration+")-"+item.CourseType+ "(" + item.Nvq+"-" +item.CourseLevel+ ")-(" + item.RealstartDate + "- Medium - " + item.medium+")</option>");
+
+
+
+                                                });
+
+                                        },
+													complete: function() {
+														document.getElementById('img4').innerHTML ="";
+
+													} 
+                                });            
+
+            
+        
+    });
+	$("#CenterID").change(function() {
+		
+        document.getElementById('DatePlanned').value = "";
+		document.getElementById("InsAttend").value= "";
+		document.getElementById("Year").value= "";
+		document.getElementById("Batch").value= "";
+		document.getElementById("CourseYearPlanID").value= "";
+		 $("#Instructors").html('');
+		 document.getElementById("ReasonToNot").value= "";
+    });
+	 $("#CourseYearPlanID").change(function() {
+        var cid = $("#CourseYearPlanID").val();
+      document.getElementById('DatePlanned').value = "";
+		document.getElementById("InsAttend").value= "";
+        $("#Instructors").html('');
+		 document.getElementById("ReasonToNot").value= "";
+        
+        $.ajax({
+            type: "GET",
+            url: "<?php echo url::to('getinstructorsMoCmPlan'); ?>",
+            data: {CourseListCode: cid},
+			 dataType: "json", 
+            success: function(result) {
+               
+					$("#Instructors").html(result);
+
+                                      
+
+            }
+        });
+    });
+	
+	function disable() {
+        var InsAttend = document.getElementById("InsAttend").value;
+		//alert(InsAttend);
+   if (InsAttend === "2") {
+            $("#Reasongg").show();
+			document.getElementById("ReasonToNot").required = true;
+			 $("#table").html('');
+			
+			
+        }  
+		else if(InsAttend === "1")
+		{
+			$("#Reasongg").hide();
+            document.getElementById("ReasonToNot").required = false;
+			
+			 var DatePlanned = document.getElementById('DatePlanned').value;
+             var CenterID = document.getElementById('CenterID').value;
+             var CourseYearPlanID = document.getElementById('CourseYearPlanID').value; 
+      
+    
+
+                        //alert(result);
+                        if(DatePlanned == '')
+                        {
+							 $("#table1").html('');
+							 $("#table").html('');
+                             document.getElementById('DatePlanned').value = "";
+							 document.getElementById("InsAttend").value= "";
+                             bootbox.alert("Please Enter Date!!!!!!!!!!!!");
+                             
+                        }
+                        else
+                        {
+                             $("#table1").html('');
+							 $("#table").html('');
+							 $.ajax  ({
+								        
+										url: "<?php echo url::to('DialyTaskTimeTableTaskList'); ?>",
+										data: {DatePlanned: DatePlanned,YearPlanId: CourseYearPlanID},
+										dataType: "json", 
+										success: function(result) {
+
+											//alert(result);
+										   
+												 //document.getElementById('DatePlanned').value = "";
+												 $('#table').html(result);
+												 
+												  table();
+												  
+												
+									   }
+
+
+                    
+									});
+							 
+                        }
+                       
+                        
+                                        
+                        
+                        
+
+
+                    
+                
+		}
+		
+		else {
+				$("#Reasongg").hide();
+            document.getElementById("ReasonToNot").required = false;
+			 $("#table").html('');
+		
+            
+        }
+    }
+	
+	/* $('#DatePlanned').change(function(){
+
+        //alert('dg');
+       var DatePlanned = document.getElementById('DatePlanned').value;
+	   var cid = $("#CourseYearPlanID").val();
+       $("#table").html('');
+     
+			
+			 $.ajax  ({
+                    url: "<?php echo url::to('DialyTaskTimeTableTaskList'); ?>",
+                    data: {DatePlanned: DatePlanned,YearPlanId: cid},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                       
+                             //document.getElementById('DatePlanned').value = "";
+                             $('#table').html(result);
+							  table();
+							
+                   }
+
+
+                    
+                });
+		
+      
+      
+        
+
+
+       
+    }); */
+	
+	 $('#DatePlanned').change(function(){
+
+        var DatePlanned = document.getElementById('DatePlanned').value;
+       var CenterID = document.getElementById('CenterID').value;
+       var CourseYearPlanID = document.getElementById('CourseYearPlanID').value; //alert('dg');
+      
+         $.ajax  ({
+                    url: "<?php echo url::to('MOCMCheckPlanneddate'); ?>",
+                    data: {DatePlanned: DatePlanned,CenterID: CenterID,CourseYearPlanID: CourseYearPlanID},
+                    dataType: "json", 
+					 success: function(result) {
+						 if(result.module == 1)
+                        {
+							 $("#table1").html('');
+                             document.getElementById('DatePlanned').value = "";
+                             $('#table1').html(result.html);
+                             
+                        }
+                        else
+                        {
+							 $("#table1").html('');
+							 $("#table").html('');
+						}
+					 }
+
+
+       });
+    });
+	function table() {
+                    var oTable1 = $('#sample-table-2').dataTable({
+                        "bPaginate": false,
+                        "aoColumns": [
+                            null, null,null,null,null,null
+                        ]});
+                    $('table th input:checkbox').on('click', function() {
+                        var that = this;
+						
+                        $(this).closest('table').find('tr td:nth-child(6) input:checkbox')
+                                .each(function() {
+                                    this.checked = that.checked;
+                                    $(this).closest('tr').toggleClass('selected');
+                                });
+                    });
+
+                }
+
+    $("#table").on("click", "#actall", function() {
+                        var that = this;
+						//alert(that);
+                        $(this).closest('table').find('tr td:nth-child(6) input:checkbox')
+                                .each(function() {
+                                    this.checked = that.checked;
+                                    $(this).closest('tr').toggleClass('selected');
+                                });
+                    });
+</script>
+
+

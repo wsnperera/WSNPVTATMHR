@@ -1,0 +1,177 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<a href=<?php echo url('eventplanned'); ?>> << Back to Event Planned </a> 
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Event Planned		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <?php if ($errors->has()): ?>
+            <?php foreach ($errors->all() as $error): ?>
+            <div class='bg-danger alert'><?php echo $error; ?></div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+
+
+            <form class="form-horizontal" action="<?php echo url('editEventplanned'); ?>" method="POST"/>
+
+<!--            <td  ><a id="viewurl" href="<?php echo url('viewApplicantlist?id='.$eventplanned->EP_ID); ?>" align="right"><u><h3 style="font-family:arial black"  >View the applicant list <input type="hidden"  name="EP_ID" value="<?php echo Request::get('id'); ?>"/></h3></u></a>-->
+           
+ <div class="control-group">
+                <label class="control-label" for="InstituteId">Institute Name</label>
+                <div class="controls">
+                    <input type="text"  disabled="true" value="<?php echo $institute; ?>"/>
+                    <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="OrganisationId">Organization Name</label>
+                <div class="controls">
+                    <input type="text" disabled="true" value="<?php echo $organization; ?>"/>
+                    <input type="hidden" name="OrganisationId" value="<?php echo $og_id; ?>"/>
+                </div>
+            </div>
+                     <div class="control-group">
+                        <label class="control-label" for="form-field-1">Event Planned Id</label>
+ <div class="controls">
+                        <input type="text" style="color:red" name="EP_ID" value="<?php echo Request::get('id'); ?>" readonly="readonly"/>                
+                    </div>
+                     </div>
+            
+                     <div class="control-group">
+                            <label class="control-label" for="form-field-2">Event Name</label>
+                    <div class="controls">
+                            <select name="EventId" id="eventdropdown" >
+                                <option></option>
+                                <?php foreach($event as $e): ?>
+                                <option <?php if($e->EventId == $eventplanned->EventId): ?> selected   <?php endif; ?> value=<?php echo $e->EventId; ?>><?php echo $e->EventName; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                    </div>
+                    </div>
+            
+                     <div class="control-group">
+                            <label class="control-label" for="form-field-3">Scheduled Date</label>
+                             <div class="controls">
+                        <input type="date" name="ScheduledDate" value="<?php echo $eventplanned->ScheduledDate; ?>"/>
+                    </div>
+                     </div>
+                     <div class="control-group">
+                            <label class="control-label" for="form-field-4">From</label>
+                             <div class="controls">
+                        <input type="time" name="From" value="<?php echo $eventplanned->From; ?>"/>
+                    </div>
+                     </div>
+            
+                     <div class="control-group">
+                            <label class="control-label" for="form-field-5">To</label>
+                             <div class="controls">
+                        <input type="time" name="To" value="<?php echo $eventplanned->To; ?>"/>
+                    </div>
+                     </div>
+            
+                     <div class="control-group">
+                            <label class="control-label" for="form-field-6">Description</label>
+                             <div class="controls">
+                         <textarea rows="4" cols="5" name="Description"> <?php echo $eventplanned->Description; ?></textarea>
+                    </div>
+                     </div>
+            
+                     <div class="control-group">
+                            <label class="control-label" for="form-field-8">Course List Code</label>
+                    <div class="controls"id="courseCode">
+                        <select  name="CourseListCode" id="CourseListCode">
+                                <option>--Select--</option>
+                                <?php foreach($course as $c): ?>
+                                <option <?php if($c->CourseListCode == $eventplanned->CourseListCode): ?> selected   <?php endif; ?> value=<?php echo $c->CourseListCode; ?>><?php echo $c->CourseListCode; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                    </div>
+                    </div>
+            
+                     <div class="control-group">
+                            <label class="control-label" for="form-field-8">Event held Place</label>
+                    <div class="controls">
+                        <select name="CenterId" id="CenterId">
+                                <option>--Select--</option>
+                                <?php foreach($organisation as $o): ?>
+                                <option <?php if($o->id== $eventplanned->CenterId): ?> selected   <?php endif; ?> value=<?php echo $o->id; ?>><?php echo $o->OrgaName; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                    </div>
+                    </div>
+            
+            <div class="control-group">
+                     <div class="controls">
+                         <input class="btn btn-small btn-primary" type="submit"  value="Update" />
+                    </div>
+            </div>
+               
+            </form>
+
+
+
+
+            <!--PAGE CONTENT ENDS-->
+
+
+        </div><!--/.span-->
+
+
+
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script src="assets/js/chosen.jquery.min.js"></script>
+
+<script type="text/javascript">
+   $("#eventdropdown").change(function()
+    {
+        $("#viewurl").attr('href', 'viewApplicantlist?eventID=' + $("#eventdropdown").val() + "&listcode=" + $('#clc').val());
+
+
+
+    });
+
+    $("#CourseListCode").change(function() {
+
+        var co_li_code = document.getElementById('CourseListCode').value;
+
+        $.ajax({
+            url: "<?php echo url::to('clcLoadajax'); ?>",
+            data: {co_li_code: co_li_code},
+            success: function(res) {
+                document.getElementById('courseCode').innerHTML = res;
+
+            }
+
+        });
+
+    });
+
+//var mytextbox1 = document.getElementById('CourseListCode');
+//var mytextbox2 = document.getElementById('CenterId');
+//    var mydropdown1 = document.getElementById('dropdown1');
+//    var mydropdown2 = document.getElementById('dropdown2');
+//    mydropdown1.onchange = function(){
+//          mytextbox1.value = mytextbox1.value + this.value +','; //to appened
+//         //mytextbox.innerHTML = this.value;
+//     };
+//     mydropdown2.onchange = function(){
+//          mytextbox2.value = mytextbox2.value + this.value +','; //to appened
+//         //mytextbox.innerHTML = this.value;
+//     };
+    
+</script>

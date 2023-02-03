@@ -1,0 +1,292 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<link rel="stylesheet" href="assets/css/bootstrap-timepicker.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Event			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+            </div>
+            <form class="form-horizontal" method="POST" action="<?php echo url('DtetEv_Eventsave'); ?>" id="eventform">
+                <div class="control-group">
+                    <label class="control-label" for="InstituteId">Institute Name</label>
+                    <div class="controls">
+                        <input type="text" readonly value="<?php echo $institute; ?>"/>
+                        <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>"/>
+                    </div>
+                </div>
+                <br/>      
+                <?php if($code12->TypeId != 2): ?>
+                <div class="control-group">
+                    <label class="control-label" for="OrgaId">Organization Name</label>
+                    <div class="controls">
+                        <select name="CenterId" id="OrgaId">
+                            <option value=""></option>
+                            <?php foreach ($organization as $oo): ?>
+                            <option value="<?php echo $oo->id; ?>"><?php echo $oo->OrgaName; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <?php else: ?>
+                <div class="control-group">
+                    <label class="control-label" for="OrgaId">Organization Name</label>
+                    <div class="controls">
+                        <input type="text" disabled="true" value="<?php echo $organization->OrgaName; ?>"/>
+                        <input type="hidden" name="CenterId" value="<?php echo $organization->id; ?>" id="OrgaId"/>
+                    </div>
+                </div>
+                <?php endif; ?>
+                <br/> 
+                <div class="control-group">
+                    <label class="control-label" for="EventName">Event Name</label>
+                    <div class="controls">
+                        <input type="text" name="EventName" id="EventName" autocomplete="off"/>
+                    </div>
+                    <div id="my_select">
+
+                    </div>
+                </div>
+                <br/>
+                <div class="control-group">
+                    <label class="control-label" for="Description">Description</label>
+                    <div class="controls">
+                        <textarea rows="4" cols="5" name="Description" style="resize: none" ></textarea> 
+                    </div>
+                </div>
+                <br/>
+                <div class="control-group">
+                    <label class="control-label" for="ScheduledDate">Scheduled Date</label>
+                    <div class="controls">
+                        <div class="row-fluid input-append">
+                            <input class="date-picker" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd" name="ScheduledDate" style="width: 1.9in"/>
+                            <span class="add-on">
+                                <i class="icon-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="control-group" id="timeset">
+                    <label class="control-label" for="c1">From</label>
+
+                    <div  class="controls">
+
+                        <div class="form-inline" >
+                            <div class="input-append bootstrap-timepicker">
+                                <input id="timepicker1" type="text" class="input-small" name="From"/>
+                                <span class="add-on">
+                                    <i class="icon-time"></i>
+                                </span>
+                            </div>
+
+                            To
+                            <div class="input-append bootstrap-timepicker">
+                                <input id="timepicker2" type="text" class="input-small" name="To" onkeyup="check()" />
+                                <span class="add-on">
+                                    <i class="icon-time"></i>
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course List Code</label>
+                    <div class="controls">
+                        <select name="CourseListCode" id="CourseListCode">
+                            <option></option>
+                            <?php foreach($course as $c): ?>
+                            <option value="<?php echo $c->CourseListCode; ?>"><?php echo $c->CourseListCode; ?></option>
+                            <?php endforeach; ?>
+                        </select> 
+                    </div>
+                </div>
+                <br/>
+                <div class="control-group" id="text">
+                    <div class="control-label">
+                        <a href="#" class="control-group" id="ttt">
+                            Create Panel
+                        </a>
+                    </div>    
+                </div>
+                <br/>
+                <div class="control-group">
+                    <div class="control-group" style="visibility: hidden" id="emp">
+                        <label class="control-label" for="EmpId">Employee Name</label>
+                        <div class="controls">
+                            <select  multiple="" class="chzn-select" id="form-field-select-4" data-placeholder="Choose Employee..." name="EmpId[]">
+                                <option value=""></option>
+                                <?php foreach ($employee as $e): ?>
+                                <option value="<?php echo $e->id; ?>"><?php echo $e->Initials.''.$e->LastName; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <br/>
+                    <div id="put">
+
+                    </div>    
+
+                </div>
+
+
+
+
+
+
+
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Save</button>
+                    </div>
+                </div>
+                <br/>
+            </form>                                
+        </div>
+    </div>
+    <div class="span4">
+        <?php if($errors->has()): ?>
+        <?php foreach($errors->all() as $msg): ?>
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="icon-remove"></i>
+            </button>
+            <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+        </div>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+</div>
+
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+
+<script>
+
+                                    <?php if (isset($done)): ?>
+
+                                            $.gritter.add({title: "", text: "Record Added Successfully", class_name: "gritter-info gritter-center"});
+                                            <?php endif; ?>
+
+
+                                            $(function() {
+                                                $(".chzn-select").chosen();
+                                            });
+
+                                    var time1 = null;
+                                    var time2 = null;
+                                    $('#timepicker1').timepicker().on('changeTime.timepicker', function(e) {
+                                        time1 = e.time.value;
+
+                                        get(time1, time2);
+                                    });
+
+                                    $('#timepicker2').timepicker().on('changeTime.timepicker', function(e) {
+
+                                        time2 = e.time.value;
+
+                                        get(time1, time2);
+
+                                    });
+
+                                    function get(t1, t2) {
+                                        var to = document.getElementById("timepicker2").value;
+                                        var from = document.getElementById("timepicker1").value;
+                                        if (t1 != null && t2 != null) {
+                                            if (t1 === t2) {
+                                                document.getElementById('timepicker2').style.border = '1px solid red';
+                                                document.getElementById('timepicker1').style.border = '1px solid red';
+                                                ;
+                                            } else if (t1 > t2) {
+                                                document.getElementById('timepicker2').style.border = '1px solid red';
+                                            } else {
+                                                document.getElementById('timepicker2').style.border = '';
+                                                document.getElementById('timepicker1').style.border = '';
+                                            }
+
+                                        }
+                                    }
+
+                                    var panel = "<div class=\"control-group\">\n" +
+                                            "<label class=\"control-label\" for=\"Pannel_no\">Panel No</label>\n" +
+                                            "<div class=\"controls\">\n" +
+                                            "<input type=\"text\" name=\"Pannel_no\" id=\"Pannel_no\" />\n" +
+                                            "</div></div><br/>";
+                                    var remove = "<div class=\"control-label\">\n" +
+                                            "<a href=\"#\" class=\"control-group\" id=\"rrr\">\n" +
+                                            "Remove Panel</a></div> ";
+                                    var rest = "<div class=\"control-label\">\n" +
+                                            "<a href=\"#\" class=\"control-group\" id=\"ttt\">\n" +
+                                            "Create Panel</a></div> ";
+                                    $("#ttt").click(function() {
+//        alert("jbs");
+                                        document.getElementById("emp").style.visibility = 'visible';
+//        document.getElementById("put").innerHTML = panel;
+                                        document.getElementById("text").innerHTML = remove;
+                                    });
+                                    $("#text").on('click', '#rrr', function() {
+//       alert("jbs"); 
+                                        document.getElementById("emp").style.visibility = 'hidden';
+//        document.getElementById("put").innerHTML = "";
+                                        document.getElementById("text").innerHTML = rest;
+                                    });
+
+                                    $("#EventName").keyup(function() {
+                                        var aaa = " <select id=\"dale_training\" multiple=\"multiple\" style=\"margin-left: 180px;\" onclick=\"my();\"></select>";
+                                        var x = document.getElementById('EventName').value;
+                                        $.ajax({
+                                            url: "<?php echo url::to('DtetEv_Autofill'); ?>",
+                                            data: {x: x},
+                                            success: function(res) {
+//            alert(res);
+                                                if (res === "Dale") {
+                                                    document.getElementById('my_select').innerHTML = '';
+                                                } else {
+                                                    document.getElementById('my_select').innerHTML = aaa;
+                                                    document.getElementById('dale_training').innerHTML = res;
+                                                }
+                                            }
+
+                                        });
+
+                                    });
+
+                                    $("#my_select").on('change', '#dale_training', function() {
+                                        var select = document.getElementById('dale_training').value;
+                                        document.getElementById('EventName').value = select;
+                                        document.getElementById('my_select').innerHTML = '';
+                                    });
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+<script>
+    $('.date-picker').datepicker().next().on(ace.click_event, function() {
+        $(this).prev().focus();
+    });
+</script>

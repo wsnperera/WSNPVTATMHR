@@ -1,0 +1,474 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <a href=<?php echo url('ViewTrainingPlanUpdateDisNVTIDOTOTM'); ?>> << Back to View </a>
+                <h1>Training Materials Update (District/NVTI)<small><i class="icon-double-angle-right"></i>View</small></h1>
+            </div>
+            <form class="form-horizontal" action='' method="POST">
+                <input type='hidden' name='id' id='id' value='<?php echo $CourseYearPlan->id; ?>' />
+				<input type="hidden" value="<?php echo $CenterIDD; ?>" name="CenterIDD" id="CenterIDD"/>
+				<input type="hidden" value="<?php echo $YearD; ?>" name="YearD" id="YearD"/>
+				<input type="hidden" value="<?php echo $BatchD; ?>" name="BatchD" id="BatchD"/>
+				<input type="hidden" value="<?php echo $districtD; ?>" name="districtD" id="districtD"/>
+               
+				  <div class="page-header position-relative"></div>
+				  <font color="blue"><u><b>Course Details</b></u></font>
+           <fieldset >
+				<table>
+				<tr>
+				<td>
+				 <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Organisation : </label>
+                        <div class="controls">
+                        <input type="text" name="CourseListCode" id="CourseListCode"  value="<?php echo CourseYearPlan::getOrganizatinName($CourseYearPlan->OrgId); ?>" readonly />
+                    </div>
+                </div>
+				</td>
+				<td>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				 <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Year : </label>
+                        <div class="controls">
+						<input type="text" name="Year" value="<?php echo $CourseYearPlan->Year; ?>" readonly/>
+                          
+                        </div>
+                </div>
+				</td>
+				<td>
+				 <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Batch : </label>
+                        <div class="controls">
+						<input type="text" name="CourseListCode" value="<?php echo $CourseYearPlan->batch; ?>" readonly/>
+                           
+                        </div>
+                </div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				 <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course List Code : </label>
+                        <div class="controls">
+						<input type="text" name="CourseListCode" value="<?php echo $CourseYearPlan->CourseListCode; ?>" readonly/>
+                           
+                        </div>
+                </div>
+				</td>
+				<td>
+				 
+				 <div class="control-group">
+                    <label class="control-label" for="CourseLevel">Course Level : </label>
+                        <div class="controls">
+						<input type="text" name="CourseListCode" value="<?php echo $CourseYearPlan->CourseLevel; ?>" readonly/>
+                            
+                        </div>
+                </div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				   <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Medium : </label>
+                        <div class="controls">
+							<input type="text" name="CourseListCode" value="<?php echo $CourseYearPlan->medium; ?>" readonly/>
+                            
+                        </div>
+                </div>
+				</td>
+				<td>
+				 
+				 <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Max Capacity : </label>
+                    <div class="controls">
+					<input type="text" name="CourseListCode" value="<?php echo $CourseYearPlan->maxCapacity; ?>" readonly/>
+                  
+                    </div>
+                </div>
+				</td>
+				</tr>
+				</table>
+				
+				</fieldset>
+				
+				<center><hr/></center>
+				<fieldset>
+				<font color="blue"> <b><u>Instructor & trainee Details</u></b></font>
+				<table>
+				
+				<tr>
+				<td> <div class="control-group">
+				<?php
+				$ppp = "select moinstructor.id,moinstructor.Name,moinstructor.EPFNo
+						  from moinstructorcourse
+						  left join moinstructor
+						  on moinstructorcourse.InstructorID=moinstructor.id
+						  where moinstructorcourse.CourseYearPlanID='".$CourseYearPlan->id."'
+						  and moinstructorcourse.Active='Yes'";
+                          $Ins=DB::select(DB::raw($ppp));
+				?>
+                        
+                            <label class="control-label" for="Medium">Instructors:</label>
+                                <div  class="controls">
+								 
+								 <label>
+                                   <?php foreach($Ins as $i): ?>
+								<?php echo $i->Name; ?>(<?php echo $i->EPFNo; ?>)
+								<?php endforeach; ?>
+								</label>
+									
+									
+                            </div>
+                </div></td>
+				<td></td>
+				</tr>
+				<tr>
+				<td>
+				<div class="control-group">
+                    <label class="control-label" for="CourseListCode">Trainee Count : </label>
+                    <div class="controls">
+                    <input type="number" name="TCount" id="TCount"  value="<?php echo $CourseYearPlan->NoOfTrainees; ?>" readonly="true"/>
+                    <span class="lbl" style="color: red"><b></b></span>
+                    </div>
+                </div>
+				</td>
+				<td>
+				 <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Dropout Count : </label>
+                    <div class="controls">
+                    <input type="number" name="DCount" id="DCount"  value="<?php echo $CourseYearPlan->Dropout; ?>" readonly="true"/>
+                    <span class="lbl" style="color: red"><b></b></span>
+                    </div>
+                </div>
+				</td>
+				</tr>
+				</table>
+               
+              </fieldset> 
+			  <center><hr/></center>
+				<fieldset>
+				<font color="blue"><b><u>Training Material distribution Details</u></b></font>
+				<br/>
+				 <div class="control-group">
+				 
+				  <br/><br/>
+				 <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+				<tr>
+				<?php
+				$i=1;
+				$SQLTMProcess = "select tmschedule.*,tmpurchecingtask.TaskNameInSinhala,
+				tmpurchecingtask.TaskNameInEnglish,
+				tmpurchecingtask.CourseStartedEffectiveness
+							     from tmschedule
+							     left join tmpurchecingtask
+							     on tmschedule.TMPLId=tmpurchecingtask.id
+							     where tmschedule.Deleted=0
+							     and tmpurchecingtask.Active=1
+							     and tmschedule.Year='".$CourseYearPlan->Year."'
+							     and tmschedule.Batch like '$CourseYearPlan->batch'";
+							  
+							 $DDD = DB::select(DB::raw($SQLTMProcess));
+				$SQLProcessResult = "";
+				$CourseStartedStatus = $CourseYearPlan->StartedStatus;
+				?>
+				 <thead>
+				<th>No</th><th>Process</th><th>Given Period</th><th>Completed Status</th><th>Completed Date</th><th>Reason if Not</th> </thead>
+				</tr>
+				<?php foreach($DDD as $p): ?>
+				
+					<?php if($CourseStartedStatus == 1): ?>
+						
+					
+					
+					<?php
+					$ProL = TMCourseyearplanMaterial::where('Deleted','=',0)->where('CYPID','=',$CourseYearPlan->id)->where('TMSId','=',$p->id)->first();
+					$PolCount = count($ProL);
+					?>
+							<?php if($PolCount !=0): ?>
+							<tr>
+							<td><?php echo $i++; ?></td>
+							<td><input type="hidden" name="PLId[]" id="PLId" value="<?php echo $p->id; ?>"/>
+							<?php echo $p->TaskNameInEnglish; ?><br/>
+							<?php echo $p->TaskNameInSinhala; ?></td>
+							<td>From: <?php echo $p->StartDate; ?> To: <?php echo $p->EndDate; ?></td>
+							<td> <select name='CompletedStatus[]' id='CompletedStatus' required="true">
+								<option value="" >---Select Status---</option>
+								 <option value="0" <?php if($ProL->CompletedStatus == 0): ?> selected="true" <?php endif; ?> >No</option>
+								 
+								 <option value="1" <?php if($ProL->CompletedStatus == 1): ?> selected="true" <?php endif; ?> >Yes</option>
+										   
+										   
+								  </select>
+							</td>
+							<td>
+							<input type="date" name="CompletedDate[]" id="CompletedDate" value="<?php echo $ProL->CompletedDate; ?>"/>
+							</td>
+							<td><input type="text" name="Reason[]" id="Reason" value="<?php echo $ProL->ReasonForNot; ?>"/></td>
+							</tr>
+							<?php else: ?>
+								<tr>
+							<td><?php echo $i++; ?></td>
+							<td><input type="hidden" name="PLId[]" id="PLId" value="<?php echo $p->id; ?>"/>
+							<?php echo $p->TaskNameInEnglish; ?><br/>
+							<?php echo $p->TaskNameInSinhala; ?></td>
+							<td>From: <?php echo $p->StartDate; ?> To: <?php echo $p->EndDate; ?></td>
+							<td> <select name='CompletedStatus[]' id='CompletedStatus' required="true">
+								<option value="" >---Select Status---</option>
+								 <option value="0"  selected>No</option>
+								 
+								 <option value="1"  >Yes</option>
+										   
+										   
+								  </select>
+							</td>
+							<td>
+							<input type="date" name="CompletedDate[]" id="CompletedDate" />
+							</td>
+							<td><input type="text" name="Reason[]" id="Reason" /></td>
+							</tr>
+								
+							<?php endif; ?>
+					<?php else: ?>
+						
+						<?php if($p->CourseStartedEffectiveness == 0): ?>
+							
+						<?php
+					$ProL = TMCourseyearplanMaterial::where('Deleted','=',0)->where('CYPID','=',$CourseYearPlan->id)->where('TMSId','=',$p->id)->first();
+					$PolCount = count($ProL);
+					?>
+							<?php if($PolCount !=0): ?>
+							<tr>
+							<td><?php echo $i++; ?></td>
+							<td><input type="hidden" name="PLId[]" id="PLId" value="<?php echo $p->id; ?>"/>
+							<?php echo $p->TaskNameInEnglish; ?>
+							<br/>
+							<?php echo $p->TaskNameInSinhala; ?></td>
+							<td>From: <?php echo $p->StartDate; ?> To: <?php echo $p->EndDate; ?></td>
+							<td> <select name='CompletedStatus[]' id='CompletedStatus' required="true">
+								<option value="" >---Select Status---</option>
+								 <option value="0" <?php if($ProL->CompletedStatus == 0): ?> selected="true" <?php endif; ?> >No</option>
+								 
+								 <option value="1" <?php if($ProL->CompletedStatus == 1): ?> selected="true" <?php endif; ?> >Yes</option>
+										   
+										   
+								  </select>
+							</td>
+							<td>
+							<input type="date" name="CompletedDate[]" id="CompletedDate" value="<?php echo $ProL->CompletedDate; ?>"/>
+							</td>
+							<td><input type="text" name="Reason[]" id="Reason" value="<?php echo $ProL->ReasonForNot; ?>"/></td>
+							</tr>
+							<?php else: ?>
+								<tr>
+							<td><?php echo $i++; ?></td>
+							<td><input type="hidden" name="PLId[]" id="PLId" value="<?php echo $p->id; ?>"/>
+							<?php echo $p->TaskNameInEnglish; ?>
+							<br/>
+							<?php echo $p->TaskNameInSinhala; ?></td>
+							<td>From: <?php echo $p->StartDate; ?> To: <?php echo $p->EndDate; ?></td>
+							<td> <select name='CompletedStatus[]' id='CompletedStatus' required="true">
+								<option value="" >---Select Status---</option>
+								 <option value="0"  selected>No</option>
+								 
+								 <option value="1"  >Yes</option>
+										   
+										   
+								  </select>
+							</td>
+							<td>
+							<input type="date" name="CompletedDate[]" id="CompletedDate" />
+							</td>
+							<td><input type="text" name="Reason[]" id="Reason" /></td>
+							</tr>
+							<?php endif; ?>
+							
+						<?php endif; ?>
+						
+					<?php endif; ?>
+				<?php endforeach; ?>
+				
+				</table>
+				<br/>
+				<?php if($CourseStartedStatus == 1): ?>
+				<table>
+				<tr>
+				<td>
+				<div class="control-group">
+                    <label class="control-label" for="CourseListCode">Estimated Cost: </label>
+                    <div class="controls">
+                    <input type="text" name="EstimatedCost" id="EstimatedCost"  value="<?php echo $CourseYearPlan->TMEstimatedCost; ?>" required="true"/>
+                    <span class="lbl" style="color: red"><b>*</b></span>
+                    </div>
+                </div>
+				</td>
+				<td>
+				 <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Amount Spent: </label>
+                    <div class="controls">
+                    <input type="text" name="AmountSpent" id="AmountSpent"   value="<?php echo $CourseYearPlan->TMAmountSpent; ?>" required="true"/>
+                    <span class="lbl" style="color: red"><b>*</b></span>
+                    </div>
+                </div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="control-group">
+                    <label class="control-label" for="CourseListCode">GRN Numbers: </label>
+                    <div class="controls">
+                    <input type="text" name="GRNNo" id="GRNNo"  value="<?php echo $CourseYearPlan->GRNNos; ?>" /><br/>
+                    <span class="lbl" style="color: red"><b>* Enter all the GRN Nos using comma sign.eg 2354,2333,678</b></span>
+                    </div>
+                </div>
+				</td>
+				<td>
+				 <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Reg Trainee Count: </label>
+                    <div class="controls">
+                    <input type="number" name="TCount" id="TCount"  value="<?php echo $CourseYearPlan->NoOfTrainees; ?>" min="0" required="true"/>
+                    <span class="lbl" style="color: red"><b>*</b></span>
+                    </div>
+                </div>
+				</td>
+				</tr>
+				</table>
+				<?php else: ?>
+					<table>
+				<tr>
+				<td>
+				<div class="control-group">
+                    <label class="control-label" for="CourseListCode">Estimated Cost: </label>
+                    <div class="controls">
+                    <input type="text" name="EstimatedCost" id="EstimatedCost"  value="<?php echo $CourseYearPlan->TMEstimatedCost; ?>" required="true"/>
+                    <span class="lbl" style="color: red"><b>*</b></span>
+                    </div>
+                </div>
+				</td>
+				<td>
+				 <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Amount Spent: </label>
+                    <div class="controls">
+                    <input type="text" name="AmountSpent" id="AmountSpent"   value="<?php echo $CourseYearPlan->TMAmountSpent; ?>" readonly="true"/>
+                    <span class="lbl" style="color: red"><b></b></span>
+                    </div>
+                </div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="control-group">
+                    <label class="control-label" for="CourseListCode">GRN Numbers: </label>
+                    <div class="controls">
+                    <input type="text" name="GRNNo" id="GRNNo"  value="<?php echo $CourseYearPlan->GRNNos; ?>" readonly="true"/><br/>
+                   
+                    </div>
+                </div>
+				</td>
+				<td>
+				 <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Reg Trainee Count: </label>
+                    <div class="controls">
+                    <input type="number" name="TCount" id="TCount"  value="<?php echo $CourseYearPlan->NoOfTrainees; ?>" min="0" required="true"/>
+                    <span class="lbl" style="color: red"><b>*</b></span>
+                    </div>
+                </div>
+				</td>
+				</tr>
+				</table>
+				<?php endif; ?>
+				</fieldset>
+			
+                </div>
+				
+
+_                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" class="btn btn-block btn-success" value="Save"/>
+                    </div>
+                </div>
+                   
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+
+<script>
+   jQuery(document).ready(function() {
+   
+$(".chzn-select").trigger("liszt:activate");
+$(".chzn-select").chosen(); 
+});
+
+    $("#courseCode").change(function()
+    {
+        if($("#courseCode").val()!='')
+        {
+            
+            $("#placeHolder").html(html);
+        }
+        else
+        {
+            $("#placeHolder").html('');
+        }
+    });
+    
+</script>
+      
+  <script type="text/javascript">
+
+</script> 
+       
+               
+               
+               
+      
+        
+        
+
+    

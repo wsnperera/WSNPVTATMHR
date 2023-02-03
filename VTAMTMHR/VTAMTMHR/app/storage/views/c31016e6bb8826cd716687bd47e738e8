@@ -1,0 +1,329 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<a href=<?php echo url('ViewGradateEmployee'); ?>> << Back to view </a> 
+
+
+
+
+
+                
+
+
+<div class="page-content">
+                                    
+	<div class="row-fluid">
+                                            
+                                           
+                                        
+    <div class="span12">
+							
+    <!--PAGE CONTENT BEGINS-->
+
+                                        
+        <!--/.page-header-->
+    <div class="page-header position-relative">
+                                            
+				<h1>
+				Course			
+				<small>
+					<i class="icon-double-angle-right"></i>
+					Edit
+				</small>			
+				</h1>
+		</div><!--/.page-header-->
+
+
+                			  <!--Write your code here start-->
+                
+     <form class="form-horizontal" action="<?php echo url('EditGradateEmployee'); ?>" method="POST"/>
+                                           
+      <br/>
+
+              <input type="hidden" name="cid" id="cid" value="<?php echo $cid; ?>" />
+              <?php foreach($courses as $c): ?>
+                <div class="control-group">
+                    <label class="control-label" for="NIC">Search NIC</label>
+                    <div class="controls">
+                        <input type="text" name="nic" id="nic" value="<?php echo $c->NIC; ?>"/>
+                    </div>
+                </div>
+                  <!-- course code -->
+
+                    <div class="control-group">
+
+                        <label class="control-label" for="CourseCode">Course Code</label>
+
+                        <div class="controls">
+
+
+                            <input type="text" name="CourseCode" id="CourseCode" value="<?php echo $c->CourseCode; ?>" readonly>
+                           
+
+                        </div>
+
+                    </div>
+                    <div class="control-group">
+
+                        <label class="control-label" for="GEType">Graduate Employee Type</label>
+
+                        <div class="controls">
+
+
+                            <select name="GEType" id="GEType" required>
+                            <option value="">--- select Type--- </option>
+                            <?php foreach ($gemptype as $m): ?>
+
+
+                            <option <?php if($m->id == $c->gtypeid): ?> selected <?php endif; ?> value="<?php echo $m->id; ?>"><?php echo $m->Description; ?></option>
+        
+
+                            <?php endforeach; ?>
+
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="control-group">
+
+                        <label class="control-label" for="Trade">Trade</label>
+
+                        <div class="controls">
+
+
+                            <select name="Trade" id="Trade" required>
+                            <option value="">--- select Trade--- </option>
+                            <?php foreach ($trade as $m): ?>
+
+
+                            <option value="<?php echo $m->TradeId; ?>"><?php echo $m->TradeName; ?></option>
+                            <option <?php if($m->TradeId == $c->TradeId): ?> selected <?php endif; ?> value="<?php echo $m->TradeId; ?>"><?php echo $m->TradeName; ?></option>
+
+                            <?php endforeach; ?>
+
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <!-- course code -->
+                    <div class="control-group">
+
+                                <label class="control-label" for="StartDate">Start Date</label>
+
+                                <div class="controls">
+
+                                    <input type="date" name="StartDate" id="StartDate" value="<?php echo $c->StartDate; ?>"required/>
+
+                                </div>
+
+                    </div>
+                    <div class="control-group">
+
+                                <label class="control-label" for="AddressEmployer">Name Of the Employer</label>
+
+                                <div class="controls">
+
+                                    <input type="text" name="NameOfEmployer" id="NameOfEmployer" value="<?php echo $c->NameOfEmployer; ?>" style="width: 400px;"/>
+
+                                </div>
+
+                    </div>
+
+                    <hr/>
+                     <div class="control-group">
+
+                                <label class="control-label" for="AddressEmployer">Address Of the Employer</label>
+
+                                <div class="controls">
+
+                                    <input type="text" name="AddressEmployer" id="AddressEmployer" value="<?php echo $c->AddressEmployer; ?>" required/>
+
+                                </div>
+
+                    </div>
+                    <div class="control-group">
+
+                                <label class="control-label" for="Tel">Telephone No Of the Employer</label>
+
+                                <div class="controls">
+
+                                    <input type="text" name="Tel" id="Tel" value="<?php echo $c->Tel; ?>" required/>
+
+                                </div>
+
+                    </div>
+                    <div class="control-group">
+
+                                <label class="control-label" for="Tel">Contact person of the employer</label>
+
+                                <div class="controls">
+
+                                    <input type="text" name="ContactPerson" id="ContactPerson" value="<?php echo $c->ContactPerson; ?>"/>
+
+                                </div>
+
+                    </div>
+                   
+                    <div class="control-group">
+                                <label class="control-label" for="natureE">Nature of the employment</label>
+                                <div class="controls">
+                                        <textarea  name="natureE"><?php echo $c->nature; ?></textarea>
+                                </div>
+                    </div>
+                    <div class="control-group">
+
+                        <label class="control-label" for="ECapacity">Employer capacity</label>
+
+                        <div class="controls">
+
+
+                            <select name="ECapacity" id="ECapacity" >
+                            <option value="">--- Select Capacity--- </option>
+                            <?php foreach ($empcap as $m): ?>
+
+
+                             <option <?php if($m->id == $c->ECapacity): ?> selected <?php endif; ?> value="<?php echo $m->id; ?>"><?php echo $m->Description; ?></option>
+
+                            <?php endforeach; ?>
+
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="control-group">
+
+                                <label class="control-label" for="TOccupationel">Occupation</label>
+
+                                <div class="controls">
+
+                                    <input type="text" name="Occupation" id="Occupation" value="<?php echo $c->TOccupationel; ?>" required/>
+
+                                </div>
+
+                    </div>
+                    <div class="control-group">
+
+                                <label class="control-label" for="salary">Current Salary</label>
+
+                                <div class="controls">
+
+                                    <input type="text" name="salary" id="salary" value="<?php echo $c->salary; ?>" required/>
+
+                                </div>
+
+                    </div>
+                     <div class="control-group">
+
+                        <label class="control-label" for="Relevance">Relevance of training for employment</label>
+
+                        <div class="controls">
+
+
+                            <select name="Relevance" id="Relevance" required>
+                            <option value="">--- select Relevance of the training--- </option>
+                            <?php if($c->Relevance == 'Yes'): ?>
+                            <option value="Yes" selected>Yes</option>
+                            <option value="No">No</option>
+                            <?php else: ?>
+                            <option value="Yes" >Yes</option>
+                            <option value="No" selected>No</option>
+                            <?php endif; ?>
+
+                            </select>
+                        </div>
+
+                    </div>
+                     <div class="control-group">
+
+                        <label class="control-label" for="Relevance">Who Placed for the employment</label>
+
+                        <div class="controls">
+
+
+                            <select name="WPE" id="WPE" required>
+                            <option value="">--- select WPE--- </option>
+                            <?php if($c->WhoPlaced == 'INS'): ?>
+                            <option value="INS" selected>From institute</option>
+                            <option value="SELF">Self</option>
+                            <?php else: ?>
+                            <option value="INS" >From institute</option>
+                            <option value="SELF" selected>Self</option>
+                            <?php endif; ?>
+                            </select>
+                        </div>
+
+                    </div>
+                     <div class="control-group">
+
+                                <label class="control-label" for="InsEPF">Inspector EPF</label>
+
+                                <div class="controls">
+
+                                    <input type="number" name="InsEPF" id="InsEPF" value="<?php echo $c->InsEPF; ?>"/>
+
+                                </div>
+
+                    </div>
+               
+            
+               
+            
+             
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary" id="transfer">Save</button>
+                    </div>
+                </div>
+                <br/>                                     
+         
+                <?php endforeach; ?>
+                                
+					
+                  
+    
+
+                                           
+
+                                                
+
+
+                                          
+
+
+
+                                         
+
+                                      
+
+
+    </form>
+                                          
+                                          
+                                          
+
+
+					 <!--Write your code here end-->
+                
+                                        
+                                        <!--PAGE CONTENT ENDS-->
+                                                                    
+                                                                                                                                                
+                                  </div><!--/.span-->
+
+							
+						
+	</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+    
+  
+         
+         
+        
+
+    
+</script>

@@ -1,0 +1,201 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<!--ace styles-->
+
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<a href="<?php echo url('ApplyLeave'); ?>" hidden="">
+    Back to Apply Leave
+</a>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Applicant		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Applicant Detail
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+            <form class="form-horizontal" name="attendance" action="updateApplicantDetailQualify" method="POST">
+                <div class="control-group">
+                    <label class="control-label">National Course Code</label>
+
+                    <div class="controls">
+                        <input type="text" name="NCC" value="<?php echo $applicant->CourseListCode; ?>" readonly="">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Applicant Name</label>
+
+                    <div class="controls">
+                        <textarea name="Name" readonly="" style="resize: none;"><?php echo $applicant->FullName; ?></textarea>
+                    </div>
+                </div>                
+                <div class="control-group">
+                    <label class="control-label">Gender</label>
+
+                    <div class="controls">
+                        <input type="text" name="Gender" value="<?php echo $applicant->Gender; ?>" readonly="">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Address</label>
+
+                    <div class="controls">
+                        <textarea name="Address" readonly="" style="resize: none;word-wrap: normal"><?php echo $applicant->Address; ?></textarea>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">NIC</label>
+
+                    <div class="controls">
+                        <input type="text" id="NIC" name="NIC" value="<?php echo $applicant->NIC; ?>" readonly="">
+                        <input type="hidden" id="id" name="id" value="<?php echo $applicant->id; ?>" readonly="">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Date Of Birth</label>
+
+                    <div class="controls">
+                        <input type="text" name="DOB" value="<?php echo $applicant->DOB; ?>" readonly="">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Age</label>
+
+                    <div class="controls">
+                        <input type="text" name="Age" value="<?php echo $applicant->Age; ?>" readonly="">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">O/L Result</label>
+
+                    <div class="controls">
+                        <input type="button" onclick="getolresult()" value="Click Here">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">A/L Result</label>
+
+                    <div class="controls">
+                        <input type="button" onclick="getalresult()" value="Click Here">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Qualified</label>
+
+                    <div class="controls">
+                        <input type="radio" name="selected" value="Yes" <?php echo ($applicant->Qualified == "Yes") ? "checked" :''; ?> /><span class="lbl">Yes</span>
+                        <input type="radio" name="selected" value="No" <?php echo ($applicant->Qualified == "No") ? "checked" :''; ?>/><span class="lbl">No</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Reason</label>
+
+                    <div class="controls">
+                        <textarea name="reason" style="resize: none"><?php echo (isset($appinterview)) ? $appinterview->Reason :''; ?></textarea>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary btn-small">Save</button>
+                        <a href="<?php echo url('applicantQualifyHome?courselistcode=' . $applicant->courseyearplanid.'&coursetype='.Course::where('CourseListCode', '=', $applicant->CourseListCode)->where('Deleted', '!=', 1)->first()->CourseType.'&ret=true'); ?>"><button type="button" class="btn btn-primary btn-small">Back</button></a>
+                    </div>
+                </div>
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+        <div class="span4" id="ajaxerror">
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-ok"></i>
+                    <?php echo Session::get('done'); ?>
+                </strong>
+            </div>
+            <?php endif; ?>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+
+        </div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+                            function getolresult() {
+                                var NIC = $('#NIC').val();
+                                $.ajax({
+                                    url: "<?php echo url::to('getApplicantOLResultQualify'); ?>",
+                                    data: {aplicantnic: NIC},
+                                    beforeSend: function () {
+                                        $("body").css("cursor", "progress");
+                                        $("body input").css("cursor", "progress");
+                                    },
+                                    success: function (result) {
+                                        bootbox.dialog(result, [{
+                                                "label": "OK",
+                                                "class": "btn-small btn-success"
+                                            }]);
+                                    },
+                                    complete: function () {
+                                        $("body").css("cursor", "default");
+                                        $("body input").css("cursor", "default");
+                                    }
+                                });
+                            }
+                            function getalresult() {
+                                var NIC = $('#NIC').val();
+                                $.ajax({
+                                    url: "<?php echo url::to('getApplicantALResultQualify'); ?>",
+                                    data: {aplicantnic: NIC},
+                                    beforeSend: function () {
+                                        $("body").css("cursor", "progress");
+                                        $("body input").css("cursor", "progress");
+                                    },
+                                    success: function (result) {
+                                        bootbox.dialog(result, [{
+                                                "label": "OK",
+                                                "class": "btn-small btn-success"
+                                            }]);
+                                    },
+                                    complete: function () {
+                                        $("body").css("cursor", "default");
+                                        $("body input").css("cursor", "default");
+                                    }
+                                });
+                            }
+</script>

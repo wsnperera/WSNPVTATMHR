@@ -1,0 +1,71 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        Applitute Test			
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            View Test Records
+                        </small>			
+                    </h1>
+                </div>
+            </div>
+            <!--PAGE CONTENT BEGINS-->
+            
+            <form action="<?php echo url('ViewApplituteResults'); ?>" method='get'>
+                <table>
+                    <tr>
+                        <td>CourseCode :</td>
+                        <td>
+                            <select name="CourseCode" id='CourseCode' style="width: 120px; margin: 0">
+                            <option value="">CourseCode</option>
+                            <?php foreach($course_started as $cs): ?>
+                            <option value="<?php echo $cs->CourseCode; ?>"><?php echo $cs->CourseCode; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        </td>
+                        <td>&nbsp;&nbsp;Search By NIC :</td>
+                        <td><input type="text" placeholder="NIC" name="searchkey" style="width: 120px; margin: 0"/></td>
+                        <td>
+                            <input type="submit" value="Search" style="height: 30px"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+    <hr/>
+    <table class="table">
+        <tr>
+            <th>NIC</th>
+            <th>Institute</th>
+            <th>Organisation</th>
+            <th>Course Code</th>
+            <th>Result</th>
+        </tr>
+        <?php if(isset($appTestRes)): ?>
+
+        <?php foreach($appTestRes as $students): ?>
+        <tr>
+            <td><?php echo $students->NIC; ?></td>
+            <td><?php echo $students->Institue->InstituteName; ?></td>
+            <td><?php echo $students->Organisation->OrgaName; ?></td>
+            <td><?php echo $students->CourseCode; ?></td>
+            <td><?php echo $students->Result; ?></td>
+        </tr>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </table>
+            
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<script type="text/javascript">
+ 
+</script>

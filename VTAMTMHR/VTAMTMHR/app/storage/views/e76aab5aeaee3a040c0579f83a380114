@@ -1,0 +1,179 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <a href=<?php echo url('applicants'); ?>> << Back to Applicants </a>
+            <div class="span8">
+                <div class="page-header position-relative">
+                    <h1>
+                        Applicant			
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            List View
+                        </small>			
+                    </h1>
+                </div>
+            </div>
+            <div>
+                <form name='search' action="<?php echo url('searchApplicant'); ?>" method='get'>
+                    <table>
+                        <tr>
+                            <td>Year:&nbsp;&nbsp;<input type="text" name="year" placeholder="Year" style="width: 80px; margin: 0"/></td>
+                            <td style="text-align: center;">Course Code :&nbsp;&nbsp;
+                                <select style="width: 150px; margin: 0" name="course_code">
+                                    <option value="">Course Code</option>
+                                    <?php foreach ($course_started as $cc): ?>
+                                    <option value="<?php echo $cc->CourseCode; ?>"><?php echo $cc->CourseCode; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                            <td style="text-align: center; margin: 0">Order By :&nbsp;&nbsp;
+                                <select style="width: 120px; margin: 0" name="order_by">
+                                    <option value="">Order By</option>
+                                    <option value="OrgaId">center wise</option>
+                                    <option value="District">district wise</option>
+                                </select>
+                            </td>
+                            <td style="text-align: center;">&nbsp;&nbsp;
+                                Search Applicant &nbsp;&nbsp;<input type='text' name="serachkey" placeholder="NIC or Index NO" style="width: 120px; margin: 0"/>
+                            </td>
+                            <td style="text-align: center;"><input type='submit' value='Search' style="height: 30px;"/></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <table class="table" style="width: 600px;">
+                <tr>
+                    <td style="width: 500px;">Total Applicants</td>
+                    <td><?php echo $tot_applicants; ?></td>
+                </tr>
+                <tr>
+                    <td>Sinhala Medium Applicants</td>
+                    <td><?php echo $sinhala_applicants; ?></td>
+                </tr>
+                <tr>
+                    <td>Tamil Medium Applicants</td>
+                    <td><?php echo $tamil_applicants; ?></td>
+                </tr>
+                <tr>
+                    <td>Male Applicants</td>
+                    <td><?php echo $male_applicants; ?></td>
+                </tr>
+                <tr>
+                    <td>Female Applicants</td>
+                    <td><?php echo $female_applicants; ?></td>
+                </tr>
+                <tr>
+                    <td>Applicants assign to centers
+                        <select style="width: 150px; height: 30px;"  id="center_id">
+                            <option>---Select Center---</option>
+                            <?php foreach ($testcenter as $tc): ?>
+                            <option value="<?php echo $tc->id; ?>"><?php echo $tc->OrgaName; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <span id="ajax_img"></span>
+                    </td>
+                    <td id="tot_center_td"></td>
+                </tr>
+                <tr>
+                    <td>Online Applicants</td>
+                    <td><?php echo $online_applicants; ?></td>
+                </tr>
+            </table>
+            <form action="<?php echo url('ListApplicantdownload'); ?>" method='get'>
+                <input type="hidden" name="serachkey" value="<?php echo $serachkey; ?>" id="serachkey"/>
+                <input type="hidden" name="order_by" value="<?php echo $order_by; ?>"/>
+                <input type="hidden" name="course_code" value="<?php echo $course_code; ?>" id="course_code"/>
+                <input type="hidden" name="year" value="<?php echo $year; ?>" id="year"/>
+                <button type="submit" class="btn btn-large pull-right"><i class="icon-download-alt"></i>PDF Download</button>
+            </form>
+            <form action="<?php echo url('ListApplicantdownloadexcel'); ?>" method='get'>
+                <input type="hidden" name="serachkey" value="<?php echo $serachkey; ?>" id="serachkey"/>
+                <input type="hidden" name="order_by" value="<?php echo $order_by; ?>"/>
+                <input type="hidden" name="course_code" value="<?php echo $course_code; ?>" id="course_code"/>
+                <input type="hidden" name="year" value="<?php echo $year; ?>" id="year"/>
+                <button type="submit" class="btn btn-large pull-right"><i class="icon-download-alt"></i>Excel Download</button>
+            </form>
+            <hr/>
+            <table class="table">
+                <tr>
+                    <th>Index No</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>NIC</th>
+                    <th>Center</th>
+                    <th>District</th>
+                    <th>NCC</th>
+                    <th>Year</th>
+                    <th>Batch</th>
+                </tr>
+
+                <?php foreach ($applicants as $applicant): ?>
+                <tr>
+                    <td><?php echo $applicant->IndexNo; ?></td>
+                    <td><?php echo $applicant->FullName; ?></td>
+                    <td><?php echo $applicant->Address; ?></td>
+                    <td><?php echo $applicant->NIC; ?></td>
+                    <td><?php echo $applicant->Organisation->OrgaName; ?></td>
+                    <td><?php echo $applicant->District; ?></td>
+                    <td><?php echo $applicant->CourseListCode; ?></td>
+                    <td><?php echo $applicant->Year; ?></td>
+                    <td><?php echo $applicant->batch; ?></td>
+                </tr>
+                <?php endforeach; ?>
+
+
+            </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<script type="text/javascript">
+
+    function doConfirm(applicant, formobj) {
+
+        bootbox.confirm("Are you sure you want to remove " + applicant, function(result)
+        {
+            if (result)
+            {
+                formobj.submit();
+            }
+        });
+        return false;
+    }
+
+
+    $("#center_id").change(function() {
+
+        var centerid = $("#center_id").val();
+        var course_code = document.getElementById('course_code').value;
+        var year = document.getElementById('year').value;
+        document.getElementById('tot_center_td').innerHTML = "";
+        
+        $.ajax
+                ({
+                    url: "<?php echo url::to('ajaxdale'); ?>",
+                    data: {center: centerid, course_code: course_code, year: year},
+                    beforeSend: function() {
+                        document.getElementById('ajax_img').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                    },
+                    success: function(result)
+                    {
+
+                        //alert(result); 
+                        document.getElementById('tot_center_td').innerHTML = result;
+
+                    },
+                    complete: function() {
+                        document.getElementById('ajax_img').innerHTML = "";
+                    }
+                });
+
+    });
+</script>

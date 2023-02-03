@@ -1,0 +1,144 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Trade Capacity			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Add Trade Capacity
+                    </small>			
+                </h1>
+            </div>
+            <!--/.page-header-->
+
+            <form class="form-horizontal" action="<?php echo url('CreateTradeCapacity'); ?>" method="POST"/>
+
+            <!-- Choose Institute -->
+
+            <div class="control-group">
+
+                <label class="control-label" for="InstituteId">Institute</label>
+
+                <div class="controls">
+                    <input type="hidden" value="<?php echo $user->instituteId; ?>" name="InstituteId"/>
+                    <input type="text" value="<?php echo $institutes; ?>" readonly/>
+                </div>
+            </div>
+
+            <!-- Choose Institute -->
+            <div class="control-group">
+
+                <label class="control-label" for="OrgaId">Organisation</label>
+
+                <div class="controls">
+                <input type="hidden" value="<?php echo $user->organisationId; ?>" name="OrgaId"/>
+                <input type="text" value="<?php echo $Organisation; ?>" readonly/>
+                </div>
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="tradeId">Choose Trade</label>
+
+                <div class="controls">
+
+                    <select name="tradeId" style="width: 100px;">
+
+                        <?php foreach ($trade as $t): ?>
+
+                        <option value="<?php echo $t->TradeId; ?>"><?php echo $t->TradeCode; ?></option>
+
+                        <?php endforeach; ?>
+
+
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="maxLimit">Number of Students</label>
+
+                <div class="controls">
+                    <input type="text" name="maxLimit" style="width: 85px;"/>
+                </div>
+
+            </div>
+
+            <!-- Submit Button -->
+
+            <div class="control-group">
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Submit</button>
+
+                </div>
+            </div>
+            <!-- Submit Button -->
+            </form>
+
+        </div><!--/.span-->
+
+        <!--/span 4 for error handling -->
+
+        <div class="span4">
+
+            <!-- Error Handling -->
+
+            <?php if($errors->has()): ?>
+
+            <?php foreach($errors->all() as $msg): ?>
+
+            <!-- Error Message -->
+
+            <div class="alert alert-error">
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+            </div>
+
+            <!-- Error Message -->
+
+            <?php endforeach; ?>
+
+            <?php endif; ?>
+
+            <!-- Error Handling -->
+
+        </div>
+        <!--/span 4-->
+        <!--PAGE CONTENT ENDS-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+
+
+
+
+
+
+
+
+
+

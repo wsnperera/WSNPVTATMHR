@@ -1,0 +1,74 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href="<?php echo url('ViewCompetemcyStandard'); ?>"> << Back to View </a>
+                <h1>Competency Standard<small><i class="icon-double-angle-right"></i>Edit</small></h1>
+            </div>
+            <form class="form-horizontal" action='' method="POST"/>
+			 <input type="hidden" name="id" value="<?php echo $module->id; ?>" />
+				 <div class="control-group">
+                    <label class="control-label" for="ModuleName">Trade:</label>
+                        <div class="controls">
+                               <select name="TradeId" id="TradeId" required>
+							   <option value="">---Select Trade---</option>
+							   <?php foreach($trades as $t): ?>
+							   <option <?php if ($t->TradeId == $module->tradeid): ?> selected <?php endif; ?> value="<?php echo $t->TradeId; ?>"><?php echo $t->TradeName; ?></option>
+							   <?php endforeach; ?>
+							   </select>
+                        </div>
+                </div>  
+				
+                <div class="control-group">
+                    <label class="control-label" for="ModuleName">Competency Standard Code:</label>
+                        <div class="controls">
+                                <input type="text" name="Code" value="<?php echo $module->code; ?>" required />
+                        </div>
+                </div>   
+
+				<div class="control-group">
+                    <label class="control-label" for="modulecode">Competency Standard Name:</label>
+                        <div class="controls">
+                                <input type="text" name="name"  value="<?php echo $module->name; ?>" required/>
+                        </div>
+                </div>         
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+    
+    <?php if(isset($done)): ?>
+        
+    $.gritter.add({ title: "", text: "Competency Standard Edited Successfully", class_name: "gritter-warning gritter-center" });
+
+    <?php endif; ?>
+    
+</script>
+      
+           
+               
+               
+               
+      
+        
+        
+
+    

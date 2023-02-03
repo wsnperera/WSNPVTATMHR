@@ -1,0 +1,824 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Applicant			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Add New
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+            <form class="form-horizontal" action="<?php echo url('createApplicant'); ?>" method="POST" id="appli_form">
+
+                <!-- Choose Institute -->
+
+                <div class="control-group">
+
+                    <label class="control-label" for="InstituteId">College Of Technology</label>
+
+                    <div class="controls">
+                        <input type="hidden" value="Offline" name="submit_mode"/>
+                        <input type="hidden" value="<?php echo $user->instituteId; ?>" name="InstituteId"/>
+                        <textarea readonly="true" style="resize: none"><?php echo Institue::where('InstituteId', "=", $user->instituteId)->pluck('InstituteName');; ?></textarea>
+                    </div>
+                </div>
+
+                <!-- Choose Institute -->
+                <div class="control-group">
+
+                    <label class="control-label" for="OrgaId">Center</label>
+
+                    <div class="controls">
+                        <input type="hidden" value="<?php echo Organisation::where('id', "=", $user->organisationId)->pluck('id');; ?>" name="OrgaId"/>
+                        <textarea readonly="true" style="resize: none"><?php echo Organisation::where('id', "=", $user->organisationId)->pluck('OrgaName');; ?></textarea>
+                    </div>
+                </div>
+                <div id="ncc_id1">
+                    <div class="control-group">
+                        <label class="control-label" for="CourseCode">National Course Code</label>
+                        <div class="controls">
+                            <select name="CourseListCode[]" onchange="dale_ncc(1)" id="CourseListCode1">
+                                <option></option>
+                                <?php foreach ($nationalCourseCode as $ncc): ?>
+                                <?php $c_name = Course::where('CourseListCode', '=', $ncc->CourseListCode)->pluck('CourseName'); ?>
+                                <option value="<?php echo $ncc->id; ?>"><?php echo $c_name.'-'.$ncc->CourseListCode.'('.$ncc->startDate.')'; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <span id="ajax_clc1"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="ncc_id2"></div>
+                <div id="ncc_id3"></div>
+                <div id="ncc_id4"></div>
+                <div id="ncc_id5"></div>
+                <div id="ncc_id6"></div>
+                <input type="hidden" id="dale_ncc_id" value="1"/>
+                <div class="control-group">
+                    <div class="controls">
+                        <button style="margin: 0; height: 30px; border: 0; visibility: hidden" type="button" id="add_ncc"><i class="icon-plus icon-2x icon-only"></i>Add New Course</button>
+                        <button style="margin: 0; height: 30px; border: 0; visibility: hidden" type="button" id="remove_ncc"><i class="icon-remove icon-2x icon-only"></i>Remove Last Course</button>
+                    </div>
+                </div>
+                <hr/>
+                <!-- Course name -->
+
+                <div class="control-group">
+
+                    <label class="control-label" for="NIC">NIC</label>
+
+                    <div class="controls">
+                        <input type="text" name="NIC" id="load_nic_val" value="<?php echo Input::old('NIC'); ?>"/>
+                        <span id="ajax_img2"></span>
+                    </div>
+
+                </div>
+
+                <!-- Course name -->
+                <table>
+                    <tr>
+                        <td style="width: 420px">
+                            <div class="control-group">
+
+                                <label class="control-label" for="Medium">Medium</label>
+
+                                <div class="controls">
+                                    <select name="Medium" id="Medium">
+                                        <option <?php if(Input::old('Medium') == 'English'): ?> selected <?php endif; ?> value="English">English</option>
+                                        <option <?php if(Input::old('Medium') == 'Sinhala'): ?> selected <?php endif; ?> value="Sinhala">Sinhala</option>
+                                        <option <?php if(Input::old('Medium') == 'Tamil'): ?> selected <?php endif; ?> value="Tamil">Tamil</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </td>
+                        <td style="width: 600px" valign="top" rowspan="8" id="nic_records"></td>
+                    </tr>           
+
+                    <!-- Course Type -->
+                    <tr><td> 
+                            <div class="control-group">
+
+                                <label class="control-label" for="NameWithInitials">Name With Initials</label>
+
+                                <div class="controls">
+                                    <input type="text" name="NameWithInitials" id="NameWithInitials" value="<?php echo Input::old('NameWithInitials'); ?>"/>
+                                </div>
+
+                            </div>
+                        </td></tr>
+                    <tr><td> 
+                            <div class="control-group">
+
+                                <label class="control-label" for="FullName">Full Name</label>
+
+                                <div class="controls">
+                                    <input type="text" name="FullName" id="FullName" value="<?php echo Input::old('FullName'); ?>"/>
+                                </div>
+
+                            </div>
+                        </td></tr>
+                    <tr><td> 
+                            <div class="control-group">
+
+                                <label class="control-label">Name With Initials(Sinhala/Tamil)</label>
+
+                                <div class="controls">
+                                    <input type="text" name="NameWithInitialsSinhala" id="NameWithInitialsSinhala" value="<?php echo Input::old('NameWithInitialsSinhala'); ?>"/>
+                                </div>
+
+                            </div>
+                        </td></tr>
+                    <tr><td> 
+                            <div class="control-group">
+
+                                <label class="control-label" for="Address">Address</label>
+
+                                <div class="controls">
+                                    <textarea name="Address" id="Address"><?php echo Input::old('Address'); ?></textarea>
+                                </div>
+
+                            </div>
+                        </td></tr>
+                    <tr><td> 
+                            <div class="control-group">
+
+                                <label class="control-label" for="Address">Address(Sinhala/Tamil)</label>
+
+                                <div class="controls">
+                                    <textarea name="address_sinhala_tamil" id="address_sinhala_tamil"><?php echo Input::old('address_sinhala_tamil'); ?></textarea>
+                                </div>
+
+                            </div>
+                        </td></tr>
+                    <tr><td> 
+                            <div class="control-group">
+
+                                <label class="control-label" for="DOB">DOB</label>
+
+                                <div class="controls">
+                                    <input type="date" name="DOB" id="DOB" readonly value="<?php echo Input::old('DOB'); ?>"/>
+                                </div>
+                            </div>
+                        </td></tr>
+                    <tr><td> 
+                            <div class="control-group">
+
+                                <label class="control-label" >Age</label>
+
+                                <div class="controls">
+                                    <input type="text" value="<?php echo Input::old('Age'); ?>" name="Age" readonly id="Age" style="width: 20px;"/>&nbsp;Years
+                                    <input type="text" id="month" readonly style="width: 20px;"/>&nbsp;Months
+                                    <input type="text" id="days" readonly style="width: 20px;"/>&nbsp;Days
+                                </div>
+
+                            </div>
+                        </td></tr>
+                </table>
+                <div class="control-group">
+
+                    <label class="control-label" for="Gender">Gender</label>
+
+                    <div class="controls">
+                        <input type="text" name="Gender" readonly id="Gender" value="<?php echo Input::old('Gender'); ?>"/>
+                    </div>
+
+                </div>
+
+
+                <div class="control-group">
+
+                    <label class="control-label" for="Province">Province</label>
+
+                    <div class="controls">
+                        <select name="Province" id="Province">
+                            <option value="">Province</option>
+                            <?php foreach ($province as $p): ?>
+
+                            <option <?php if(Input::old('Province') == $p->ProvinceCode): ?> selected <?php endif; ?> value="<?php echo $p->ProvinceCode; ?>"><?php echo $p->ProvinceName; ?></option>
+
+                            <?php endforeach; ?>
+                        </select>
+                        <span id="ajax_img3"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+
+                    <label class="control-label" for="District">District</label>
+
+                    <div class="controls">
+                        <select name="District" id="District">
+                            <option value="<?php echo Input::old('District'); ?>"><?php echo Input::old('District'); ?></option>
+                        </select>
+                        <span id="ajax_img4"></span>
+                    </div>
+
+                </div>
+                <div class="control-group">
+
+                    <label class="control-label">District secretariat</label>
+
+                    <div class="controls" id="elec_load">
+                        <select name="Electorate" id="Electorate">
+                            <option value="<?php echo Input::old('Electorate'); ?>"><?php echo Input::old('Electorate'); ?></option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="control-group">
+
+                    <label class="control-label">Grama Sewa Division</label>
+
+                    <div class="controls">
+                        <input type="text" name="Grama_Sewa_Division" id="Grama_Sewa_Division" value="<?php echo Input::old('Grama_Sewa_Division'); ?>"/>
+                    </div>
+
+                </div>
+                <div class="control-group">
+
+                    <label class="control-label" for="Tel">Telephone(Home)</label>
+
+                    <div class="controls">
+                        <input type="text" name="Tel" class="num_inp" id="Tel" value="<?php echo Input::old('Tel'); ?>"/>
+                    </div>
+
+                </div>
+                <div class="control-group">
+
+                    <label class="control-label" for="Tel">Telephone(Mobile)</label>
+
+                    <div class="controls">
+                        <input type="text" name="Tel_mob" class="num_inp" id="Tel_mob" value="<?php echo Input::old('Tel_mob'); ?>"/>
+                    </div>
+
+                </div>
+                <div class="control-group">
+
+                    <label class="control-label" for="email">Email</label>
+
+                    <div class="controls">
+                        <input type="text" name="email" id="email" value="<?php echo Input::old('email'); ?>"/>
+                    </div>
+
+                </div>
+
+                <hr/>
+                <div id="vara">
+                    <input type="hidden" id="bcs" value=""/>
+                </div>
+
+
+                <div class="control-group">
+
+                    <div class="controls">
+
+                        <button  name="button" id="abc-1" value="saveandol"  class="btn btn-small btn-primary">Save & Enter O\L Result</button>
+                        <button  name="button" id="abc-2" value="save"  class="btn btn-small btn-primary">Save</button>
+
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+
+
+        <div class="span4">
+
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-ok"></i>
+                    <?php echo Session::get('done'); ?>
+                </strong>
+            </div>
+            <?php endif; ?>
+
+            <?php if(Session::has('dale')): ?>
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    <?php echo Session::get('dale'); ?>
+                </strong>
+            </div>
+            <?php endif; ?>
+
+            <?php if($errors->has()): ?>
+
+            <?php foreach($errors->all() as $msg): ?>
+
+
+
+            <div class="alert alert-error">
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+            </div>
+
+
+
+            <?php endforeach; ?>
+
+            <?php endif; ?>
+
+
+
+        </div>
+
+    </div>
+</div>
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+<script type="text/javascript">
+                               
+                                $('#remove_ncc').click(function() {
+                                    var s = parseInt($('#dale_ncc_id').val());
+                                    if (s < 4 && s > 1) {
+                                        var ss = s - 1;
+                                        document.getElementById('ncc_id' + s).innerHTML = '';
+                                        $('#dale_ncc_id').val(ss);
+                                        document.getElementById('add_ncc').style.visibility = 'visible';
+                                    }
+                                });
+
+                                $('#add_ncc').click(function() {
+                                    var s = parseInt($('#dale_ncc_id').val());
+                                    if (s < 3 && s >= 1) {
+                                        var m = document.getElementById('mode' + s).value;
+                                        var my_clc = document.getElementById('CourseListCode' + s).value;
+                                        if (my_clc === '') {
+                                            alert('Select Course first!');
+                                        } else if (m === '') {
+                                            alert('Select mode first!');
+                                        } else {
+                                            document.getElementById('remove_ncc').style.visibility = 'visible';
+                                            var ss = s + 1;
+                                            var CLC = 'CourseListCode' + ss;
+                                            var dale_ncc = 'dale_ncc(' + ss + ')';
+                                            var ajax_clc = 'ajax_clc' + ss;
+                                            var ncc = "<div class=\"control-group\">\n" +
+                                                    "<label class=\"control-label\">National Course Code</label>\n" +
+                                                    "<div class=\"controls\">\n" +
+                                                    "<select name=\"CourseListCode[]\" onchange='" + dale_ncc + "' id='" + CLC + "'>\n" +
+                                                    "<option></option>\n" +
+                                                    "<?php foreach ($nationalCourseCode as $ncc): ?>\n" +
+													<?php $c_name = Course::where('CourseListCode', '=', $ncc->CourseListCode)->pluck('CourseName'); ?>
+													"<option value=\"<?php echo $ncc->id; ?>\"><?php echo $c_name.'-'.$ncc->CourseListCode.'('.$ncc->startDate.')'; ?></option>\n" +
+													"<?php endforeach; ?>\n" +
+                                                    "</select>\n" +
+                                                    "<span id='" + ajax_clc + "'></span>\n" +
+                                                    "</div>\n" +
+                                                    "</div>";
+                                            document.getElementById('ncc_id' + ss).innerHTML = ncc;
+                                            $('#dale_ncc_id').val(ss);
+                                            document.getElementById('add_ncc').style.visibility = 'hidden';
+                                        }
+                                    }
+                                });
+
+
+                                function dale_ncc(x) {
+                                    var a = parseInt(x);
+                                    var ncc = document.getElementById('CourseListCode' + a).value;
+                                    $.ajax({
+                                        url: "<?php echo url::to('loadCourseAjax'); ?>",
+                                        data: {ncc: ncc, a: a},
+                                        beforeSend: function() {
+                                            document.getElementById('ajax_clc' + a).innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                        },
+                                        success: function(result) {
+                                            document.getElementById('ajax_clc' + a).innerHTML = result;
+                                            document.getElementById('add_ncc').style.visibility = 'visible';
+                                        }
+                                    });
+                                }
+
+                                $("#Province").change(function() {
+
+                                    document.getElementById('Electorate').innerHTML = "";
+                                    var province = document.getElementById('Province').value;
+									
+                                    $.ajax({
+                                        url: "<?php echo url::to('loadDistrictAjax'); ?>",
+                                        data: {prov: province},
+                                        beforeSend: function() {
+                                            document.getElementById('ajax_img3').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                        },
+                                        success: function(result) {
+                                            document.getElementById('District').innerHTML = result;
+                                        },
+                                        complete: function() {
+                                            document.getElementById('ajax_img3').innerHTML = "";
+                                        }
+                                    });
+                                });
+                                $("#District").change(function() {
+
+                                    var District = document.getElementById('District').value;
+                                    $.ajax({
+                                        url: "<?php echo url::to('loadElectorateAjax'); ?>",
+                                        data: {prov: District},
+                                        beforeSend: function() {
+                                            document.getElementById('ajax_img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                        },
+                                        success: function(result) {
+                                            document.getElementById('Electorate').innerHTML = result;
+                                        },
+                                        complete: function() {
+                                            document.getElementById('ajax_img4').innerHTML = "";
+                                        }
+                                    });
+                                });
+                                $("#load_nic_val").keyup(function() {
+
+                                    document.getElementById('NameWithInitials').value = "";
+                                    document.getElementById('FullName').value = "";
+                                    document.getElementById('Address').innerHTML = "";
+                                    document.getElementById('DOB').value = "";
+                                    document.getElementById('Gender').value = "";
+                                    document.getElementById('Age').value = "";
+                                    document.getElementById('month').value = "";
+                                    document.getElementById('days').value = "";
+                                    document.getElementById('NameWithInitialsSinhala').value = "";
+                                    document.getElementById('address_sinhala_tamil').value = "";
+                                    document.getElementById('District').innerHTML = '<option></option>';
+                                    document.getElementById('Electorate').innerHTML = '<option></option>';
+                                    document.getElementById('Grama_Sewa_Division').value = "";
+                                    document.getElementById('Tel').value = "";
+                                    document.getElementById('Tel_mob').value = "";
+                                    document.getElementById('email').value = "";
+                                    document.getElementById('nic_records').innerHTML = '';
+                                    var s_nic = document.getElementById('load_nic_val').value;
+                                    document.getElementById('load_nic_val').style.border = "1px solid #777";
+                                    if (s_nic === " ") {
+                                        document.getElementById('load_nic_val').style.border = "2px solid red";
+                                    } else if (s_nic === "") {
+                                        document.getElementById('load_nic_val').style.border = "1px solid #777";
+                                    } else if (s_nic.length < 10) {
+                                        if (isNaN(s_nic)) {
+                                            document.getElementById('load_nic_val').style.border = "2px solid red";
+                                        }
+                                    } else if (s_nic.length === 10) {
+                                        var nic = s_nic;
+                                        var myarray = new Array();
+                                        myarray = nic.split("");
+                                        if ((myarray[9] === "V")||(myarray[9] === "M")) {
+
+                                            var y = myarray[0] + myarray[1];
+                                            var d = myarray[2] + myarray[3] + myarray[4];
+                                            if (d > 0 && d <= 366) {
+                                                dob_calculate(y, d);
+                                            } else if (d >= 500 && d <= 866) {
+                                                dob_calculate(y, d);
+                                            } else {
+                                                document.getElementById('load_nic_val').style.border = "2px solid red";
+                                            }
+                                        } else if (myarray[9] === "M") {
+                                           
+                                          var y = myarray[0] + myarray[1];
+                                            var d = myarray[2] + myarray[3] + myarray[4];
+                                            if (d > 0 && d <= 366) {
+                                                dob_calculate(y, d);
+                                            } else if (d >= 500 && d <= 866) {
+                                                dob_calculate(y, d);
+                                            } else {
+                                                document.getElementById('load_nic_val').style.border = "2px solid red";
+                                            }
+                                     
+
+                                        } else{
+                                            document.getElementById('load_nic_val').style.border = "2px solid red";
+                                        }
+                                    } else if (s_nic.length > 10) {
+                                        document.getElementById('load_nic_val').style.border = "2px solid red";
+                                    }
+
+                                });
+                                function dob_calculate(y, d) {
+                                    var y = parseInt(y);
+                                    var d = parseInt(d);
+                                    var gender = '';
+                                    var my_year = 1900 + y;
+                                    var my_month = '';
+                                    var my_date = '';
+                                    if (d < 500) {
+                                        gender = 'Male';
+                                        if (d <= 31) {
+                                            my_month = '01';
+                                            my_date = d;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 60) {
+                                            my_month = '02';
+                                            my_date = d - 31;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 91) {
+                                            my_month = '03';
+                                            my_date = d - 60;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 121) {
+                                            my_month = '04';
+                                            my_date = d - 91;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 152) {
+                                            my_month = '05';
+                                            my_date = d - 121;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 182) {
+                                            my_month = '06';
+                                            my_date = d - 152;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 213) {
+                                            my_month = '07';
+                                            my_date = d - 182;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 244) {
+                                            my_month = '08';
+                                            my_date = d - 213;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 274) {
+                                            my_month = '09';
+                                            my_date = d - 244;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 305) {
+                                            my_month = '10';
+                                            my_date = d - 274;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 335) {
+                                            my_month = '11';
+                                            my_date = d - 305;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else {
+                                            my_month = '12';
+                                            my_date = d - 335;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        }
+
+                                        var dob = my_year + '-' + my_month + '-' + my_date;
+                                        document.getElementById('DOB').value = dob;
+                                        document.getElementById('Gender').value = gender;
+                                        ageCalculater(my_year, my_month, my_date);
+
+                                    } else {
+                                        gender = 'Female';
+                                        if (d <= 531) {
+                                            my_month = '01';
+                                            my_date = d - 500;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 560) {
+                                            my_month = '02';
+                                            my_date = d - 531;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 591) {
+                                            my_month = '03';
+                                            my_date = d - 560;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 621) {
+                                            my_month = '04';
+                                            my_date = d - 591;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 652) {
+                                            my_month = '05';
+                                            my_date = d - 621;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 682) {
+                                            my_month = '06';
+                                            my_date = d - 652;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 713) {
+                                            my_month = '07';
+                                            my_date = d - 682;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 744) {
+                                            my_month = '08';
+                                            my_date = d - 713;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 774) {
+                                            my_month = '09';
+                                            my_date = d - 744;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 805) {
+                                            my_month = '10';
+                                            my_date = d - 774;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 835) {
+                                            my_month = '11';
+                                            my_date = d - 805;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        } else if (d <= 866) {
+                                            my_month = '12';
+                                            my_date = d - 835;
+                                            if (my_date < 10) {
+                                                my_date = '0' + my_date;
+                                            }
+                                        }
+
+                                        var dob = my_year + '-' + my_month + '-' + my_date;
+                                        document.getElementById('DOB').value = dob;
+                                        document.getElementById('Gender').value = gender;
+                                        ageCalculater(my_year, my_month, my_date);
+                                    }
+                                }
+
+                                function ageCalculater(my_year, my_month, my_date) {
+                                    var year = '';
+                                    var month = '';
+                                    var days = '';
+                                    var y = my_year;
+                                    var m = my_month;
+                                    var d = my_date;
+
+                                    var t_day = new Date();
+                                    var d1 = t_day.getDate();
+                                    var m1 = t_day.getMonth() + 1;
+                                    var y1 = t_day.getFullYear();
+
+                                    var age_year = y1 - y;
+                                    var age_month = m1 - m;
+                                    var age_day = d1 - d;
+
+                                    if (age_day < 0 && age_month <= 0) {
+                                        year = (age_year - 1);
+                                        month = (11 + m1 - m);
+                                        days = (30 + d1 - d);
+                                        document.getElementById('Age').value = year;
+                                        document.getElementById('month').value = month;
+                                        document.getElementById('days').value = days;
+                                    } else if (age_day < 0 && age_month > 0) {
+                                        year = (age_year);
+                                        month = (m1 - m - 1);
+                                        days = (30 + d1 - d);
+                                        document.getElementById('Age').value = year;
+                                        document.getElementById('month').value = month;
+                                        document.getElementById('days').value = days;
+                                    } else if (age_day >= 0 && age_month < 0) {
+                                        year = (age_year - 1);
+                                        month = (12 + m1 - m);
+                                        days = (d1 - d);
+                                        document.getElementById('Age').value = year;
+                                        document.getElementById('month').value = month;
+                                        document.getElementById('days').value = days;
+                                    } else if (age_day >= 0 && age_month >= 0) {
+                                        year = (age_year);
+                                        month = (m1 - m);
+                                        days = (d1 - d);
+                                        document.getElementById('Age').value = year;
+                                        document.getElementById('month').value = month;
+                                        document.getElementById('days').value = days;
+                                    } else {
+
+                                    }
+
+                                    nic_data_load();
+
+                                }
+
+
+                                function nic_data_load() {
+                                    var s_nic = document.getElementById('load_nic_val').value;
+                                    document.getElementById('load_nic_val').style.border = "1px solid #777";
+                                    $.ajax({
+                                        url: "<?php echo url::to('loadNicAjax'); ?>",
+                                        data: {nic: s_nic},
+                                        beforeSend: function() {
+                                            document.getElementById('ajax_img2').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                        },
+                                        success: function(result) {
+                                            var d = result.split('|#|');
+                                            var NameWithInitials = d[0];
+                                            var FullName = d[1];
+                                            var Address = d[2];
+                                            var DOB = d[3];
+                                            var name_sin_tam = d[4];
+                                            var address_sin_tam = d[5];
+                                            var province = d[6];
+                                            var district = d[7];
+                                            var electro = d[8];
+                                            var grama = d[9];
+                                            var tel_h = d[10];
+                                            var tel_m = d[11];
+                                            var email = d[12];
+                                            var medium = d[13];
+                                            var dale = d[14];
+                                            document.getElementById('NameWithInitials').value = NameWithInitials;
+                                            document.getElementById('FullName').value = FullName;
+                                            document.getElementById('Address').innerHTML = Address;
+                                            document.getElementById('NameWithInitialsSinhala').value = name_sin_tam;
+                                            document.getElementById('address_sinhala_tamil').value = address_sin_tam;
+                                            $('#Province option[value="' + province + '"]').attr('selected', 'selected');
+                                            document.getElementById('District').innerHTML = '<option value=' + district + '>' + district + '</option>';
+                                            document.getElementById('Electorate').innerHTML = '<option value=' + electro + '>' + electro + '</option>';
+                                            document.getElementById('Grama_Sewa_Division').value = grama;
+                                            document.getElementById('Tel').value = tel_h;
+                                            document.getElementById('Tel_mob').value = tel_m;
+                                            document.getElementById('email').value = email;
+                                            $('#Medium option[value="' + medium + '"]').attr('selected', 'selected');
+                                            if (dale === "dale") {
+                                                document.getElementById('nic_records').innerHTML = '';
+                                            } else {
+                                                document.getElementById('nic_records').innerHTML = dale;
+                                            }
+                                        },
+                                        complete: function() {
+                                            document.getElementById('ajax_img2').innerHTML = "";
+                                        }
+                                    });
+                                }
+
+
+                                $(".num_inp").keyup(function() {
+
+                                    var a = $(this).val();
+                                    if (isNaN(a)) {
+                                        $(this).val('');
+                                        alert('Plz,Input Numbers Only!');
+                                    }
+
+                                });
+
+
+</script>
+
+
+
+
+
+
+
+
+

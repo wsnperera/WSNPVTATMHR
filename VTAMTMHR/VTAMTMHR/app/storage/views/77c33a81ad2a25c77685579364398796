@@ -1,0 +1,214 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>      
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('ViewModuleTask'); ?>> << Back to Module Task</a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>Training Material Process List<small><i class="icon-double-angle-right"></i>View</small></h1>
+        </div>
+        <form name='search' action="<?php echo url('CreateTMTaskList'); ?>" method='get' class="form-horizontal">
+
+            
+             <button type="submit" id="submit" class="btn btn-primary">
+                            Create Process</button>
+           
+        </form>
+        <hr/>
+       
+
+       
+        <div class="span10">
+            <!--PAGE CONTENT BEGINS-->
+             <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                 <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Process Name In English</th>
+                            <th>Process Name In Sinhala</th>
+                            <th>Active Status</th>
+							<th>Course Started Affectiveness</th>
+                            <th>Remove</th>
+                           
+                        </tr>
+                 </thead>
+                 <tbody>
+                    <?php
+                        $i = 1;
+                    ?>
+                <?php if(isset($quorga)): ?>
+                    <?php foreach($quorga as $mc): ?>
+                    <tr>
+                        <!--<td><b><u><a href="<?php echo url('editModuleCourse?id='.$mc->id); ?>"><?php echo $mc->id; ?></a></u><b></td>-->
+                       <td><?php echo $i++; ?></td>
+                       <td><?php echo $mc->TaskNameInEnglish; ?></td>
+                       <td><?php echo $mc->TaskNameInSinhala; ?></td>
+                      
+                         <td class='center'><?php if($mc->Active == 1): ?>
+								  <font color="green"><a class="green"  id="<?php echo $mc->id; ?>"> <i class="icon-ok bigger-180"></i></a></font><br/>
+							  <?php else: ?> 
+								  <font color="red"><a class="red"  id="<?php echo $mc->id; ?>"> <i class="icon-remove bigger-180"></i></a></font>
+							  <?php endif; ?></td>
+							   <td class='center'><?php if($mc->CourseStartedEffectiveness == 1): ?>
+								  <font color="green"> <i class="icon-ok bigger-180"></i></font><br/>
+							  <?php else: ?> 
+								  <font color="red"> <i class="icon-remove bigger-180"></i></font>
+							  <?php endif; ?></td>
+                      
+                      <td class='center'><form id="deleteform"  action='DeleteTMTaskList' method="POST" onsubmit="return doConfirm('<?php echo $mc->TaskNameInSinhala; ?>',this)">
+                                <input type="hidden" name='id' value="<?php echo $mc->id; ?>" />
+                                <button type="submit" class="btn btn-danger btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                            </form>
+                        </td>
+                       
+                   </tr>
+                        <?php endforeach; ?>
+                    
+                <?php endif; ?>
+        </tbody>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+             <div class="span4" id="ajaxerror">
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-ok"></i>
+                   
+                    <?php echo Session::get('done'); ?>
+                </strong>
+                <br>
+            </div>
+            <?php endif; ?>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+
+        </div>
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+     
+
+    function doConfirm(course,formobj)  {
+        bootbox.confirm("Are you sure you want to remove "+course, function(result) 
+        {
+            if(result) 
+            {
+                formobj.submit();
+            }
+         });
+         return false;  // by default do nothing hack :D
+     }
+     
+      <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Module Course Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+$('#sample-table-2').dataTable({
+    "aoColumns": [
+            {"bSortable": false}, 
+            null, 
+              null,
+             null, 
+              null,null,
+             
+              
+             
+             
+             
+    ]});
+    
+            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+            function tooltip_placement(context, source) {
+            var $source = $(source);
+                    var $parent = $source.closest('table')
+                    var off1 = $parent.offset();
+                    var w1 = $parent.width();
+                    var off2 = $source.offset();
+                    var w2 = $source.width();
+                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                    return 'right';
+                    return 'left';
+            }
+
+
+  $(".green").click(function(){
+
+     var id = this.id;
+     //alert(id);
+
+
+     $.ajax  ({
+                    url: "<?php echo url::to('TMProcessActiveStatus'); ?>",
+                    data: { id: id},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       location.reload();          
+                        
+                        }
+
+
+                    
+                });
+  
+});
+$(".red").click(function(){
+
+     var id = this.id;
+     //alert(id);
+
+
+     $.ajax  ({
+                    url: "<?php echo url::to('TMProcessActiveStatus1'); ?>",
+                    data: { id: id},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       location.reload();          
+                        
+                        }
+
+
+                    
+                });
+  
+});
+
+
+ </script>

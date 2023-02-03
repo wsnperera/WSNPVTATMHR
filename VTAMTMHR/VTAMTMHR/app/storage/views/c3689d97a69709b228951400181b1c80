@@ -1,0 +1,144 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<!--<a href="<?php echo url('empAttendanceReport'); ?>">
+   Back to Attendance Home
+</a>-->
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Attendance			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Employee In Out Times
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+             
+            <form action="<?php echo url('ViewStudentReport'); ?>" method="POST" id="form_go">
+                <table>
+                    <tr>
+                        <td><label class="control-label">StartDate :</label></td>
+                        <td>
+                            <input type="date" id="startdate" name="startdate" style="width: 150px; margin: 0"  required />&nbsp;&nbsp;
+                        </td>
+                    
+                        <td>&nbsp;&nbsp;</td>
+                        <td><label class="control-label">EndDate</label></td>
+                        <td><input type="date" id="enddate" name="enddate" style="width: 150px; margin: 0"  required />&nbsp;&nbsp;</td>
+                       
+                         
+                           <td><label class="control-label" style="width: 100px; margin: 0" >Select Organization</label></td>
+                         <td>
+                          
+                            
+                             <select name="organization" id="organization" style="width: 200px; margin: 0" >
+                              <option value="">Select Organization</option>
+                               <?php foreach($organizations as $org): ?>
+                              <option value="<?php echo $org->OrgaName; ?>"><?php echo $org->OrgaName; ?></option>
+                               <?php endforeach; ?>
+                             </select>
+                     
+                          
+                         </td>
+                        <td><button type="button" name="sh" id="sh"  class="btn btn-primary dropdown-toggle btn-small "  >Search</button></td>
+                    </tr>
+                </table>
+                </form>
+            <div id='img4'></div>
+            <div id="tbl"></div>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+function table(){
+    $('#sample-table-2').dataTable({
+        "bPaginate": false,
+        "aoColumns": [
+           null, {"bSortable": false}, {"bSortable": false},null, {"bSortable": false}, {"bSortable": false},{"bSortable": false}
+        ]});
+}
+</script>
+<script type="text/javascript">
+ 
+$('#sh').click(function()
+    {
+         var startdate = $("#startdate").val();
+          var enddate = $("#enddate").val();
+           var organization = $("#organization").val(); 
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                           //alert(1);
+                            document.getElementById('img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+                        type: "POST",
+                        url: "<?php echo Url('employeeInOutTimesTable'); ?>",
+                        data: {startdate: startdate,enddate:enddate,organization:organization},
+                        success: function(result)
+                        {
+                           //alert(result);
+                           $('#tbl').html(result);
+                            table();
+                            //downloadReport();
+                          
+                           //document.getElementById('tbl').innerHTML =result;
+                            
+                           //alert(1);
+                        },
+                        complete: function() {
+                            document.getElementById('img4').innerHTML ="";
+                               //location.reload();  
+                        }
+                    });
+        }
+    
+    );
+
+
+</script>
+<script>
+function downloadReport() {
+        var startdate = $("#startdate").val();
+          var enddate = $("#enddate").val();
+        var organization= $("#organization").val();
+
+        window.location.replace("employeeInOutTimesTableDownload?startdate=" + startdate + "&enddate=" + enddate + "&organization=" + organization + "");
+        
+
+
+    }
+
+</script>
+<script>
+$('#startdate').change(function()
+{
+    
+    $('#tbl').html(""); 
+}
+ );
+ $('#enddate').change(function()
+{
+    
+    $('#tbl').html(""); 
+}
+ );
+
+
+</script>
+

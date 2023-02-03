@@ -1,0 +1,373 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<a href="<?php echo url('viewEmployee'); ?>"> << Back to Employee </a> 
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Employee		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+
+            <!--Write your code here start-->
+            <form class="form-horizontal"  enctype="multipart/form-data" method="POST" action="<?php echo url('Photo_Of_Employee'); ?>">
+                <h4 style="text-align: right"> <b style="color: red">*</b></<b>Required/Mandatory Fields </b></h4>
+
+                <input type="hidden" name="id" value="<?php echo $Employee->id; ?> "/>
+                <div class="control-group" >
+                    <label class="control-label" for="Photograph">Photograph</label>
+                    <div class="controls">
+                        <img src="<?php echo $Employee->Photograph; ?>"  height="800" width="200" alt="Image preview..." id="Preview" > <br> 
+                        <span><input type="file" name="Photograph" id="Photograph"></span><br>
+                        <input type="submit" value="Upload"/>
+                    </div>
+                </div>
+            </form>
+
+            <div class="page-header position-relative"></div>
+            <form class="form-horizontal" action="<?php echo url('editEmployee'); ?>" method="POST" />
+            <input type="hidden" name="id" value="<?php echo $Employee->id; ?> "/>
+            <br/>
+
+            <div class="control-group">
+                <label class="control-label" for="InstituteId">Institute Name</label>
+                <div class="controls">
+                    <input type="text"  disabled="true" value="<?php echo $institute; ?>"/>
+                    <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="OrgId">Organization Name</label>
+                <div class="controls">
+                    <select name="OrgId" id="OrgId" required>
+                        <option <?php if($Employee->OrgId == ""): ?> selected <?php endif; ?>  value="">--Select--</option>
+                        <?php foreach ($organisation as $o): ?>
+                        <option <?php if($o->id == $Employee->OrgId): ?> selected <?php endif; ?>  value="<?php echo $o->id; ?>"><?php echo $o->OrgaName; ?></option>
+                        <?php endforeach; ?>
+                    </select><b style="color: red">*</b>
+
+                </div>
+            </div>
+
+            <div class="page-header position-relative"></div>
+            <b>Personal Details</b>
+            <div class="control-group">
+                <label class="control-label" for="NIC">NIC</label>
+                <div class="controls">
+                    <input type="text" name="NIC" value="<?php echo $Employee->NIC; ?>" readonly/><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="EPFNo">Employee Reference No</label>
+                <div class="controls">
+                    <input type="text" name="EPFNo" value="<?php echo $Employee->EPFNo; ?>" required /><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="Initials">Initials</label>
+                <div class="controls">
+                    <input type="text" name="Initials" value="<?php echo $Employee->Initials; ?>" required/><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="Name">Name</label>
+                <div class="controls">
+                    <input type="text" name="Name" value="<?php echo $Employee->Name; ?>" required/><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="LastName">Last Name</label>
+                <div class="controls">
+                    <input type="text" name="LastName" value="<?php echo $Employee->LastName; ?>" required/><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="Sex">Sex</label>
+                <div class="controls">
+                    <select name="Sex">
+                        <option <?php if($Employee->Sex == "Male"): ?> selected value="<?php echo $Employee->Sex; ?>" <?php endif; ?>>Male</option>
+                        <option <?php if($Employee->Sex == "Female"): ?> selected value="<?php echo $Employee->Sex; ?>" <?php endif; ?>>Female</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="DOB">DOB</label>
+                <div class="controls">
+                    <input type="text" name="DOB" value="<?php echo $Employee->DOB; ?>" readonly/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="CivilStatus">Civil Status</label>
+                <div class="controls">
+                    <select  id="CivilStatus" onchange="change()" required>
+                        <option <?php if($Employee->CivilStatus == "Married"): ?> selected value="<?php echo $Employee->CivilStatus; ?>" <?php endif; ?>>Married</option>
+                        <option <?php if($Employee->CivilStatus == "Unmarried"): ?> selected value="<?php echo $Employee->CivilStatus; ?>" <?php endif; ?>>Unmarried</option>
+                        <option <?php if($Employee->CivilStatus == "Divorced"): ?> selected value="<?php echo $Employee->CivilStatus; ?>" <?php endif; ?>>Divorced</option>
+                        <option <?php if($Employee->CivilStatus == "Widow/Widower"): ?> selected value="<?php echo $Employee->CivilStatus; ?>" <?php endif; ?>>Widow/Widower</option>
+                        <option>Other</option>
+                        <?php if($Employee->CivilStatus !== "Unmarried" && $Employee->CivilStatus !== "Married" && $Employee->CivilStatus !== "Divorced" && $Employee->CivilStatus !== "Widow/Widower"): ?> 
+                        <option selected value="<?php echo $Employee->CivilStatus; ?>" ><?php echo $Employee->CivilStatus; ?></option>
+                        <?php endif; ?>
+                    </select>
+                    <b style="color: red">*</b>
+                    <span id="con_cs"></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="Race">Race</label>
+                <div class="controls">
+                    <select   id="Race" onchange="race()" required>
+                        <option >Choose</option>
+                        <option <?php if($Employee->Race == "Sinhalese"): ?> selected value="<?php echo $Employee->Race; ?>" <?php endif; ?>>Sinhalese</option>
+                        <option <?php if($Employee->Race == "Tamil"): ?> selected value="<?php echo $Employee->Race; ?>" <?php endif; ?>>Tamil</option>
+                        <option <?php if($Employee->Race == "Muslim"): ?> selected value="<?php echo $Employee->Race; ?>" <?php endif; ?>>Muslim</option>
+                        <option <?php if($Employee->Race == "Burger"): ?> selected value="<?php echo $Employee->Race; ?>" <?php endif; ?>>Burger</option>
+                        <option >Other</option>
+                        <?php if($Employee->Race !=="Sinhalese" && $Employee->Race !=="Tamil" && $Employee->Race !== "Muslim" && $Employee->Race !== "Burger"): ?> 
+                        <option selected value="<?php echo $Employee->Race; ?>" ><?php echo $Employee->Race; ?></option>
+                        <?php endif; ?>
+                    </select>
+                    <b style="color: red">*</b>
+                    <span id="container"></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="Religion">Religion</label>
+                <div class="controls">
+                    <select  id="Religion"  onchange="change3()" required>
+                        <option>Choose</option>
+                        <option <?php if($Employee->Religion == "Buddhism"): ?> selected value="<?php echo $Employee->Religion; ?>" <?php endif; ?>>Buddhism</option>
+                        <option <?php if($Employee->Religion == "Islam"): ?> selected value="<?php echo $Employee->Religion; ?>" <?php endif; ?>>Islam</option>
+                        <option <?php if($Employee->Religion == "Hinduism"): ?> selected value="<?php echo $Employee->Religion; ?>" <?php endif; ?>>Hinduism</option>
+                        <option <?php if($Employee->Religion == "Christianity"): ?> selected value="<?php echo $Employee->Religion; ?>" <?php endif; ?>>Christianity</option>
+                        <option>Other</option>
+                        <?php if ($Employee->Religion !== "Hinduism" && $Employee->Religion !== "Christianity" && $Employee->Religion == "Buddhism" && $Employee->Religion == "Islam"): ?>
+                        <option selected value="<?php echo $Employee->Religion; ?>"><?php echo $Employee->Religion; ?></option>
+                        <?php endif; ?>
+                    </select>
+                    <b style="color: red">*</b>
+                    <span id="con_cs3"></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="BloodGroup">Blood Group</label>
+                <div class="controls">
+                    <select  name="BloodGroup" id="BloodGroup" onchange="change()">
+                        <option <?php if($Employee->BloodGroup == ""): ?> selected value=" " <?php endif; ?>></option>
+                        <option <?php if($Employee->BloodGroup == "A+"): ?> selected value="<?php echo $Employee->BloodGroup; ?>" <?php endif; ?>>A+</option>
+                        <option <?php if($Employee->BloodGroup == "B-"): ?> selected value="<?php echo $Employee->BloodGroup; ?>" <?php endif; ?>>B+</option>
+                        <option <?php if($Employee->BloodGroup == "O+"): ?> selected value="<?php echo $Employee->BloodGroup; ?>" <?php endif; ?>>O+</option>
+                        <option <?php if($Employee->BloodGroup == "AB+"): ?> selected value="<?php echo $Employee->BloodGroup; ?>" <?php endif; ?>>AB+</option>
+                        <option <?php if($Employee->BloodGroup == "A-"): ?> selected value="<?php echo $Employee->BloodGroup; ?>" <?php endif; ?>>A-</option>
+                        <option <?php if($Employee->BloodGroup == "B-"): ?> selected value="<?php echo $Employee->BloodGroup; ?>" <?php endif; ?>>B-</option>
+                        <option <?php if($Employee->BloodGroup == "O-"): ?> selected value="<?php echo $Employee->BloodGroup; ?>" <?php endif; ?>>O-</option>
+                        <option <?php if($Employee->BloodGroup == "AB-"): ?> selected value="<?php echo $Employee->BloodGroup; ?>" <?php endif; ?>>AB-</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="PassportNo">Passport No</label>
+                <div class="controls">
+                    <input type="text" name="PassportNo" value="<?php echo $Employee->PassportNo; ?>"/>
+                    <span>Expiry Date<input type="date" name="ExpiryDate" value="<?php echo $Employee->ExpiryDate; ?>"/></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="PAddress">Permanent Address</label>
+                <div class="controls">
+                    <textarea rows="5" name="PAddress" required><?php echo $Employee->PAddress; ?></textarea><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="CAddress">Current Address</label>
+                <div class="controls">
+                    <textarea rows="5" name="CAddress" value=""><?php echo $Employee->CAddress; ?></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="DistrictName">District Name</label>
+                <div class="controls">
+                    <select name="DistrictName" id="DistrictName" required>
+                        <?php foreach ($holidaytypes as $i): ?>
+                        <option <?php if($i->DistrictCode==$Employee->DistrictName): ?> selected <?php endif; ?>  value="<?php echo $i->DistrictCode; ?>"><?php echo $i->DistrictName; ?></option>
+                        <?php endforeach; ?>
+                    </select><b style="color: red">*</b>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="DSDivision">DS Division</label>
+                <div class="controls" id="dis_load">
+                    <select name="DSDivision"  id="DSDivision" required> 
+                        <option>--Select--</option>
+                        <?php foreach($Electorate as $e): ?>
+                        <option <?php if($e->ElectorateCode == $Employee->DSDivision): ?> selected <?php endif; ?> value="<?php echo $e->ElectorateCode; ?>"><?php echo $e->ElectorateName; ?></option>
+                        <?php endforeach; ?>
+                    </select><b style="color: red">*</b>
+                </div>
+
+            </div>
+            <div class="page-header position-relative"></div>
+            <b>Contact Details</b>
+
+            <div class="control-group">
+                <label class="control-label" for="Mobile">Personal Mobile</label>
+                <div class="controls">
+                    <input type="text" name="Mobile" value="<?php echo $Employee->Mobile; ?>"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="Email">Personal Email</label>
+                <div class="controls">
+                    <input type="text" name="Email" value="<?php echo $Employee->Email; ?>"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="Contact">Residence TP</label>
+                <div class="controls">
+                    <input type="text" name="Contact" value="<?php echo $Employee->Contact; ?>"/>
+                </div>
+            </div>
+              <div class="page-header position-relative"></div>
+            <b>If any Emergency, Contact Person...</b>
+            <div class="control-group">
+                <label class="control-label" for="Emergency">Name</label>
+                <div class="controls">
+                    <input type="text" name="EmergencyName" required value="<?php echo $Employee->EmergencyName; ?>" required /><b style="color: red">*</b>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="Emergency"> Contact No</label>
+                <div class="controls">
+                    <input type="tel" name="Emergency" required value="<?php echo $Employee->Emergency; ?>"/><b style="color: red">*</b>
+                </div>
+            </div>
+            
+            <div class="page-header position-relative"></div>
+            <div class="control-group">
+                <label class="control-label" for="Trade">Trade</label>
+                <div class="controls">
+                    <select name="Trade" id="Trade">
+                        <option <?php if($Employee->Trade == "No Trade"): ?> selected value="<?php echo $Employee->Trade; ?>" <?php endif; ?>>No Trade</option>
+                        <?php foreach ($trade as $t): ?>
+                        <option <?php if($t->TradeCode==$Employee->Trade): ?> selected <?php endif; ?> name="Trade" value="<?php echo $t->TradeCode; ?>"><?php echo $t->TradeName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="page-header position-relative"></div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-small btn-primary">Update</button>
+                </div>
+            </div>
+            </form>
+        </div>
+        <!--/span 4 for error handling -->
+
+        <div class="span4">
+
+
+
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type="text/javascript">
+    $("#DistrictName").change(function() {
+        var epf = document.getElementById('DistrictName').value;
+        $.ajax({
+            url: "<?php echo url::to('employeeajax'); ?>",
+            data: {DistrictName: epf},
+            success: function(result)
+            {
+                document.getElementById('dis_load').innerHTML = result;
+            }
+        });
+    });
+
+    $("#Photograph").change(function() {
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#Preview').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+    function race() {
+        var a = document.getElementById('Race').value;
+        var divv = document.getElementById("container");
+        if (a === 'Other') {
+            toAppend = "<input type='text'name='Race'placeholder='Please Specify...!' >";
+            divv.innerHTML = toAppend;
+            return;
+        } else {
+            divv.innerHTML = "<input type='hidden' name='Race' value='" + a + "'/>";
+        }
+    }
+
+    function change() {
+        var civil = document.getElementById("CivilStatus").value;
+        var divv = document.getElementById("con_cs");
+        if (civil === 'Other') {
+            toAppend = "<input type='text' name='CivilStatus' placeholder='Please Specify...!' >";
+            divv.innerHTML = toAppend;
+            return;
+        } else {
+            divv.innerHTML = "<input type='hidden' name='CivilStatus' value='" + civil + "'/>";
+        }
+    }
+
+    function change3() {
+        var religion = document.getElementById("Religion").value;
+        var divv = document.getElementById("con_cs3");
+        if (religion === 'Other') {
+            toAppend = "<input type='text' name='Religion' placeholder='Please Specify...!' >";
+            divv.innerHTML = toAppend;
+            return;
+        } else {
+            divv.innerHTML = "<input type='hidden' name='Religion' value='" + religion + "'/>";
+        }
+    }
+
+</script>
+

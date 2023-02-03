@@ -1,0 +1,626 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Trainee     
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>            
+                </h1>
+            </div>
+
+            <form class="form-horizontal" action="<?php echo url('EditTraineeView'); ?>" method="POST"/>
+
+
+
+            <input type="hidden" name="id" value="<?php echo $id; ?>" />
+
+
+  
+
+
+           
+           
+            
+            
+            <div class="control-group">
+
+                <label class="control-label" for="Year">Year</label>
+
+                <div class="controls">
+                    <input type="text" id="Year" name="Year" value="<?php echo $applicant->Year; ?>" readonly="true"/>
+                </div>
+
+            </div>
+
+            <hr/>
+            
+
+            <div class="control-group">
+
+                <label class="control-label" for="NIC">NIC</label>
+
+                <div class="controls">
+                    <input type="text" name="NIC" value="<?php echo $applicant->NIC; ?>" id="load_nic_val" readonly="true" required/>
+                    
+                </div>
+
+            </div>
+
+         
+
+            <div class="control-group">
+
+                <label class="control-label" for="NameWithInitials">Name With Initials</label>
+
+                <div class="controls">
+                    <input type="text" name="NameWithInitials" value="<?php echo $applicant->NameWithInitials; ?>" required/>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="FullName">Full Name</label>
+
+                <div class="controls">
+                    <textarea  name="FullName"  required><?php echo $applicant->FullName; ?></textarea>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="Address">Address</label>
+
+                <div class="controls">
+                    <textarea name="Address" required><?php echo $applicant->Address; ?></textarea>
+                </div>
+
+            </div>
+            
+            
+            
+            <div class="control-group">
+
+                 <label class="control-label" for="DOB">DOB</label>
+
+                            <div class="controls">
+                                <input type="text" name="DOB" id="DOB" readonly value="<?php echo $applicant->DOB; ?>"/>
+                            </div>
+
+            </div>
+            
+           
+
+            <div class="control-group">
+
+                <label class="control-label" for="Gender">Gender</label>
+
+                <div class="controls">
+
+                    
+
+              
+                    <input type="text" name="Gender" readonly id="Gender" value="<?php echo $applicant->Gender; ?>"/>
+               
+
+                </div>
+
+            </div>
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="Province">Province</label>
+
+                <div class="controls">
+                    <select name="Province" id="Province">
+                        <?php foreach ($province as $p): ?>
+
+                        <option <?php if($p->ProvinceCode == $applicant->Province): ?> selected  <?php endif; ?> value="<?php echo $p->ProvinceCode; ?>"><?php echo $p->ProvinceName; ?></option>
+
+                        <?php endforeach; ?>                    
+                    </select>
+                     <span id="ajax_img3"></span>
+                </div>
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="District">District</label>
+
+                <div class="controls" id="dis_load">
+                    <select name="District" id="District">
+                        <?php foreach ($district as $d): ?>
+                        <option <?php if($d->DistrictCode == $applicant->District): ?> selected  <?php endif; ?> value="<?php echo $d->DistrictCode; ?>"><?php echo $d->DistrictName; ?></option>
+                         <?php endforeach; ?>   
+                    </select>
+                    <span id="ajax_img4"></span>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="Electorate">DS Division</label>
+
+                <div class="controls" id="elec_load">
+                    <select name="Electorate" id="Electorate">
+                        <?php foreach ($electorate as $e): ?>
+                        <option <?php if($e->ElectorateCode == $applicant->Electorate): ?> selected  <?php endif; ?> value="<?php echo $e->ElectorateCode; ?>"><?php echo $e->ElectorateName; ?></option>
+                        <?php endforeach; ?>                  
+                    </select>
+                </div>
+            </div>
+         
+            <div class="control-group">
+
+                <label class="control-label" for="Tel">Telephone(Home)</label>
+
+                <div class="controls">
+                    <input type="text" name="Tel" value="<?php echo $applicant->Tel; ?>" class="num_inp"/>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="Tel">Telephone(Mobile)</label>
+
+                <div class="controls">
+                    <input type="text" name="Tel_mob"  value="<?php echo $applicant->Tel_mob; ?>" class="num_inp" required/>
+                </div>
+
+            </div>
+           
+            
+            
+            
+            
+        
+   
+           
+           
+            <hr/>
+            
+
+
+
+            <div class="control-group">
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Update</button>
+
+                </div>
+            </div>
+
+
+
+
+            </form>
+
+
+        </div>
+
+
+
+        <div class="span4">
+
+            <!-- Error Handling -->
+
+            <?php if($errors->has()): ?>
+
+            <?php foreach($errors->all() as $msg): ?>
+
+            <!-- Error Message -->
+
+            <div class="alert alert-error">
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+            </div>
+
+            <!-- Error Message -->
+
+            <?php endforeach; ?>
+
+            <?php endif; ?>
+
+            <!-- Error Handling -->
+
+        </div>
+    </div>
+</div>
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+
+
+
+
+
+
+    function qualified() {
+
+        var ss = document.getElementById('qualif').value;
+
+        if (ss === "YES") {
+            document.getElementById('reason').innerHTML = "<input type=\"hidden\" name=\"Reason\" value=\"Null\"/>";
+        } else if (ss === "NO") {
+            document.getElementById('reason').innerHTML = s;
+        }
+    }
+
+    function reason() {
+        var rr = "<div class=\"control-group\">\n" +
+                "<label class=\"control-label\">Reason</label>\n" +
+                "<div class=\"controls\">\n" +
+                "<input type=\"text\" name=\"Reason\"  />\n" +
+                "<input type=\"button\" value=\"X\" onclick=\"abc()\" />\n" +
+                "</div>\n" +
+                "</div>";
+        var r = document.getElementById('reason_list').value;
+        if (r === "Other") {
+            document.getElementById('reason').innerHTML = rr;
+        }
+    }
+    function abc() {
+        document.getElementById('reason').innerHTML = s;
+    }
+
+    $("#CourseCode").change(function() {
+
+        var courseCode = document.getElementById('CourseCode').value;
+        $.ajax({
+            url: "<?php echo url::to('loadCourseAjax'); ?>",
+            data: {courseCode: courseCode},
+            success: function(res) {
+                var dale = res.split(',');
+                var cl_code = dale[0];
+                var cy_start = dale[1];
+
+                document.getElementById('CourseListCode').value = cl_code;
+                document.getElementById('Year').value = cy_start;
+            }
+        });
+    }
+    );
+  
+    $("#Province").change(function() {
+
+        document.getElementById('Electorate').innerHTML = "";
+        var province = document.getElementById('Province').value;
+        $.ajax({
+            url: "<?php echo url::to('loadDistrictAjax'); ?>",
+            data: {prov: province},
+            beforeSend: function() {
+                document.getElementById('ajax_img3').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+            },
+            success: function(result) {
+                document.getElementById('District').innerHTML = result;
+            },
+            complete: function() {
+                document.getElementById('ajax_img3').innerHTML = "";
+            }
+        });
+    });
+
+$("#District").change(function() {
+
+        var District = document.getElementById('District').value;
+        $.ajax({
+            url: "<?php echo url::to('loadElectorateAjax'); ?>",
+            data: {prov: District},
+            beforeSend: function() {
+                document.getElementById('ajax_img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+            },
+            success: function(result) {
+                document.getElementById('Electorate').innerHTML = result;
+            },
+            complete: function() {
+                document.getElementById('ajax_img4').innerHTML = "";
+            }
+        });
+    });
+     $("#load_nic_val").keyup(function() {
+
+     /*   document.getElementById('NameWithInitials').value = "";
+        document.getElementById('FullName').value = "";
+        document.getElementById('Address').innerHTML = "";
+        document.getElementById('DOB').value = "";
+        document.getElementById('Gender').value = "";
+        document.getElementById('Age').value = "";
+        document.getElementById('month').value = "";
+        document.getElementById('days').value = "";
+        $('#Province option[value=""]').attr('selected', 'selected');
+        document.getElementById('District').innerHTML = '<option value=""></option>';
+        document.getElementById('Electorate').innerHTML = '<option value=""></option>';
+        //document.getElementById('Grama_Sewa_Division').value = '';
+        document.getElementById('Tel').value = '';
+        document.getElementById('Tel_mob').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('nic_records').innerHTML = '';*/
+        var s_nic = document.getElementById('load_nic_val').value;
+        //alert(s_nic);
+        document.getElementById('load_nic_val').style.border = "1px solid #777";
+        if (s_nic === " ") {
+            document.getElementById('load_nic_val').style.border = "2px solid red";
+        } else if (s_nic === "") {
+            document.getElementById('load_nic_val').style.border = "1px solid #777";
+        } else if (s_nic.length < 10) {
+            if (isNaN(s_nic)) {
+                document.getElementById('load_nic_val').style.border = "2px solid red";
+            }
+        } else if (s_nic.length === 10) {
+            var nic = s_nic;
+            var myarray = new Array();
+            myarray = nic.split("");
+            if (myarray[9] === "V" || myarray[9] === "X" || myarray[9] === "M") {
+
+                var y = myarray[0] + myarray[1];
+                var d = myarray[2] + myarray[3] + myarray[4];
+                dob_calculate(y, d);
+            } else {
+                document.getElementById('load_nic_val').style.border = "2px solid red";
+            }
+        } else if (s_nic.length > 10) {
+            document.getElementById('load_nic_val').style.border = "2px solid red";
+        }
+
+    });
+     function dob_calculate(y, d) {
+     
+     
+        var y = y;
+        var d = d;
+        //alert(d);
+        var gender = '';
+        var my_year = 19 + y;
+        var my_month = '';
+        var my_date = '';
+        if (d < 500) {
+            gender = 'Male';
+            if (d <= 31) {
+                my_month = '01';
+                my_date = d;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 60) {
+                my_month = '02';
+                my_date = d - 31;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 91) {
+                my_month = '03';
+                my_date = d - 60;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 121) {
+                my_month = '04';
+                my_date = d - 91;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 152) {
+                my_month = '05';
+                my_date = d - 121;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 182) {
+                my_month = '06';
+                my_date = d - 152;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 213) {
+                my_month = '07';
+                my_date = d - 182;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 244) {
+                my_month = '08';
+                my_date = d - 213;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 274) {
+                my_month = '09';
+                my_date = d - 244;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 305) {
+                my_month = '10';
+                my_date = d - 274;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 335) {
+                my_month = '11';
+                my_date = d - 305;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else {
+                my_month = '12';
+                my_date = d - 335;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            }
+
+            var dob = my_year + '-' + my_month + '-' + my_date;
+            document.getElementById('DOB').value = dob;
+            document.getElementById('Gender').value = gender;
+            //ageCalculater(my_year, my_month, my_date);
+
+        } else {
+            gender = 'Female';
+            if (d <= 531) {
+                my_month = '01';
+                my_date = d - 500;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 560) {
+                my_month = '02';
+                my_date = d - 531;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 591) {
+                my_month = '03';
+                my_date = d - 560;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 621) {
+                my_month = '04';
+                my_date = d - 591;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 652) {
+                my_month = '05';
+                my_date = d - 621;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 682) {
+                my_month = '06';
+                my_date = d - 652;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 713) {
+                my_month = '07';
+                my_date = d - 682;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 744) {
+                my_month = '08';
+                my_date = d - 713;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 774) {
+                my_month = '09';
+                my_date = d - 744;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 805) {
+                my_month = '10';
+                my_date = d - 774;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else if (d <= 835) {
+                my_month = '11';
+                my_date = d - 805;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            } else {
+                my_month = '12';
+                my_date = d - 835;
+                if (my_date < 10) {
+                    my_date = '0' + my_date;
+                }
+            }
+
+            var dob = my_year + '-' + my_month + '-' + my_date;
+            document.getElementById('DOB').value = dob;
+            document.getElementById('Gender').value = gender;
+            //ageCalculater(my_year, my_month, my_date);
+        }
+    }
+
+$(".num_inp").keyup(function (){
+
+var a = $(this).val();
+if(isNaN(a)){
+    $(this).val('');
+    alert('Plz,Input Numbers Only!');
+}
+});
+
+///////////////////////////////////
+$("#CourseListCode").change(function()
+                    {
+
+                       
+                         var Course = $("#CourseListCode").val();
+                         
+                         
+                         
+            
+                         
+                        //alert(Course);
+                        
+                        
+                        $("#CenterId").html('');
+
+                        
+                        
+                            $.ajax
+                                ({
+                                    type: "GET",
+                                    dataType : "json",
+                                    url: "<?php echo Url('getcouersCenter'); ?>",
+                                    data: {Courseid: Course},
+                                    
+                                    success: function(result)
+                                    {
+                                        //alert('result');
+                                        
+                                            //alert('ddddddddddd');
+                                            //$('#table').html(result);
+                                            //alert('dddddddddd');
+                                            
+                                         $("#CenterId").append("<option value=\"\">select Center</option>");
+                                        $.each(result, function(i, item)
+                                        {
+
+                                            //alert('item');
+
+                                            $("#CenterId").append("<option value=" + item.id + ">" +item.OrgaName + "</option>");
+
+
+
+                                        });
+
+
+
+                                        
+
+
+                                    }
+                                });
+                        
+
+                            
+
+
+                    });
+
+</script>

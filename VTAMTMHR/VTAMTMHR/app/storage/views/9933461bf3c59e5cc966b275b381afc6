@@ -1,0 +1,75 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    A/L Result			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Home
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+            <table>
+                <tr>
+                    <td><h3 style="color: lightsteelblue">View Result</h3></td>
+                </tr>
+                <form name="viewalresult" action="<?php echo url('viewALResult'); ?>" method="get">
+                    <tr>
+                        <td> NIC/EPF No/Training No:</td>
+                        <td><input type="text" name="aplicantnic"/><br/></td>
+                    </tr>
+                    <tr>
+                        <td class="right-align">
+                            <div class="controls">
+                                <button type="submit" name="button" value="add">Add Results</button>
+                            </div>
+                        </td>
+                        <td class="right">
+                            <div class="controls">
+                                <button type="submit" name="button" value="view">View Results</button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+        <div class="span4">
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error">
+                <strong> <i class="icon-remove"></i> <?php echo Session::get('message'); ?></strong>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error">
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+    function confirmSubmit()
+    {
+        var agree = confirm("Are you sure you wish to continue?");
+        if (agree)
+            return true;
+        else
+            return false;
+    }
+</script>

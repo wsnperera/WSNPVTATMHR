@@ -1,0 +1,193 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<a href=<?php echo url('viewstaffdevelopment'); ?>> << Back to Employee Development </a> 
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Employee			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Development
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+  <div class="page-header position-relative"></div>
+            <form class="form-horizontal" action="<?php echo url('createStaffdevelopment'); ?>" method="POST" />
+            
+            <div class="control-group">
+                <label class="control-label" for="instituteId">Institute Name</label>
+                <div class="controls">
+                    <input type="text"  readonly="readonly" value="<?php echo $institute; ?>"/>
+                    <input type="hidden" name="instituteId" value="<?php echo $in_id; ?>"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="organisationId"> Organization Name</label>
+                <div class="controls">
+                    <input type="text" readonly="readonly" value="<?php echo $organization; ?>"/>
+                    <input type="hidden" name="organisationId" value="<?php echo $og_id; ?>"/>
+                </div>
+            </div>
+            <div class="page-header position-relative"></div>
+            
+            <div class="control-group">
+                <label class="control-label" for="EduProName">Education Program Name</label>
+                <div class="controls">
+                     <select  id="EduProName" required="required" onchange="sdpName()">
+                        <option></option>
+                        <?php foreach ($staffeducationprogram as $sep): ?>
+                        <option value="<?php echo $sep->SEP_Name; ?>"><?php echo $sep->SEP_Name; ?></option>
+                        <?php endforeach; ?>
+                        <option>Other</option>
+                    </select>
+                    <span id="sd_name" ></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="EPF">EPF No</label>
+                <div class="controls">
+                    <input type="text" name="EPF" id="EPF" onchange=""/>
+                </div>
+            </div>
+
+            <div class="control-group">
+<!--                <label class="control-label" for="Emp_ID">Employee ID</label>-->
+                <div class="controls">
+                    <input type="hidden" name="Emp_ID"  id="Emp_ID" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label  for="T_P_of_E_P">Time Period Of the Education Program</label>
+               
+                 <div class="control-group">
+                <label class="control-label" for="EduPro_From">From</label>
+                <div class="controls">
+                    <input type="time" name="EduPro_From" id='EduPro_From' />
+                </div>
+                 </div>
+                     <div class="control-group">
+                <label class="control-label" for="EduPro_To">To</label>
+                 <div class="controls">
+                     <input type="time" name="EduPro_To"  id='EduPro_To' onblur="timecheck()"/>
+                </div>
+            </div>
+             </div>
+
+
+            <div class="control-group">
+                <label class="control-label" for="Reimburse_Date">Reimbursement Date</label>
+                <div class="controls">
+                    <input type="date" name="Reimburse_Date"  />
+                </div>
+            </div>
+            
+            
+             <div class="control-group">
+                <label class="control-label" for="Spon_Amount">Sponsered Amount</label>
+                <div class="controls">
+                    <input type="text" name="Spon_Amount" id="Spon_Amount"/>
+                    
+                </div>
+            </div>
+            <div class="page-header position-relative"></div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-small btn-primary">Save</button>
+                </div>
+            </div>
+            </form>
+
+        </div><!--/.span-->
+
+        <!--/span 4 for error handling -->
+
+        <div class="span4">
+
+            <!-- Error Handling --!>
+                    <?php if($errors->has()): ?>
+                          <?php foreach($errors->all() as $msg): ?>
+            <!-- Error Message --!>
+              <div class="alert alert-error">
+                 <button type="button" class="close" data-dismiss="alert">
+                         <i class="icon-remove"></i>
+                 </button>
+                 <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+              </div>
+            <!-- Error Message --!>
+      <?php endforeach; ?>
+    <?php endif; ?>
+            <!-- Error Handling --!>
+    </div>
+            <!--/span 4-->
+            <!--PAGE CONTENT ENDS-->
+
+        </div><!--/.row-fluid-->
+    </div><!--/.page-content-->
+   <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+   <script>
+
+        <?php if (isset($done)): ?>
+
+                $.gritter.add({title: "", text: "Staff Development Added Successfully", class_name: "gritter-info gritter-center"});
+
+        <?php endif; ?>
+
+
+
+        function sdpName() {
+            var name = document.getElementById("EduProName").value;
+            var divv = document.getElementById("sd_name");
+            if (name === 'Other') {
+                toAppend = "<input type='text' name='EduProName' placeholder='Please Specify...!' >";
+                divv.innerHTML = toAppend;
+                return;
+            }else{
+                divv.innerHTML = "<input type='hidden' name='EduProName' value='"+name+"'/>";
+            }
+        }
+       
+       
+        $("#EPF").change(function() 
+    {
+        var epf = document.getElementById('EPF').value;
+        $.ajax({
+            url: "<?php echo url::to('epfajax'); ?>",
+            data: {epf: epf},
+            success: function(re) {
+                document.getElementById('Emp_ID').value = re;    
+            }
+        });
+     });
+     function timecheck(){
+         var a=document.getElementById('EduPro_From').value;
+         var b=document.getElementById('EduPro_To').value;
+         if(a>b){
+             alert('Starting Time of The Education Program cannot be exceed The Finising Time...! ');
+         }
+     }
+    
+</script>
+        
+
+
+
+
+
+
+
+
+

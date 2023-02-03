@@ -1,0 +1,174 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('searchInstructor'); ?>> << Back to Instructor </a> 
+
+<?php endif; ?>
+
+
+
+
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="page-header position-relative">
+
+            <h1>
+                Course			
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    View Assign Instructors
+                </small>			
+            </h1>
+
+        </div>
+
+
+
+        <?php if(!isset($Current)): ?>
+        <form name='search' action="<?php echo url('findInstructor'); ?>" method='get'>
+
+            Search Using Employee ID <input type='text' name="serachkey"/>  
+            <input type='submit' value='Search'/>
+		
+            <a href=<?php echo url('createInstructor'); ?>><input type='button' value='Assign Instructor For Course' /></a>
+
+
+
+        </form>
+        <?php endif; ?>
+        <form name='search1' action="<?php echo url('findInstructorc'); ?>" method='get'>
+
+            <?php if(!isset($Current)): ?>
+            Order By :&nbsp;&nbsp;
+            <select style="width: 120px;" name="order_by" style="margin: 0">
+                <option value="e.Initials,e.Name">Order By</option>              
+                <option value="i.id">ID</option>
+                <option value="inst.InstituteName">Institute Name</option>
+                <option value="o.OrgaName">Organization Name</option>               
+                <option value="e.Initials,e.Name">Employee Name</option>                               
+                <option value="i.CourseCode">Course Code</option>
+            </select>&nbsp;&nbsp;
+            Search Using Course Code <input type='text' name="serachkey"/>  
+            <input type='submit' value='Search'/>
+            <?php endif; ?>
+			
+            <?php if(isset($Current)): ?>
+            <a href=<?php echo url('searchInstructor'); ?>><input type='button' value='View Current Instructors' /></a>
+			
+            <?php else: ?>
+            <a href=<?php echo url('searchInstructor?Current=No'); ?>><input type='button' value='View Past Instructors' /></a>
+			
+			<!--<input type='button' value='View visiting Instructors' />-->
+            <?php endif; ?>
+			
+			
+        </form>
+				
+		
+
+        <br/>
+
+
+
+
+
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+
+
+
+
+            <table class="table">
+
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Institute Name</th>
+                    <th>Organisation Name</th>
+                    <th>Course List Code</th>
+                    <th>Designation</th>
+					<th>Module Name</th>
+                    <th>Employee Name</th>
+                    <th>StartDate</th>
+                    <th>EndDate</th>
+                    <th>Current</th>
+					<th>Type</th>
+					<th>Delete</th>
+
+
+                </tr>
+                <?php if(isset($courses)): ?>
+
+                <?php foreach($courses as $c): ?>
+
+                <tr>
+					<td><a  href="<?php echo url('editInstructor?id='.$c->id); ?>"><?php echo $c->id; ?></a></td>
+                    <td><?php echo $c->InstituteName; ?></td>
+                    <td><?php echo $c->OrgaName; ?></td>
+                    <td><?php echo $c->CourseCode; ?></td>
+                    <td><?php echo $c->Designation; ?></td>
+					<td><?php echo $c->ModuleName; ?></td>
+                    <td><?php echo $c->Initials.' '.$c->Name; ?></td>
+                    <td><?php echo $c->StartDate; ?></td>
+                    <td><?php echo $c->EndDate; ?></td>
+                    <td><?php echo $c->Current; ?></td>
+					<td><?php echo $c->Type; ?></td>
+                    <td>
+					  <form id="deleteform"  action="<?php echo url('deleteInstructor'); ?>" method="POST" onsubmit="return doConfirm('<?php echo $c->EmpId; ?>', this)">
+                            <input type="hidden" name='id' value="<?php echo $c->id; ?>" />
+                            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+					  </form>
+					</td>
+				</tr>
+
+
+                <?php endforeach; ?>
+
+                <?php endif; ?>
+
+            </table>
+
+
+
+
+
+
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+
+
+            function doConfirm(course, formobj)
+            {
+
+
+            bootbox.confirm("Are you sure you want to remove " + course, function(result)
+            {
+            if (result)
+            {
+            formobj.submit();
+            }
+
+
+            });
+                    return false; // by default do nothing hack :D
+            }
+
+
+
+
+
+
+
+</script>

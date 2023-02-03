@@ -1,0 +1,161 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<a href=<?php echo url('empqua'); ?>> << Back to Employment Qualification </a> 
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Employment Qualification		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+            <form class="form-horizontal" action="<?php echo url('createEmpqua'); ?>" method="POST" />
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-1">Institute Name</label>
+                <div class="controls">
+                    <input type="text" value="<?php echo Institute::where('InstituteId', "=", $user->instituteId)->pluck('InstituteName');; ?>"  readonly="true"/>
+                    <input type="hidden" value="<?php echo $user->instituteId; ?>" name="instituteId"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-2">Organisation Name</label>
+                <div class="controls">
+                    <input type="text" value="<?php echo Organisation::where('id', "=", $user->organisationId)->pluck('OrgaName');; ?>"  readonly="true"/>
+                    <input type="hidden" value="<?php echo $user->organisationId; ?>" name="organisationId"/>
+                </div>
+            </div>
+
+            <div class="page-header position-relative"></div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-3">Employee NIC</label>
+                <div class="controls">
+                    <input type="text" name="NIC" id="NIC"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <input type="hidden" name="EmpId" id="EmpId" readonly/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-4">Qualified Organisation Name</label>
+                <div class="controls">
+                    <select name="QO_ID">
+                        <option></option>
+                        <?php foreach ($quaorg as $qo): ?>
+                        <option value="<?php echo $qo->QO_ID; ?>"><?php echo $qo->OrgaName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-5">Qualification</label>
+                <div class="controls">
+                    <select name="QCode">
+                        <option></option>
+                        <?php foreach ($qualification as $q): ?>
+                        <option value="<?php echo $q->Qualification_ID; ?>"><?php echo $q->qualification; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-6">Qualification Type</label>
+                <div class="controls">
+                    <select name="QType">
+                        <option></option>
+                        <option >Educational</option>
+                        <option >Professional</option>
+                        <option >Vocational</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-7">Year</label>
+                <div class="controls">
+                    <input type="text" name="Year">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-8">Result</label>
+                <div class="controls">
+                    <select name="Result">
+                        <option></option>
+                        <option >Following</option>
+                        <option >Completed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <input type="submit" class="btn btn-small btn-primary"  value="Submit" />
+                </div>
+            </div>
+
+            </form>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+        <div class="span4">
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <!-- Error Message -->
+
+            <div class="alert alert-error">
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+            </div>
+
+            <!-- Error Message -->
+
+            <?php endforeach; ?>
+
+            <?php endif; ?>
+        </div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+    $("#NIC").change(function() {
+        var nic = document.getElementById('NIC').value;
+
+        $.ajax({
+            url: "<?php echo url::to('nicEmployeeQua'); ?>",
+            data: {nic: nic},
+            success: function(result) {
+                document.getElementById('EmpId').value = result;
+            }
+        });
+    });
+
+</script>
+
+
+
+

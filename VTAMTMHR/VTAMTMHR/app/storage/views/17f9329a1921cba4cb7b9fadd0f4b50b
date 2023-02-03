@@ -1,0 +1,42 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+    <?php if(isset($Issearch)): ?>
+        <a href=<?php echo url('PaperAdvertisement'); ?>> << Back to Paper Advertisement </a> 
+    <?php endif; ?>
+    <div class="page-content">
+        <div class="row-fluid">
+            <form name='search' action="<?php echo url('findAdd'); ?>" method='get'>
+                Search  <input type='text' name="serachkey" placeholder="Course Type" style="margin: 0"/>   <input type='submit' value='Search' style="height: 30px"/>
+                <a href="<?php echo url('download1234'); ?>" class="btn btn-large pull-right"><i class="icon-download-alt"> </i> Download </a>                 
+                <a href="<?php echo url('fdownload'); ?>" class="btn btn-large pull-right"><i class="icon-download-alt"> </i> Download Full-time </a>   
+                <a href="<?php echo url('pdownload'); ?>" class="btn btn-large pull-right"><i class="icon-download-alt"> </i> Download Part-time </a>
+            </form>
+            <div class="span12">
+		<table class="table">
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Course Type</th>
+                        <th>Duration</th>
+                    </tr>
+                    <?php if(isset ($valueF)): ?>
+                        <?php foreach ($valueF as $c): ?>
+                            <tr>
+                                <td><?php echo $c->CourseName; ?></td>
+                                <td><?php echo $c->CourseType; ?></td>
+                                <td><?php echo $c->Duration; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                    <?php if(isset ($valueP)): ?>
+                        <?php foreach ($valueP as $c): ?>
+                            <tr>
+                                <td><?php echo $c->CourseName; ?></td>
+                                <td><?php echo $c->CourseType; ?></td>
+                                <td><?php echo $c->Duration; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </table>
+            </div>
+	</div>
+    </div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   

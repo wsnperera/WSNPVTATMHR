@@ -1,0 +1,100 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+
+
+
+
+                
+
+
+<div class="page-content">
+                                    
+	<div class="row-fluid">
+                                            
+                                           
+                                        
+                                            
+                                            
+                                    <div class="span12">
+				
+                                        
+                                            <div class="page-header position-relative">
+                                            
+                                                            <h1>
+                                                            Applicant			
+                                                            <small>
+                                                                    <i class="icon-double-angle-right"></i>
+                                                                    Rejected
+                                                            </small>			
+                                                            </h1>
+                                            </div>
+                                        
+                                            <div class="span12">
+                                                
+                                                <table class="table">
+                                                    
+                                                    <tr>
+                                                        
+                                                        <th>Index</th>
+                                                        <th>Name</th>
+                                                        <th>Reason</th>
+                                                        <th>Mail</th>
+                                      
+                                                    </tr>
+                                                    <?php if(isset ($Applicant)): ?>
+                                                    
+                                                    		<?php foreach ($Applicant as $a): ?>
+                                                                
+                                                                <tr>
+                                                                    
+                                                                    <td><?php echo $a->IndexNo; ?></td>
+                                                                    <td><?php echo $a->FullName; ?></td>
+                                                                    <td><?php echo $a->Reason; ?></td>
+                                                                  
+                                                                    <td>
+                                                                        
+                                                                        <form id="mail"  action=<?php echo url('form'); ?> method="POST" onsubmit="return doConfirm('<?php echo $a->IndexNo; ?>',this)">
+                                                                                     
+                                                                                    <input type="hidden" name="id" value="<?php echo $a->id; ?>" /> 
+                                                                                    <input type="hidden" name='bid' value=<?php echo $a->IndexNo; ?> />
+                                                                                    <button type="submit" class="btn btn-grey btn-small"><i class="icon-envelope icon-2x icon-only"></i></button>
+                                                                                                                      
+                                                                        </form>
+                                                                        
+                                                                        
+                                                                    </td>
+                                                                    
+                                                                    
+                                                                </tr>
+                                                                
+                                                                <?php endforeach; ?>
+                                                                
+                                                    <?php endif; ?>
+                                                    
+                                                    
+                                                    
+                                                </table>
+
+                                            </div>
+                                                                                                                                     
+                                    </div>
+
+							
+						
+	</div>
+</div>
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+    
+  
+         
+         
+        
+
+    
+</script>

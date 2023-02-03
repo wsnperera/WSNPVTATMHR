@@ -1,0 +1,56 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('ViewModule'); ?>> << Back to Module </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>Module<small><i class="icon-double-angle-right"></i>View</small></h1>
+        </div>
+        <form name='search' action="<?php echo url('findModule'); ?>" method='get'>
+            Search Module By Name <input type='text' name="key"/>   <input type='submit' value='Search'/>
+            <a href=<?php echo url('CreateModule'); ?>><input type='button' value='Create Module' /></a>
+        </form>
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <table class="table">
+                <tr>
+                    <th>Module Name</th>
+					  <th>Module Code</th>
+                </tr>
+                <?php if(isset ($module)): ?>
+                    <?php foreach($module as $m): ?>
+                    <tr>
+                        <td><u><a href="<?php echo url('editModule?id='.$m->ModuleId); ?>"><?php echo $m->ModuleName; ?></a></u></td>
+						<td><?php echo $m->ModuleCode; ?></td>
+                        <td>
+                            <form id="deleteform"  action='deleteModule' method="POST" onsubmit="return doConfirm('<?php echo $m->ModuleName; ?>',this)">
+                                <input type="hidden" name='id' value=<?php echo $m->ModuleId; ?> />
+                                <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php if($module=='[]'): ?>
+                        </table><center>Data Not Found</center>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type="text/javascript">
+    function doConfirm(course,formobj)
+    {
+        bootbox.confirm("Are you sure you want to remove "+course, function(result) 
+        {
+            if(result) 
+            {
+                formobj.submit();
+            }
+         });
+         return false;  // by default do nothing hack :D
+     }
+ </script>

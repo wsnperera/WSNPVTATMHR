@@ -1,0 +1,185 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    NVQ 1ST Assignment Details			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        View All Details
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+
+<form class="form-horizontal" action="<?php echo url('schedulePreAssesment'); ?>" method="POST" id="my_form">
+                            <table>
+                                <tr>
+                                    <td>
+                                                    <div class="row-fluid">
+                                                        <label class="control-label" for="form-field-2">Select Date Range</label>
+                                                    </div>
+                                    </td>
+                                    <td>
+                                                    <div class="control-group">
+                                                        <div class="row-fluid input-prepend">
+                                                            <span class="add-on">
+                                                                <i class="icon-calendar"></i>
+                                                            </span>
+
+                                                            <input class="span10" type="text" name="date-range-picker" id="id-date-range-picker-1" />
+                                                        </div>
+                                                    </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                            
+                                </tr>
+                                <tr>
+                                <td>
+                                </td>
+                                <td>
+                                <button type="button" class="btn btn-small btn-primary" id="sumbit-btn" name="sumbit-btn">View</button>
+                                </td>
+                                </tr>
+                            </table>
+
+
+
+
+
+</form>
+                <div  id="alldetails" >
+                
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+ <?php if (Session::has('done')): ?>
+ 
+  <div class="alert alert-block alert-success">
+
+               
+                    
+                 
+
+                 <strong> <i class="icon-ok"></i><?php echo Session::get('done'); ?></strong>
+
+              </div>
+  
+      
+ <?php endif; ?>
+  
+  
+   
+    
+    <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
+    <script type="text/javascript">
+
+       
+
+
+    $('#sumbit-btn').click(function() {
+
+   
+        
+         var date = document.getElementById('id-date-range-picker-1').value;
+         alert(date);
+        $.ajax({
+        url:"<?php echo url::to('ViewAllInterviewDetailsAjax'); ?>",
+        data: {date: date},
+        success: function (result) {
+
+                document.getElementById('alldetails').innerHTML=result;
+                $('#sample-table-2').dataTable({
+    "aoColumns":[{"bSortable": false},null,{"bSortable": false},{"bSortable": false},{"bSortable": false},{"bSortable": false}]});
+            }
+        });
+   
+
+}); 
+
+
+    $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
+                    $(this).next().focus();
+                });
+
+
+
+     $("#EId").change(function() {
+
+        //alert('xxxxx');
+        //var id = document.getElementById('address').value;
+        
+        
+
+
+        // $.ajax({
+        //     url: "<?php echo url::to('loadCenterAddress1'); ?>",
+        //     data: {center: id},
+        //     success: function(result) {
+        //         document.getElementById('address1').value = result;
+        //     }
+        // });
+
+
+
+
+
+    });
+      
+    
+    function doConfirm(course,formobj)
+    {
+        bootbox.confirm("Are you sure you want to remove Course List Code : "+course, function(result) 
+        {
+            if(result) 
+            {
+                formobj.submit();
+            }
+         });
+         return false;  // by default do nothing hack :D
+     }
+
+     
+ 
+</script>
+        

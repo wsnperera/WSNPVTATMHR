@@ -1,0 +1,99 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>    
+<div class="page-content">                              
+<div class="row-fluid">
+<div class="span12">
+
+    <!--PAGE CONTENT BEGINS-->
+    <!--/.page-header-->
+
+<div class="page-header position-relative">
+
+<h1>
+Employee Qualification		
+<small>
+        <i class="icon-double-angle-right"></i>
+        Edit
+</small>			
+</h1>
+
+        </div><!--/.page-header-->
+
+ <?php if ($errors->has()): ?>
+<?php foreach ($errors->all() as $error): ?>
+    <div class='bg-danger alert'><?php echo $error; ?></div>
+<?php endforeach; ?>
+<?php endif; ?>
+                
+                
+<form class="form-horizontal" action="<?php echo url('editEmpQualifications'); ?>" method="POST"/>
+
+<div class="control-group">
+<table height="500" width="500">
+
+
+<tr>
+<td><label class="control-label" for="form-field-1">Employee Qualification ID</label></td>
+
+<td><input type="text" style="color:red" name="EQ_ID" value="<?php echo Request::get('id'); ?>" readonly="readonly"/></td>
+
+</td>
+</tr>
+<tr>
+<td>
+    <label class="control-label" for="form-field-2">Institute Name</label></td>
+<td> 
+<input type="text" value="<?php echo Institute::where('InstituteId', "=", $empqua->instituteId)->pluck('InstituteName');; ?>"  readonly="true"/>
+<input type="hidden" value="<?php echo $empqua->instituteId; ?>" name="InstituteId"/></td>
+   
+</tr>
+<tr>
+<td>
+ <label class="control-label" for="form-field-3">Organisation Name</label></td>
+<td> 
+<input type="text" value="<?php echo Organisation::where('id', "=", $empqua->organisationId)->pluck('OrgaName');; ?>"  readonly="true"/>
+<input type="hidden" value="<?php echo $empqua->organisationId; ?>" name="organisationId"/></td>
+</tr>
+
+<tr>
+<td>
+ <label class="control-label" for="form-field-3">Qualification Type</label></td>
+<div class="controls">
+<td>  <select name="QType">
+<option></option>
+<option <?php if($empqua->QType == "Educational"): ?> selected  <?php endif; ?> value="<?php echo $empqua->QType; ?>">Educational</option>
+<option <?php if($empqua->QType == "Professional"): ?> selected  <?php endif; ?> value="<?php echo $empqua->QType; ?>">Professional</option>
+<option <?php if($empqua->QType == "Vocational"): ?> selected  <?php endif; ?> value="<?php echo $empqua->QType; ?>">Vocational</option>
+
+</select></td>
+</div>
+</tr>
+<tr>
+<td>
+ <label class="control-label" for="form-field-3">Year</label></td>
+<td><input type="text" name="Year" value="<?php echo $empqua->Year; ?>"/></td>
+</tr>
+<tr>
+<td>
+ <label class="control-label" for="form-field-3">Result</label></td>
+<td><input type="text" name="Result" value="<?php echo $empqua->Result; ?>"/></td>
+</tr>
+<tr >
+
+<td align="right"> <input class="btn btn-small btn-primary" type="submit"  value="Update" /></td>
+
+</tr>
+</table>
+</div>
+
+</form>
+<!--PAGE CONTENT ENDS-->
+</div><!--/.span-->
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script type="text/javascript">
+    
+  
+
+    
+</script>

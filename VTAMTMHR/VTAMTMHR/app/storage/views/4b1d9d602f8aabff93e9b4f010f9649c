@@ -1,0 +1,174 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>    
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Assessment			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Manage Assessment
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+            <!-- body -->
+            <form class="form-horizontal" method="POST" action="<?php echo url('AssessmentCreate'); ?>" id="myform">
+
+                <div class="control-group">
+                    <label class="control-label">Course List Code</label>
+                    <div class="controls">
+                        <select name="NCC" id="NCC" class="chzn-select" data-placeholder="National Course Code">
+                            <option value=""></option>
+                            <?php foreach ($clc as $c): ?>
+                            <option value="<?php echo $c->CourseListCode; ?>"><?php echo $c->CourseListCode; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <span id="ajax_img1"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Course Code</label>
+                    <div class="controls">
+                        <select name="cc_or_bc" id="cc_or_bc">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Assessment Name</label>
+                    <div class="controls">
+                        <input type="text" name="name" id="name" autocomplete="off"/>
+                    </div>
+                    <div id="my_select">
+
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label"></label>
+                    <div class="controls">
+                        <input type="button" value="Save" class="btn btn-small btn-primary" onclick="mysubmit()"/>
+                    </div>
+                </div>
+            </form>
+            <!-- /body -->
+        </div>
+
+        <div class="span4">
+
+            <?php if($errors->has()): ?>
+
+            <?php foreach($errors->all() as $msg): ?>
+
+
+
+            <div class="alert alert-error">
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+            </div>
+
+
+
+            <?php endforeach; ?>
+
+            <?php endif; ?>
+
+
+
+        </div>
+
+    </div>
+</div>
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+
+    $("#name").keyup(function() {
+
+        var aaa = " <select id=\"dale_training\" multiple=\"multiple\" style=\"margin-left: 180px;\" onclick=\"my();\"></select>";
+
+
+        var x = document.getElementById('name').value;
+        $.ajax({
+            url: "<?php echo url::to('AssessmentAjax'); ?>",
+            data: {x: x},
+            success: function(res) {
+                if (res === "Dale") {
+                    document.getElementById('my_select').innerHTML = '';
+                } else {
+                    document.getElementById('my_select').innerHTML = aaa;
+                    document.getElementById('dale_training').innerHTML = res;
+                }
+            }
+
+        });
+
+    });
+
+    $("#my_select").on('change', '#dale_training', function() {
+
+        var select = document.getElementById('dale_training').value;
+        document.getElementById('name').value = select;
+        document.getElementById('my_select').innerHTML = '';
+    });
+
+    function mysubmit() {
+        var ncc = document.getElementById('NCC').value;
+        var cb = document.getElementById('cc_or_bc').value;
+        var ass_name = document.getElementById('name').value;
+
+        if (ncc !== "" && cb !== "" && ass_name !== "") {
+            $("#myform").submit();
+        } else {
+            alert('Complete All the field before Save!');
+        }
+    }
+
+</script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+        $(".chzn-select").chosen();
+    });
+
+    $("#NCC").change(function() {
+        var ncc = $("#NCC").val();
+        $.ajax({
+            url: "<?php echo url::to('AssessmentAjaxNCC'); ?>",
+            data: {ncc: ncc},
+            beforeSend: function() {
+                document.getElementById('ajax_img1').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+            },
+            success: function(res) {
+                document.getElementById('cc_or_bc').innerHTML = res;
+            },
+            complete: function() {
+                document.getElementById('ajax_img1').innerHTML = "";
+            }
+
+        });
+    });
+
+</script>

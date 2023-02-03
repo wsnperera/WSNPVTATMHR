@@ -1,0 +1,239 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<!--<a href=<?php echo url('ViewInspectorOrganisation'); ?>> << Back to Inspector Division</a> -->
+
+<?php endif; ?>
+
+
+
+
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="page-header position-relative">
+
+            <h1>
+                Course			
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    View  Offline Student Attendence
+                </small>			
+            </h1>
+
+        </div>
+
+
+
+       <?php if(!isset($Current)): ?>
+        <form name='search' action="<?php echo url('CreateOfflineStudentAttendence'); ?>" method='get'>
+
+           
+			
+            <a href="<?php echo url('CreateOfflineStudentAttendence'); ?>"><input type='button' value='Mark Attendence' /></a>
+			
+
+
+        </form>
+        <?php endif; ?>
+      <form name='search1' action="<?php echo url('searchOfflineStudentsAttendence'); ?>" method='get'>
+
+           <input type="hidden" id="InstituteId" name="InstituteId" value="<?php echo $user->instituteId; ?>"/>
+            Course :&nbsp;&nbsp;
+            <select style="width: 120px;"  style="margin: 0" id="CourseCode" name="CourseCode">
+				<option value="">Select Course</option>  
+			
+				<?php foreach ($course as $i): ?>
+                <option value="<?php echo $i->CourseCode; ?>"><?php echo $i->CourseCode; ?></option>     
+				<?php endforeach; ?>
+                
+            </select>&nbsp;&nbsp;
+			
+			
+			Module :&nbsp;&nbsp;
+            <select style="width: 200px;"  style="margin: 0" id="ModuleID" name="ModuleID">
+			</select>&nbsp;&nbsp;
+			
+			
+			
+            Search Using Date: <input type='date' name="serachkey"/>  
+            <input type='submit' value='Search'/>
+           
+			
+          
+		 
+			
+           
+			
+            
+			
+			
+        </form>
+		
+				
+		
+
+        <br/>
+
+
+
+
+
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+
+
+
+
+            <table class="table table-striped table-bordered table-hover"  id="sample-table-2">
+
+
+                <tr>
+
+                    <th>ID</th>
+					<th>Organisation</th>
+					<th>Date</th>
+                    <th>Course Code</th>
+                    <th>Module Name</th>
+					<th>From Slot</th>
+					<th>To Slot</th>
+                    <th>Instructor</th>
+                    
+                    
+					<th>All NoofStudents</th>
+					<th>Present Students</th>
+                    
+                   <!-- <th>Remove</th>-->
+
+
+                </tr>
+                <?php if(isset ($students)): ?>
+
+                <?php foreach ($students as $c): ?>
+
+                <tr>
+
+
+					
+					
+                    <td><a    href="<?php echo url('editStudentsAttendence?id='.$c->id); ?>"><?php echo $c->id; ?></a></td>
+					
+					
+					<td><?php echo $c->OrgaName; ?></td>
+					<td><?php echo $c->Date; ?></td>
+                    <td><?php echo $c->CourseCode; ?></td>
+                    <td><?php echo $c->ModuleName; ?></td>
+					<td><?php echo $c->fsname; ?></td>
+					<td><?php echo $c->tsname; ?></td>
+					
+					<td><?php echo $c->Initials .' '.$c->Name.' '.$c->LastName; ?></td>
+                    <td><?php echo $c->AllStudents; ?></td>
+					 <td><?php echo $c->PresentStudents; ?></td>
+                <!--  <td>
+					<?php if($user->userType == 'Admin' || $user->userType == 'TH'): ?>
+                        <form id="deleteform"  action=<?php echo url('deleteOfflineStudentsAttendence'); ?> method="POST" onsubmit="return doConfirm('<?php echo $c->id; ?>', this)">
+
+                            <input type="hidden" name='id' value=<?php echo $c->id; ?> />
+                            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+
+                        </form>
+					<?php endif; ?>
+                    </td>-->
+
+                </tr>
+
+
+                <?php endforeach; ?>
+
+                <?php endif; ?>
+
+            </table>
+
+
+
+
+
+
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+
+
+            function doConfirm(course, formobj)
+            {
+
+
+            bootbox.confirm("Are you sure you want to remove " + course, function(result)
+            {
+            if (result)
+            {
+            formobj.submit();
+            }
+
+
+            });
+                    return false; // by default do nothing hack :D
+            }
+			
+			
+			$(document).ready(function()
+        {
+			
+			$("#CourseCode").change(function()
+                    {
+
+                        var cid = $("#CourseCode").val();
+						var ins = $("#InstituteId").val();
+						 
+						 
+						//alert(ins);
+                       $("#ModuleID").html('');
+
+
+                        $.ajax
+                                ({
+                                    type: "GET",
+                                    url: "<?php echo Url('getmodulsajax'); ?>",
+                                    data: {corseid: cid,insid: ins},
+                                    dataType: "json",
+                                    success: function(result)
+                                    {
+											//alert('dddddddddd');
+											
+										 $("#ModuleID").append("<option>---select module---</option>");
+                                        $.each(result, function(i, item)
+                                        {
+
+											//alert('dis');
+
+                                            $("#ModuleID").append("<option value=" + item.ModuleId + ">" +item.ModuleName +" ("+item.Type +" )</option>");
+
+
+
+                                        });
+
+
+                                    }
+                                });
+
+
+
+
+                    });
+
+
+				});
+
+
+
+
+</script>

@@ -1,0 +1,381 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('viewEmployee'); ?>> << Back to Employee </a> 
+
+<?php endif; ?>
+
+
+
+
+
+
+
+<div class="page-content">
+    <div class="page-header position-relative">
+        <h1>
+            Employee Profile Page
+
+        </h1>
+    </div><!--/.page-header-->
+
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+
+
+
+            <div class="hr dotted"></div>
+
+            <div>
+                <div id="user-profile-1" class="user-profile row-fluid">
+                    <div class="span3 center">
+                        <div>
+                            <span class="profile-picture">
+                                <img id="avatar" class="editable" alt="Alex's Avatar" src="assets/avatars/useremployee.png" />
+                            </span>
+
+                            <div class="space-4"></div>
+
+                            <div class="width-80 label label-info label-large arrowed-in arrowed-in-right">
+                                <div class="inline position-relative">
+                                    <a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown">
+                                        <i class="icon-circle light-green middle"></i>
+                                        &nbsp;
+                                        <span class="white middle bigger-120"><?php echo $Employee->Name; ?>&nbsp;<?php echo $Employee->LastName; ?></span>
+                                    </a>
+
+                                    <ul class="align-left dropdown-menu dropdown-caret dropdown-lighter">
+                                        <li class="nav-header"> Change Status </li>
+
+                                        <li>
+                                            <a href="#">
+                                                <i class="icon-circle green"></i>
+                                                &nbsp;
+                                                <span class="green">Available</span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#">
+                                                <i class="icon-circle red"></i>
+                                                &nbsp;
+                                                <span class="red">Busy</span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#">
+                                                <i class="icon-circle grey"></i>
+                                                &nbsp;
+                                                <span class="grey">Invisible</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-6"></div>
+
+
+
+                        <div class="hr hr12 dotted"></div>
+
+
+
+                        <div class="hr hr16 dotted"></div>
+                    </div>
+
+                    <div class="span9">
+
+
+                        <div class="space-12"></div>
+
+                        <div class="profile-user-info profile-user-info-striped">
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">Name </div>
+
+                                <div class="profile-info-value">
+                                    <span  id="username"><?php echo $Employee->Name; ?>&nbsp;<?php echo $Employee->LastName; ?></span>
+                                </div>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Sex </div>
+
+                                <div class="profile-info-value">
+                                    <span  id="username"><?php echo $Employee->Sex; ?></span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Date of Birth  </div>
+
+                                <div class="profile-info-value">
+                                    <span  id="signup"><?php echo $Employee->DOB; ?></span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> NIC Number </div>
+
+                                <div class="profile-info-value">
+                                    <span  id="username"><?php echo $Employee->NIC; ?></span>
+                                </div>
+                            </div>
+
+
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">Civil Status </div>
+
+                                <div class="profile-info-value">
+                                    <span  id="login"><?php echo $Employee->CivilStatus; ?></span>
+                                </div>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Address </div>
+
+                                <div class="profile-info-value">
+                                    <span  id="about"><?php echo $Employee->PAddress; ?></span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Email </div>
+
+                                <div class="profile-info-value">
+                                    <span  id="about"><?php echo $Employee->Email; ?></span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Contact No </div>
+
+                                <div class="profile-info-value">
+                                    <span  id="about"><?php echo $Employee->Contact; ?></span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Mobile No </div>
+
+                                <div class="profile-info-value">
+                                    <span  id="about"><?php echo $Employee->Mobile; ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="center">
+                            <a href="<?php echo url('editEmpPro?cid='.$Employee->NIC); ?>" class="btn btn-small btn-primary">
+                                <i class="icon-rss bigger-150 middle"></i>
+
+                                Edit Personal Details
+                                <i class="icon-on-right icon-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="space-20"></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="span3">
+            <div class="widget-box pricing-box">
+                <div class="widget-header header-color-blue">
+                    <h5 class="bigger lighter">Employee Qualification</h5>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main">
+
+
+
+                        <?php foreach ($qualification as $q): ?>
+                        <ul class="unstyled spaced2">
+                            <li>
+                                <i class="">Type&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                <?php echo $q->QType; ?>
+                            </li>
+
+
+                        </ul>
+                        <ul class="unstyled spaced2">
+                            <li>
+                                <i class="">Year&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                <?php echo $q->Year; ?>
+                            </li>
+
+
+                        </ul>
+                        <ul class="unstyled spaced2">
+                            <li>
+                                <i class="">Result&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                <?php echo $q->Result; ?>
+                            </li>
+
+
+                        </ul>
+                        <?php endforeach; ?>
+
+
+                        <hr />
+
+                    </div>
+
+                    <div>
+                        <a href="<?php echo 'editEmpQualifications?id='.User::getSysUser()->EmpId; ?>" class="btn btn-block btn-primary">
+                            <span>Edit</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span3">
+            <div class="widget-box pricing-box">
+                <div class="widget-header header-color-blue">
+                    <h5 class="bigger lighter">A/L Results</h5>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main">
+
+                        <table>
+                            <th style="width: 100px">Subject</th>
+                            <th style="width: 100px">Result</th>
+                            <th style="width: 100px">Year</th> 
+                            <?php foreach ($results as $r): ?>
+                               <?php foreach($ALSubject as $s): ?>
+                               <?php if($r->SubjectId==$s->id): ?>
+                               
+                            <tr>
+                                <td>
+
+                                    <?php echo $s->SubjectName; ?>
+                                </td>
+                                <td>
+
+                                    <?php echo $r->Result; ?>
+                                </td>
+                                <td >
+
+                                    <?php echo $r->Year; ?>
+                                </td>
+
+                            </tr>
+
+                            <?php endif; ?>
+
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
+
+                        </table>	
+                    </div>
+
+                    <div>
+                        <a href="<?php echo url('EmployeeALResultHome?aplicantnic='.$Employee->NIC); ?>" class="btn btn-block btn-primary">
+                            <span>Edit</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="span3">
+            <div class="widget-box pricing-box">
+                <div class="widget-header header-color-blue">
+                    <h5 class="bigger lighter">O/L Results</h5>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main">
+
+                        <table>
+                            <th style="width: 100px">Subject</th>
+                            <th style="width: 100px">Result</th>
+                            <th style="width: 100px">Year</th> 
+                            <?php foreach ($OLresults as $r): ?>
+                               <?php foreach($OLSubject as $s): ?>
+
+                               <?php if($r->SubjectId==$s->id): ?>
+                            <tr>
+                                <td>
+
+                                    <?php echo $s->SubjectName; ?>
+                                </td>
+                                <td>
+
+                                    <?php echo $r->Result; ?>
+                                </td>
+                                <td >
+
+                                    <?php echo $r->Year; ?>
+                                </td>
+
+                            </tr>
+                               <?php endif; ?>
+
+
+                                    <?php endforeach; ?>
+                            <?php endforeach; ?>
+
+                        </table>	
+                    </div>
+
+                    <div>
+                        <a href="<?php echo url('viewEmployeeOLResult?aplicantnic='.$Employee->NIC); ?>" class="btn btn-block btn-primary">
+                            <span>Edit</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+
+
+    function doConfirm(course, formobj)
+    {
+
+
+        bootbox.confirm("Are you sure you want to remove " + course, function(result)
+        {
+            if (result)
+            {
+                formobj.submit();
+            }
+
+
+        });
+        return false; // by default do nothing hack :D
+    }
+
+
+
+
+
+
+
+</script>

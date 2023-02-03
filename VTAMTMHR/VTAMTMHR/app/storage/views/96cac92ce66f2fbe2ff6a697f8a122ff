@@ -1,0 +1,120 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<a href=<?php echo url('organisation'); ?>><< Back to Organisation</a> 
+
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+
+
+
+
+        <div class="span12">
+
+            <!--PAGE CONTENT BEGINS-->
+
+
+
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Center>>Edit			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Enter Date Closed
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+            <?php if ($errors->has()): ?>
+            <?php foreach ($errors->all() as $error): ?>
+            <div class='bg-danger alert'><?php echo $error; ?></div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+
+
+            <form class="form-horizontal" action="<?php echo url('dateclosedOrganisation'); ?>" method="POST"/>
+
+            <div class="control-group">
+                <table height="500" width="500">
+                    <tr>
+                        <td><label class="control-label" for="form-field-1">Center Id</label></td></td>
+
+                        <td><input type="text" name="id" value="<?php echo Request::get('id'); ?>" readonly="readonly"/> 
+
+                    </tr>
+
+
+                    <tr>
+                        <td>    <label class="control-label" for="form-field-10">Date Closed</label></td>
+                        <td> <input type="date" name="DateClosed" id='DateClosed' required="required" onchange="DateCheck()"/>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> <label class="control-label" for="form-field-12">Active</label></td>
+                        <td> <input type="text" name="Active" value="No" readonly="readonly"/></td>
+                    </tr>
+                    <tr >
+
+
+                        <td align="right"> <input class="btn-success" type="submit"  value="DateClosedUpdate" /></td>
+
+                    </tr>
+                </table>
+            </div>
+
+            </form>
+
+
+
+
+            <!--PAGE CONTENT ENDS-->
+
+
+        </div><!--/.span-->
+
+
+
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+
+</form>
+<script type="text/javascript">
+
+    function DateCheck()
+    {
+        var d = new Date();
+        var y1 = d.getFullYear();
+        var m1 = d.getMonth() + 1;
+        var d1 = d.getDate();
+//var DateOpened= d1 + "/" + m1 + "/" + y1;
+        var dc = document.getElementById("DateClosed").value;
+        var a = dc.split('-');
+        var d2 = a[2];
+        var m2 = a[1];
+        var y2 = a[0];
+        if (y2 - y1 >= 0 && m2 - m1 >= 0 && d2 - d1 >= 0) {
+            return true;
+        } else if (y2 - y1 >= 0 && m2 - m1 > 0) {
+            return true;
+        } else if (y2 - y1 > 0) {
+            return true;
+        } else {
+            alert('You cannot select a day earlier than today!');
+        }
+    }
+
+</script>

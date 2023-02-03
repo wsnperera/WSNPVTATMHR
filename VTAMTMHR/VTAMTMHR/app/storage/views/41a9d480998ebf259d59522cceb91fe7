@@ -1,0 +1,214 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Trade Student			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Add Trade Student
+                    </small>			
+                </h1>
+                
+            </div><!--/.page-header-->
+
+            <form class="form-horizontal" action="<?php echo url('CreateTradeStudent'); ?>" method="POST"/>
+
+            
+            <div class="control-group">
+
+                <label class="control-label" for="student_no">Student No</label>
+
+                <div class="controls">
+                    <input type="text" style="width: 85px;" id="student_no" name="student_no"/>
+                    <input type="button" id="student_go" value="GO"/>
+                    <span id="ajax_img"></span>
+                </div>
+                
+            </div>
+            <div id="student_details">
+                <!--/student details here -->
+            </div>
+            
+            <div class="control-group" id="choice_1" style="visibility: hidden;">
+                <label class="control-label" for="choice1">First Choice</label>
+                <div class="controls">
+                    <select name="choice1" id="choice1" onchange="choice01();">
+                        <option value="">1st Choice</option>
+                        <?php foreach ($trade as $t): ?>
+                        <option value="<?php echo $t->TradeCode; ?>"><?php echo $t->TradeCode; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="control-group" id="choice_2" style="visibility: hidden;">
+                <label class="control-label" for="choice1">Second Choice</label>
+                <div class="controls">
+                    <select name="choice2" id="choice2" onchange="choice02();">
+                        <option value="">2nd Choice</option>
+                        <?php foreach ($trade as $t): ?>
+                        <option value="<?php echo $t->TradeCode; ?>"><?php echo $t->TradeCode; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="control-group" id="choice_3" style="visibility: hidden;">
+                <label class="control-label" for="choice1">Third Choice</label>
+                <div class="controls">
+                    <select name="choice3" id="choice3" onchange="choice03();">
+                        <option value="">3rd Choice</option>
+                        <?php foreach ($trade as $t): ?>
+                        <option value="<?php echo $t->TradeCode; ?>"><?php echo $t->TradeCode; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="control-group" id="choice_4" style="visibility: hidden;">
+                <label class="control-label" for="choice1">Forth Choice</label>
+                <div class="controls">
+                    <select name="choice4" id="choice4" onchange="choice04();">
+                        <option value="">4th Choice</option>
+                        <?php foreach ($trade as $t): ?>
+                        <option value="<?php echo $t->TradeCode; ?>"><?php echo $t->TradeCode; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="controls" id="submit_but">
+                    
+                </div>   
+            </div>
+            </form>
+
+        </div><!--/.span-->
+
+        <!--/span 4 for error handling -->
+
+        <div class="span4">
+
+            <!-- Error Handling -->
+
+            <?php if($errors->has()): ?>
+
+            <?php foreach($errors->all() as $msg): ?>
+
+            <!-- Error Message -->
+
+            <div class="alert alert-error">
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+            </div>
+
+            <!-- Error Message -->
+
+            <?php endforeach; ?>
+
+            <?php endif; ?>
+
+            <!-- Error Handling -->
+
+        </div>
+        <!--/span 4-->
+        <!--PAGE CONTENT ENDS-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+ 
+$("#student_go").click(function(){
+    
+    document.getElementById('student_details').innerHTML = "";
+    document.getElementById('choice_1').style.visibility = "hidden";
+    document.getElementById('choice_2').style.visibility = "hidden";
+    document.getElementById('choice_3').style.visibility = "hidden";
+    document.getElementById('choice_4').style.visibility = "hidden";
+    var student_no = document.getElementById('student_no').value;
+    
+  $.ajax
+  ({
+      url:"<?php echo url::to('ajaxTradeStudent'); ?>",
+      data: {student_no: student_no},
+      beforeSend: function() {document.getElementById('ajax_img').innerHTML="<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";},
+      
+      success:function(result)
+      {
+            var res = result.split(",");
+            var InstituteId = res[0];
+            var OrgaId = res[1];
+            var CourseCode = res[2];
+            var InstituteName = res[3];
+            var OrgaName = res[4];
+            
+            dale(InstituteId,OrgaId,CourseCode,InstituteName,OrgaName);
+            
+       },
+       complete: function() {document.getElementById('ajax_img').innerHTML="";}
+   });
+   
+});
+
+
+function dale(InstituteId,OrgaId,CourseCode,InstituteName,OrgaName){
+    
+        var x = "<div class=\"control-group\">\n"+
+                "<label class=\"control-label\" >Institute</label>\n"+
+                "<div class=\"controls\">\n"+
+                    "<input type=\"text\"  disabled=\"true\" value=\""+InstituteName+"\" />\n"+
+                    "<input type=\"hidden\" name=\"InstituteId\" value=\""+InstituteId+"\"/>\n"+
+                "</div>\n"+
+                "</div>\n"+
+                "<div class=\"control-group\">\n"+
+                "<label class=\"control-label\" >Organisation</label>\n"+
+                "<div class=\"controls\">\n"+
+                    "<input type=\"text\"  disabled=\"true\" value=\""+OrgaName+"\" />\n"+
+                    "<input type=\"hidden\" name=\"OrgaId\" value=\""+OrgaId+"\"/>\n"+
+                "</div>\n"+
+                "</div>\n"+
+                "<div class=\"control-group\">\n"+
+                "<label class=\"control-label\" >Course Code</label>\n"+
+                "<div class=\"controls\">\n"+
+                    "<input type=\"text\"  disabled=\"true\" value=\""+CourseCode+"\" />\n"+
+                    "<input type=\"hidden\" name=\"CourseCode\" value=\""+CourseCode+"\"/>\n"+
+                "</div>\n"+
+                "</div>";
+        document.getElementById('student_details').innerHTML = x;
+        document.getElementById('choice_1').style.visibility = "visible";
+}
+
+function choice01(){
+    document.getElementById('choice_2').style.visibility = "visible";
+} 
+function choice02(){
+    document.getElementById('choice_3').style.visibility = "visible";
+}
+function choice03(){
+    document.getElementById('choice_4').style.visibility = "visible";
+}
+function choice04(){
+    document.getElementById('submit_but').innerHTML="<input type=\"submit\" class=\"btn btn-small btn-primary value=\"Save\" />";
+}
+
+</script>

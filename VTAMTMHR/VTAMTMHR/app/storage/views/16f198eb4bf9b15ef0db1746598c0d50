@@ -1,0 +1,125 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Report       
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                         Graduate Employement Report 
+                    </small>            
+                </h1>
+            </div>
+			
+			<form class="form-horizontal" id="form_go" action="" name="fully[]" method="POST" enctype="multipart/form-data">
+                    <!--Name of Institute-->
+                    <div class="control-group">
+                        <label class="control-label" for="Name of Organization">Center : </label>
+                        <div class="controls">                            
+                            <select name="organisation" onchange="getDataTable();" id="organisation" style="margin: 0px;" required>
+                                <option value="">-Select Center-</option>
+                                <?php if($type == 'HO'): ?>
+                                     <option value="All">All</option> 
+                                <?php endif; ?>
+                                <?php foreach($Organisation as $d): ?>
+                                    <option value="<?php echo $d->id; ?>"><?php echo $d->OrgaName; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                 <div id="loding"></div>
+            </form>
+        </div>
+    </div>
+      <div class="controls" id='table'>
+      </div>
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+
+
+
+    function tableModify_1() {
+        $('#sample-table-2').dataTable({
+            "bPaginate": false,
+            "bLengthChange": false,
+            "aoColumns": [
+                {"bSortable": false},
+                null,
+                null,
+                {"bSortable": false},
+                {"bSortable": false},
+                 {"bSortable": false},
+                {"bSortable": false},
+                 {"bSortable": false},
+                {"bSortable": false},
+                 {"bSortable": false},
+                {"bSortable": false},
+                 {"bSortable": false},
+                {"bSortable": false},
+                 {"bSortable": false},
+                {"bSortable": false},
+                 {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false}
+            ]});
+    }
+  
+
+</script>
+<script type="text/javascript">
+
+function getDataTable(){
+    var organisation=$("#organisation").val();
+	$('#table').html('');
+//alert(my_year);
+    if(organisation != "")
+                        {
+                           $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            $("#loding").html('<br><br><img height="40%" width="20%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                           
+                        },
+                        type: "GET",
+                       url: "<?php echo Url('LoadGraduateEmployementDetails'); ?>",
+                       data: {organisation: organisation},
+                        
+                        success: function(result)
+                        {
+                            //alert('dddddddddd');
+                            $('#table').html(result);
+                             tableModify_1();
+                           
+                        },
+                        complete: function() {
+                            $("#loding").html('');
+                        }
+                    }
+                    );                  
+
+
+
+    }
+  else 
+    {
+        bootbox.alert("Please Select Center Name !!!");
+    }
+
+}
+   
+</script>

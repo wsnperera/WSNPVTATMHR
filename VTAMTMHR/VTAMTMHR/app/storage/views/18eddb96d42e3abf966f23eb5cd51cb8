@@ -1,0 +1,169 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href=<?php echo url('vocationalPlacement'); ?>> << Back to Main Menu </a>
+                <h1>Vocational Placement<small><i class="icon-double-angle-right">Create</i></small></h1>
+            </div>
+            <form method='POST' action='createVP2' id="myform" >
+                <table> 
+                    <tr>
+                        <td>Course Code</td>
+                        <td>
+                            <select name='courseCode' onclick="no(this)">
+                                <option></option>
+                                <?php foreach($coursestarted as $c): ?>
+                                    <option><?php echo $c->CourseCode; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                        <td id="no" style="color: red ">
+                        </td>
+                    </tr>
+                    <tr id="it">
+                        
+                    </tr>
+                    <tr id="vt">
+                    </tr>
+                    <tr id="vi">
+                    </tr>
+                    <tr id="vo">
+                    </tr>
+                    <tr id="vc">
+                    </tr>
+                    <tr id="vf">
+                    </tr>
+                    <tr id="vsd">
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td id='st'>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type='text/javascript'>
+    function no(obj)
+    {
+        obj.onchange = function()
+        {
+             $.ajax
+             ({
+                 type: "GET",
+                 url: 'ajaxGetNoStudents',
+                 data:{ courseCode : $(this).val()},
+                 success: function(result)
+                 {
+                     $("#no").html('&nbsp;&nbsp;&nbsp;<b>'+result+' Trainees</b>');
+                     if(result>0)
+                     {   
+                         var html='<td>Institute Type</td><td><select name="instituteType" onclick="insType(this)" id="instituteType"><option></option><option value="PUB">Public</option><option value="PRI">Private</option></select></td>';
+                         $("#it").html(html);
+                     }
+                     else
+                     {
+                         $("#it").html(null);
+                     }
+                 },
+             });
+         }
+     }
+     function insType(obj)
+    {
+        obj.onchange = function()
+        {
+             $.ajax
+            ({
+                type: "GET",
+                url: 'ajaxGetTrades',
+                data:{ instituteType : $("#instituteType").val()},
+                success: function(result)
+                {
+                    $("#vt").html(result);
+                },
+            });
+         }
+     }
+     function inst(obj)
+   {
+       obj.onchange = function()
+       {
+            $.ajax
+            ({
+                type: "GET",
+                url: 'ajaxGetInstitute',
+                data:{ tradeId : $(this).val()},
+                success: function(result)
+                {
+                    $("#vi").html(result);
+                },
+            });
+        }
+    }
+    function org(obj)
+    {
+       obj.onchange = function()
+       {
+            $.ajax
+            ({
+                type: "GET",
+                url: 'ajaxGetOrg',
+                data:{ instituteId : $(this).val()},
+                success: function(result)
+                {
+                    $("#vo").html(result);
+                },
+            });
+        }
+    }
+    function course(obj)
+    {
+       obj.onchange = function()
+       {
+            $.ajax
+            ({
+                type: "GET",
+                url: 'ajaxGetCourse',
+                data:{ OrgId : $(this).val()},
+                success: function(result)
+                {
+                    $("#vc").html(result);
+                },
+            });
+        }
+    }
+    function fee(obj)
+    {
+       obj.onchange = function()
+       {
+           var html='<td>Fee</td><td><input type="text" name="Fee" /></td>';
+           $("#vf").html(html);
+           var html='<td>Start Date</td><td><input onclick="check(this)" type="date" name="StartDate" /></td>';
+           $("#vsd").html(html);
+        }
+    }
+    function check(obj)
+    {
+       obj.onchange = function()
+       {
+           if($(this).val()!='')
+           {
+                var html='<input type="submit" value="Select Trainees"/>';
+                $("#st").html(html);
+            } 
+            else
+            {
+                $("#st").html(null);
+            }
+           
+        }
+    }
+</script>
+
+
+

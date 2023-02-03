@@ -1,0 +1,141 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('Results'); ?>> << Back to Results </a> 
+
+<?php endif; ?>
+
+
+    
+          
+
+	<div class="page-content">
+                                    
+	   <div class="row-fluid">
+                                   
+	
+                      
+               <form action="<?php echo url('Results'); ?>" method="get">
+                   
+                   Select Course Code <select id="coursecode" name="coursecode" onchange="javascript:submit()">
+                                                         <option value="">Select Course Code</option>
+                                                        <?php foreach ($coursecodes as $i): ?>
+                                                           
+                                             <option <?php if($i->CourseCode == $cou_co): ?> selected  <?php endif; ?> value="<?php echo $i->CourseCode; ?>"><?php echo $i->CourseCode; ?></option>
+                                                        
+                                                        <?php endforeach; ?>
+                                                       
+                                                     
+                                                    </select>
+                               
+               </form>
+                          
+                          
+                          
+                        <form name='search' action="<?php echo url('searchResults'); ?>" method='get'>                         
+                       Search by NIC <input type='text' name="serachkey"/>   <input type='submit' value='Search'/>
+                                             
+                       <a href=<?php echo url('viewResults'); ?>><input type='button' value='View Results' /></a>
+                                              
+                                             
+                                             
+                        </form>
+                                            
+                                           
+                                            
+                                            
+                        <div class="span12">
+			<!--PAGE CONTENT BEGINS-->
+
+
+
+
+			<table class="table">
+
+
+		<tr>
+                        <th>NIC</th>	
+			
+                        						
+                </tr>
+                <?php if(isset($Event)): ?>
+
+		<?php foreach ($Event as $c): ?>
+
+                <tr>
+                    									    	
+                     <td><a href="<?php echo url('createResult?NIC='.$c->NIC); ?>"><?php echo $c->NIC; ?></a></td>
+                     
+                                                                                                           
+<!--                 <td>
+                    <form id="deleteform"  action="<?php echo url('deleteResults?EER_ID='.$c->NIC); ?>" method="POST" onsubmit="return doConfirm('<?php echo $c->NIC; ?>',this)">
+                                                                                                                     
+                    <input type="hidden" name='cid' value=<?php echo $c->NIC; ?> />
+                    <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                                                                                                                      
+                    </form>
+                                                                                                                
+                  </td>-->
+
+	    </tr>
+            
+
+
+	<?php endforeach; ?>
+
+	<?php endif; ?>
+
+</table>
+
+								
+								
+                                                                                                                                                
+
+
+							<!--PAGE CONTENT ENDS-->
+						</div><!--/.span-->
+					</div><!--/.row-fluid-->
+				</div><!--/.page-content-->
+
+			<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+    
+  
+        function doConfirm(course,formobj)
+        {
+            
+            
+            bootbox.confirm("Are you sure you want to remove "+course, function(result) 
+            {
+                   if(result) 
+                   {
+                        formobj.submit();
+							
+                    }
+                    
+                    
+            });
+            
+         
+            return false;  // by default do nothing hack :D
+        }
+          
+   
+         
+         $("#coursecode").change(function()
+         {
+                
+                window.location = "Results?coursecode="+$("#coursecode").val();
+                
+                
+                
+                
+                
+         });
+        
+
+    
+       
+</script>

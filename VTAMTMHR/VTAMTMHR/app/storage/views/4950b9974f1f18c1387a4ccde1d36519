@@ -1,0 +1,149 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        Applicant Category
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            View
+                        </small>            
+                    </h1>
+                </div>
+            </div>
+
+<br/><br/><br/><br/>        
+
+<?php if (Session::has('done')): ?>
+    <div class="alert alert-block alert-success">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="icon-remove"></i>
+        </button>
+
+        <strong> <i class="icon-ok"></i><?php echo Session::get('done'); ?></strong>
+    </div>
+<?php endif; ?> 
+
+            <!--PAGE CONTENT BEGINS-->
+            <div class="row-fluid span12" style="margin: 0px" overflow="auto">
+                <div class="table-header">
+            </div>              
+            
+            <form name='CreateApplicantCategory' action="CreateApplicantCategory" method=''>
+                <div>
+                    <button type="submit" class="btn btn-primary" value="CreateApplicantCategory" name="" style="float: right;">Create Applicant Category</button>
+                </div>
+            </form>  
+
+            <br/>      
+            <br/>      
+
+                <span id="loding">
+                </span>
+
+                <div id="table" class="row-fluid span20" style="margin: 0px;" overflow="auto">
+                    <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Applicant Category ID</th>
+                                <th>Applicant Category</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                
+                        <?php 
+                            $i = 1;
+                        ?>
+
+                        <tbody id="table-body">
+                            <?php foreach($applicant_category as $a): ?>
+                                <tr> 
+                                    <td>
+                                        <?php echo $i++; ?>  
+                                    </td>
+                                    <td>
+                                        <form action="<?php echo url('EditApplicantCategory'); ?>" method="GET">
+                                            <input type="hidden" name="applicantCategoryIDEdit" value="<?php echo $a->id; ?>"/>
+                                            <button type="submit" class="btn btn-small btn-info"><?php echo $a->id; ?></button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <?php echo $a->category_name; ?>  
+                                    </td>
+                                    <td> 
+                                        <form id="deleteform"  action=<?php echo url('deleteApplicantCategory'); ?> method="POST" onsubmit="return doConfirm('<?php echo $a->category_name; ?>', this)">
+                                            <input type="hidden" name="applicantCategoryIDDelete" value="<?php echo $a->id; ?>"/>
+                                            <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr> 
+                            <?php endforeach; ?>
+
+                                <tr> 
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>  
+                                </tr> 
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
+<script type="text/javascript">
+    function doConfirm(course,formobj)
+    {
+        bootbox.confirm("Are you sure you want to remove Course List Code : "+course, function(result) 
+        {
+            if(result) 
+            {
+                formobj.submit();
+            }
+         });
+         return false;  // by default do nothing hack :D
+     }
+
+  var table =  $('#sample-table-2').dataTable({
+        "bPaginate": false,
+        "aaSorting": [],
+        "aoColumns": [ 
+                null, 
+                null, 
+                null,
+                null, 
+        ]});
+     
+
+//*******************************************
+
+function doConfirm(assessor, formobj){
+
+    bootbox.confirm("Are you sure you want to remove " + assessor, function(result)
+    {
+        if (result)
+            {
+                formobj.submit();
+            }
+       });
+        
+        return false;
+    }
+
+</script>

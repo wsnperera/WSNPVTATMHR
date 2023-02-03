@@ -1,0 +1,72 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        Assessor 
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            Edit 
+                        </small>            
+                    </h1>
+                </div>
+            </div>
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+ 
+<div class="span12">
+    <div class="row-fluid">
+        <div class="span7">
+            <div class="row-fluid">
+                <form class="form-horizontal" action="<?php echo url('EditApplicantCategory'); ?>" method="POST" id="ApplicantCategory_Edit_form">
+
+                    <input type="hidden" name="applicantCategoryIDEdit" id="applicantCategoryIDEdit" value="<?php echo $selectedApplicantCategory[0]->id; ?>"/>
+
+                    <div class="control-group">
+                        <label class="control-label" for="applicant_category">Applicant Category</label>
+                        
+                        <div class="controls">
+                            <input type="text" name="applicant_category" id="applicant_category" value="<?php echo $selectedApplicantCategory[0]->category_name; ?>"/>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+
+                        <div class="controls">
+                            <button value="save" type="button" id="btn_save" class="btn btn-small btn-primary">Save</button>
+
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+
+<script type="text/javascript">
+
+
+//************************
+$('#btn_save').click(function() {
+
+            $('#ApplicantCategory_Edit_form').submit();
+});
+
+</script>

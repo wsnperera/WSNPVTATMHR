@@ -1,0 +1,126 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+<a href="<?php echo url('viewTraineeAttendanceMarking'); ?>">
+    Back to Attendance Home
+</a>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span20">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Student Attendance				
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Student Daily Attendance
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+            <table>
+
+                <tr>
+                    <td>Center:</td>                        
+                    <td><input type="text" name="center" value="<?php echo $centername; ?> "style="margin: 0" readonly=""></td>
+                    <td width="50px"></td> 
+                    <td>Course Code:</td> 
+                    <td>
+                        <input type="text" name="batchcode" value="<?php echo $coursecode; ?> "style="margin: 0" readonly="">
+                    </td>
+                    <td width="50px"></td> 
+                    <td>Date:</td> 
+                    <td>
+                        <input type="text" name="date" id="date" value="<?php echo $date; ?> "style="margin: 0" readonly="">
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <table id="sample-table-1" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="center"></th>
+                        <th class="center">Ranger ID</th>
+                        <th>Trainee Name</th>
+                        <?php if($orgType == "HO" || date("Gis") > 120000): ?>
+                        <th class="center">Attendance</th>
+                        <?php else: ?>
+                        <th class="center">Mark Attendance</th>
+                        <?php endif; ?>
+                    </tr>
+                </thead>
+                <?php
+                $j = 0;
+                ?>
+                <tbody>
+                    <?php foreach($trainee as $tr): ?>
+                    <tr>
+                        <td class="center" style="width: 10%"><?php echo ++$j; ?></td>
+                        <td class="center" style="width: 20%"><?php echo $tr->Training_No; ?></td>
+                        <td style="width: 50%"><?php echo $tr->NameWithInitials; ?></td>
+                        <?php if($orgType == "HO" || date("Gis") > 120000): ?>
+                        <td class="center" style="width: 20%">
+                            <?php if(count($tr->attendance) != 0): ?>
+                            1
+                            <?php else: ?>
+                            0
+                            <?php endif; ?>                            
+                        </td>
+                        <?php else: ?>
+                        <td class="center" style="width: 20%">
+                            <?php if(count($tr->attendance) != 0): ?>
+                            <label><input type="checkbox" name="traineeid[]" id="traineeid<?php echo $j++; ?>" value="<?php echo $tr->id; ?>" checked=""/><span class="lbl"></span></label>
+                            <?php else: ?>                            
+                            <label><input type="checkbox" name="traineeid[]" id="traineeid<?php echo $j++; ?>" value="<?php echo $tr->id; ?>"/><span class="lbl"></span></label>
+                            <?php endif; ?>  
+                        </td>
+                        <?php endif; ?>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+$(function() {
+    var oTable1 = $('#sample-table-1').dataTable({
+        "aoColumns": [
+            null, null, null, {"bSortable": false}
+        ]});
+});
+$("[id^='traineeid']").click(function() {
+    var id = this.id;
+    var value = $("#" + id).val();
+    var date = $("#date").val();
+    alert(date);
+    if ($("#" + id).is(":checked")) {
+        $.ajax({
+            url: "<?php echo url('markAttendaceInsert'); ?>",
+            data: {id: value, date: date},
+            success: function(result) {
+                alert("Success");
+            }
+        });
+    } else {
+        $.ajax({
+            url: "<?php echo url('markAttendaceDelete'); ?>",
+            data: {id: value, date: date},
+            success: function(result) {
+                alert("Success");
+            }
+        });
+    }
+});
+</script><?php
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+

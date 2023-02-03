@@ -1,0 +1,258 @@
+
+@include('includes.bar')       
+
+    <link rel="stylesheet" href="assets/css/chosen.min.css" />
+
+<div class="page-content">
+
+    <div class="row-fluid">
+ <div class="span12">
+
+            <!--PAGE CONTENT BEGINS-->
+
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+<a href={{url('viewUnits')}}> << Back to Units View</a> 
+                <h1>
+                     NVQ Units			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+
+
+            <!--Write your code here start-->
+
+
+
+            <form class="form-horizontal" action="{{url('EditUnits')}}" method="POST"/>
+                  <input type="hidden" name="CD_ID" value={{Request::get('cid')}} />
+                   <div class="control-group">
+   <div class="control-group">
+                          
+                              <label class="control-label" for="Category">Unit Code</label>
+
+                              <div class="controls">
+                                      <input type="text" name="UnitCode"  id="UnitCode" value="{{$course->UnitCode}}" required/>
+                              </div>
+                              
+                      </div>
+					    <div class="control-group">
+                          
+                              <label class="control-label" for="Category">Unit Name</label>
+
+                              <div class="controls">
+                                      <input type="text" name="UnitName"  id="UnitName" value="{{$course->UnitName}}" required/>
+                              </div>
+                              
+                      </div>
+               
+<div class="control-group">
+                          
+                              <label class="control-label" for="Category">Unit Version</label>
+
+                              <div class="controls">
+                                      <input type="text" name="UnitVersion"  id="UnitVersion" value="{{$course->UnitVersion}}" required/>
+                              </div>
+                              
+                      </div>
+					   <!--  <div class="control-group">
+                            <label class="control-label" for="ModuleName"> Unit Status:</label>
+                                <div class="controls">
+                                        <select name="Ustatus" id="Ustatus" required>
+                                                <option @if($course->UnitStatus == "")selected="true" @endif value="">---Select Status---</option>
+                                                <option @if($course->UnitStatus == "C")selected="true" @endif value="C">Compulsory</option>
+                                                <option @if($course->UnitStatus == "O")selected="true" @endif value="O">Optional</option>
+                                            
+                                    
+                                        </select>
+                                        
+                                </div>
+                        </div>-->
+
+             
+
+                 <div class="control-group">
+                        
+                         <div class="controls">
+
+                             <button type="submit" class="btn btn-small btn-primary">Update</button>
+
+                         </div>
+                 </div>
+                
+
+              
+
+
+              
+               </form>
+             
+             
+             
+
+
+                <!--Write your code here end-->
+
+
+                <!--PAGE CONTENT ENDS-->
+
+
+            </div><!--/.span-->
+
+
+
+        </div><!--/.row-fluid-->
+    </div><!--/.page-content-->
+
+
+    @include('includes.footer')   
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+        <script src="assets/js/chosen.jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+    jQuery(document).ready(function() {
+   
+$(".chzn-select").trigger("liszt:activate");
+$(".chzn-select").chosen(); 
+});
+
+
+
+$('#Nvq').focus(function()
+				{
+				
+					
+					
+
+					
+					if($(this).val() == 'NVQ')
+					{
+						
+						$("#CourseLevel").html('');
+						
+						for(var i=1;i<=7;i++)
+						{
+							$("#CourseLevel").append('<option value='+i+'>Level '+i+'</option>');
+						}
+						
+						
+					}
+					if($(this).val() == 'NON-NVQ')
+					{
+						$("#CourseLevel").html('');
+					
+						$("#CourseLevel").append('<option value="Diploma">Diploma</option><option value="Certificate">Certificate</option>');
+						
+						
+					}
+				
+				});
+				
+				
+                                   
+$('#Nvq').change(function()
+				{
+				
+					
+					
+
+					
+					if($(this).val() == 'NVQ')
+					{
+						
+						$("#CourseLevel").html('');
+						
+						for(var i=1;i<=7;i++)
+						{
+							$("#CourseLevel").append('<option value='+i+'>Level '+i+'</option>');
+						}
+						
+						
+					}
+					if($(this).val() == 'NON-NVQ')
+					{
+						$("#CourseLevel").html('');
+					
+						$("#CourseLevel").append('<option value="Diploma">Diploma</option><option value="Certificate">Certificate</option>');
+						
+						
+					}
+				
+				});
+
+  $("#TradeId").change(function() {
+        var TradeId = $("#TradeId").val();
+        $("#ComStand").html('');
+        
+        var msg = '--- Select Competency Standard ---';
+      
+            
+                          $.ajax({
+                                        type: "GET",
+                                        url: "{{url::to('LoadCompetencyCourseCreate')}}",
+                                        data: {TradeId: TradeId},
+                                        dataType: "json", 
+                                        success: function(result) {
+                                             $("#ComStand").append("<option value=''>" + msg + "</option>");
+                                                 $.each(result, function(i, item)
+                                                {
+
+
+
+                                                    $("#ComStand").append("<option value=" + item.code + ">" +item.code + "-"+ item.name +  "</option>");
+
+
+
+                                                });
+
+                                        } 
+                                });            
+
+            
+       
+    });
+        
+                 $("#ComStand").change(function() {
+        var ComStand = $("#ComStand").val();
+        $("#table_instructor").html('');
+        
+        var msg = '--- Select Competency Standard ---';
+      
+            
+                          $.ajax({
+                                        type: "GET",
+                                        url: "{{url::to('LoadNVQCourseComPackage')}}",
+                                        data: {ComStand: ComStand},
+                                        //dataType: "json", 
+                                         success: function(result)
+                                        {
+                                        var html='<select id="NVQPackage" name="NVQPackage[]" multiple="multiple" class="chzn-select" data-placeholder="Choose Qualification Packages..." required="true">'+result+'</select>';
+                                            
+                                            
+                                            $("#table_instructor").append(html);
+                                            $("#NVQPackage.chzn-select").trigger("liszt:updated");
+                                            $(".chzn-select").chosen(); 
+                                            
+                                        }
+                                });            
+
+            
+       
+    });    
+				
+				
+
+
+    </script>

@@ -1,0 +1,247 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+
+<link rel="stylesheet" type="text/css" href="assets/DatePic/css/mdp.css">
+<link rel="stylesheet" type="text/css" href="assets/DatePic/css/prettify.css">
+
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<link rel="stylesheet" href="assets/css/bootstrap-timepicker.css" />
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/colorpicker.css" />
+
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        Student Attendance
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            Student Daily Attendance
+                        </small>            
+                    </h1>
+                </div>
+            </div>
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+
+</br>
+
+    <div class="span9">
+        <!--Write your code here start-->
+            <form class="form-horizontal" name="attendance" action="<?php echo url('getDataTraineeAttendanceMarking'); ?>" method="get">
+                <div class="control-group">
+                    <label class="control-label">Center Name</label>
+
+                    <div class="controls">
+                        <?php if($orgType == "HO"): ?>
+                        <select name="centername" id="center">
+                            <option value="" selected="">Select Center</option>
+                            <?php foreach($centers as $c): ?>
+                            <option value="<?php echo $c->id; ?>"><?php echo $c->Type.'-'.$c->OrgaName; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+
+                        <?php elseif($orgType == "DO"): ?>
+                        <select name="centername" id="center">
+                            <option value="" selected="">Select Center</option>
+                            <?php foreach($centers as $c): ?>
+                            <option value="<?php echo $c->id; ?>"><?php echo $c->Type.'-'.$c->OrgaName; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+
+                        <?php else: ?>
+                        <input type="hidden" name="centername" id="center" value="<?php echo $centers->id; ?>" /><input readonly type="text" value="<?php echo $centers->OrgaName; ?>"/>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Course Code</label>
+
+                    <div class="controls">
+                        <select name="batchcode" id="batchcode">
+                            <option value="">Select Batch</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!--
+                <div class="control-group" >
+                    <label class="control-label">Date</label>
+
+                    <div class="controls">
+                        <input type="text" name="date" value="<?php echo $date; ?>" readonly=""/>
+                    </div>
+                </div>
+                -->
+                <?php if($orgType == "HO"): ?>
+                <div class="control-group" id="withAltField">
+                    <label class="control-label">Date</label>
+
+                    <div class="controls">
+                        <div id="with-altField-HO"></div>
+                        </br>
+                        <input type="text" id="altField" name = "dates" value="" style="width:100%" readonly >
+                    </div>
+                </div>
+
+                <?php else: ?>
+                <div class="control-group" id="withAltField">
+                    <label class="control-label">Date</label>
+
+                    <div class="controls">
+                        <div id="with-altField"></div>
+                        </br>
+                        <input type="text" id="altField" name = "dates" value="" style="width:100%" readonly >
+                    </div>
+                </div>
+                <?php endif; ?>
+                
+
+                </br>
+                <div class="span4">
+                    <center>
+                        <div class="control-group" id="submit">
+                            <button class = "btn btn-info" type = "submit">
+                                    Submit
+                            </button>
+                        </div>
+                    </center>
+                </div>
+            </form>
+            <!--Write your code here end--> 
+    </div>
+
+    <div class="span4">
+        <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+                <div class="alert alert-error">
+                    <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+    
+</div><!--/.page-content-->
+
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<!-- loads jquery and jquery ui -->
+<script type="text/javascript" src="assets/DatePic/js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="assets/DatePic/js/jquery-ui-1.11.1.js"></script>
+    
+<!-- loads mdp -->
+<script type="text/javascript" src="assets/DatePic/js/jquery-ui.multidatespicker.js"></script>
+        
+<!-- mdp demo code -->
+<script type="text/javascript">
+
+var latestMDPver = $.ui.multiDatesPicker.version;
+var lastMDPupdate = '2014-09-19';
+          
+$(function() {
+    // Version //
+    //$('title').append(' v' + latestMDPver);
+    $('.mdp-version').text('v' + latestMDPver);
+    $('#mdp-title').attr('title', 'last update: ' + lastMDPupdate);
+            
+    // Documentation //
+    $('i:contains(type)').attr('title', '[Optional] accepted values are: "allowed" [default]; "disabled".');
+    $('i:contains(format)').attr('title', '[Optional] accepted values are: "string" [default]; "object".');
+    
+    $('#how-to h4').each(function () {
+        var a = $(this).closest('li').attr('id');
+        $(this).wrap('<'+'a href="#'+a+'"></'+'a>');
+    });
+    
+    $('#demos .demo').each(function () {
+        var id = $(this).find('.box').attr('id') + '-demo';
+        $(this).attr('id', id)
+        .find('h3').wrapInner('<'+'a href="#'+id+'"></'+'a>');
+    });
+            
+    // Run Demos
+    $('.demo .code').each(function() {
+        eval($(this).attr('title','NEW: edit this code and test it!').text());
+        this.contentEditable = true;
+    }).focus(function() {
+        if(!$(this).next().hasClass('test'))
+        $(this)
+        .after('<button class="test">test</button>')
+        .next('.test').click(function() {
+            $(this).closest('.demo').find('.hasDatepicker').multiDatesPicker('destroy');
+            eval($(this).prev().text());
+            $(this).remove();
+            });
+        });
+    });
+
+</script>
+
+<!-- loads some utilities (not needed for your developments) -->
+<script type="text/javascript" src="assets/DatePic/js/prettify.js"></script>
+<script type="text/javascript" src="assets/DatePic/js/lang-css.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+        prettyPrint();
+    });
+</script>
+
+<script type="text/javascript">
+    $('#with-altField').multiDatesPicker({
+        dateFormat: "yy-mm-dd",
+        maxPicks: 10,
+        altField: '#altField'
+    });
+</script>
+
+<script type="text/javascript">
+    $('#with-altField-HO').multiDatesPicker({
+        dateFormat: "yy-mm-dd",
+        maxPicks: 31,
+        altField: '#altField'
+    });
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    var center = $("#center").val();
+    if (center !== "") {
+        $.ajax
+                ({
+                    url: "<?php echo url::to('getBatchTraineeAttendanceMarking'); ?>",
+                    data: {center: center},
+                    dataType: 'json',
+                    success: function(result)
+                    {
+                        document.getElementById('batchcode').innerHTML = result.html1;
+                    }
+                });
+    }
+});
+
+
+$("#center").change(function() {
+    var center = document.getElementById('center').value;
+
+    $.ajax
+            ({
+                url: "<?php echo url::to('getBatchTraineeAttendanceMarking'); ?>",
+                data: {center: center},
+                dataType: 'json',
+                success: function(result)
+                {
+                    document.getElementById('batchcode').innerHTML = result.html1;
+                }
+            });
+
+});
+
+</script>
+

@@ -1,0 +1,106 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<a href=<?php echo url('ViewHRUserEPFList'); ?>> << Back to User EPF List</a> 
+
+<div class="page-content">
+
+ <div class="row-fluid">
+<div class="span8">
+
+    <!--PAGE CONTENT BEGINS-->
+    <!--/.page-header-->
+
+    <div class="page-header position-relative">
+
+        <h1>
+   User EPF No List		
+        <small>
+                <i class="icon-double-angle-right"></i>
+                Create
+        </small>			
+        </h1>
+
+</div><!--/.page-header-->
+<form class="form-horizontal" action="<?php echo url('CreateHRUserEPFList'); ?>" method="POST" />
+   <div class="controls">
+
+                <?php if(Session::has('done')): ?>
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="icon-remove"></i>
+                            </button>
+                            <strong>
+                                <i class="icon-ok"></i>
+                               User EPF Added Successfully 
+                            </strong>
+                            <br>
+                        </div>
+                    <?php endif; ?>
+                     </div>
+    
+	 <div class="control-group">
+                    <label class="control-label">User :</label>
+                    <div class="controls">
+                       <select name="UserID" id="UserID" required >
+					   <option value="">--- Select User ---</option>
+					   <?php foreach($Users as $u): ?>
+					   <option value="<?php echo $u->userID; ?>"><?php echo $u->userName; ?> - <?php echo $u->Initials; ?> <?php echo $u->LastName; ?></option>
+					   <?php endforeach; ?>
+					   </select>
+                    </div>
+     </div>
+	  <div class="control-group">
+                    <label class="control-label">EPF No :</label>
+                    <div class="controls">
+                       <input type="text" name="EPFNo" id="EPFNo" required />
+					   
+                    </div>
+     </div>
+	  <div class="control-group">
+                    <label class="control-label">Active :</label>
+                    <div class="controls">
+                       <select name="Active" id="Active" required/>
+					   <option value="">--- Select ---</option>
+					   <option value="1">Yes</option>
+					    <option value="0">No</option>
+					   </select>
+                    </div>
+     </div>
+     
+  
+<div class="controls">
+    <input type="submit" class="btn btn-small btn-primary"  value="Save" />
+</div>
+</form>
+    <!--PAGE CONTENT ENDS-->
+</div><!--/.span-->
+<div class="span4">
+    <?php if($errors->has()): ?>
+        <?php foreach($errors->all() as $msg): ?>
+         <!-- Error Message -->
+
+         <div class="alert alert-error">
+
+         <button type="button" class="close" data-dismiss="alert">
+          <i class="icon-remove"></i>
+            </button>
+
+             <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+              </div>
+
+                 <!-- Error Message -->
+
+          <?php endforeach; ?>
+
+           <?php endif; ?>
+</div>
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+
+
+

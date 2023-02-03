@@ -1,0 +1,477 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href=<?php echo url('viewCourseYearPlan'); ?>> << Back to View </a>
+                <h1>Course Year Plan<small><i class="icon-double-angle-right"></i>Edit</small></h1>
+            </div>
+            <form class="form-horizontal" action='' method="POST">
+                <input type='hidden' name='id' value='<?php echo $CourseYearPlan->id; ?>' />
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Organisation : </label>
+                        <div class="controls">
+                        <input type="text" name="CourseListCode" id="CourseListCode"  value="<?php echo CourseYearPlan::getOrganizatinName($CourseYearPlan->OrgId); ?>" readonly />
+                    </div>
+                </div>
+				<!-- Edit by Amila 2017-05-09 -->
+                <?php if($userType=="Admin"): ?>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Year : </label>
+                        <div class="controls">
+                            <select name='Year' >
+                            <option <?php if($CourseYearPlan->Year==date('Y')-1): ?> selected="true" <?php endif; ?> ><?php echo date('Y')-1; ?></option>
+                            <option <?php if($CourseYearPlan->Year==date('Y')): ?> selected="true" <?php endif; ?> ><?php echo date('Y'); ?></option>
+                            <option <?php if($CourseYearPlan->Year==date('Y')+1): ?> selected="true" <?php endif; ?> ><?php echo date('Y')+1; ?></option>
+                            </select>
+                        </div>
+                </div>
+                <?php else: ?>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Year : </label>
+                        <div class="controls">
+                            <select name='Year' readonly>
+                            <?php if($CourseYearPlan->Year==date('Y')-1): ?>
+                            <option  selected="true"><?php echo date('Y')-1; ?></option>
+                            <?php endif; ?>
+                            <?php if($CourseYearPlan->Year==date('Y')): ?>
+                            <option  selected="true"><?php echo date('Y'); ?></option>
+                            <?php endif; ?>
+                            <?php if($CourseYearPlan->Year==date('Y')+1): ?>
+                            <option  selected="true" ><?php echo date('Y')+1; ?></option>
+                            <?php endif; ?> 
+                            </select>
+                        </div>
+                </div>
+                <?php endif; ?>
+				
+				<?php if($userType=="Admin"): ?>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course List Code : </label>
+                        <div class="controls">
+                            <select name="CourseListCode" id="CourseListCode">
+                                <?php foreach($CourseListCode as $clc): ?>
+                                    <option value="<?php echo $clc->CourseListCode; ?>" <?php if($CourseYearPlan->CourseListCode ==$clc->CourseListCode ): ?> selected <?php endif; ?>><?php echo $clc->CourseName; ?> (<?php echo $clc->CourseListCode; ?>)-<?php echo $clc->CourseType; ?>- (<?php echo $clc->Nvq; ?>) <?php echo $clc->Duration; ?> - Months</option>                                                              
+                                <?php endforeach; ?>
+                            </select>
+                            <span class="lbl" style="color: red"><b>*</b></span>
+                        </div>
+                </div>
+                <?php else: ?>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course List Code : </label>
+                        <div class="controls">
+                            <select name="CourseListCode" id="CourseListCode">
+                                <?php foreach($CourseListCode as $clc): ?>
+                                    <?php if($CourseYearPlan->CourseListCode ==$clc->CourseListCode ): ?>
+                                    <option value="<?php echo $clc->CourseListCode; ?>"  selected ><?php echo $clc->CourseName; ?> (<?php echo $clc->CourseListCode; ?>)-<?php echo $clc->CourseType; ?>- (<?php echo $clc->Nvq; ?>) <?php echo $clc->Duration; ?> - Months</option>                                                              
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>
+                            <span class="lbl" style="color: red"><b>*</b></span>
+                        </div>
+                </div>
+                <?php endif; ?>
+				 <div class="control-group">
+                    <label class="control-label" for="CourseLevel">Course Level : </label>
+                        <div class="controls">
+                            <select name="CourseLevel" id="CourseLevel" required="true">
+                                <option></option>
+								<?php if($NVQ=='NVQ'): ?>
+								<option value="1" <?php if($CourseLevel=='1'): ?> selected <?php endif; ?>>Level 1</option>
+								<option value="2" <?php if($CourseLevel=='2'): ?> selected <?php endif; ?>>Level 2</option>
+							<option value="3" <?php if($CourseLevel=='3'): ?> selected <?php endif; ?>>Level 3</option>				
+                                    <option value="4" <?php if($CourseLevel=='4'): ?> selected <?php endif; ?>>Level 4</option>
+									<option value="5" <?php if($CourseLevel=='5'): ?> selected <?php endif; ?>>Level 5</option>
+								<?php else: ?>
+									<option value="Certificate" <?php if($CourseLevel=='Certificate'): ?> selected <?php endif; ?>>Certificate</option>
+									<option value="Diploma" <?php if($CourseLevel=='Diploma'): ?> selected <?php endif; ?>>Diploma</option>
+								<?php endif; ?>
+                            </select>
+                            <span class="lbl" style="color: red"><b>*</b></span>
+                        </div>
+                </div>
+				
+				<?php if($userType=="Admin"): ?>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Batch : </label>
+                        <div class="controls">
+                            <select name='batch' >
+                                <?php if($CourseYearPlan->batch==1): ?>
+                                    <option selected>1</option>
+                                    <option>2</option>
+                                <?php else: ?>
+                                    <option selected>2</option>
+                                    <option>1</option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                </div>
+                <?php else: ?>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Batch : </label>
+                        <div class="controls">
+                            <select name='batch' >
+                                <?php if($CourseYearPlan->batch==1): ?>
+                                    <option selected>1</option>
+                                <?php endif; ?>
+                                <?php if($CourseYearPlan->batch==2): ?>
+                                    <option selected>2</option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                </div>
+                <?php endif; ?>
+				
+				<?php if($userType=="Admin"): ?>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Parallel Batch : </label>
+                        <div class="controls">
+                            <select name='parallel_batch' required="true" >
+                                <option <?php if($CourseYearPlan->parallelGroups=='Yes'): ?> selected="true" <?php endif; ?> >Yes</option>
+                                <option <?php if($CourseYearPlan->parallelGroups=='No'): ?> selected="true" <?php endif; ?> >No</option>
+                            </select> 
+                        </div>
+                </div>
+                <?php else: ?>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Parallel Batch : </label>
+                        <div class="controls">
+                            <select name='parallel_batch' required="true" >
+                                <?php if($CourseYearPlan->parallelGroups=='Yes'): ?>
+                                    <option selected="true" value="Yes">Yes</option>
+                                <?php endif; ?>
+                                <?php if($CourseYearPlan->parallelGroups=='No'): ?> 
+                                    <option selected="true" value="No">No</option>
+                                <?php endif; ?>
+                            </select> 
+                         
+                        </div>
+                </div>
+                <?php endif; ?>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Medium : </label>
+                        <div class="controls">
+                            <select name='medium' required="true">
+                                <option></option>
+                                <option <?php if($CourseYearPlan->medium=='Sinhala'): ?> selected="true" <?php endif; ?>>Sinhala</option>
+                                <option <?php if($CourseYearPlan->medium=='Tamil'): ?> selected="true" <?php endif; ?>>Tamil</option>
+                                <option <?php if($CourseYearPlan->medium=='English'): ?> selected="true" <?php endif; ?>>English</option>
+                                <option <?php if($CourseYearPlan->medium=='Other'): ?> selected="true" <?php endif; ?>>Other</option>
+                            </select>
+                        </div>
+                </div>
+				
+				<?php if($userType=="Admin"): ?>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Max Capacity : </label>
+                    <div class="controls">
+                    <input type="number" name="maxCapacity" min="1" required="true" value="<?php echo $CourseYearPlan->maxCapacity; ?>" />
+                    <span class="lbl" style="color: red"><b></b></span>
+                    </div>
+                </div>
+                <?php else: ?>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Max Capacity : </label>
+                    <div class="controls">
+                    <input type="number" name="maxCapacity" min="1" required="true" value="<?php echo $CourseYearPlan->maxCapacity; ?>" readonly/>
+                    <span class="lbl" style="color: red"><b></b></span>
+                    </div>
+                </div>
+                <?php endif; ?>
+				
+				
+                 <!--  <div class="control-group">
+                        <label class="control-label" for="Nvq">Is NVQ</label>
+                        <div class="controls">
+                            <select name="Nvq" id="Nvq">
+                            <?php if($CourseYearPlan->Nvq=='NVQ'): ?>
+                                <option value=""></option>
+                                <option value="NVQ" selected>Yes</option>
+                                <option value="NON-NVQ">No</option>
+                             <?php else: ?>
+                                 <option value=""></option>
+                                <option value="NVQ">Yes</option>
+                                <option value="NON-NVQ" selected>No</option>
+                             <?php endif; ?>   
+                            </select>
+                        </div>
+                </div>
+                <div class="control-group">
+                        <label class="control-label" for="Medium">Course Level</label>
+                        <div class="controls">
+                            <select name="CourseLevel" id="CourseLevel"> 
+                            </select>
+                        </div>
+                        <div class="controls">
+                            <input type="text" id="courseLevelStatus" name="courseLevelStatus"  readonly value=<?php echo $CourseYearPlan->CourseLevel; ?> />
+                        </div>
+                </div> -->
+               
+			<div class="control-group">
+                    <label class="control-label" for="attachedCenter">Attached Centre : </label>
+                        <div class="controls">
+                            <select name='attachedCenter' id='attachedCenter'>
+                                <?php if($CourseYearPlan->attachedCenter == 'No'): ?>
+                                <option value="No" selected="">No</option>
+                                <option value="Yes">Yes</option>
+                                <?php else: ?>
+                                <option value="No" selected="">No</option>
+                                <option value="Yes" selected>Yes</option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                </div>
+                <div id="abc">
+                </div>
+               
+                <div class="control-group">
+                    <label class="control-label" for="attachedCenter">Accredit  : </label>
+                        <div class="controls">
+                            <select name='Accredit' id='Accredit'>
+                                <?php if($CourseYearPlan->Accredit == 'No'): ?>
+                                <option value="No" selected="">No</option>
+                                <option value="Yes">Yes</option>
+                                <?php else: ?>
+                                <option value="No" selected="">No</option>
+                                <option value="Yes" selected>Yes</option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                </div>
+                <div class="control-group" style="visibility: hidden" id="xyz">
+                    <label class="control-label" for="AccreditDate">Accredit Date : </label>
+                        <div class="controls">
+                           <input type="Date" name="AccreditDate" id="AccreditDate" value="<?php echo $CourseYearPlan->AccreditDate; ?>" />
+                        </div>
+                </div>
+               <div class="control-group">
+                <label class="control-label" >Instructor : </label>
+                <div class="controls" id="ModuleDiv">
+                    <select name="InstructorList" id="InstructorList">
+                         <option value="">--Select Instructor--</option>
+                        <?php foreach($Instructors as $v): ?>
+
+                         <option  value="<?php echo $v->EPFNo; ?>" <?php if($CourseYearPlan->CurrentInstructorEPF==$v->EPFNo): ?> selected="true" <?php endif; ?> ><?php echo $v->Name; ?> - <?php echo $v->EPFNo; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <input type="button"  value="Add New Instructor" class="btn btn-small btn-warning" name="NewModule" id="NewModule" onclick="addModule()" />
+                </div>         
+            </div>
+
+            <div class="control-group" hidden="" id="addModule" style="padding-top: 10px;padding-bottom: 10px;margin-right: 200px;margin-left: 100px;margin-top:25px;margin-bottom:25px; border: 1px solid #009ceb;width:460px">
+
+                <div class="control-group">
+                    <label class="control-label">Instructor Name</label>
+                    <div class="controls">
+                        <input id="Name" placeholder="" type="text">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">EPF No</label>
+                    <div class="controls">
+                        <input id="EPF" placeholder="" type="text" />
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="button" value="Create"  onclick="fillModule()" class="btn btn-small btn-primary"/>
+                    </div>
+                </div>  
+
+            </div>
+             <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Trainee Count : </label>
+                    <div class="controls">
+                    <input type="number" name="TCount" id="TCount" min="0" />
+                    <span class="lbl" style="color: red"><b></b></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Dropout Count : </label>
+                    <div class="controls">
+                    <input type="number" name="DCount" id="DCount" min="0" />
+                    <span class="lbl" style="color: red"><b></b></span>
+                    </div>
+                </div>
+
+
+
+_                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" class="btn btn-small btn-primary" value="Save"/>
+                    </div>
+                </div>
+                   
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+    $("#courseCode").change(function()
+    {
+        if($("#courseCode").val()!='')
+        {
+            
+            $("#placeHolder").html(html);
+        }
+        else
+        {
+            $("#placeHolder").html('');
+        }
+    });
+    
+</script>
+      
+  <script type="text/javascript">
+
+ function addModule() {
+        $.ajax  ({
+                    url: "<?php echo url::to(''); ?>",
+                    success: function(result) {
+                        if ($('#addModule').is(':hidden')) {
+                            $('#addModule').show();
+                        } else {
+                            $('#addModule').hide();
+                        }
+                    }
+                });
+    }
+    function fillModule() {
+        var Name = document.getElementById('Name').value;
+        var EPF = document.getElementById('EPF').value;
+        var msg = '--- Select Instructor---';
+        $("#InstructorList").html('');
+        $.ajax({
+                    url: "<?php echo url::to('SaveMOInstructor'); ?>",
+                    data: {Name: Name, EPF: EPF},
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.ModuleId !== 0) {
+                            
+                            $('#addModule').hide();
+                           $('#ajaxerror').html(result.done);
+                            $("#InstructorList").append("<option value=''>" + msg + "</option>");
+                            $.each(result.list, function(i, item)
+                            {
+
+
+
+                                $("#InstructorList").append("<option value=" + item.EPFNo + ">" + item.Name + "  (" + item.EPFNo + ")</option>");
+
+
+
+                            });
+                                                        
+                                   
+
+                        } else {
+                            $('#ajaxerror').html(result.html);
+                            window.scrollTo(0, 0);
+                        }
+                    }
+                });
+    }
+    $('#Accredit').click(function() {
+                                    var s = $('#Accredit').val();
+                                    //alert(s);
+                                    if(s == 'Yes')
+                                    {
+                                      document.getElementById('xyz').style.visibility = 'visible';
+                                      
+                                    }
+                                    else
+                                    {
+                                        document.getElementById('xyz').style.visibility = 'hidden';
+                                    }
+                                    
+                                    
+                                    
+                                  
+                                });
+$("#attachedCenter").change(function() {
+        //alert('1');
+                                    var attachedCenter = $('#attachedCenter').val();
+                               
+                                    if (attachedCenter != 'No') {
+                                        $.ajax
+                                                ({
+                                                    beforeSend: function()
+                                                    {
+                                                      //  $("body").css("cursor", "progress");
+                                                       // $("body input").css("cursor", "progress");
+                                                        //$("#loding").html('<br><br><img height="50%" width="25%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                                                    },
+                                                    type: "POST",
+                                                    url: 'ajaxGetattachedCenter',
+                                                    data: {attachedCenter: attachedCenter},
+                                                    //dataType: 'json',
+                                                    success: function(result)
+                                                    {
+                                                       $("#abc").html(result);
+                                                    },
+                                                    complete: function() {
+                                                        //$("#loding").html('');
+                                                      //  $("body").css("cursor", "default");
+                                                       // $("body input").css("cursor", "default");                                                       
+                                                    }
+
+                                                });
+                                    } else {
+                                        $("#abc").html("");
+                                        //bootbox.alert('Please select Institute !');
+                                    }
+                                });
+$("#CourseListCode").on("change", function() {
+                                    var CourseListCode = $('#CourseListCode').val();
+                                    if (CourseListCode != '') {
+                                        $.ajax
+                                                ({
+                                                    beforeSend: function()
+                                                    {
+                                                        $("body").css("cursor", "progress");
+                                                        $("body input").css("cursor", "progress");
+                                                        //$("#loding").html('<br><br><img height="50%" width="25%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                                                    },
+                                                    type: "POST",
+                                                    url: 'ajaxGetNvqLevelCourse',
+                                                    data: {CourseListCode: CourseListCode},
+                                                    //dataType: 'json',
+                                                    success: function(result)
+                                                    {
+                                                       $("#CourseLevel").html(result);
+                                                    },
+                                                    complete: function() {
+                                                        //$("#loding").html('');
+                                                        $("body").css("cursor", "default");
+                                                        $("body input").css("cursor", "default");                                                       
+                                                    }
+
+                                                });
+                                    } else {
+                                        //bootbox.alert('Please select Institute !');
+                                    }
+                                });
+</script> 
+       
+               
+               
+               
+      
+        
+        
+
+    

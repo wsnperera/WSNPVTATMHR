@@ -1,0 +1,89 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>    
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('viewALSubject'); ?>> << Back to A/L Subject </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>
+                A/L Subject		
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    View
+                </small>			
+            </h1>
+        </div>
+
+       
+
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+       <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label">Stream</label>
+                    <div class="controls">
+                        <select name="Stream" id="Stream">
+                            <option>--Select--</option>
+                            <?php foreach($stream as $stream): ?>
+                            <option value="<?php echo $stream->Stream; ?>"><?php echo $stream->Stream; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                         <a href=<?php echo url('createALSubject'); ?>><input type='button' value='Create A/L Subject' /></a>
+                    </div>
+                </div>
+                <div id="table">                    
+                    <?php if(isset($html2)): ?>
+                    <div><?php echo $html2; ?></div>
+                    <?php endif; ?>
+                </div>
+            </form>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    function table() {
+    var oTable1 = $('#sample-table-2').dataTable({
+        "bPaginate": true,
+        "aoColumns": [
+            null, null,null,null,null
+        ]});
+    $('table th input:checkbox').on('click', function() {
+        var that = this;
+        $(this).closest('table').find('tr > td:nth-child(4) input:checkbox')
+                .each(function() {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+    });
+}
+
+$("#Stream").change(function() {
+    var Stream = $("#Stream").val();
+    $.ajax({
+        url: "<?php echo url::to('getALSubject'); ?>",
+        data: {Stream: Stream},
+        success: function(result)
+        {
+             $('#table').html(result);
+                table();
+        }
+    });
+});
+
+            function doConfirm(ALSubject, formobj)  {
+            bootbox.confirm("Are you sure you want to remove " + ALSubject, function(result)
+            {
+            if (result){
+            formobj.submit();
+            }
+            });
+                    return false; // by default do nothing hack :D
+            }
+
+
+</script>

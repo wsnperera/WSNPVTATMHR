@@ -1,0 +1,79 @@
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--Write your code here start-->
+            <?php
+            $year = 0000;
+            $indexx = 0;
+            $b = 1;
+            ?>
+            <?php if(count($currentdata) == 0): ?>
+            <center><h3>Data Not Found</h3></center>
+            <?php else: ?>
+            <table>
+                <tr>
+                    <th class="center" width="100px">Index No</th>
+                    <th class="center" width="120px">Year of Sitting</th>
+                    <th class="center" width="150px">Subject Name</th>
+                    <th class="center" width="50px">Result</th>
+                    <th></th>
+                </tr>
+                <?php foreach($currentdata as $cd): ?>
+
+
+                <?php if($cd->Year != $year && $b>1): ?>
+                <?php
+                $year = $cd->Year;
+                $b++;
+                ?>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="center"><?php echo $indexx; ?></td>
+                    <td class="center"><?php echo $cd->Year; ?></td>
+                    <?php elseif($cd->Year != $year): ?>
+                    <?php
+                    $year = $cd->Year;
+                    $indexx = $cd->IndexNo;
+                    $b++;
+                    ?>
+                <tr>
+                    <td class="center"><?php echo $indexx; ?></td>
+                    <td class="center"><?php echo $cd->Year; ?></td>
+                    <?php else: ?>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <?php endif; ?>
+                    <td><?php echo $cd->getSubject->SubjectName; ?></td>
+                    <td class="center"><?php echo $cd->Result; ?></td>
+                    <td></td>
+                </tr>
+                <?php
+                $year = $cd->Year;
+                $indexx = $cd->IndexNo;
+                $b++;
+                ?>
+                <?php endforeach; ?>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+
+            </table>
+            <?php endif; ?>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->

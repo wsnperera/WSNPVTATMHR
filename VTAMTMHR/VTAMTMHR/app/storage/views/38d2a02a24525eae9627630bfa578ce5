@@ -1,0 +1,128 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<a href=<?php echo url('viewALSubject'); ?>> << Back to A/L Subject </a> 
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    A/L Subject			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <form class="form-horizontal" action="<?php echo url('createALSubject'); ?>" method="POST" />
+
+            <div class="control-group">
+                <label class="control-label" for="Stream">Stream</label>
+                <div class="controls">
+                    <select name="Stream" id="Stream" onchange="OtherSubName()">
+                        <option>--Select--</option>
+                        <?php foreach($stream as $stream): ?>
+                        <option value="<?php echo $stream->Stream; ?>"><?php echo $stream->Stream; ?></option>
+                        <?php endforeach; ?>
+                        <option>Other</option>
+                        </select>
+                        <span id="SpanStr"></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="SubjectName">Subject Name</label>
+                <div class="controls">
+                    <input type="text" name="SubjectName" id="SubjectName" onblur="validateSubName()" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="ShortSubName">Short Subject Name</label>
+                <div class="controls">
+                    <input type="text" name="ShortSubName"  />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-small btn-primary">Save</button>
+                </div>
+            </div>
+            </form>
+
+        </div><!--/.span-->
+
+        <!--/span 4 for error handling -->
+
+        <div class="span4">
+
+            <!-- Error Handling --!>
+                    <?php if($errors->has()): ?>
+                          <?php foreach($errors->all() as $msg): ?>
+            <!-- Error Message --!>
+              <div class="alert alert-error">
+                 <button type="button" class="close" data-dismiss="alert">
+                         <i class="icon-remove"></i>
+                 </button>
+                 <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+              </div>
+            <!-- Error Message --!>
+      <?php endforeach; ?>
+    <?php endif; ?>
+            <!-- Error Handling --!>
+    </div>
+            <!--/span 4-->
+            <!--PAGE CONTENT ENDS-->
+
+        </div><!--/.row-fluid-->
+    </div><!--/.page-content-->
+    <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+    <script type="text/javascript">
+
+        <?php if (isset($done)): ?>
+                $.gritter.add({title: "", text: "ALSubject Added Successfully", class_name: "gritter-info gritter-center"});
+                <?php endif; ?>
+
+    </script>
+    <script type="text/javascript">
+             
+
+                function OtherSubName() {
+                    var ster = document.getElementById('Stream').value;
+                    var divStr = document.getElementById('SpanStr');
+                    if (ster === 'Other') {
+                        toAppend ="<input type='text' name='Stream' placeholder='Please Specify...!'/>";
+                        divStr.innerHTML = toAppend;
+                        return;
+                    } else {
+                        divStr.innerHTML = "<input type='hidden' name='Stream' value='"+ster+"' />";
+                    }
+                }
+                $(document).ready(function(){
+                  var ster = document.getElementById('Stream').value;
+                    var divStr = document.getElementById('SpanStr');
+                    if (ster === 'Other') {
+                        toAppend ="<input type='text' name='Stream'/>";
+                        divStr.innerHTML = toAppend;
+                        return;
+                    } else {
+                        divStr.innerHTML= "<input type='hidden' name='Stream' value='"+ster+"' />";
+                    }
+    });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+

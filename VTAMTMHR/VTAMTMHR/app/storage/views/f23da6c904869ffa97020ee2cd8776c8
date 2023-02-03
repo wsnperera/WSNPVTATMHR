@@ -1,0 +1,511 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        Monitoring       
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            View Course Monitoring Plans
+                        </small>            
+                    </h1>
+                </div>
+            </div>
+            <!--PAGE CONTENT BEGINS-->
+            <form action="" method='POST' class='form-horizontal'>
+             <div class="control-group">
+                    <label class="control-label" for="centers">Centers</label>
+                    <div class="controls">
+                        <select name="center" id="center" required="true">
+                            <option value="0">All</option>
+                            <?php foreach($Centers as $cnt): ?>
+                            <option value="<?php echo $cnt->id; ?>"><?php echo $cnt->OrgaName; ?>- (<?php echo $cnt->Type; ?>)</option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                
+                <br/> 
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit"  class="btn btn-primary">
+                                <i class="icon-eye-open bigger-200"></i>View</button>
+                                <span id='upld' hidden>
+                                
+                              
+                                </span>
+                    </div>
+                </div>   
+            </form>
+            <div id="aaaa">
+            <?php if(isset($courses)): ?>
+            
+            
+             
+            
+
+             <?php endif; ?>
+           <!-- <h5 style="color: #777777;"><?php if(isset($CourseCode)): ?>CourseCode:&nbsp;&nbsp;<?php echo $CourseCode; ?><?php endif; ?></h5>
+            <h5 style="color: #777777;"><?php if(isset($BatchCode)): ?>BatchCode:&nbsp;&nbsp;<?php echo $BatchCode; ?><?php endif; ?></h5>-->
+            <pre><center><b><i>Approved Status *** </i></b>Pending - <font color="blue"><i class="icon-edit bigger-130"></i></font> <t/>Approved - <font color="green"><i class="icon-ok bigger-130"></i></font> <t/>Rejected - <font color="red"><i class="icon-remove bigger-130"></i></font></center></pre>
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead>
+                        <th class='center'>No</th>
+                        <th class='center'>Center</th>
+                        <th class='center'>Course Name</th>
+                        <th class='center'>Year</th>
+                        <th class='center'>Batch</th>
+                        <th class='center'>Date Planned</th>
+                        <th class='center'>Approved Status</th>
+                        <th class='center'>Visited</th>
+                        <th class='center'>Download Question Paper & Answer Sheet</th>
+                        <th class='center'>Enter Course Monitoring Form</th>
+						<th class='center'>Edit Course Monitoring Form</th>
+                        <th class='center'>View Course Monitoring Form</th>
+                        
+                       
+                        
+                </tr>
+                </thead>
+                    <tbody>
+
+                  <?php 
+                  $SerialNo=1;
+				  $curdate = DB::select(DB::raw("select CURDATE() as curdateasa"));
+				 
+								$newdataaa =  json_decode(json_encode((array)$curdate),true);
+								$curdateo = $newdataaa[0]["curdateasa"];
+                  ?>
+                <?php if(isset($courses)): ?>
+					
+                <?php foreach($courses as $t): ?>
+
+                <?php if($t->Visited == 0): ?>
+                
+                        <tr>
+                           
+                            <td class="center"><font color="red"><?php echo $SerialNo++; ?></font></td>
+                            <td class="center"><font color="red"><?php echo $t->OrgaName; ?>(<?php echo $t->Type; ?>)</font></td>
+                            <td><font color="red"><?php echo $t->CourseName; ?> ( Medium- <?php echo $t->medium; ?> )</font></td>
+                            <td class="center"><font color="red"><?php echo $t->Year; ?></font></td>
+                            <td class="center"><font color="red"><?php echo $t->batch; ?></font></td>
+                            <td class="center">
+							<font color="red">
+							<?php if($t->Visited == 0): ?>
+							  <a href="<?php echo url('CourseMonitoringPlanEdit?id='.$t->id); ?>"><i class="icon-edit icon-1x icon-only"></i> <?php echo $t->DatePlanned; ?></a>
+							<?php else: ?>
+							<?php echo $t->DatePlanned; ?>
+						    <?php endif; ?>
+							</font>
+							</td>
+                             <?php if($t->Approved == 0): ?>
+                             <td class='center'> <font color="blue"><i class="icon-edit bigger-130"></i></font></td>
+                             <?php elseif($t->Approved == 1): ?>
+                             <td class='center'> <font color="green"><i class="icon-ok bigger-130"></i></font></td>
+                             <?php else: ?>
+                             <td class='center'> <font color="red"><i class="icon-remove bigger-130"></i></font></td>
+                             <?php endif; ?>
+                             <?php if($t->Visited == 0): ?>
+                            <td class="center"><font color="red">Not Yet</font></td>
+                            <?php else: ?>
+                            <td class="center"><font color="red">Yes</font></td>
+                            <?php endif; ?>
+                            <td class='center'> <font color="DEEPPINK"><a class="DEEPPINK"  id="<?php echo $t->id; ?>"> <i class="icon-download-alt bigger-200"></i></a> </font>
+                              <span id="img4"></span>
+                            </td>
+                             <td class="center">
+							 <?php 
+								$enddd = DB::select(DB::raw("select DATE_ADD('".$t->DatePlanned."',INTERVAL 1 MONTH) as preday"));
+							    
+								$newdata =  json_decode(json_encode((array)$enddd),true);
+								$expectedcom = $newdata[0]["preday"];
+								
+								/*$currentDatequ = DB::select(DB::raw("select CURDATE() as curdate"));
+								$newdatacurdate =  json_decode(json_encode((array)$currentDatequ),true);
+								$TodayDate = $newdatacurdate[0]["curdate"];*/
+							   
+							 ?>
+							 <?php if($expectedcom < $curdateo): ?>
+                              
+								  <?php if($t->SpecialPermissionToEnter == 1): ?>
+									 <form id="deleteform"  action='LoadMonitoringForm' method="GET">
+										<input type="hidden" name='id' value="<?php echo $t->id; ?>" />
+									    <button type="Submit" class="btn btn-warning btn-mini"><i class="icon-edit icon-2x icon-only"></i></button>
+									</form>
+									<?php else: ?>
+										Date Expired 
+								  <?php endif; ?>
+						  
+							<?php elseif($t->DatePlanned > $curdateo): ?>
+							 Please Wait until Date Planned	
+							
+							 
+						    <?php else: ?>
+							   <form id="deleteform"  action='LoadMonitoringForm' method="GET">
+                                <input type="hidden" name='id' value="<?php echo $t->id; ?>" />
+                               <button type="Submit" class="btn btn-warning btn-mini"><i class="icon-edit icon-2x icon-only"></i></button>
+                                </form>
+							   
+						    <?php endif; ?>
+								
+                             </td>
+                             <td class="center"><font color="red"><i class="icon-remove bigger-130"></i></font></td>
+                             <td class="center"><font color="red"><i class="icon-remove bigger-130"></i></font></td>
+                           
+                            
+                        </tr>
+                
+                <?php else: ?>
+                
+                        <tr>
+                           
+                            <td class="center"><?php echo $SerialNo++; ?></td>
+                            <td class="center"><?php echo $t->OrgaName; ?>(<?php echo $t->Type; ?>)</td>
+                            
+                            <td><?php echo $t->CourseName; ?> ( Medium- <?php echo $t->medium; ?> )</td>
+                            <td class="center"><?php echo $t->Year; ?></td>
+                            <td class="center"><?php echo $t->batch; ?></td>
+                            <td class="center">
+							<?php if($t->Visited == 0): ?>
+							  <a href="<?php echo url('CourseMonitoringPlanEdit?id='.$t->id); ?>"><i class="icon-edit icon-1x icon-only"></i> <?php echo $t->DatePlanned; ?></a>
+							<?php else: ?>
+							<?php echo $t->DatePlanned; ?>
+						    <?php endif; ?>
+							</td>
+                             <?php if($t->Approved == 0): ?>
+                             <td class='center'> <font color="blue"><i class="icon-edit bigger-130"></i></font></td>
+                             <?php elseif($t->Approved == 1): ?>
+                             <td class='center'> <font color="green"><i class="icon-ok bigger-130"></i></font></td>
+                             <?php else: ?>
+                             <td class='center'> <font color="red"><i class="icon-remove bigger-130"></i></font></td>
+                             <?php endif; ?>
+                           <?php if($t->Visited == 0): ?>
+                            <td class="center"><font color="red">Not Yet</font></td>
+                            <?php else: ?>
+                            <td class="center"><font color="green"><i class="icon-ok bigger-130"></i></font></td>
+                            <?php endif; ?>
+                            <td class='center'> 
+                              <!-- doownload papre<-->
+                            </td>
+							
+                            <td class="center"><font color="green"><i class="icon-ok bigger-130"></i></font></td>
+                            <td class="center">
+                                <form id="deleteform"  action='EditTOMonitoringFormEntered' method="GET">
+                                <input type="hidden" name='id' value="<?php echo $t->id; ?>" />
+                                <button type="Submit" class="btn btn-info btn-mini"><i class="icon-edit icon-2x icon-only"></i></button>
+                                </form>
+                             </td>
+                             <td class="center">
+                                <form id="deleteform"  action='ViewTOMonitoringFormEntered' method="GET">
+                                <input type="hidden" name='id' value="<?php echo $t->id; ?>" />
+                                <button type="Submit" class="btn btn-success btn-mini"><i class="icon-eye-open icon-2x icon-only"></i></button>
+                                </form>
+                             </td>
+                          
+                       
+                            
+                       
+                            
+                        </tr>
+              
+
+                <?php endif; ?>
+
+                
+                    
+               
+               
+                <?php endforeach; ?>
+
+               
+                <?php endif; ?>
+            </tbody>
+            </table>
+            <!--PAGE CONTENT ENDS-->
+            </div>
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    function doConfirm(applicant, formobj)
+    {
+        bootbox.confirm("Are you sure you want to remove " + applicant, function(result)
+        {
+        if (result)
+        {
+        formobj.submit();
+        }
+        });
+                return false;
+    }
+    
+    $('#sample-table-2').dataTable({
+    "aoColumns": [
+             null,
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            {"bSortable": false},
+            
+           
+    ]});
+            $('table th input:checkbox').on('click', function() {
+    var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+            .each(function() {
+            this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+            });
+    });
+            $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+            function tooltip_placement(context, source) {
+            var $source = $(source);
+                    var $parent = $source.closest('table')
+                    var off1 = $parent.offset();
+                    var w1 = $parent.width();
+                    var off2 = $source.offset();
+                    var w2 = $source.width();
+                    if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
+                    return 'right';
+                    return 'left';
+            }
+
+
+</script>
+
+<script>
+
+  
+    
+$('#center').change(function(){
+
+        //alert('dg');
+       var center = document.getElementById('center').value; 
+      
+       var msg = '--- Select Course ---';
+        $("#Course").html('');
+       $.ajax  ({
+                    url: "<?php echo url::to('GetNominatedCourses'); ?>",
+                    data: { center: center},
+                    dataType: "json", 
+                    success: function(result) {
+
+                        //alert(result);
+                        $("#Course").append("<option value=''>" + msg + "</option>");
+                         $.each(result, function(i, item)
+                        {
+
+
+
+                            $("#Course").append("<option value=" + item.CS_ID + ">" + item.CourseCode + " (" + item.CourseName + ")</option>");
+
+
+
+                        });
+                                        
+                        
+                        }
+
+
+                    
+                });
+        
+
+
+       
+    });
+  
+
+
+    $('#upload').click(function()
+    {
+      
+        var CS_ID = $("#CS_ID").val(); 
+      // alert(CS_ID);
+      
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            
+                            document.getElementById('img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                        },
+                        type: "POST",
+                        url: "<?php echo Url('PrintAssessorAssignedLetter'); ?>",
+                        data: {CS_ID: CS_ID},
+                        success:function response(responseText, statusText, xhr, $form)
+                        {
+       
+                               var printWin = window.open("","printSpecial");
+                                printWin.document.open();
+                                printWin.document.write(responseText);
+                                printWin.document.close();
+                                printWin.print();
+       
+   
+                         
+
+                        },
+                        complete: function() {
+                            document.getElementById('img4').innerHTML ="";
+
+                        }
+                    });
+        
+    }
+    );
+    /*$('#reject').click(function()
+    {
+     
+       var TID = document.getElementById('reject').value; 
+       alert(TID);
+
+
+      
+          
+        
+    }
+    );
+    $('#reject1').click(function()
+    {
+     
+       var TID = document.getElementById('reject1').value; 
+       alert(TID);
+
+
+      
+          
+        
+    }
+    );*/
+     /* function addModule() {
+
+        var TID = document.getElementById('reject').value; 
+       alert(TID);
+
+        /*$.ajax  ({
+                    url: "<?php echo url::to(''); ?>",
+                    success: function(result) {
+                        if ($('#addModule').is(':hidden')) {
+                            $('#addModule').show();
+                        } else {
+                            $('#addModule').hide();
+                        }
+                    }
+                });*/
+ //   }
+ $(".red").click(function(){
+
+     var id = this.id;
+     //alert(id);
+	 var x = "<form id='infos' action=''><div class='control-group'><div class='controls'>"
+    +"Reason:<textarea cols='1000' rows='6' name='Reason' id='Reason'></textarea></div></div></form>";
+bootbox.confirm(x, function(result) {
+        if(result)
+        {
+            //$('#infos').submit();
+           // alert(result);
+
+         var reason = $("#Reason").val();
+        // var g = $("#editComment").val();
+         //alert(reason);
+
+
+        doStuffWithResults(id,reason);
+        }
+});
+  
+});
+    
+function doStuffWithResults(id,reason) {
+
+     $.ajax  ({
+                    url: "<?php echo url::to('DORejectAssignedAssessor'); ?>",
+                    data: { id: id,reason: reason},
+                    
+                   success: function(result) {
+
+                        //alert(result);
+                       location.reload();          
+                        
+                        }
+
+
+                    
+                });
+   
+}
+    
+
+ $(".DEEPPINK").click(function(){
+
+     var id = this.id;
+     //alert(id);
+	////////////////////
+	 var x = '<form id="infos" action="" style="border-style: solid;border-color: blue blue blue blue;border-width: thick;">'
+      + '<table'
+      + 'boder="2" cellspacing="2"><div class="control-group"><div  class="controls"><tr>'
+      + '<td cellspacing="2"><br/>&nbsp&nbspPaper Medium:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<select name="Reason" id="Reason"><option value="S" selected>Sinhala</option>'
+	  + '<option value="E">English</option><option value="T">Tamil</option></select></td></tr></div></div><table></form>';
+			bootbox.confirm(x, function(result) {
+					if(result)
+					{
+					  var reason = $("#Reason").val();
+					   
+						          $.ajax
+										({
+											beforeSend: function()
+											{
+												
+												document.getElementById('img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+											},
+											type: "POST",
+											url: "<?php echo Url('DownloadQuestionPaper'); ?>",
+											data: {id: id,Medium:reason},
+											success:function response(responseText, statusText, xhr, $form)
+											{
+						   
+												   var printWin = window.open("","printSpecial");
+													printWin.document.open();
+													printWin.document.write(responseText);
+													printWin.document.close();
+													printWin.print();
+						   
+					   
+											 
+
+											},
+											complete: function() {
+												document.getElementById('img4').innerHTML ="";
+
+											}
+										});
+
+
+					
+					}
+			});
+	
+	//////////////
+
+  
+});
+
+</script>

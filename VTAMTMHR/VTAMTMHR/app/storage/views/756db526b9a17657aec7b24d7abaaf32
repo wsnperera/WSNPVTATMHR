@@ -1,0 +1,53 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>Vocational Pay<small><i class="icon-double-angle-right"></i>View</small></h1>
+        </div>
+        <table>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <form name='search' action="<?php echo url('findVPayByIndexNo'); ?>" method='get'>
+                <td>Search By Index Number</td>
+                <td><input type='text' name="indexNo"/></td>
+                <td><input type='submit' value='Search By Index Number'/></td>
+                </form>
+            </tr>
+            <tr>
+                <td>Search By Organization</td>
+                <td><select name="key" onclick="org(this)">
+                        <option></option>
+                        <?php foreach($org as $o): ?>
+                            <option value="<?php echo $o->id; ?>"><?php echo $o->OrgaName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+                <td id='cc'></td>
+            </tr>
+        </table>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type='text/javascript'>
+    function org(obj)
+    {
+        obj.onchange = function()
+        {
+             $.ajax
+             ({
+                 type: "GET",
+                 url: 'ajaxOrganization',
+                 data:{ orgaId : $(this).val()},
+                 success: function(result)
+                 {
+                     $("#cc").html(result);
+                 },
+             });
+         }
+     };
+     
+</script>

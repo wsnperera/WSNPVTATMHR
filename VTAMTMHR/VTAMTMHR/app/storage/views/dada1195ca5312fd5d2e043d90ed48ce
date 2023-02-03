@@ -1,0 +1,297 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<a href="<?php echo url('ALResultHome'); ?>">
+    Go Back to Home
+</a>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Enter AL Result			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Result
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+            <form name="addALResult" action="<?php echo url($action); ?>" method="post">  
+               <table id="result1">
+                <tr>
+                    <td>Name:</td>
+                    <td><input type="text" name="ApplicantName" value="<?php echo $name; ?>" readonly/><br/></td>
+                </tr>
+                <tr>
+                    <td>NIC:</td>
+                    <td> <input type="text" name="ApplicantNIC" value="<?php echo $nic; ?>" readonly/><br/></td>
+                </tr>
+                <tr>
+                   <?php if(!empty($currentdata[0])): ?>
+                   <td>Year:</td> 
+                   <td><input type="text" name="Year" value="<?php echo $year; ?>" readonly/><br/></td>
+                   <?php else: ?>
+                   <td>Year:</td> 
+                   <td><input type="text" name="Year" /><br/></td>
+                   <?php endif; ?>
+               </tr>                
+               <tr>
+                <?php if(!empty($currentdata[0])): ?>
+                <td>Index NO:</td>
+                <td><input type="text" name="IndexNo" value="<?php echo $currentdata[0]->IndexNo; ?>"/><br/></td> 
+                <?php else: ?>
+                <td>Index NO:</td> 
+                <td><input type="text" name="IndexNo" value=""/><br/></td> 
+                <?php endif; ?>
+            </tr>
+            <?php if(empty($currentdata[0])): ?>
+            <tr>
+                <td>Select Attempt:</td>
+                <td>
+                    <select name='shy'>
+                        <option value=''>Select Attempt</option>
+                        <option value='1st Attempt'>1st Attempt</option>
+                        <option value='2nd Attempt'>2nd Attempt</option>
+                        <option value='3rd Attempt'>3rd Attempt</option>
+                        <option value='Other'>Other</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Select Stream</td>
+                <td>
+                    <select name="stream" onload="" id="stream">
+                        <option selected="" value="">Select Subject</option>
+                        <?php foreach($stream as $str): ?>
+                        <option value="<?php echo $str->Stream; ?>"><?php echo $str->Stream; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Result:<br/></td>
+            </tr>
+        </table>
+        <table id="result2">                    
+            <tr height="30px"></tr>
+        </table>
+        <?php else: ?>
+        <tr>
+            <td>Select Attempt:</td>
+            <td><input type="text" name="shy" value="<?php echo $currentdata[0]->shy; ?>" readonly/></td>
+        </tr>
+        <tr>
+            <td>Select Stream</td>
+            <td><input type="text" name="stream" value="<?php echo $currentdata[0]->Stream; ?>" readonly/></td>
+        </tr>
+        <tr>
+            <td>Result:<br/></td>
+        </tr>
+    </table>
+    <table id="result2">
+        <?php
+        $a = count($currentdata);
+        $b = 0;
+        $c = 0;
+        $k = 0;
+        $j = 1;
+        ?>
+        <?php foreach($currentdata as $cd): ?>
+        <?php if($cd->SubjectId != $English->id && $cd->SubjectId != $GIQ->id): ?>
+        <tr>
+            <td>
+                <input type="hidden" name="alresid<?php echo $j; ?>" value="<?php echo $cd->id; ?>">
+                <select id="subject" name="subject<?php echo $j; ?>" >
+                    <option value=''>Select Subject</option>";
+                    <?php foreach ($subjectlist as $sl): ?> {
+                    <?php if($cd->SubjectId == $sl->id): ?>
+                    <option value="<?php echo $sl->id; ?>" selected=""><?php echo $sl->SubjectName; ?></option>
+                    <?php else: ?>
+                    <option value="<?php echo $sl->id; ?>"><?php echo $sl->SubjectName; ?></option>
+                    <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+
+            <td>
+                <select id="subject" name="result<?php echo $j++; ?>" style="width: 100px">
+                    <option value=''>Select</option>";
+                    <option value="A" <?php if($cd->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+                    <option value="B" <?php if($cd->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+                    <option value="C" <?php if($cd->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+                    <option value="S" <?php if($cd->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+                    <option value="F" <?php if($cd->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+                    <option value="+" <?php if($cd->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+                    <option value="X" <?php if($cd->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+                    <option value="N" <?php if($cd->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+                </select>
+            </td>
+        </tr>
+        <?php else: ?>
+        <?php $k++; ?>
+        <?php endif; ?>
+        <?php endforeach; ?>
+
+        <?php $a = $a - $k; ?>
+        <?php for ($i = $j; $i < 4 ; $i++): ?>
+        <tr>
+            <td>
+                <select id="subject" name="subject<?php echo $i; ?>" >
+                    <option value=''>Select Subject</option>";
+                    <?php foreach ($subjectlist as $sl): ?> {
+                    <option value="<?php echo $sl->id; ?>"><?php echo $sl->SubjectName; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+
+            <td>
+                <select id="subject" name="result<?php echo $i; ?>" style="width: 100px" >
+                    <option value=''>Select</option>";
+                    <option value="A" <?php if($cd->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+                    <option value="B" <?php if($cd->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+                    <option value="C" <?php if($cd->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+                    <option value="S" <?php if($cd->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+                    <option value="F" <?php if($cd->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+                    <option value="+" <?php if($cd->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+                    <option value="X" <?php if($cd->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+                    <option value="N" <?php if($cd->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+                </select>
+            </td>
+        </tr>
+        <?php endfor; ?>
+
+        <?php foreach($currentdata as $cd): ?>
+        <?php if($cd->SubjectId == $English->id): ?>
+        <?php $b++; ?>
+        <tr>
+            <td><input type="hidden" name="alresid4" value="<?php echo $cd->id; ?>">English<input type='hidden' name='subject4' value="<?php echo $English->id; ?>"/></td>
+
+            <td><select id="subject" name="result4" style="width: 100px">
+                <option value=''>Select</option>";
+                <option value="A" <?php if($cd->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+                <option value="B" <?php if($cd->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+                <option value="C" <?php if($cd->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+                <option value="S" <?php if($cd->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+                <option value="F" <?php if($cd->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+                <option value="+" <?php if($cd->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+                <option value="X" <?php if($cd->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+                <option value="N" <?php if($cd->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+            </select></td>
+        </tr>
+        <?php elseif($cd->SubjectId == $GIQ->id): ?>
+        <?php $c++; ?>
+        <tr>
+            <td><input type="hidden" name="alresid5" value="<?php echo $cd->id; ?>">GIQ<input type='hidden' name='subject5' value="<?php echo $GIQ->id; ?>"/></td>
+
+            <td width='100px' class="right"><input type='text' name='result5' value="<?php echo $cd->Result; ?>" style="width: 37px"/><br/></td>
+        </tr>
+        <?php endif; ?>
+        <?php endforeach; ?>
+
+        <?php if($b==0): ?>
+        <tr>
+            <td>English<input type='hidden' name='subject4' value="<?php echo $English->id; ?>"/></td>
+
+            <select id="subject" name="result4" style="width: 100px">
+                <option value=''>Select</option>";
+                <option value="A" <?php if($cd->Result == 'A'): ?> selected="" <?php endif; ?> >A</option>
+                <option value="B" <?php if($cd->Result == 'B'): ?> selected="" <?php endif; ?> >B</option>
+                <option value="C" <?php if($cd->Result == 'C'): ?> selected="" <?php endif; ?> >C</option>
+                <option value="S" <?php if($cd->Result == 'S'): ?> selected="" <?php endif; ?> >S</option>
+                <option value="F" <?php if($cd->Result == 'F'): ?> selected="" <?php endif; ?> >F</option>
+                <option value="+" <?php if($cd->Result == '+'): ?> selected="" <?php endif; ?> >+</option>
+                <option value="X" <?php if($cd->Result == 'X'): ?> selected="" <?php endif; ?> >X</option>
+                <option value="N" <?php if($cd->Result == 'N'): ?> selected="" <?php endif; ?> >N</option>
+            </select></td>
+        </tr>
+        <?php endif; ?>
+        <?php if($c==0): ?>
+        <tr>
+            <td>GIQ<input type='hidden' name='subject5' value="<?php echo $GIQ->id; ?>"/></td>
+
+            <td width='100px' class="right"><input type='text' name='result5' style="width: 37px"/><br/></td>
+        </tr>
+        <?php endif; ?>
+
+        <tr height='30px'></tr>
+        <tr>
+           <?php if(isset($NCC)): ?>            
+        <input type=hidden name=NCC value="<?php echo $NCC; ?>">
+            <td class="center"><button class="btn btn-primary btn-small" type="submit" onClick="return confirmSubmit()" name="button" value="submitandapplicant"><?php echo $button; ?> Results And Go to Applicant</button></td>         
+            <td class="center"><button class="btn btn-primary btn-small" type="submit" onClick="return confirmSubmit()" name="button" value="submit"><?php echo $button; ?> Results</button></td>
+            <?php else: ?>
+            <td class="center"><button class="btn btn-primary btn-small" type="submit" onClick="return confirmSubmit()" name="button" value="submit"><?php echo $button; ?> Results</button></td>
+            <?php endif; ?>
+        </tr>
+
+    </table>
+    <?php endif; ?>
+</form>
+<!--Write your code here end-->
+<!--PAGE CONTENT ENDS-->
+</div><!--/.span-->
+<div class="span4">
+    <?php if(Session::has('done')): ?>
+    <div class="alert alert-block alert-success">
+
+        <strong>
+            <i class="icon-ok"></i>
+            <?php echo Session::get('done'); ?>
+        </strong>
+    </div>
+    <?php endif; ?>
+    <?php if(Session::has('message')): ?>
+    <div class="alert alert-error">
+        <strong> <?php echo Session::get('message'); ?></strong>
+    </div>
+    <?php endif; ?>
+    <?php if($errors->has()): ?>
+    <?php foreach($errors->all() as $msg): ?>
+    <div class="alert alert-error">
+        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+    </div>
+    <?php endforeach; ?>
+    <?php endif; ?>
+
+</div>
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script type="text/javascript">
+    function confirmSubmit()
+    {
+        var agree = confirm("Are you sure you wish to continue?");
+        if (agree)
+            return true;
+        else
+            return false;
+    }
+
+
+
+    $("#stream").change(function() {
+
+        var stream = document.getElementById('stream').value;
+        <?php if(isset($NCC)): ?>
+             var NCC = '<?php echo $NCC; ?>';
+        <?php else: ?>
+             var NCC = '';
+        <?php endif; ?>
+        $.ajax
+        ({
+            url: "<?php echo url::to('loadSubjectList'); ?>",
+            data: {stream: stream,NCC: NCC},
+            success: function(result)
+            {
+
+                $('#result2').html(result);
+            }
+        });
+
+    });
+
+
+
+
+</script>

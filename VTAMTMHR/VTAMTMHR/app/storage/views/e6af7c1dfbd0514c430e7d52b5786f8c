@@ -1,0 +1,479 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>    
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<link rel="stylesheet" href="assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<a href="<?php echo url('ViewHREmployeeALResults'); ?>"> << Back to HR - Employee A/L Results  </a>
+<div class="page-content">                              
+    <div class="row-fluid">
+        <div class="span10">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                   HR - Employee A/L Results
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+<!--            <?php if ($errors->has()): ?>
+            <?php foreach ($errors->all() as $error): ?>
+            <div class='bg-danger alert'><?php echo $error; ?></div>
+            <?php endforeach; ?>
+            <?php endif; ?>-->
+
+            <form class="form-horizontal" action="<?php echo url('EditHREmployeeALResults'); ?>" method="POST"/>
+          <h5 style="text-align: left"><b style="color: red">* Required/Mandatory Fields </b></h5>
+			<hr/>
+
+            <div class="control-group">
+                <!--                <label class="control-label" for="form-field-1">Employee Qualification ID</label>-->
+                <div class="controls">
+                    <input type="hidden" style="color:red" name="EQ_ID" value="<?php echo Request::get('id'); ?>" readonly="readonly"/>
+                </div>
+            </div>
+
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-3">Employee Reference No</label>
+                <div class="controls">
+                    <input type="text" name="EPF" value="<?php echo $EPF; ?>" readonly />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="form-field-3">Employee NIC</label>
+                <div class="controls">
+                    <input type="text" name="NIC" value="<?php echo $EmpNIC; ?>" readonly/>
+                </div>
+            </div>
+			 <div class="control-group">
+                <label class="control-label" for="form-field-3">Employee Name</label>
+                <div class="controls">
+                   
+					<textarea name="Ename" id="Ename" readonly><?php echo $EmpInitials; ?> <?php echo $EmpLastName; ?></textarea>
+                </div>
+            </div>
+
+        <div class="control-group">
+                <label class="control-label" for="form-field-7">Attempt</label>
+                <div class="controls">
+                    <input id="AttemptId" name="AttemptId" type="text" <?php if($quorg->AttemptId == 1): ?> value="I" <?php else: ?> value="II" <?php endif; ?> readonly>
+					
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="form-field-7">Year</label>
+                <div class="controls">
+                    <input type="text" id="Year" name="Year" required value="<?php echo $quorg->Year; ?>"/><b style="color: red">*</b>
+					
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="form-field-7">Month</label>
+                <div class="controls">
+                    <Select id="Month" name="Month" required >
+					<option value="">--- Select month ---</option>
+					<option value="August" <?php if($quorg->Month == 'August'): ?> selected="true" <?php endif; ?>>August</option>
+					<option value="December" <?php if($quorg->Month == 'December'): ?> selected="true" <?php endif; ?>>December</option>
+					</select>
+					<b style="color: red">*</b>
+					
+                </div>
+            </div>
+			 <div class="control-group">
+                <label class="control-label" for="form-field-7">Centre No</label>
+                <div class="controls">
+                    <input type="text" id="CentreNo" name="CentreNo" value="<?php echo $quorg->CentreNo; ?>"/><b style="color: red"></b>
+					
+                </div>
+            </div>
+			  <div class="control-group">
+                <label class="control-label" for="form-field-7">Index No</label>
+                <div class="controls">
+                    <input type="text" id="Index" name="Index" required value="<?php echo $quorg->IndexNo; ?>"/><b style="color: red">*</b>
+					
+                </div>
+            </div>
+			
+			<div class="control-group">
+                <label class="control-label" for="form-field-7">Medium</label>
+                <div class="controls">
+                    <select id="MediumId" name="MediumId" required>
+					<option value="">---Select Medium---</option>
+					<?php foreach($Mediums as $m): ?>
+					<option value="<?php echo $m->id; ?>" <?php if($quorg->MediumId == $m->id): ?> selected="true" <?php endif; ?>><?php echo $m->Medium; ?></option>
+					<?php endforeach; ?>
+					</select><b style="color: red">*</b>
+                </div>
+            </div>
+			<div class="control-group">
+                <label class="control-label" for="form-field-7">Stream</label>
+                <div class="controls">
+                    <select id="StreamId" name="StreamId" required>
+					<option value="">---Select Stream---</option>
+					<?php foreach($streams as $m): ?>
+					<option value="<?php echo $m->id; ?>" <?php if($quorg->StreamId == $m->id): ?> selected="true" <?php endif; ?>><?php echo $m->Stream; ?></option>
+					<?php endforeach; ?>
+					</select><b style="color: red">*</b>
+                </div>
+            </div>
+             <div class="controls">
+                <pre bgcolor="REBECCAPURPLE"><center><h5><b><font color="REBECCAPURPLE">Advanced Level Result Sheet</font><font color="RED"><h6>Note:-  First three(3) subjects & results required for Attempt 1 and <i>You can enter resuls only <u>one</u>  time,Before entering results to the system, make sure that you select the best result sheet</i></h6></font></b></h5></center>
+				</pre>
+				</div>
+				
+				<div class="control-group">
+               <div class="controls" class="span6">
+			   <?php $i=1;?>
+			   <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+					<th>No</th>
+                    <th class="center">Subject</th>
+					<th class="center">Result</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php $i=1;
+					$aa=0;?>
+				<?php foreach($enteredsubjects as $cc): ?>
+				<tr>
+				<td><?php echo $i++; ?></td>
+				<td>
+					
+				     <select  class="chzn-select" name="QO_ID[]"  id="QO_ID" >
+								<option value="">--Select Subject--</option>
+								<?php foreach ($subjects as $qo): ?>
+								<option  value="<?php echo $qo->id; ?>" <?php if($cc->SubjectId == $qo->id): ?> selected="true" <?php endif; ?>><?php echo $qo->Subject; ?></option>
+								<?php endforeach; ?>
+							</select> <b style="color: red">*</b>
+						
+					
+				</td>
+				<td class="center">
+					
+					
+							<select class="chzn-select" style="width: 100px" name="Result[]" id="Result[]"  >
+								<option value="">--Result--</option>
+							   <?php foreach ($grades as $g): ?>
+								<option  value="<?php echo $g->id; ?>" <?php if($cc->GradeId == $g->id): ?> selected="true" <?php endif; ?>><?php echo $g->Grade; ?></option>
+								<?php endforeach; ?>
+							</select><b style="color: red">*</b><span id="ajax_img2"></span>
+						
+					
+           
+				</td>
+				</tr>
+				<?php $aa = $aa+1; ?>
+				<?php endforeach; ?>
+				<?php if($aa != 6): ?>
+					
+				<?php  $hh = 6-$aa; 
+				$ee= 1;?>
+				<?php while($ee <= $hh): ?>
+					<tr>
+				<td><?php echo $i++; ?></td>
+				<td>
+					
+				     <select  class="chzn-select" name="QO_ID[]"  id="QO_ID" >
+								<option value="">--Select Subject--</option>
+								<?php foreach ($subjects as $qo): ?>
+								<option  value="<?php echo $qo->id; ?>" ><?php echo $qo->Subject; ?></option>
+								<?php endforeach; ?>
+							</select> 
+						
+					
+				</td>
+				<td class="center">
+					
+					
+							<select class="chzn-select" style="width: 100px" name="Result[]" id="Result[]"  >
+								<option value="">--Result--</option>
+							   <?php foreach ($grades as $g): ?>
+								<option  value="<?php echo $g->id; ?>"><?php echo $g->Grade; ?></option>
+								<?php endforeach; ?>
+							</select>
+						
+					
+           
+				</td>
+				</tr>	
+				
+				<?php  $ee = $ee+1; ?>	
+				<?php endwhile; ?>
+				<?php endif; ?>	
+				<tr>
+				<td>7</td>
+				<td>
+					
+				    General Knowledge [GIQ] <b style="color: red">(* If available)</b>
+						
+					
+				</td>
+				<td class="center">
+					
+					
+							<input type="text" name="GKMarks" id="GKMarks" value="<?php echo $quorg->GeneralKowledgeMark; ?>" style="width: 90px"/>
+						
+					
+           
+				</td>
+				</tr>
+				</tbody>
+				</table>
+				</div>
+				</div>
+            <div class="control-group">
+                <div class="controls">
+                    <input class="btn btn-block btn-primary" type="submit"  value="Update" />
+                </div>
+            </div>
+            </form>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+        <div class="span4" id="ajaxerror">
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-ok"></i>
+                    <?php echo Session::get('done'); ?>
+                </strong>
+                <br>
+            </div>
+            <?php endif; ?>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/daterangepicker.min.js"></script>
+<script src="assets/js/date-time/moment.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+
+<script type="text/javascript">
+                            $(".chzn-select").chosen();
+                            $("[id^='QO_ID']").find('input').on('change', function(e) {
+                                var option = $("<option>").val($("#QO_ID_chzn").find('input').val()).text($("#QO_ID_chzn").find('input').val());
+
+                                $("#QO_ID.chzn-select").prepend(option);
+                                $("#QO_ID.chzn-select").find(option).prop('selected', true);
+                                $("#QO_ID.chzn-select").trigger("liszt:updated");
+                            });
+							
+                            $("[id^='InstituteID']").find('input').on('change', function(e) {
+                                var option = $("<option>").val($("#InstituteID_chzn").find('input').val()).text($("#InstituteID_chzn").find('input').val());
+
+                                $("#InstituteID.chzn-select").prepend(option);
+                                $("#InstituteID.chzn-select").find(option).prop('selected', true);
+                                $("#InstituteID.chzn-select").trigger("liszt:updated");
+                            });
+							
+							$("[id^='CountryId']").find('input').on('change', function(e) {
+                                var option = $("<option>").val($("#CountryId_chzn").find('input').val()).text($("#CountryId_chzn").find('input').val());
+
+                                $("#CountryId.chzn-select").prepend(option);
+                                $("#CountryId.chzn-select").find(option).prop('selected', true);
+                                $("#CountryId.chzn-select").trigger("liszt:updated");
+                            });
+                      /* $("#QType").change(function() {
+                                var qualificationType = document.getElementById('QType').value;
+                                $.ajax({
+                                    url: "<?php echo url::to('EmpQualificationTypeAjax'); ?>",
+                                    data: {QualificationType: qualificationType},
+                                    beforeSend: function() {
+                                        document.getElementById('ajax_img2').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                    },
+                                    success: function(result) {
+                                        document.getElementById('q_code').innerHTML = result;
+                                        $('#addQualificationDescription').hide();
+                                        $('#editQualificationDescription').hide();
+                                        document.getElementById('QualificationAdd').value = '';
+                                        document.getElementById('QualificationDescriptionAdd').value = '';
+                                    },
+                                    complete: function() {
+                                        document.getElementById('ajax_img2').innerHTML = "";
+                                    }
+                                });
+                            }); */
+							$("#QCategory").change(function() {
+                                var QCategory = document.getElementById('QCategory').value;
+								var QType = document.getElementById('QType').value;
+                                $.ajax({
+                                    url: "<?php echo url::to('HREmpQualificationTypeAjax'); ?>",
+                                    data: {QCategory: QCategory,QType:QType},
+                                    beforeSend: function() {
+                                        document.getElementById('ajax_img2').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                                    },
+                                    success: function(result) {
+                                        document.getElementById('q_code').innerHTML = result;
+                                        $('#addQualificationDescription').hide();
+                                       // document.getElementById('Qualification').value = '';
+                                        document.getElementById('QualificationDescription').value = '';
+                                    },
+                                    complete: function() {
+                                        document.getElementById('ajax_img2').innerHTML = "";
+                                    }
+                                });
+                            });
+                          
+
+                             function addQualificationDescription() {
+                                $.ajax({
+                                    url: "<?php echo url::to(''); ?>",
+                                    success: function(result) {
+                                        if ($('#addQualificationDescription').is(':hidden')) {
+                                            document.getElementById("QualificationType").value = document.getElementById('QType').value;
+                                            $('#addQualificationDescription').show();
+                                        } else {
+                                            $('#addQualificationDescription').hide();
+                                        }
+                                    }
+                                });
+                            }
+                            function fillQualificationDescription() {
+                                var QualificationCat = document.getElementById('QCategory').value;
+                                var QualificationType = document.getElementById('QType').value;
+                                var QualificationDescription = document.getElementById('QualificationDescription').value;
+                                $.ajax({
+                                    url: "<?php echo url::to('HRsaveQualificationDescription'); ?>",
+                                    data: {QualificationCat: QualificationCat, QualificationType: QualificationType, QualificationDescription: QualificationDescription},
+                                    dataType: 'json',
+                                    success: function(result) {
+                                        if (result.QCode !== 0) {
+                                            $("#q_code").html(result.html);
+                                            $('#addQualificationDescription').hide();
+                                            $('#ajaxerror').html(result.done);
+											document.getElementById('QualificationDescription').value = '';
+
+                                        } else {
+                                            $('#ajaxerror').html(result.html);
+                                            window.scrollTo(0, 0);
+                                        }
+                                    }
+                                });
+
+                            }
+                            function editQualificationDescription() {
+                                $.ajax({
+                                    url: "<?php echo url::to(''); ?>",
+                                    success: function(result){
+                                        if ($('#editQualificationDescription').is(':hidden')) {
+                                           // document.getElementById("QualificationType").value = document.getElementById('QType').value;
+                                            $('#editQualificationDescription').show();
+                                        } else {
+                                            $('#editQualificationDescription').hide();
+                                        }
+                                    }
+                                });
+                            }
+
+                            function UpdateQualificationDescription() {
+                                var Qualification = document.getElementById('Qualification').value;
+                                var QualificationType = document.getElementById('QType').value;
+                                var QualificationDescription = document.getElementById('QualificationDescription').value;
+                                var ccid = document.getElementById('QT_ID').value;
+                                if (ccid !== '') {
+                                    $.ajax({
+                                        url: "<?php echo url::to('UpdateQualificationDescription'); ?>",
+                                        data: {Qualification: Qualification, QualificationType: QualificationType, QualificationDescription: QualificationDescription, QT_ID: ccid},
+                                        dataType: 'json',
+                                        success: function(result) {
+                                            if (result.QCode !== 0) {
+                                                $("#q_code").html(result.html);
+                                                $('#editQualificationDescription').hide();
+                                                $('#ajaxerror').html(result.done);
+                                            } else {
+                                                $('#ajaxerror').html(result.html);
+                                                window.scrollTo(0, 0);
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    $.ajax({
+                                        url: "<?php echo url::to('UpdateQualificationDescription'); ?>",
+                                        data: {Qualification: Qualification, QualificationType: QualificationType, QualificationDescription: QualificationDescription, QT_ID: ccid},
+                                        dataType: 'json',
+                                        success: function(result) {
+                                            if (result.QCode !== 0) {
+                                                $("#q_code").html(result.html);
+                                                $('#editQualificationDescription').hide();
+                                                $('#ajaxerror').html(result.done);
+                                            } else {
+                                                $('#ajaxerror').html(result.html);
+                                                window.scrollTo(0, 0);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                            $("#YearCheck").keyup(function() {
+                                var CurrentDate = new Date();
+                                var CurrentYear = CurrentDate.getFullYear();
+                                var Year = $(this).val();
+                                if (isNaN(Year) || Year > CurrentYear || Year.length > 4) {
+                                    $(this).val('');
+                                } 
+                            });
+                             $("#CheckMonth").change(function() {
+                                var CurrentDate = new Date();
+                                var CurrentMonth = CurrentDate.getMonth()+1;
+                                var month = $(this).val();
+                                if (isNaN(month) || month > CurrentMonth ) {
+                                    $(this).val('');
+                                    bootbox.alert('<b>Completed Results can Only entered in to the System...!</b>');
+                                } 
+                            });
+</script>

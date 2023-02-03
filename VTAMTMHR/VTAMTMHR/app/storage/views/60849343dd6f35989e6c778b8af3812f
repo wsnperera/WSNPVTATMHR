@@ -1,0 +1,129 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>Pay<small><i class="icon-double-angle-right"></i>Fee</small></h1>
+            </div>
+            <form class="form-horizontal" method="POST"/>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Student ID : </label>
+                    <div class="controls">
+                        <input type="text" name="ID"  value=<?php echo $trainee['id']; ?> readonly/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Student Name : </label>
+                    <div class="controls">
+                        <input type="text" name="name"  value=<?php echo $trainee['name']; ?> readonly/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Student NIC : </label>
+                    <div class="controls">
+                        <input type="text" name="nic"  value=<?php echo $trainee['nic']; ?> readonly/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course Code : </label>
+                    <div class="controls">
+                        <input type="text" name="CourseCode"  value=<?php echo $trainee['courseCode']; ?> readonly/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Training Number : </label>
+                    <div class="controls">
+                        <input type="text" name="tn"  value=<?php echo $trainee['trainingNo']; ?> readonly/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Amount Paid : </label>
+                    <div class="controls">
+                        <input type="text" name="ap"  value=<?php echo $trainee['amountPaid']; ?> readonly/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Amount Due : </label>
+                    <div class="controls">
+                        <input type="text" name="ad"  value=<?php echo $trainee['due']; ?> readonly/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Type : </label>
+                    <div class="controls">
+                        <select name="Type">
+                            <?php if($registrationFeePaid==0): ?>
+                                <option>Registration Fee</option>
+                            <?php else: ?>
+                                <option>Course Fee</option>
+                                <option>Other</option>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Receipt Number : </label>
+                        <div class="controls">
+                                <input type="text" name="ReceptNo"/>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Paying Amount : </label>
+                        <div class="controls">
+                                <input type="text" name="AmountPaid"  id="AmountPaid"/>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+    
+    <?php if(isset($done)): ?>
+        
+    $.gritter.add({ title: "", text: "Test Center Added Successfully", class_name: "gritter-info gritter-center" });
+
+    <?php endif; ?>
+    $(document).ready
+    (
+            function()
+            {
+                    $("#AmountPaid").keypress
+                    (
+                            function(e)
+                            {
+                                    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) 
+                                    {
+                                            return false;
+                                    }
+                            }
+                    );
+            }
+    );
+</script>
+      
+           
+               
+               
+               
+      
+        
+        
+
+    

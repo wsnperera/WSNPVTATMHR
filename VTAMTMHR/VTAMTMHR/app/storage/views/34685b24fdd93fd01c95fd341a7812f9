@@ -1,0 +1,485 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Applicant			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div>
+
+            <form class="form-horizontal" action="<?php echo url('editApplicant'); ?>" method="POST"/>
+
+
+
+            <input type="hidden" name="id"  id="I_ID" value="<?php echo $id; ?>" />
+
+
+            <div class="control-group">
+
+                <label class="control-label">Institute</label>
+
+                <div class="controls">
+                    <input type="hidden" value="<?php echo $applicant->InstituteId; ?>" name="InstituteId"/>
+                    <input type="text" value="<?php echo Institue::where('InstituteId', "=", $applicant->InstituteId)->pluck('InstituteName');; ?>"  readonly="true"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label">Center</label>
+
+                <div class="controls">
+                    <input type="hidden" value="<?php echo $applicant->OrgaId; ?>" name="OrgaId"/>
+                    <input type="text" value="<?php echo Organisation::where('id', "=", $applicant->OrgaId)->pluck('OrgaName');; ?>"  readonly="true"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="CourseCode">National Course Code</label>
+                <div class="controls">
+                    <select name="CourseListCode" id="CourseListCode">
+                        <?php foreach ($nationalCourseCode as $c): ?>
+                        <option <?php if($c->CourseListCode == $applicant->CourseListCode): ?> selected  <?php endif; ?> value="<?php echo $c->CourseListCode; ?>"><?php echo $c->CourseListCode; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <span id="ajax_clc_img"></span>
+                </div>
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="Year">Year</label>
+
+                <div class="controls">
+                    <input type="text" id="Year" name="Year" value="<?php echo $applicant->Year; ?>" readonly="true"/>
+                </div>
+
+            </div>
+
+            <hr/>
+
+            <div class="control-group">
+
+                <label class="control-label" for="NIC">NIC</label>
+
+                <div class="controls">
+                    <input type="text" name="NIC" value="<?php echo $applicant->NIC; ?>" readonly="true"/>
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="IndexNo">Index No</label>
+
+                <div class="controls">
+                    <input type="text" name="IndexNo" value="<?php echo $applicant->IndexNo; ?>" readonly="true"/>
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="NameWithInitials">Name With Initials</label>
+
+                <div class="controls">
+                    <input type="text" name="NameWithInitials" value="<?php echo $applicant->NameWithInitials; ?>"/>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="FullName">Full Name</label>
+
+                <div class="controls">
+                    <textarea name="FullName"><?php echo $applicant->FullName; ?></textarea>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label">Full Name Sinhala</label>
+
+                <div class="controls">
+                    <textarea name="FullNameSinhala"><?php echo $applicant->FullNameSinhala; ?></textarea>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="Address">Address</label>
+
+                <div class="controls">
+                    <textarea name="Address"><?php echo $applicant->Address; ?></textarea>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="DOB">DOB</label>
+
+                <div class="controls">
+                    <input type="date" name="DOB" value="<?php echo $applicant->DOB; ?>" readonly/>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="Medium">Medium</label>
+
+                <div class="controls">
+                    <select name="Medium" >
+                        <option <?php if($applicant->Medium == "English"): ?> selected <?php endif; ?> value="English">English</option>
+                        <option <?php if($applicant->Medium == "Sinhala"): ?> selected <?php endif; ?> value="Sinhala">Sinhala</option>
+                        <option <?php if($applicant->Medium == "Tamil"): ?> selected <?php endif; ?> value="Tamil">Tamil</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="Province">Province</label>
+
+                <div class="controls">
+                    <select name="Province" id="Province">
+                        <?php foreach ($province as $p): ?>
+
+                        <option <?php if($p->ProvinceName == $applicant->Province): ?> selected  <?php endif; ?> value="<?php echo $p->ProvinceName; ?>"><?php echo $p->ProvinceName; ?></option>
+
+                        <?php endforeach; ?>                    
+                    </select>
+                    <span id="ajax_img3"></span>
+                </div>
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="District">District</label>
+
+                <div class="controls" id="dis_load">
+                    <select name="District" id="District">
+                        <option value="<?php echo $applicant->District; ?>"><?php echo $applicant->District; ?></option>
+                    </select>
+                    <span id="ajax_img4"></span>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="Electorate">Electorate</label>
+
+                <div class="controls" id="elec_load">
+                    <select name="Electorate" id="Electorate">
+                        <option value="<?php echo $applicant->Electorate; ?>"><?php echo $applicant->Electorate; ?></option>                   
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+
+                <label class="control-label">Grama Sewa Division</label>
+
+                <div class="controls">
+                    <input type="text" name="Grama_Sewa_Division"  value="<?php echo $applicant->Grama_Sewa_Division; ?>" />
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="Tel">Telephone(Home)</label>
+
+                <div class="controls">
+                    <input type="text" name="Tel" value="<?php echo $applicant->Tel; ?>" class="num_inp"/>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="Tel">Telephone(Mobile)</label>
+
+                <div class="controls">
+                    <input type="text" name="Tel_mob"  value="<?php echo $applicant->Tel_mob; ?>" class="num_inp"/>
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="email">Email</label>
+
+                <div class="controls">
+                    <input type="text" name="email" value="<?php echo $applicant->email; ?>"/>
+                </div>
+
+            </div>
+
+            <hr/>
+            <div id="vara">
+                <input type="hidden" id="bcs" value=""/>
+            </div>
+            
+            
+            
+            <div class="control-group">
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Update</button>
+
+                </div>
+            </div>
+
+
+
+
+
+            </form>
+
+
+        </div>
+
+
+
+        <div class="span4">
+
+            <!-- Error Handling -->
+
+            <?php if($errors->has()): ?>
+
+            <?php foreach($errors->all() as $msg): ?>
+
+            <!-- Error Message -->
+
+            <div class="alert alert-error">
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+            </div>
+
+            <!-- Error Message -->
+
+            <?php endforeach; ?>
+
+            <?php endif; ?>
+
+            <!-- Error Handling -->
+
+        </div>
+    </div>
+</div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+
+<script type="text/javascript">
+
+    $("#CourseListCode").change(function() {
+
+        var ncc = document.getElementById('CourseListCode').value;
+        var a = "1";
+        $.ajax({
+            url: "<?php echo url::to('loadCourseAjax'); ?>",
+            data: {ncc: ncc, a: a},
+            beforeSend: function() {
+                document.getElementById('ajax_clc_img').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+            },
+            success: function(res) {
+//                document.getElementById('course_mode').innerHTML = res;
+//                document.getElementById('btn1').style.visibility = 'hidden';
+            },
+            complete: function() {
+                document.getElementById('ajax_clc_img').innerHTML = "";
+            }
+        });
+    }
+    );
+
+    $("#Province").change(function() {
+
+        document.getElementById('Electorate').innerHTML = "";
+        var province = document.getElementById('Province').value;
+        $.ajax({
+            url: "<?php echo url::to('loadDistrictAjax'); ?>",
+            data: {prov: province},
+            beforeSend: function() {
+                document.getElementById('ajax_img3').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+            },
+            success: function(result) {
+                document.getElementById('District').innerHTML = result;
+            },
+            complete: function() {
+                document.getElementById('ajax_img3').innerHTML = "";
+            }
+        });
+    });
+
+    $("#District").change(function() {
+
+        var District = document.getElementById('District').value;
+        $.ajax({
+            url: "<?php echo url::to('loadElectorateAjax'); ?>",
+            data: {prov: District},
+            beforeSend: function() {
+                document.getElementById('ajax_img4').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+            },
+            success: function(result) {
+                document.getElementById('Electorate').innerHTML = result;
+            },
+            complete: function() {
+                document.getElementById('ajax_img4').innerHTML = "";
+            }
+        });
+    });
+
+    $(".num_inp").keyup(function() {
+
+        var a = $(this).val();
+        if (isNaN(a)) {
+            $(this).val('');
+            alert('Plz,Input Numbers Only!');
+        }
+    });
+</script>
+<script>
+$("#employed").click(function(){
+    var id = document.getElementById("I_ID").value;
+    bootbox.dialog('<form class="form-horizontal" id="editform">'+
+                   '<div class="control-group">'+
+                   '<label class="control-label" for="Employment">Employee Designation</label>'+
+                   '<div class="controls">'+
+                   '<input type="text" name="Employment" value="<?php echo $applicant->Employment; ?>" id="Employment"/>'+
+                   '</div>'+
+                   '</div>'+
+                   '<br/>'+
+                   '<div class="control-group">' +
+                   '<label class="control-label" for="Date_Emp">Appointment Date</label>' +
+                   '<div class="controls"><div class="row-fluid input-append">' +
+                   '<input class="date-picker" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd" value="<?php echo $applicant->Date_Emp; ?>" name="Date_Emp" style="width: 1.9in"/>' +
+                   '<span class="add-on">' +
+                   '<i class="icon-calendar"></i>' +
+                   '</span>' +
+                   '</div></div>' +
+                   '</div>' +
+                   '<br/>' +
+                   '<div class="control-group">'+
+                   '<label class="control-label" for="Emp_Type">Employee Type</label>'+
+                   '<div class="controls">'+
+                   '<select name="Emp_Type" id="Emp_Type">'+
+                   '<option <?php if($applicant->Emp_Type == "Intern"): ?> selected <?php endif; ?>  value="Intern">Intern</option>'+
+                   '<option <?php if($applicant->Emp_Type == "Trainee"): ?> selected <?php endif; ?> value="Trainee">Trainee</option>'+
+                   '<option <?php if($applicant->Emp_Type == "Contract Basis"): ?> selected <?php endif; ?> value="Contract Basis">Contract Basis</option>'+
+                   '<option <?php if($applicant->Emp_Type == "Temporary"): ?> selected <?php endif; ?> value="Temporary">Temporary</option>'+
+                   '<option <?php if($applicant->Emp_Type == "Permanent"): ?> selected <?php endif; ?> value="Permanent">Permanent</option>'+
+                   '</select>'+
+                   '</div>'+
+                   '</div>'+
+                   '<br/>'+
+                   '<div class="control-group">'+
+                   '<label class="control-label" for="Emp_Place">Employment Place</label>'+
+                   '<div class="controls">'+
+                   '<input type="text" name="Emp_Place" value="<?php echo $applicant->Emp_Place; ?>" id="Emp_Place"/>'+
+                   '</div>'+
+                   '</div>'+
+                   '<br/>'+
+                   '<div class="control-group">'+
+                   '<label class="control-label" for="Emp_Address">Employment Address</label>'+
+                   '<div class="controls">'+
+                   '<textarea name="Emp_Address" id="Emp_Address" style="resize: none"><?php echo $applicant->Emp_Address; ?></textarea>'+
+                   '</div>'+
+                   '</div>'+
+                   '<br/>'+
+                   '<div class="control-group">'+
+                   '<label class="control-label" for="EPF">EPF No</label>'+
+                   '<div class="controls">'+
+                   '<input type="text" name="EPF" value="<?php echo $applicant->EPF; ?>"  id="EPF"/>'+
+                   '</div>'+
+                   '</div>'+
+                   '<br/>'+
+                   '<div class="control-group">'+
+                   '<label class="control-label" for="ETF">ETF No</label>'+
+                   '<div class="controls">'+
+                   '<input type="text" name="ETF" value="<?php echo $applicant->ETF; ?>" id="ETF"/>'+
+                   '</div>'+
+                   '</div>'+
+                   '<br/>'+
+                   '<div class="control-group">'+
+                   '<label class="control-label" for="EmployerName">Employer Name</label>'+
+                   '<div class="controls">'+
+                   '<input type="text" name="EmployerName" value="<?php echo $applicant->EmployerName; ?>" id="EmployerName"/>'+
+                   '</div>'+
+                   '</div>'+
+                   '<br/>'+
+                   '</form>', [{
+                                "label": "Save",
+                                "class": "btn btn-small btn-primary",
+                                "callback": function() {
+                                    var date = document.getElementById("id-date-picker-1").value;
+                                    var fullDate = new Date();
+                                    var twoDigitMonth = fullDate.getMonth() + "";
+                                    if (twoDigitMonth.length == 1)
+                                        twoDigitMonth = "0" + twoDigitMonth;
+                                    var twoDigitDate = fullDate.getDate() + "";
+                                    if (twoDigitDate.length == 1)
+                                        twoDigitDate = "0" + twoDigitDate;
+                                    var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + twoDigitDate;
+                                    if (currentDate <= date) {
+                                        bootbox.alert("Appointment Date is grater than or equal to current data....");
+                                    } else {
+                                        var set = "Already have";
+                                        var Employment = document.getElementById("Employment").value;
+                                        var picker = document.getElementById("id-date-picker-1").value;
+                                        var Emp_Type = document.getElementById("Emp_Type").value;
+                                        var Emp_Place = document.getElementById("Emp_Place").value;
+                                        var Emp_Address = document.getElementById("Emp_Address").value;
+                                        var EPF = document.getElementById("EPF").value;
+                                        var ETF = document.getElementById("ETF").value;
+                                        var EmpName = document.getElementById("EmployerName").value;
+//                                            alert(Employment+picker+Emp_Type+Emp_Place+Emp_Address+EPF+ETF+EmpName);
+                                        var message = "<div>\n\
+                                                <input type=\"hidden\" name=\"Employment\" value=\"" + Employment + "\"\/>\n\
+                                                <input type=\"hidden\" name=\"Date_Emp\" value=\"" + picker + "\"\/>\n\
+                                                <input type=\"hidden\" name=\"Emp_Type\" value=\"" + Emp_Type + "\"\/>\n\
+                                                <input type=\"hidden\" name=\"Emp_Place\" value=\"" + Emp_Place + "\"\/>\n\
+                                                <input type=\"hidden\" name=\"Emp_Address\" value=\"" + Emp_Address + "\"\/>\n\
+                                                <input type=\"hidden\" name=\"EPF\" value=\"" + EPF + "\"\/>\n\
+                                                <input type=\"hidden\" name=\"ETF\" value=\"" + ETF + "\"\/>\n\
+                                                <input type=\"hidden\" name=\"EmployerName\" value=\"" + EmpName + "\"\/>\n\
+                                           </div>";
+                            document.getElementById("vara").innerHTML += message;
+                                        $("#bcs").val(set);
+                                        console.log(message);
+                                    }
+                                }
+                            }, {
+                                "label": "Cancel",
+                                "class": "btn btn-small btn-primary",
+                                "callback": function() {
+                                    window.location.href = 'editApplicantView?id='+id;                                                    
+                                }
+                            }]);
+           
+           
+           
+    $('.date-picker').datepicker().next().on(ace.click_event, function() {
+        $(this).prev().focus();
+    });        
+});
+      
+            
+            
+            
+</script>

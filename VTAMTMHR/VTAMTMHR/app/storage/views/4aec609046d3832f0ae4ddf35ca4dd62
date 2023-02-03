@@ -1,0 +1,402 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+
+<a href="about:blank">
+    Back to Attendance Home
+</a>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Job Placement			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Add Job Placement
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+            <form class="form-horizontal" name="attendance" action="<?php echo url('createjobplacement'); ?>" method="POST">
+                <div class="control-group">
+                    <label class="control-label">Ranger ID</label>
+
+                    <div class="controls">
+                        <input id="traineeid" name="traineeid" placeholder="Enter NIC or ID" type="text">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Ranger Name</label>
+
+                    <div class="controls" id="traineename">
+                        <input placeholder="" type="text" readonly >
+                    </div>
+                </div>
+
+
+                <div class="control-group">
+                    <label class="control-label">Company Name</label>
+
+                    <div class="controls" id="companyiddiv">
+                        <select name="companyid" id="companyid" class="chzn-select">
+                            <option value="">Select Company</option>
+                            <?php foreach($companylist as $cl): ?>                            
+                            <option value="<?php echo $cl->id; ?>"><?php echo $cl->companyname; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <input type="button" value="View Company" onclick="companydetail()" class="btn btn-small btn-primary" >
+                        <input type="button" value="Add Company" onclick="addcompany()" class="btn btn-small btn-primary" >
+                    </div>
+                </div>
+                <div class="control-group" hidden="" id="addcompany" style="padding-top: 10px;padding-bottom: 10px;margin-right: 200px;margin-left: 100px;margin-top:25px;margin-bottom:25px; border: 1px solid #009ceb;width:460px">
+                    <div class="control-group">
+                        <label class="control-label">Company Name</label>
+
+                        <div class="controls">
+                            <input id="companyname" placeholder="" type="text">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Company Address</label>
+
+                        <div class="controls">
+                            <input id="address" placeholder="" type="text">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Country</label>
+
+                        <div class="controls">
+                            <select class="chzn-select" id="countryid" data-placeholder="Choose a Country" >
+                                <option value="" />                                    
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group" id="categorydiv">
+                        <label class="control-label">Category</label>
+
+                        <div class="controls" id="">
+                            <label>
+                                <input name="category" id="category" type="radio" value="Government">
+                                <span class="lbl">Government</span>
+                            </label>
+                        </div><div class="controls" id="">
+                            <label>
+                                <input name="category" id="category" type="radio" value="Private">
+                                <span class="lbl">Private</span>
+                            </label>
+                        </div><div class="controls" id="">
+                            <label>
+                                <input name="category" id="category" type="radio" value="Foreign">
+                                <span class="lbl">Foreign</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Contact Person</label>
+
+                        <div class="controls">
+                            <input id="contactperson" placeholder="" type="text">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Telephone No.</label>
+
+                        <div class="controls">
+                            <input id="contacttelephone" placeholder="" type="text">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Email</label>
+
+                        <div class="controls">
+                            <input id="contactemail" placeholder="" type="text">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <input type="button" value="Save" onclick="fillcompanytable()" class="btn btn-small btn-primary"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Category</label>
+
+                    <div class="controls">
+                        <input id="companytype" placeholder="" type="text" readonly >
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Job Field</label>
+
+                    <div class="controls">
+                        <input name="jobfield" id="jobfield" placeholder="" type="text">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Designation</label>
+
+                    <div class="controls">
+                        <input name="designation" id="designation" placeholder="" type="text">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Basic Salary</label>
+
+                    <div class="controls">
+                        <input name="basicsalary" id="basicsalary" placeholder="" type="text" >
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Placement Date</label>
+
+                    <div class="controls">
+                        <div class="row-fluid input-append">
+                            <input class="span10 date-picker" id="placementdate" name="placementdate" data-date-format="yyyy-mm-dd" type="text" style="width:193px">
+                            <span class="add-on">
+                                <i class="icon-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary" onclick="disableCategory()">Save</button>
+                    </div>
+                </div>
+            </form>
+            <!--Write your code here end-->
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+        <div class="span4" id="ajaxerror">
+            <?php if(Session::has('done')): ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-ok"></i>
+                    <?php echo Session::get('done'); ?>
+                </strong>
+                <br>
+            </div>
+            <?php endif; ?>
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong><?php echo Session::get('message'); ?></strong><br>
+            </div>
+            <?php endif; ?>
+            <?php if($errors->has()): ?>
+            <?php foreach($errors->all() as $msg): ?>
+            <div class="alert alert-error" id="error">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <strong>
+                    <i class="icon-remove"></i>
+                    Error!
+                </strong><?php echo $msg; ?>
+                <br>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+
+        </div>
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+
+<script type="text/javascript">
+                            $("#traineeid").change(function() {
+                                var traineeid = document.getElementById('traineeid').value;
+                                $.ajax
+                                        ({
+                                            url: "<?php echo url::to('getTraineeJP'); ?>",
+                                            data: {traineeid: traineeid},
+                                            dataType: 'json',
+                                            success: function(result)
+                                            {
+                                                if (result.html !== "") {
+                                                    document.getElementById('traineename').innerHTML = result.html;
+                                                    document.getElementById('traineeid').value = result.traineeid;
+                                                } else {
+                                                    alert('No Ranger Found on this NIC');
+                                                    window.location.reload();
+                                                }
+                                            }
+                                        });
+                            });
+
+                            $("#companyid").change(function() {
+                                var companyid = document.getElementById('companyid').value;
+                                if (companyid !== '') {
+                                    $.ajax
+                                            ({
+                                                url: "<?php echo url::to('getCompanyType'); ?>",
+                                                data: {companyid: companyid},
+                                                success: function(result)
+                                                {
+                                                    document.getElementById('companytype').value = result;
+                                                }
+                                            });
+                                } else {
+                                    document.getElementById('companytype').value = '';
+                                }
+                            });
+
+
+                            function addcompany() {
+                                $.ajax
+                                        ({
+                                            url: "<?php echo url::to('getCountryList'); ?>",
+                                            success: function(result)
+                                            {
+                                                if ($('#addcompany').is(':hidden')) {
+                                                    $('#addcompany').show();
+                                                    document.getElementById('countryid').innerHTML = result;
+                                                    $(".chzn-select").chosen();
+                                                    $('input[type=radio][value=Government]').prop("disabled", false);
+                                                    $('input[type=radio][value=Private]').prop("disabled", false);
+                                                    $('input[type=radio][value=Government]').prop("checked", true);
+                                                    $('input[type=radio][value=Foreign]').prop("disabled", true);
+                                                } else {
+                                                    $('#addcompany').hide();
+                                                }
+                                            }
+                                        });
+                            }
+
+                            function fillcompanytable() {
+                                var companyname = document.getElementById('companyname').value;
+                                var category = $("input[id=category]:checked").val();
+                                var address = document.getElementById('address').value;
+                                var countryid = document.getElementById('countryid').value;
+                                var contactperson = document.getElementById('contactperson').value;
+                                var contacttelephone = document.getElementById('contacttelephone').value;
+                                var contactemail = document.getElementById('contactemail').value;
+                                $.ajax
+                                        ({
+                                            url: "<?php echo url::to('savePlacementCompany'); ?>",
+                                            data: {companyname: companyname, category: category, address: address, countryid: countryid,
+                                                contactperson: contactperson, contacttelephone: contacttelephone, contactemail: contactemail},
+                                            dataType: 'json',
+                                            success: function(result)
+                                            {
+                                                if (result.id !== 0) {
+                                                    $("#companyiddiv").html(result.html);
+                                                    $("#companytype").val(result.category);
+                                                    $("#companyid.chzn-select").chosen();
+                                                    $('#addcompany').hide();
+                                                    $('#ajaxerror').html(result.done);
+                                                } else {
+                                                    $('#ajaxerror').html(result.html);
+                                                    window.scrollTo(0, 0);
+                                                }
+                                            }
+                                        });
+                            }
+
+
+
+                            $("#countryid").change(function() {
+                                var country = document.getElementById('countryid').value;
+                                if (country === "LK") {
+                                    $('input[type=radio][value=Government]').prop("disabled", false);
+                                    $('input[type=radio][value=Private]').prop("disabled", false);
+                                    $('input[type=radio][value=Government]').prop("checked", true);
+                                    $('input[type=radio][value=Foreign]').prop("disabled", true);
+                                } else {
+                                    $('input[type=radio][value=Government]').prop("disabled", true);
+                                    $('input[type=radio][value=Private]').prop("disabled", true);
+                                    $('input[type=radio][value=Foreign]').prop("disabled", false);
+                                    $('input[type=radio][value=Foreign]').prop("checked", true);
+                                }
+                            });
+
+                            $("#companyid.chzn-select").chosen();
+
+                            function disableCategory() {
+                                $('input[type=radio][value=Foreign]').prop("disabled", true);
+                                $('input[type=radio][value=Government]').prop("disabled", true);
+                                $('input[type=radio][value=Private]').prop("disabled", true);
+                            }
+
+                            $('.date-picker').datepicker().next().on(ace.click_event, function() {
+                                $(this).prev().focus();
+                            });
+
+                            function companydetail() {
+
+                                var companyid = document.getElementById('companyid').value;
+                                $.ajax
+                                        ({
+                                            url: "<?php echo url::to('getCompanyDetail'); ?>",
+                                            data: {companyid: companyid},
+                                            success: function(result)
+                                            {
+                                                if (result !== 'Company Detail Not Found') {
+                                                    bootbox.dialog(result, [{
+                                                            "label": "Edit",
+                                                            "class": "btn-small btn-primary",
+                                                            "callback": function() {
+                                                                var id = document.getElementById('companyid').value;
+                                                                var companyname = document.getElementById('companyname').value;
+                                                                var category = document.getElementById('category').value;
+                                                                var address = document.getElementById('address').value;
+                                                                var countryid = document.getElementById('countryid').value;
+                                                                var contactperson = document.getElementById('contactperson').value;
+                                                                var contacttelephone = document.getElementById('contacttelephone').value;
+                                                                var contactemail = document.getElementById('contactemail').value;
+                                                                $.ajax
+                                                                        ({
+                                                                            url: "<?php echo url::to('editPlacementCompany'); ?>",
+                                                                            data: {id: id, address: address, countryid: countryid, companyname: companyname,
+                                                                                category: category,
+                                                                                contactperson: contactperson, contacttelephone: contacttelephone, contactemail: contactemail},
+                                                                            dataType: 'json',
+                                                                            success: function(result)
+                                                                            {
+                                                                                if (result.done !== "") {
+                                                                                    bootbox.alert(result.done);
+                                                                                } else {
+                                                                                    bootbox.alert(result.html);
+                                                                                }
+                                                                            }
+                                                                        });
+                                                            }},{
+                                                            "label": "OK",
+                                                            "class": "btn-small btn-success",
+                                                            "callback": function() {
+                                                                //Example.show("great success");
+                                                            }
+                                                        }]);
+                                                } else {
+                                                    bootbox.dialog(result, [{
+                                                            "label": "OK",
+                                                            "class": "btn-small btn-success",
+                                                            "callback": function() {
+                                                                //Example.show("great success");
+                                                            }
+                                                        }]);
+                                                }
+
+                                                window.scrollTo(0, 0);
+                                            }
+
+                                        });
+                            }
+</script>

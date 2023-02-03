@@ -1,0 +1,187 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<div class="page-content">                                    
+    <div class="row-fluid"> 
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+                <h1>
+                    Event Attendance		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Home
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+
+            <!--Write your code here start-->
+
+            <table>
+                <?php if($eventvalue == null): ?>
+
+                <form action="<?php echo url('EventAttendanceHome'); ?>" method="get" >
+                    <tr>
+                        <td>Select Event:</td>
+                        <td><select name='eventvalue' onchange="javascript: submit()">
+                                <option selected="selectvalue" value="select">Select Event</option>
+                                <?php foreach($events as $e): ?>
+                                <option value="<?php echo $e->EventId; ?>"><?php echo $e->EventName; ?></option>
+                                <?php endforeach; ?>
+                            </select></td>
+                    </tr>
+                </form>
+
+                <?php elseif($coursetype == null): ?>
+
+                <form action="<?php echo url('EventAttendanceHome'); ?>" method="get" >
+                    <tr> 
+                        <td>Event:</td>
+                    <input type="hidden" name="eventvalue" value="<?php echo $eventvalue; ?>"/>
+                    <td><input type="text" value="<?php echo $eventname->EventName; ?>" name="eventname" readonly=""/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>Select Course Type:</td>
+                        <td>
+                            <select name='coursetype' onchange="javascript: submit()">
+                                <option selected="selectvalue" value="select">Select Course Type</option>
+                                <?php foreach($coursetypedata as $ct): ?>
+                                <option value="<?php echo $ct->CourseType; ?>"><?php echo $ct->CourseType; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                    </tr>
+                </form>
+                <tr>
+
+                <?php elseif($coursecode == null): ?>
+
+                <?php if($appevent == 0): ?>
+
+                <form action="<?php echo url('EventAttendanceHome'); ?>" method="get">
+                    <tr>
+                        <td>Event:</td>
+                    <input type="hidden" name="eventvalue" value="<?php echo $eventvalue; ?>"/>
+                    <td><input type="text" value="<?php echo $eventname; ?>" name="eventname" readonly=""/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>                    Course Type:</td>
+                        <td><input type="text" value="<?php echo $coursetype; ?>" name="coursetype" readonly=""/><br/></td>
+                    <tr>
+                        <td>Select Course:</td>
+                        <td><select name='coursecode' onchange="javascript: submit()">
+                                <option selected="selectvalue" value="select">Select Course</option>
+                                <?php foreach($courselists as $c): ?>
+                                <option value="<?php echo $c->CourseCode; ?>"><?php echo $c->CourseCode; ?></option>
+                                <?php endforeach; ?>
+                            </select></td>
+                    </tr>
+                </form>
+
+                <?php else: ?>
+
+                <form method="get" action="<?php echo url('addEventAttendance'); ?>">
+                    <tr>
+                        <td>Event:</td>
+                    <input type="hidden" name="eventvalue" value="<?php echo $eventvalue; ?>"/>
+                    <td><input type="text" value="<?php echo $eventname; ?>" name="eventname"readonly=""/></br></td>
+                    </tr>
+                    <tr>
+                        <td>Course Type:</td>
+                        <td><input type="text" value="<?php echo $coursetype; ?>" name="coursetype" readonly=""/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>Select Course:</td>
+                        <td><select name='coursecode'>
+                                <option selected="selectvalue" value="select">Select Course</option>
+                                <?php foreach($courselists as $c): ?>
+                                <option value="<?php echo $c->CourseCode; ?>"><?php echo $c->CourseCode; ?></option>
+                                <?php endforeach; ?>
+                            </select></td>
+                    <tr>
+                        <td colspan="2">
+                            <div class="controls">                         
+                                <button name="button" value="present" type="submit">Mark Present</button>
+                                <button name="button" value="absent" type="submit">Mark Absent</button>                         
+                                <button name="button" value="view" type="submit">View Attendance</button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+
+                <?php endif; ?>
+
+                <?php elseif($batchcode ==null): ?>
+
+                <form method="get" action="<?php echo url('addEventAttendance'); ?>">
+                    <tr>
+                        <td>
+                            Event:
+                        </td>
+                    <input type="hidden" name="eventvalue" value="<?php echo $eventvalue; ?>"/>
+                    <td><input type="text" value="<?php echo $eventname; ?>" name="eventname" readonly=""/></br></td>
+                    </tr>
+                    <tr>
+                        <td>Course Type:</td>
+                        <td><input type="text" value="<?php echo $coursetype; ?>" name="coursetype" readonly=""/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>Course:</td>
+                        <td><input type="text" value="<?php echo $coursecode; ?>" name="coursecode" readonly=""/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>Select Batch:</td>
+                        <td><select name='batchcode'>
+                                <option selected="selectvalue" value="select">Select Batch</option>
+                                <?php foreach($batchlists as $b): ?>
+                                <option value="<?php echo $b->BatchCode; ?>"><?php echo $b->BatchCode; ?></option>
+                                <?php endforeach; ?>
+                            </select></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"
+                            <div class="controls">                         
+                                <button name="button" value="present" type="submit">Mark Present</button>
+                                <button name="button" value="absent" type="submit">Mark Absent</button>                         
+                                <button name="button" value="view" type="submit">View Attendance</button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+
+                <?php endif; ?>
+            </table>
+
+            <!--Write your code here end-->
+
+
+            <!--PAGE CONTENT ENDS-->
+
+
+        </div><!--/.span-->
+
+        <div class="span4">
+            <?php if(Session::has('message')): ?>
+            <div class="alert alert-error">
+                <strong> <?php echo Session::get('message'); ?></strong>
+            </div>
+            <?php endif; ?>
+        </div>
+
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+
+
+
+
+
+
+
+</script>

@@ -1,0 +1,170 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+
+
+<div class="page-content">
+
+
+
+    <div class="row-fluid">
+
+
+        <div class="span8">
+
+            <!--PAGE CONTENT BEGINS-->
+
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Result			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+
+
+            <form class="form-horizontal" action="<?php echo url('createResult'); ?>" method="POST"/>
+            <input type="hidden" name='NIC' value="<?php echo $nic; ?>" />
+			
+
+            <div class="control-group">
+
+                <label class="control-label" for="Paper1">Student NIC</label>
+
+                <div class="controls">
+                    <input type="text" readonly value="<?php echo $nic; ?>"/>
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="Paper1">Paper1</label>
+
+                <div class="controls">
+                    <input type="text" name="Paper1"  />
+                </div>
+
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label" for="Paper2">Paper2</label>
+
+                <div class="controls">
+                    <input type="text" name="Paper2"  />
+                </div>
+
+            </div>
+
+
+
+            <div class="control-group">
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Save</button>
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+            </form>
+
+
+
+
+
+
+
+        </div><!--/.span-->
+
+
+
+
+
+
+        <div class="span4">
+
+
+
+            <?php if($errors->has()): ?>
+
+            <?php foreach($errors->all() as $msg): ?>
+
+
+
+            <div class="alert alert-error">
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+
+                <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+            </div>
+
+
+
+            <?php endforeach; ?>
+
+            <?php endif; ?>
+
+
+
+
+
+
+
+
+        </div>
+        <!--/span 4-->
+
+
+
+
+
+        <!--PAGE CONTENT ENDS-->
+
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script>
+
+    <?php if (isset($done)): ?>
+
+            $.gritter.add({title: "", text: "Event Name Added Successfully", class_name: "gritter-info gritter-center"});
+
+    <?php endif; ?>
+
+</script>
+
+
+
+
+
+
+
+
+
+

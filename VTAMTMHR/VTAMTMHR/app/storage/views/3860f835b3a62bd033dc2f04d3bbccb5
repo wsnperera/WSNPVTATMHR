@@ -1,0 +1,292 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <h1>Pay<small><i class="icon-double-angle-right"></i>Fee</small></h1>
+            </div>
+            <form class="form-horizontal" id="please" method="POST"/>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Student ID : </label>
+                    <div class="controls">
+                        <input type="text" name="ID" id="sid" value=<?php echo $trainee['id']; ?> readonly/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Student Name : </label>
+                    <div class="controls">
+                        <input type="text" name="name"  value=<?php echo $trainee['name']; ?> readonly/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Student NIC : </label>
+                    <div class="controls">
+                        <input type="text" name="nic"  value=<?php echo $trainee['nic']; ?> readonly/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course Code : </label>
+                    <div class="controls">
+                        <input type="text" name="CourseCode" id="CourseCode"  value=<?php echo $trainee['courseCode']; ?> readonly/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Training Number : </label>
+                    <div class="controls">
+                        <input type="text" name="tn"  value=<?php echo $trainee['trainingNo']; ?> readonly/>
+                    </div>
+                </div>
+               <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course Type: </label>
+                        <div class="controls">
+                        <input type="text" name="type"  value=<?php echo $trainee['type']; ?> readonly/>
+                        </div>
+
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Total Fee : </label>
+                    <div class="controls">
+                        <input type="text" name="ap"  value=<?php echo $trainee['coursefee']+$trainee['regfee']; ?> readonly/>
+                    </div>
+                </div>
+
+                  
+
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Additional Payments</label>
+                    <div class="controls">
+                       <table> 
+               
+                         <?php foreach($aditionalP as $ap): ?>
+                              <?php
+                              $fee=Fees::where('StudentId','=',$trainee['id'])->where('CourseCode','=',$trainee['courseCode'])->where('deleted','=',0)->where('Type','=',$ap->id)->pluck('Type');
+                              $no = count($fee);
+                              ?>
+                
+                         <?php if($no == 0): ?>
+                             <tr>
+                          
+                                 <td>
+                                 <?php echo $ap->Type; ?>
+                                 </td>
+                                 <td>
+                                    <lable>
+                                        <input class='checkVP' id="<?php echo $ap->id; ?>" name="ds[checkVP][<?php echo $ap->id; ?>]" type="checkbox" value="<?php echo $ap->Fee; ?>" onchange="check(this)" />
+
+                                        <span class="lbl"></span>
+                                        <input type="hidden" name="ds[Type][<?php echo $ap->id; ?>]" value="<?php echo $ap->id; ?>"/>
+                                    </lable>
+                                 </td>
+                    
+                            </tr>
+                               
+                         <?php endif; ?> 
+                         <?php if($no != 0): ?>
+                          <?php if($fee != $ap->id): ?>
+                         <tr>
+                          
+                                 <td>
+                                 <?php echo $ap->Type; ?>
+                                 </td>
+                                 <td>
+                                    <lable>
+                                        <input class='checkVP' id="<?php echo $ap->id; ?>" name="ds[checkVP][<?php echo $ap->id; ?>]" type="checkbox" value="<?php echo $ap->Fee; ?>" onchange="check(this)" />
+
+                                        <span class="lbl"></span>
+                                        <input type="hidden" name="ds[Type][<?php echo $ap->id; ?>]" value="<?php echo $ap->id; ?>"/>
+                                    </lable>
+                                 </td>
+                    
+                            </tr>
+
+                          <?php endif; ?>
+                         <?php endif; ?>
+                        <?php endforeach; ?>
+                 
+                        
+                       </table>
+                    </div>
+                </div>
+                  
+
+
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Amount Paid : </label>
+                    <div class="controls">
+                        <input type="text" name="ap"  value=<?php echo $trainee['amountPaid']; ?> readonly/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Amount Due : </label>
+                    <div class="controls">
+                        <input type="text" name="ad"  value=<?php echo $trainee['due']; ?> readonly id="Due"/>
+                    </div>
+                </div>
+                
+
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Paying Amount : </label>
+                        <div class="controls">
+                             <table>
+                                <tr>
+                                   <td>
+                                    <input type="text" name="AmountPaid"  id="AmountPaid"/>
+                                    </td>
+                                    <td>
+                                   
+                                     <label><font color="red"> 
+                                      Plus 
+                                      </label>
+                                      <label>
+                                     <div id ="Val">
+                                    </div></font>
+                                    </td>
+                                </tr>
+                             </table>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="button" class="btn btn-small btn-primary" id="savedata">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+
+    
+    <?php if(isset($done)): ?>
+        
+    $.gritter.add({ title: "", text: "Test Center Added Successfully", class_name: "gritter-info gritter-center" });
+
+    <?php endif; ?>
+    $(document).ready
+    (
+            function()
+            {
+                    $("#AmountPaid").keypress
+                    (
+                            function(e)
+                            {
+                                    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) 
+                                    {
+                                            return false;
+                                    }
+                            }
+                    );
+            }
+    );
+</script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script>
+$("#paymenttype").change(function()
+                    {
+                         var payment_id = $("#paymenttype").val();
+                         var CourseListCode = "<?php echo $trainee['courseCode']; ?>";
+                         if (payment_id == "0"){
+                            bootbox.alert("Please Enter Payment Category.");
+                         }
+                         else{
+                            //alert(payment_id);
+                                $.ajax({
+                                    type: "GET",
+                                    url: "<?php echo url('getamountdtetails'); ?>",
+                                    //dataType: "JSON",                                    
+                                    data: {payment_id:  payment_id, CourseListCode: CourseListCode },                                    
+                                    success: function(result)
+                                    {
+                                    //    alert(result);
+                                        $("#fee_display").val(result);
+                                    }
+                                });
+                         }                       
+                        
+                    });
+
+
+$("#savedata").click(function() {
+                   
+                       var id=document.getElementById('sid').value;
+                       var ccode=document.getElementById('CourseCode').value;
+                       var form =$("#please").serializeArray();
+                
+                //alert('dghsg');   
+                     $.ajax({
+                        url: "<?php echo url('pleaseSubmitForm'); ?>",
+                        type: "POST",
+                        data: form,
+
+                       
+                                success: function(result) {
+                                 response(result.print);
+               window.location.replace("<?php echo url('viewFees'); ?>");
+                               //    if(result.val === 1) {   
+                               //     response(result.print);
+                               // }
+                               // else{
+
+                               //     //bootbox.alert("Paying amount Cannot be Null.");
+                               // }
+                                
+                                }
+                               
+                          
+                    });
+                    // $.ajax({
+                    //     url: "<?php echo url('printRecipt'); ?>",
+                    //     data: {id: id, Ccode: ccode},
+
+
+                    //     success: function(result) {
+                    //         response(result);
+                    //     }
+                    // });
+                });
+   function response(data)
+                {
+                    var printWin = window.open("", "printSpecial");
+                    printWin.document.open();
+                    printWin.document.write(data);
+                    printWin.document.close();
+                    printWin.print();
+                }
+</script>
+<script>
+     function check(x)
+    {   var due = document.getElementById("Due").value;
+        if(x.checked==true){
+        document.getElementById("Due").value=+due + +x.value;
+        document.getElementById("Val").innerHTML= +due + +x.value;
+        }
+        else{
+         document.getElementById("Due").value=+due - +x.value; 
+         document.getElementById("Val").innerHTML=+due - +x.value;  
+        }
+
+    }
+</script>
+
+      
+           
+               
+               
+               
+      
+        
+        
+
+    

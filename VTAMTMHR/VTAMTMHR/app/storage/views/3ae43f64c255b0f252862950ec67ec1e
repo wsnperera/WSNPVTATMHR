@@ -1,0 +1,121 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<a href="<?php echo url('viewGNDivision'); ?>"> << Back to GN Division </a> 
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    GN Division			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <form class="form-horizontal" action="<?php echo url('createGNDivisionVTA'); ?>" method="POST" >
+                              
+                 <div class="control-group">
+                     <label class="control-label" for="District">District Name</label>
+                <div class="controls">
+                    <select name="DistrictCode" id="DistrictCode">
+                        <option value="">---Select---</option>
+                        <?php foreach ($District as $d): ?>
+                        <option value="<?php echo $d->DistrictCode; ?>"><?php echo $d->DistrictName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <span id="ajax_img3"></span>
+                </div>
+            </div>
+                
+                 <div class="control-group">
+                     <label class="control-label" for="DSDivisionCode">DS Division Name</label>
+                <div class="controls">
+                    <select name="DSDivisionCode" id="ElectorateCode">
+                        <option value="">--Select--</option>
+<!--                        <?php foreach ($Electorate as $e): ?>
+                        <option value="<?php echo $e->ElectorateCode; ?>"><?php echo $e->ElectorateName; ?></option>
+                        <?php endforeach; ?>-->
+                    </select>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="GNDivisionName">GN Division Name</label>
+                <div class="controls">
+                    <input type="text" name="GNDivisionName"  />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-small btn-primary">Save</button>
+                </div>
+            </div>
+            </form>
+
+        </div><!--/.span-->
+
+        <!--/span 4 for error handling -->
+
+<!--        <div class="span4">-->
+
+            <!-- Error Handling --!>
+                    <?php if($errors->has()): ?>
+                          <?php foreach($errors->all() as $msg): ?>
+            <!-- Error Message --!>
+              <div class="alert alert-error">
+                 <button type="button" class="close" data-dismiss="alert">
+                         <i class="icon-remove"></i>
+                 </button>
+                 <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+              </div>
+            <!-- Error Message --!>
+      <?php endforeach; ?>
+    <?php endif; ?>
+            <!-- Error Handling --!>
+    </div>
+            <!--/span 4-->
+            <!--PAGE CONTENT ENDS-->
+
+        </div><!--/.row-fluid-->
+    </div><!--/.page-content-->
+   <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+   <script>
+
+        <?php if (isset($done)): ?>
+
+                $.gritter.add({title: "", text: "GNDivision Added Successfully", class_name: "gritter-info gritter-center"});
+
+        <?php endif; ?>
+         $("#DistrictCode").change(function() {
+
+            var dc = document.getElementById('DistrictCode').value;
+            $.ajax({
+                url: "<?php echo url::to('EleGNDivisionjaxVTA'); ?>",
+                data: {DistrictCode: dc},
+                beforeSend: function() {
+                    document.getElementById('ajax_img3').innerHTML = "<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+                },
+                success: function(result)
+                {         
+                    document.getElementById('ElectorateCode').innerHTML = result;
+                },
+                complete: function() {
+                    document.getElementById('ajax_img3').innerHTML = "";
+                }
+            });
+        });
+             
+</script>
+        
+
+
+
+
+
+
+
+
+

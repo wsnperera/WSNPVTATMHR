@@ -1,0 +1,96 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href=<?php echo url('ViewAccreditRequest'); ?>> << Back to View </a>
+                <h1>Accredit Request<small><i class="icon-double-angle-right"></i>Create</small></h1>
+            </div>
+            <form class="form-horizontal" action='' method="POST"/>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course List Code : </label>
+                        <div class="controls">
+                            <select name="CourseListCode">
+                                <option></option>
+                                <option disabled="disabled">-- On-Going Courses --</option>
+                                <?php foreach($OnGoingCourse as $c): ?>
+                                    <option><?php echo $c->CourseListCode; ?></option>
+                                <?php endforeach; ?>
+                                <option disabled="disabled"></option>
+                                <option disabled="disabled">-- Courses Not Yet Started --</option>
+                                <?php foreach($CourseNotStarted as $c): ?>
+                                    <option><?php echo $c->CourseListCode; ?></option>
+                                <?php endforeach; ?>
+                            <select>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">NVQ Level : </label>
+                        <div class="controls">
+                            <select name="NVQLevel">
+                                <option></option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                            </select>
+                        </div>
+                </div>
+                 <div class="control-group">
+                  <label class="control-label" for="CourseListCode">Instructor : </label>
+                        <div class="controls">
+                        <select name="instructor">
+                        <option></option>
+                        <?php foreach($insrtuctor as $i): ?>
+                        <option value="<?php echo $i->id; ?>"><?php echo $i->Initials; ?><?php echo " "; ?> <?php echo $i->LastName; ?></option>
+                        <?php endforeach; ?>
+                        </select>
+                        </div>
+                 </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Sent Request</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+    
+    <?php if(isset($done)): ?>
+        
+    $.gritter.add({ title: "", text: "Request Send Successfully", class_name: "gritter-info gritter-center" });
+
+    <?php endif; ?>
+    <?php if(isset($notdone)): ?>
+        
+    $.gritter.add({ title: "", text: "Request Sending Error Try Again", class_name: "gritter-info gritter-center" });
+
+    <?php endif; ?>
+    
+</script>
+      
+           
+               
+               
+               
+      
+        
+        
+
+    

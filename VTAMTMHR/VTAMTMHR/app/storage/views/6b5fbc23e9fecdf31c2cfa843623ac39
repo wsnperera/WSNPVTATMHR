@@ -1,0 +1,293 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Graduate Employment         
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>            
+                </h1>
+            </div>
+            <form class="form-horizontal" method="POST" action="<?php echo url('createGradateEmployee'); ?>">
+               
+                <br/>
+                <div class="control-group">
+                    <label class="control-label" for="NIC"> NIC</label>
+                    <div class="controls">
+					
+                        
+                        <?php if(!empty($nic1)): ?>
+                        <input type="text" name="nic" id="nic" value="<?php echo $nic1; ?>" readonly/>
+                       
+                        <?php else: ?>
+                        <input type="text" name="nic" id="nic" placeholder="Search by NIC"/>
+                         <?php endif; ?>
+                    </div>
+                </div>
+                  <!-- course code -->
+
+                    <div class="control-group">
+
+                        <label class="control-label" for="CourseCode">Course Code</label>
+
+                        <div class="controls">
+
+
+                            <select name="CourseCode" id="CourseCode" required>
+                            <option value="">--- select course--- </option>
+
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="control-group">
+
+                        <label class="control-label" for="GEType">Employment Type</label>
+
+                        <div class="controls">
+
+
+                            <select name="GEType" id="GEType" required>
+                            <option value="">--- select type--- </option>
+                            <?php foreach ($gemptype as $m): ?>
+
+
+                            <option value="<?php echo $m->id; ?>"><?php echo $m->Description; ?></option>
+
+                            <?php endforeach; ?>
+
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="control-group">
+
+                        <label class="control-label" for="Trade">Trade</label>
+
+                        <div class="controls">
+
+
+                            <select name="Trade" id="Trade" required>
+                            <option value="">--- select trade--- </option>
+                            <?php foreach ($trade as $m): ?>
+
+
+                            <option value="<?php echo $m->TradeId; ?>"><?php echo $m->TradeName; ?></option>
+
+                            <?php endforeach; ?>
+
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <!-- course code -->
+                    <div class="control-group">
+
+                                <label class="control-label" for="StartDate">Start Date</label>
+
+                                <div class="controls">
+
+                                    <input type="date" name="StartDate" id="StartDate" required/>
+
+                                </div>
+
+                    </div>
+
+                    <hr/>
+                    <div class="control-group">
+
+                                <label class="control-label" for="AddressEmployer">Name Of the Employer</label>
+
+                                <div class="controls">
+
+                                    <input type="text" name="NameOfEmployer" id="NameOfEmployer" style="width: 400px;"/>
+
+                                </div>
+
+                    </div>
+                     <div class="control-group">
+
+                                <label class="control-label" for="AddressEmployer">Address Of the Employer</label>
+
+                                <div class="controls">
+
+                                    <input type="text" name="AddressEmployer" id="AddressEmployer" style="width: 700px;"required/>
+
+                                </div>
+
+                    </div>
+                    <div class="control-group">
+
+                                <label class="control-label" for="Tel">Telephone No Of the Employer</label>
+
+                                <div class="controls">
+
+                                    <input type="text" name="Tel" id="Tel" required/>
+
+                                </div>
+
+                    </div>
+                     <div class="control-group">
+
+                                <label class="control-label" for="Tel">Contact person of the employer</label>
+
+                                <div class="controls">
+
+                                    <input type="text" name="ContactPerson" id="ContactPerson" />
+
+                                </div>
+
+                    </div>
+                   
+                    <div class="control-group">
+                                <label class="control-label" for="natureE">Nature of the Employment</label>
+                                <div class="controls">
+                                        <textarea  name="natureE"></textarea>
+                                </div>
+                    </div>
+                    <!-- -->
+                     <div class="control-group">
+
+                        <label class="control-label" for="ECapacity">Employer capacity</label>
+
+                        <div class="controls">
+
+
+                            <select name="ECapacity" id="ECapacity" >
+                            <option value="">--- Select Capacity--- </option>
+                            <?php foreach ($empcap as $m): ?>
+
+
+                            <option value="<?php echo $m->id; ?>"><?php echo $m->Description; ?></option>
+
+                            <?php endforeach; ?>
+
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="control-group">
+
+                                <label class="control-label" for="TOccupationel">Occupation</label>
+
+                                <div class="controls">
+
+                                    <input type="text" name="Occupation" id="Occupation" />
+
+                                </div>
+
+                    </div>
+                    <div class="control-group">
+
+                                <label class="control-label" for="salary">Current Salary</label>
+
+                                <div class="controls">
+
+                                    <input type="number" name="salary" id="salary" />
+
+                                </div>
+
+                    </div>
+                     <div class="control-group">
+
+                        <label class="control-label" for="Relevance">Relevance of Training</label>
+
+                        <div class="controls">
+
+
+                            <select name="Relevance" id="Relevance" required>
+                            <option value="">--- select Relevance of the training--- </option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                            </select>
+                        </div>
+
+                    </div>
+                     <div class="control-group">
+
+                        <label class="control-label" for="Relevance">Employment Placed by</label>
+
+                        <div class="controls">
+
+
+                            <select name="WPE" id="WPE" required>
+                            <option value="">--- select WPE--- </option>
+                            <option value="INS">From institute</option>
+                            <option value="SELF">Self</option>
+                            </select>
+                        </div>
+
+                    </div>
+                      <div class="control-group">
+
+                                <label class="control-label" for="InsEPF">Cordinator EPF</label>
+
+                                <div class="controls">
+
+                                    <input type="number" name="InsEPF" id="InsEPF" />
+
+                                </div>
+
+                    </div>
+               
+            
+               
+            
+             
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary" id="transfer">Save</button>
+                    </div>
+                </div>
+                <br/>
+            </form>
+        </div>
+          <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script>
+    $("#nic").change(function() {
+        var nic = document.getElementById("nic").value;
+        $("#CourseCode").html('');
+        $.ajax
+                ({
+                    url: "<?php echo url::to('GE_Searchnic'); ?>",
+                    data: {nic: nic},
+                    dataType: "json",
+                    success: function(result)
+                    {
+                        $("#CourseCode").append("<option value=''></option>");
+                         $.each(result, function(i, item)
+                        {
+
+                        $("#CourseCode").append("<option value=" + item.courseStartedID + ">" + item.CourseCode + "  (" + item.CourseName + ") -" + item.OrgaName + "</option>");
+
+                         });
+                        
+                    }
+                });
+
+    });
+
+    
+    
+
+
+
+
+
+</script>

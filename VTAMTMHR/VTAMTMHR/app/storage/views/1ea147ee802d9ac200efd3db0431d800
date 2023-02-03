@@ -1,0 +1,169 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+
+</br>
+<a href="<?php echo url('ViewStudentDailyAttendancePercentageFixCenters'); ?>">
+    <span class="label label-info arrowed-in-right arrowed">
+            Back to Attendance Report
+    </span>
+</a>
+
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="page-header position-relative">
+            <h1>
+                Add Organisation To Attendance Percentage Report 		
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    Add
+                </small>			
+            </h1>
+        </div><!--/.page-header-->  
+
+        <div class="well well-small">
+            <center>
+        		<?php if($type == 'HO'): ?>
+            		<form method="get">
+                        </br>
+                        <table> 
+                        <tr>
+                            <td><b>District</b></td>
+                        </tr> 
+
+                        <tr height="10"></tr>
+
+                        <tr>
+                            <td>
+                                <select id="dis" name="dis" >
+                                    <option value="">Select District</option>   
+                                    <?php foreach ($district as $d): ?>
+                                        <option  value="<?php echo $d->DistrictCode; ?>"><?php echo $d->DistrictName; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                        </tr>
+                        </table> 
+                    </form>
+        		<?php endif; ?>
+
+            </center>
+        </div>
+
+        <span id="loding">
+        </span>
+
+        <div id="table_1" class="row-fluid span20" style="margin: 0px;" overflow="auto">
+            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                <thead> 
+                    <th><b></b></th> 
+                    <th><b>Organisation Name</b></th> 
+                </thead>
+
+                <tbody id="table-body_1">
+                </tbody>
+            </table>   
+        </div>
+
+        <div>
+
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
+<script type="text/javascript">
+
+//*****************************************************************
+$("#dis").change(function()
+{
+    //alert("Plz");
+
+    var District = $("#dis").val();
+
+    //alert(District);
+    //alert(Organisation);
+    //alert(CourseCode);
+    //alert(Module);
+
+    //$("#module").html('');
+
+    $.ajax
+    ({
+        beforeSend: function() 
+        {
+            document.getElementById('loding').innerHTML = "<br><br><img height='80%' width='50%' src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";
+        },
+
+        type: "GET",
+        url: 'ajaxGetCenterDetails',
+        data:{District :District,},
+
+        success: function(result) 
+        {
+            if(result == null)
+            {
+                document.getElementById('loding').innerHTML = "<font style='margin-left: 200px;' >----------<b>No Date Found</b>----------</font>";
+            }
+            else
+            {
+                document.getElementById('loding').innerHTML ="";
+                document.getElementById('table-body_1').innerHTML = result;
+                $('#table_1').show();
+            }
+        },
+    });
+});
+//*****************************************************************
+
+$(document).ready(function()
+{
+    $('#table_1').hide();
+});
+
+</script>
+
+<script type="text/javascript">
+
+$(document).on("change",".plz", function() {
+    var ogaID = $(this).val();
+    //alert(ogaID);
+
+    if($(this).is(":checked"))
+    {
+        //alert("Checkbox is checked.");
+        $.ajax({
+            type: "GET",
+            url: "<?php echo url('addOrganisationAttendanceReport'); ?>",
+            data: {ogaID: ogaID},
+            success: function(result) 
+            {
+                alert("Organisation Added To Attendance Report Successfully");
+            }
+        });
+    }
+
+    else if($(this).is(":not(:checked)"))
+    {
+        //alert("Checkbox is unchecked.");
+        $.ajax({
+            url: "<?php echo url('removeOrganisationAttendanceReport'); ?>",
+            data: {ogaID: ogaID},
+            success: function(result) 
+            {
+                alert("Organisation Remove From Attendance Report Successfully");
+            }
+        });
+    }
+});
+
+</script>
+
+

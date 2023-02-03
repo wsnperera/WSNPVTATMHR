@@ -1,0 +1,124 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('Results'); ?>> << Back to Results view </a> 
+
+<?php endif; ?>
+
+
+    
+                
+
+
+	<div class="page-content">
+                                    
+	   <div class="row-fluid">
+                                           
+                                           
+                                            
+                   
+                                            
+                                           
+                                            
+                                            
+                        <div class="span12">
+			<!--PAGE CONTENT BEGINS-->
+
+
+                         <form name='search' action="<?php echo url('searchR'); ?>" method='get'>                         
+                       Search by NIC <input type='text' name="serachkey"/>   <input type='submit' value='Search'/>
+                         </form>
+			<table class="table">
+
+
+		<tr>
+                        <th>NIC</th>
+			<th>Paper1</th>								
+                        <th>Paper2</th>
+                       
+                        <th>Remove</th>
+											
+                </tr>
+                        
+                <?php if(isset ($Event)): ?>
+                
+                    <?php foreach ($Event as $c): ?>
+
+                        <tr>
+                                <td><a href="<?php echo url('editResult?cid='.$c->NIC); ?>"><?php echo $c->NIC; ?></a></td>
+                                <td><?php echo $c->Paper1; ?></td>
+                                <td><?php echo $c->Paper2; ?></td>
+                               
+
+                          <td>
+                                <form id="deleteform"  action="<?php echo url('deleteResults?NIC='.$c->NIC); ?>" method="POST" onsubmit="return doConfirm('<?php echo $c->NIC; ?>',this)">
+
+                                <input type="hidden" name='cid' value=<?php echo $c->NIC; ?> />
+                                <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+
+                                </form>
+                                                                                                                
+                         </td>
+ 
+                        </tr>
+
+
+
+								
+                    <?php endforeach; ?>
+                    
+                <?php endif; ?>
+                
+               
+                
+                
+                
+                
+                
+                
+                
+                
+</table>
+
+								
+								
+                                                                                                                                                
+
+
+							<!--PAGE CONTENT ENDS-->
+						</div><!--/.span-->
+					</div><!--/.row-fluid-->
+				</div><!--/.page-content-->
+
+			<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+    
+  
+        function doConfirm(course,formobj)
+        {
+            
+            
+            bootbox.confirm("Are you sure you want to remove "+course, function(result) 
+            {
+                   if(result) 
+                   {
+                        formobj.submit();
+							
+                    }
+                    
+                    
+            });
+            
+         
+            return false;  // by default do nothing hack :D
+        }
+          
+   
+         
+         
+        
+
+    
+</script>

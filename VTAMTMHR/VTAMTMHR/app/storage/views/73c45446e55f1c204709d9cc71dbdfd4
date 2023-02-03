@@ -1,0 +1,193 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+
+            <!--PAGE CONTENT BEGINS-->
+
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+			<a href=<?php echo url('ViewTimeSlot'); ?>> << Back to Slot </a> 
+                <h1>
+                    Slot		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+
+
+            <!--Write your code here start-->
+
+
+
+            <form class="form-horizontal" action="<?php echo url('editSlot'); ?>" method="POST"/>
+
+
+            <!-- Hold the primary key -->
+
+            <input type="hidden" name="id" value="<?php echo Request::get('id'); ?>" />
+
+
+
+
+
+
+
+
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="NoofSlot">Slot</label>
+
+                <div class="controls">
+
+                    <input type="text" name="NoofSlot" value="<?php echo $course->NoofSlots; ?>" readonly />
+
+                </div>
+
+            </div>
+            <!-- active-->
+
+            <div class="control-group">
+
+                <label class="control-label" for="From">From</label>
+
+                <div class="controls">
+
+                    <input type="time" name="From" value="<?php echo $course->From; ?>" />
+
+                </div>
+
+            </div>
+
+            <!-- active -->
+			 <div class="control-group">
+
+                <label class="control-label" for="To">To</label>
+
+                <div class="controls">
+
+                    <input type="time" name="To" value="<?php echo $course->To; ?>" />
+
+                </div>
+
+            </div>
+			<div class="control-group">
+
+                <label class="control-label" for="Category">To</label>
+
+                <div class="controls">
+
+                   <select name="Category" id="Category" required>
+				   <option value="">---select Category---</option>
+				 <?php foreach($Category as $f): ?>
+					
+						<option <?php if($f->id == $course->CategoryID): ?> selected   <?php endif; ?> value="<?php echo $f->id; ?>"><?php echo $f->Category; ?></option>
+				
+				 <?php endforeach; ?>
+				   </select>
+
+                </div>
+
+            </div>
+			
+
+            <!-- active -->
+
+
+            <!-- Submit Button -->
+
+            <div class="control-group">
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Update</button>
+
+                </div>
+            </div>
+
+
+            <!-- Submit Button -->
+
+
+
+            </form>
+
+
+
+
+
+            <!--Write your code here end-->
+
+
+            <!--PAGE CONTENT ENDS-->
+
+
+        </div><!--/.span-->
+		
+		 <!--/span 4 for error handling -->
+
+    <div class="span4">
+
+        <!-- Error Handling -->
+
+        <?php if($errors->has()): ?>
+
+        <?php foreach($errors->all() as $msg): ?>
+
+        <!-- Error Message -->
+
+        <div class="alert alert-error">
+
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="icon-remove"></i>
+            </button>
+
+            <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+
+        </div>
+
+        <!-- Error Message -->
+
+        <?php endforeach; ?>
+
+        <?php endif; ?>
+
+        <!-- Error Handling -->
+
+
+
+
+
+
+    </div>
+    <!--/span 4-->
+
+
+
+
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+
+
+
+
+
+
+
+</script>

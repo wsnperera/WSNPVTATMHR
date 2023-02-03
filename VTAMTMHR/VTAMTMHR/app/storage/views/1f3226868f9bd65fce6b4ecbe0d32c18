@@ -1,0 +1,69 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>                       
+<div class="page-content">                                    
+    <div class="row-fluid">                                                                                                                                                                                                                       
+        <div class="span12">							
+            <!--PAGE CONTENT BEGINS-->                                        
+            <!--/.page-header-->                                        
+            <div class="page-header position-relative">                                            
+                <h1>
+                    Users		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div>
+            <!--/.page-header-->               			 
+            <!--Write your code here start-->                                
+            <form class="form-horizontal" action="<?php echo url('editUsers'); ?>" method="POST">              
+                <input type="hidden" name="UserID" value=<?php echo Request::get('cid'); ?> />                            
+                <div class="control-group">                                                 
+                    <label class="control-label" for="userID" >NIC</label>              
+                    <div class="controls">
+                        <input type="text" name="userID" disabled="disabled" value=<?php echo $users->getEmployee->NIC; ?>  />
+                    </div>
+                </div>    
+                <div class="control-group">
+                    <label class="control-label" for="userName">User Name</label>
+                    <div class="controls">
+                        <input type="text" name="userName" value=<?php echo $users->userName; ?>  readonly />
+                    </div>
+                </div>         
+                <div class="control-group">
+                    <label class="control-label" for="TradeId">Trade</label>
+                    <div class="controls">
+                        <select name="TradeId">
+                            <option value="">Select Trade</option>  
+                            <?php foreach($trades as $t): ?>
+                            <option value="<?php echo $t->TradeId; ?>" <?php if($users->TradeId == $t->TradeId): ?> selected <?php endif; ?>><?php echo $t->TradeName; ?></option>    
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="userType">User Type</label>
+                    <div class="controls">
+                            <!--<input type="text" name="userType"  /> -->
+                        <select name="userType">
+                            <option value="">Select Type</option>  
+                            <?php foreach($usertype as $t): ?>
+                            <option value="<?php echo $t->id; ?>" <?php if($users->userType == $t->id): ?> selected <?php endif; ?>><?php echo $t->UType; ?></option>   
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>   
+                <div class="control-group">                                                 
+                    <div class="controls">                                                 
+                        <button type="submit" class="btn btn-small btn-primary">Update</button>  
+                    </div>
+                </div>
+        </div>                                            
+        <!-- Submit Button -->                 
+        </form>   
+        <!--Write your code here end-->            
+        <!--PAGE CONTENT ENDS-->                     
+    </div><!--/.span-->
+</div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script type="text/javascript"></script>

@@ -1,0 +1,100 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        Students			
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            Students Registration
+                        </small>			
+                    </h1>
+                </div>
+            </div>
+            <!--PAGE CONTENT BEGINS-->
+            <form action="<?php echo url('loadApplicant'); ?>" method='post'>
+                <table>
+                    <tr>
+                        <td>CourseCode :</td>
+                        <td>
+                            <select name="CourseCode" id='CourseCode' style="width: 120px; margin: 0">
+                            <option value="">CourseCode</option>
+                            <?php if($user->getSysUser()->userType == 'DEOHRM' || $user->getSysUser()->userType == 'APM' || $user->getSysUser()->userType == 'Admin'): ?>
+                            <?php foreach($course_started_f as $cs): ?>
+                            <option value="<?php echo $cs->CourseCode; ?>"><?php echo $cs->CourseCode; ?></option>
+                            <?php endforeach; ?>
+                            <?php elseif($user->getSysUser()->userType == 'R' || $user->getSysUser()->userType == 'AR' || $user->getSysUser()->userType == 'DEOR'): ?>
+                            <?php foreach($course_started_p as $cs): ?>
+                            <option value="<?php echo $cs->CourseCode; ?>"><?php echo $cs->CourseCode; ?></option>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                            &nbsp;&nbsp;
+                        </td>
+                        <td id="BatchCode">
+                            <input type="hidden" value="" name="BatchCode"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <h5 style="color: #777777;"><?php if(isset($CourseCode)): ?>CourseCode:&nbsp;&nbsp;<?php echo $CourseCode; ?><?php endif; ?></h5>
+            <h5 style="color: #777777;"><?php if(isset($BatchCode)): ?>BatchCode:&nbsp;&nbsp;<?php echo $BatchCode; ?><?php endif; ?></h5>
+            <form action="<?php echo url('regTrainee'); ?>" method="get">
+                <?php if(isset($CourseCode)): ?><input type="hidden" name="CourseCode" value="<?php echo $CourseCode; ?>"/><?php endif; ?>
+                <?php if(isset($BatchCode)): ?><input type="hidden" name="BatchCode" value="<?php echo $BatchCode; ?>"/><?php endif; ?>
+            <button type="submit" class="btn btn-large pull-right"><i class="icon-user"></i>Register Students</button>
+            </form>
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>NIC</th>
+            <th>Name</th>
+            <th>Year</th>
+            <th>Gender</th>
+            <th>Trainee No</th>
+        </tr>
+        <?php if(isset($applicants)): ?>
+
+        <?php foreach($applicants as $students): ?>
+        <?php $trainee_no = $trainee_no + 1; ?>
+        <tr>
+            <td><?php echo $students->id; ?></td>
+            <td><?php echo $students->NIC; ?></td>
+            <td><?php echo $students->FullName; ?></td>
+            <td><?php echo $students->Year; ?></td>
+            <td><?php echo $students->Gender; ?></td>
+            <td><?php echo $trainee_no; ?></td>
+        </tr>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<script type="text/javascript">
+
+    $("#CourseCode").change(function() {
+
+        var CourseCode = document.getElementById('CourseCode').value;
+
+        $.ajax
+                ({
+                    url: "<?php echo url::to('loadbatchcode'); ?>",
+                    data: {CourseCode: CourseCode},
+                    beforeSend: function() {document.getElementById('BatchCode').innerHTML="<img src=\"<?php echo Url('assets/images/abc.gif'); ?>\"/>";},
+                    success: function(result)
+                    {
+                        document.getElementById('BatchCode').innerHTML = result;
+                    }
+                });
+
+    });
+
+</script>

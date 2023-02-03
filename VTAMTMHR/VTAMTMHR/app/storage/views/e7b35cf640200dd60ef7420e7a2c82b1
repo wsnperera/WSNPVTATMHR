@@ -1,0 +1,108 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('employeeexperience'); ?>> << Back to Employee Experience </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="page-header position-relative">
+        <h1>
+            Employee		
+            <small>
+                <i class="icon-double-angle-right"></i>
+                Work Experience
+                <i class="icon-double-angle-right"></i>
+                View
+            </small>			
+        </h1>
+    </div><!--/.page-header-->
+    <div class="row-fluid">
+        <div class="row-fluid">
+            <form name='search' action="<?php echo url('findEmployeeexperience'); ?>" method='get'>
+                Search Employee Experience <input type='text' name="serachkey" placeholder="Search by Employee Name..."/>   <input type='submit' value='Search'/> &nbsp;
+                <a href=<?php echo url('createEmployeeexperience'); ?>><input class="btn-small" type="button" value="Create record of Employee Experience"/></a>
+            </form>
+            <div class="span12">
+                <!--PAGE CONTENT BEGINS-->
+
+                <table class="table">
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Institute Name</th>
+                        <th>Experienced Company Name</th>
+                        <th>Employee Name</th>
+                        <th>EPF NO</th>
+                        <th>Joined Designation</th>
+                        <th>Joined Date</th>
+                        <th>Date Resigned</th>
+                        <th>Position Held</th>
+                        <th>Reason to Leave</th>
+                        <th>Remove</th>
+
+                    </tr>
+                    <?php if(isset ($experience)): ?>
+
+                    <?php foreach ($experience as $ee): ?>
+
+                    <tr>
+
+                        <td><a href="<?php echo url('editEmployeeexperience?id='.$ee->EE_ID); ?>"><?php echo $ee->EE_ID; ?></a></td>
+
+                        <td><?php echo $ee->getInstitute->InstituteName; ?></a></td>
+                        <td><?php echo $ee->CompanyName; ?></td>
+                        <td><?php if(!is_null($ee->getEmployee)): ?><?php echo $ee->getEmployee->Name; ?><?php endif; ?></td>
+                        <td><?php echo $ee->EPF; ?></td>
+                        <td><?php echo $ee->JoinedDesignation; ?></td>
+                        <td><?php echo $ee->JoinedDate; ?></td>
+                        <td><?php echo $ee->DateResigned; ?></td>
+                        <td><?php echo $ee->PositionHeld; ?></td>
+                        <td><?php echo $ee->Reason; ?></td>
+                        <td>
+                            <form id="deleteform"  action=<?php echo url('deleteEmployeeexperience'); ?> method="POST" onsubmit="return doConfirm('<?php echo $ee->EE_ID; ?>', this)">
+
+                                <input type="hidden" name='eeid' value="<?php echo $ee->EE_ID; ?> "/>
+                                <button type="submit" class="btn btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+
+                    <?php endforeach; ?>
+
+                    <?php endif; ?>
+
+                </table>
+
+
+                <!--PAGE CONTENT ENDS-->
+            </div><!--/.span-->
+        </div><!--/.row-fluid-->
+    </div><!--/.page-content-->
+
+    <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+    <script type="text/javascript">
+
+
+                function doConfirm(experience, formobj)
+                {
+
+
+                bootbox.confirm("Are you sure you want to remove " + experience, function(result)
+                {
+                if (result)
+                {
+                formobj.submit();
+                }
+
+
+                });
+                        return false; // by default do nothing hack :D
+                }
+
+
+
+    </script>

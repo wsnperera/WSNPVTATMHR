@@ -1,0 +1,135 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>    
+<a href="<?php echo url('stdAttendanceReport'); ?>">
+    Back to Attendance Home
+</a>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Attendance			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Student Yearly Attendance
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+
+            <!--student-->
+            <?php if($coursetype == null): ?>
+            <form name="attendanceReport" action="<?php echo url('markAttendanceHome'); ?>" method="get">
+                <label>Course Type:</label>                
+                <select id="form-field-select-1" name="coursetype" onchange="javascript: submit()">
+                    <option value="">Chose a Course Type</option>
+                    <option value="Full">Full Time</option>
+                    <option value="Part">Part Time</option>
+                </select> 
+                <br/>
+                <label>Course Code:</label>
+                <select id="form-field-select-1" name="coursecode" disabled="">
+                    <option value="">Chose a Course Type</option>
+                </select><br/>
+                <label>Batch Code:</label> 
+                <select id="form-field-select-1" name="batchcode" disabled="">
+                    <option value="">Chose a Course Code</option>
+                </select>
+                <label>Year:</label> 
+                <select id="form-field-select-1" name="year" onchange="javascript: submit()" disabled>
+                    <option value="">Chose a Year</option>
+                </select>
+            </form>
+            <?php elseif($coursecode == null): ?>
+            <form name="attendanceReport" action="<?php echo url('markAttendanceHome'); ?>" method="get">
+                <label>Course Type:</label>                     
+                <input id="form-field-1" value="<?php echo $coursetype; ?>" type="hidden" name="coursetype" readonly>
+                <input id="form-field-1" value="<?php echo $coursetypename; ?>" type="text" name="coursetypename" readonly><br/>
+                <label>Course Code:</label>
+                <select id="form-field-select-1" name="coursecode" onchange="javascript: submit()">
+                    <option value="">Chose a Course Type</option>
+                    <?php foreach($courselist as $c): ?>
+                    <option value="<?php echo $c->CourseCode; ?>"><?php echo $c->CourseCode; ?></option>
+                    <?php endforeach; ?>
+                </select>  <br/>
+                <label>Batch Code:</label> 
+                <select id="form-field-select-1" name="batchcode" disabled="">
+                    <option value="">Chose a Course Code</option>
+                </select>
+                <label>Year:</label> 
+                <select id="form-field-select-1" name="year" onchange="javascript: submit()" disabled>
+                    <option value="">Chose a Year</option>
+                </select>
+            </form>
+            <?php elseif($batchcode == null): ?>
+            <form name="attendanceReport" action="<?php echo url('markAttendanceHome'); ?>" method="get">
+                <label>Course Type:</label>                     
+                <input id="form-field-1" value="<?php echo $coursetype; ?>" type="hidden" name="coursetype" readonly>
+                <input id="form-field-1" value="<?php echo $coursetypename; ?>" type="text" name="coursetypename" readonly><br/>
+                <label>Course Code:</label>
+                <input id="form-field-1" value="<?php echo $coursecode; ?>" type="text" name="coursecode" readonly><br/>
+                <label>Batch Code:</label> 
+                <select id="form-field-select-1" name="batchcode" onchange="javascript: submit()">
+                    <option value="">Chose a Batch</option>
+                    <?php foreach($batchlist as $b): ?>
+                    <option value="<?php echo $b->BatchCode; ?>"><?php echo $b->BatchCode; ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <label>Year:</label> 
+                <select id="form-field-select-1" name="year" onchange="javascript: submit()" disabled>
+                    <option value="">Chose a Year</option>
+                </select>
+            </form>
+            <?php elseif($year == null): ?>
+            <form name="attendanceReport" action="<?php echo url('markAttendanceHome'); ?>" method="get">
+                <label>Course Type:</label>                     
+                <input id="form-field-1" value="<?php echo $coursetype; ?>" type="hidden" name="coursetype" readonly>
+                <input id="form-field-1" value="<?php echo $coursetypename; ?>" type="text" name="coursetypename" readonly><br/>
+                <label>Course Code:</label>
+                <input id="form-field-1" value="<?php echo $coursecode; ?>" type="text" name="coursecode" readonly><br/>
+                <label>Batch Code:</label> 
+                <input id="form-field-1" value="<?php echo $batchcode; ?>" type="text" name="batchcode" readonly><br/>
+                <label>Year:</label> 
+                <select id="form-field-select-1" name="year" onchange="javascript: submit()">
+                    <option value="">Chose a Year</option>
+                    <?php for ($i = $yearstart; $i <= $yearend; $i++): ?>
+                    <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                    <?php endfor; ?>
+                </select>
+            </form>
+            <?php else: ?>
+            <form name="attendanceReport" action="<?php echo url('stdYearlyReport'); ?>" method="get">
+                <label>Course Type:</label>                     
+                <input id="form-field-1" value="<?php echo $coursetype; ?>" type="hidden" name="coursetype" readonly>
+                <input id="form-field-1" value="<?php echo $coursetypename; ?>" type="text" name="coursetypename" readonly><br/>
+                <label>Course Code:</label>
+                <input id="form-field-1" value="<?php echo $coursecode; ?>" type="text" name="coursecode" readonly><br/>
+                <label>Batch Code:</label> 
+                <input id="form-field-1" value="<?php echo $batchcode; ?>" type="text" name="batchcode" readonly><br/>
+                <label>Year:</label> 
+                <input id="form-field-1" value="<?php echo $year; ?>" type="text" name="year" readonly>                
+                <br/><button type="submit"><i class="icon-ok bigger-110"></i></i>Submit</button>
+            </form>
+            <?php endif; ?>
+            <table>
+                <tr><td class="center">
+                        <form action="<?php echo url('back123'); ?>" method="get">
+                            <button>Clear All</button>
+                        </form>
+                    </td></tr>
+            </table>
+            <!--Write your code here end-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+<script type="text/javascript">
+
+
+
+
+
+
+
+</script>

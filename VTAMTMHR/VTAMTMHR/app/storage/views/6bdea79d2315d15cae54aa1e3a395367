@@ -1,0 +1,140 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href="<?php echo url('viewAcademicStaffDetails'); ?>"> << Back to Academic Staff Details </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="row-fluid">
+	  <div class="span12">
+        <div class="page-header position-relative">
+            <h1>
+                Staff Details		
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    View
+                </small>			
+            </h1>
+        </div>
+		
+ <!--PAGE CONTENT BEGINS-->
+			<form class="form-horizontal">
+			<div class="control-group">
+                    <label class="control-label" for="Staff Type">Staff Type : </label>
+                    <div class="controls">
+                         <select name="stafftype" id="stafftype" onchange="getTableStaffDetails()" style="margin: 0px;">
+                             <option value="0">--Select Staff Type--</option>
+                            <option value="1">All</option>
+                            <option value="Yes">Academic</option>
+							<option value="No">Non-Academic</option>
+							</select>                   
+                    </div>
+                </div> 
+				               
+			<div id="loding"></div>
+			<div id="table"></div>
+			</form>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+   
+function setStaffType(){
+
+$('#table').html('');   
+//alert(x.value);	
+}         
+
+</script>
+
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+                        function getTableStaffDetails() {
+
+                            //  alert(1);
+                            var stafftype = $("#stafftype").val();
+                           //alert(stafftype);
+                            $('#table').html('');
+                            
+                            if (stafftype != "0")
+                            {
+                                $.ajax
+                                        ({
+                                            beforeSend: function()
+                                            {
+                                                $("#loding").html('<br><br><img height="50%" width="25%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                                            },
+                                            type: "GET",
+                                            url: "<?php echo Url('getTablestaff'); ?>",
+                                            data: {stafftype: stafftype},
+                                            success: function(result)
+                                            {
+                                                $('#table').html(result);
+												tableModify();
+
+                                            },
+                                            complete: function() {
+
+                                                $("#loding").html('');
+                                            },
+                                        });
+
+                            }
+                          
+                        }
+						function getTableStaffDetailsDownload() {
+	    var stafftype = $("#stafftype").val();
+		//alert(stafftype);
+		
+        $('#table').val('');
+    if (stafftype != 0)
+       {
+            bootbox.alert('Please wait few seconds..!');
+            location.replace('searchStaffDetailsDownload?stafftype='+ stafftype + '');
+        }
+		else{
+			bootbox.alert('Please select the staff type!');
+		}
+    }
+
+
+
+</script>
+
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+
+                                function tableModify() {
+                                    $('#sample-table-2').dataTable({
+                                        "bPaginate": false,
+                                        "aaSorting": [],
+                                        "aoColumns": [
+
+                                            {"bSortable": false},
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+											null,
+                                            null,
+                                            null,
+											null
+                                        ]});
+                                }
+</script>
+
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+
+</script>

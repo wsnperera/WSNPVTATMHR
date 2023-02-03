@@ -1,0 +1,126 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="page-header position-relative">
+                <a href=<?php echo url('viewCourseYearPlan'); ?>> << Back to View </a>
+                <h1>Course Year Plan<small><i class="icon-double-angle-right"></i>Edit</small></h1>
+            </div>
+            <form class="form-horizontal" action='' method="POST">
+                <input type='hidden' name='id' value='<?php echo $CourseYearPlan->id; ?>' />
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Year : </label>
+                        <div class="controls">
+                            <select name='Year' >
+                                <option <?php if($CourseYearPlan->Year==date('Y')): ?> selected="true" <?php endif; ?> ><?php echo date('Y'); ?></option>
+                                <option <?php if($CourseYearPlan->Year==date('Y')+1): ?> selected="true" <?php endif; ?> ><?php echo date('Y')+1; ?></option>
+                            </select>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Course List Code : </label>
+                        <div class="controls">
+                            <input type='text' name='CourseListCode' value='<?php echo $CourseYearPlan->CourseListCode; ?>' readonly/>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Batch : </label>
+                        <div class="controls">
+                            <select name='batch' >
+                                <?php if($CourseYearPlan->batch==1): ?>
+                                    <option selected>1</option>
+                                    <option>2</option>
+                                <?php else: ?>
+                                    <option selected>2</option>
+                                    <option>1</option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Medium : </label>
+                        <div class="controls">
+                            <select name='medium' >
+                                <option  <?php if($CourseYearPlan->medium=='English'): ?> selected="true" <?php endif; ?>>English</option>
+                                <option <?php if($CourseYearPlan->medium=='Sinhala'): ?> selected="true" <?php endif; ?>>Sinhala</option>
+                                <option <?php if($CourseYearPlan->medium=='Tamil'): ?> selected="true" <?php endif; ?>>Tamil</option>
+                                <option <?php if($CourseYearPlan->medium=='Other'): ?> selected="true" <?php endif; ?>>Other</option>
+                            </select>
+                        </div>
+                </div>
+                <?php if($CourseYearPlan->Fee==0): ?>
+                    <input type="hidden" name="Fee"  value="<?php echo $CourseYearPlan->Fee; ?>"/>
+                <?php else: ?>
+                    <div class="control-group">
+                        <label class="control-label" for="CourseListCode">Fee : </label>
+                            <div class="controls">
+                                <input type="text" name="Fee"  value="<?php echo $CourseYearPlan->Fee; ?>"/>
+                            </div>
+                    </div>
+                <?php endif; ?>
+                <div class="control-group" >
+                    <label class="control-label" for="CourseListCode">Max Capacity : </label>
+                    <div class="controls">
+                        <input type="text" name="maxCapacity" value="<?php echo $CourseYearPlan->maxCapacity; ?>"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Aptitude Test : </label>
+                        <div class="controls">
+                            <select name='AptitudeTest' >
+                                <option <?php if($CourseYearPlan->AptitudeTest=='No'): ?> selected="true" <?php endif; ?>>No</option>
+                                <option <?php if($CourseYearPlan->AptitudeTest=='Yes'): ?> selected="true" <?php endif; ?>>Yes</option>
+                            </select>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="CourseListCode">Start Date : </label>
+                        <div class="controls">
+                            <input type="date" name="startDate"  value='<?php echo $CourseYearPlan->startDate; ?>'/>
+                        </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Edit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span4">
+            <?php if($errors->has()): ?>
+                <?php foreach($errors->all() as $msg): ?>
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+                        <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<script>
+    $("#courseCode").change(function()
+    {
+        if($("#courseCode").val()!='')
+        {
+            
+            $("#placeHolder").html(html);
+        }
+        else
+        {
+            $("#placeHolder").html('');
+        }
+    });
+    
+</script>
+      
+           
+               
+               
+               
+      
+        
+        
+
+    

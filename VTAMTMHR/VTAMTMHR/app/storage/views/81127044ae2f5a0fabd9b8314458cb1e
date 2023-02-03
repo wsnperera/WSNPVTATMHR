@@ -1,0 +1,139 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('HolidayType'); ?>> << Back to Holiday Type </a> 
+
+<?php endif; ?>
+
+
+    
+                
+
+
+	<div class="page-content">
+                                    
+	   <div class="row-fluid">
+                                           
+                           <div class="page-header position-relative">
+
+                <h1>
+                    Holiday Type	
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        View
+                    </small>			
+                </h1>
+            </div>                              
+                                            
+                      <form>
+                                                
+                       
+                                             
+                       <a href=<?php echo url('createHolidayType'); ?>><input type='button' value='Create Holiday Type' class="btn btn-primary"/></a>
+                                              
+                                             
+                                             
+                        </form>
+                                            
+                                           
+                                            
+                                            
+                        <div class="span12">
+			<!--PAGE CONTENT BEGINS-->
+
+
+
+
+		<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+
+<thead>
+		<tr>
+
+			<th>Holiday Type ID</th>								
+                        <th>Holiday Type</th>
+                         <th>Delete</th>
+											
+                </tr>
+              </thead>
+              <tbody>
+                        <?php if(isset ($HolidayTypes)): ?>
+
+		<?php foreach ($HolidayTypes as $c): ?>
+
+                <tr>
+                    									    	
+                    <td><a href="<?php echo url('editHolidayType?cid='.$c->HTId); ?>"><?php echo $c->HTId; ?></a></td>
+                     <td><?php echo $c->HTName; ?> </td>                                                                                
+                                                                                                           
+                 <td>
+                    <form id="deleteform"  action="<?php echo url('deleteHolidayType?HTId='.$c->HTId); ?>" method="POST" onsubmit="return doConfirm('<?php echo $c->HTName; ?>',this)">
+                                                                                                                     
+                    <input type="hidden" name='cid' value=<?php echo $c->HTId; ?> />
+                    <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                                                                                                                      
+                    </form>
+                                                                                                                
+                  </td>
+
+	    </tr>
+
+
+	<?php endforeach; ?>
+
+	<?php endif; ?>
+</tbody>
+
+</table>
+
+								
+								
+                                                                                                                                                
+
+
+							<!--PAGE CONTENT ENDS-->
+						</div><!--/.span-->
+					</div><!--/.row-fluid-->
+				</div><!--/.page-content-->
+
+			<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+        <script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script> 
+
+<script type="text/javascript">
+    
+
+ $('#sample-table-2').dataTable({
+    "aoColumns": [
+            {"bSortable": false},
+           null,
+            null,
+           
+           
+    ]});
+        function doConfirm(course,formobj)
+        {
+            
+            
+            bootbox.confirm("Are you sure you want to remove "+course, function(result) 
+            {
+                   if(result) 
+                   {
+                        formobj.submit();
+							
+                    }
+                    
+                    
+            });
+            
+         
+            return false;  // by default do nothing hack :D
+        }
+          
+   
+         
+         
+        
+
+    
+</script>

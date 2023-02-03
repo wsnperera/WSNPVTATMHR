@@ -1,0 +1,69 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<div class="page-content">
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="span8" style="width: 100%">
+                <div class="page-header position-relative">
+                    <h1>
+                        Basic Field			
+                        <small>
+                            <i class="icon-double-angle-right"></i>
+                            Basic Field Selection
+                        </small>			
+                    </h1>
+                </div>
+            </div>
+            <!--PAGE CONTENT BEGINS-->
+            <form action="<?php echo url('loadTrade'); ?>" method='get'>
+                <table>
+                    <tr>
+                        <td>Course Code :</td>
+                        <td>
+                            <select name="CourseCode" style="width: 150px; margin: 0">
+                            <option value="">Course Code</option>
+                            <?php if(isset($CourseCode)): ?>
+                            <?php foreach($CourseCode as $c): ?>
+                            <option value="<?php echo $c->CourseCode; ?>"><?php echo $c->CourseCode; ?></option>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                        </td>
+                        <td>
+                            <input type="submit" value="GO" style="height: 30px;"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <h5 style="color: #777777;"><?php if(isset($c_code)): ?>Course Code:&nbsp;&nbsp;<?php echo $c_code; ?><?php endif; ?></h5>
+            <form action="<?php echo url('TradeRegistration'); ?>" method="POST">
+                <?php if(isset($c_code)): ?><input type="hidden" name="CourseCode" value="<?php echo $c_code; ?>"/><?php endif; ?>
+            <button type="submit" class="btn btn-large pull-right"><i class="icon-user"></i>Add To Trade</button>
+            </form>
+    <table class="table">
+        <tr>
+            <th>No</th>
+            <th>Student No</th>
+            <th>Course Code</th>
+            <th>Total Mark</th>
+            <th>Trade Code</th>
+        </tr>
+        <?php if(isset($stud_trade)): ?>
+        <?php foreach($stud_trade as $stud_trade): ?>
+            <?php $no = $no + 1; ?>
+        <tr>
+            <td><?php echo $no; ?></td>
+            <td><?php echo $stud_trade->student_no; ?></td>
+            <td><?php echo $stud_trade->CourseCode; ?></td>
+            <td><?php echo $stud_trade->getBasic->TotalMark; ?></td>
+            <td><?php echo $stud_trade->selectedTrade; ?></td>
+        </tr>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </table>
+            <!--PAGE CONTENT ENDS-->
+        </div><!--/.span-->
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 

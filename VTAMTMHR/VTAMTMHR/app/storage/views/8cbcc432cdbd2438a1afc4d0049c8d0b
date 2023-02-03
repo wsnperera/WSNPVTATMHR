@@ -1,0 +1,251 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+
+
+
+
+
+
+
+
+<div class="page-content">
+
+    <div class="row-fluid">
+
+
+
+
+
+        <div class="span12">
+
+            <!--PAGE CONTENT BEGINS-->
+
+
+            <!--/.page-header-->
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    Course Started			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Edit
+                    </small>			
+                </h1>
+            </div><!--/.page-header-->
+
+
+            <!--Write your code here start-->
+
+
+
+            <form class="form-horizontal" action="<?php echo url('editCoursestarted'); ?>" method="POST"/>
+
+
+
+
+            <input type="hidden" name="CS_ID" value=<?php echo Request::get('cid'); ?> />
+
+
+
+
+
+
+
+
+
+            <div class="control-group">
+
+                <label class="control-label" for="InstituteId">Choose Institue</label>
+
+                <div class="controls">
+                    <input type="hidden" value="<?php echo $coursestarted->InstituteId; ?>" name="InstituteId"/>
+                    <!--  <label><?php echo Institue::where('InstituteId', "=", $coursestarted->InstituteId)->pluck('InstituteName');; ?></label>-->
+                    <input type="text" readonly="readonly" value="<?php echo Institue::where('InstituteId', "=", $coursestarted->InstituteId)->pluck('InstituteName');; ?>"/>
+                </div>
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="CourseListCode">Course List Code</label>
+
+                <div class="controls">
+                    <input type="text" name="CourseListCode" readonly="readonly" value=<?php echo $coursestarted->CourseListCode; ?>  />
+                </div>
+
+            </div>
+            <div class="control-group">
+
+                <label class="control-label" for="CourseCode">Course Code</label>
+
+                <div class="controls">
+                    <input type="text" name="CourseCode" readonly="readonly" value=<?php echo $coursestarted->CourseCode; ?>  />
+                </div>
+                <br>
+
+                <div class="control-group">
+
+                    <label class="control-label" for="Term">Term</label>
+
+                    <div class="controls">
+                        <input type="text" name="Term" value=<?php echo $coursestarted->Term; ?>  />
+                    </div
+                </div>
+                <br>
+                <div class="control-group">
+
+                    <?php if($coursestarted->type != "Full"): ?>
+
+
+                    <label class="control-label" for="CourseFee">Course Fee</label>
+
+
+
+
+
+                    <div class="controls">
+                        <input type="text" name="CourseFee" value=<?php echo $coursestarted->CourseFee; ?>  />
+                    </div>
+
+
+
+                    <?php endif; ?>							
+
+
+
+                </div>
+
+                <div class="control-group">
+                  
+                    <label class="control-label" for="StartDate" >Start Date</label>
+                   
+                    <div class="controls">
+                        <input type="date" name="StartDate" id="StartDate" value=<?php echo $coursestarted->StartDate; ?>  />
+                    </div>
+				
+                </div>
+                <div class="control-group">
+
+                    <label class="control-label" for="ExpectedCompleted">Expected Completed</label>
+
+                    <div class="controls">
+                        <input type="date" name="StartDate" value=<?php echo $coursestarted->ExpectedCompleted; ?>  />
+                    </div>
+                </div>
+                <!--  
+                    <div class="control-group">
+                         
+                             <label class="control-label" for="Completed">Completed</label>
+
+                             <div class="controls">
+                                     <input type="text" name="StartDate" value=<?php echo $coursestarted->Completed; ?>  />
+                                     </div>   
+                    </div>
+                             
+                    <div class="control-group">
+                         
+                             <label class="control-label" for="CompletedDate">Completed Date</label>
+
+                             <div class="controls">
+                                     <input type="text" name="StartDate" value=<?php echo $coursestarted->CompletedDate; ?>  />
+                                     </div>   
+                    </div>
+                       <div class="control-group">
+                         
+                             <label class="control-label" for="FinalExamHeld">Final Exam Held</label>
+
+                             <div class="controls">
+                                     <input type="text" name="StartDate" value=<?php echo $coursestarted->FinalExamHeld; ?>  />
+                                     </div> 
+                       </div>
+                       <label class="control-label" for="InplantPlaced">Inplant Placed</label>
+
+                             <div class="controls">
+                                     <input type="text" name="StartDate" value=<?php echo $coursestarted->InplantPlaced; ?>  />
+                                     </div>  
+                   </div>
+                       <label class="control-label" for="InplantCompleted">Inplant Completed</label>
+
+                             <div class="controls">
+                                     <input type="text" name="StartDate" value=<?php echo $coursestarted->InplantCompleted; ?>  />
+                                     </div> 
+                    </div>
+                        <label class="control-label" for="YearStart">Year Start</label>
+
+                             <div class="controls">
+                                     <input type="text" name="StartDate" value=<?php echo $coursestarted->YearStart; ?>  />
+                                     </div>  
+                    
+                -->      
+
+                <br>  
+
+
+                <div class="controls">
+
+                    <button type="submit" class="btn btn-small btn-primary">Update</button>
+
+                </div>
+            </div>
+
+
+            <!-- Submit Button --!>
+
+
+          
+           </form>
+         
+         
+         
+
+
+            <!--Write your code here end-->
+
+
+            <!--PAGE CONTENT ENDS-->
+
+
+        </div><!--/.span-->
+
+
+
+    </div><!--/.row-fluid-->
+</div><!--/.page-content-->
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+
+
+
+	$(document).ready(function(){
+		
+		$("#StartDate").parent().parent().hide();
+		
+		var currentTime = new Date();
+		var month = currentTime.getMonth() + 1;
+		var day = currentTime.getDate();
+		var year = currentTime.getFullYear();
+		var now = year + "-" + month + "-" + day;
+		var startdate = $("#StartDate").val();
+		
+		now = Date.parse(now);
+		startdate = Date.parse(startdate);
+		
+		
+		
+		if(startdate > now || isNaN(startdate)==true)
+		{
+		   
+			
+			$("#StartDate").parent().parent().show();
+		
+        }
+		
+	});
+
+
+
+
+</script>

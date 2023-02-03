@@ -1,0 +1,343 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Add Student for the OJT         
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Student Transfer
+                    </small>            
+                </h1>
+            </div><!--/.page-header-->
+            <!--Write your code here start-->
+
+            <form class="form-horizontal" name='districtname' method="POST" id="main_form"  action="">
+                <b style="color: red">*</b>&nbsp;<font size="1">Required</font>
+                <br/>
+                <div class="control-group">
+                    <label class="control-label" for="Name of Organization">District Name : </label>
+                    <div class="controls">
+                        <select  name="district" id="district" required>
+                            <option value="0" selected>--Select District--</option>
+                           <!--   <option value="ALL">ALL</option> -->
+                            <?php foreach($District as $d): ?>
+                            <option value="<?php echo $d->DistrictCode; ?>"><?php echo $d->DistrictName; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <b style="color: red">*</b>      
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Name of Organization">Organisation Name: </label>
+                    <div class="controls">
+                        <select  name="orga_name" id="orga_name" required>
+                            <option value="0" selected></option>
+                        </select>
+                        <b style="color: red">*</b>  
+                    </div>
+                </div> 
+                <div class="control-group">
+                    <label class="control-label" for="Name of Organization">Course Name : </label>
+                    <div class="controls">
+                        <select  name="course_name" id="course_name" required>
+                            <option value="0" selected></option>
+                        </select>
+                        <b style="color: red">*</b>  
+
+                    </div>
+                </div> 
+                <div class="control-group">
+                    <div class="controls">
+                        <input type='button' class="btn btn-primary" value="Search" id="search" onclick="getDataTable()"/>
+                    </div>                
+                </div>
+                <br/>
+                <!--display loading-->
+                <div id="loding">                    
+                </div>
+                <div id="table">
+                </div>
+                <br>
+                <div class="control-group">
+                    <input type="button" style="display: none;" class="btn btn-success" id="sendselected" onclick="send_selected();" value="Send Selected" class="btn btn-small btn-gray">
+                </div>
+            </form>
+        </div><!--/.row-fluid-->
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+<script src="assets/js/chosen.jquery.min.js"></script> 
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+
+
+</script>
+<script>
+
+    $("#district").on('click', '#btn_search', function() {
+        var dcode = document.getElementById('orgaName').value;
+        if (dcode != '') {
+            $("#districtname").submit();
+        } else {
+            alert('Please Select District Name!');
+        }
+    });
+</script>
+<script language="JavaScript" type="text/javascript">
+
+
+    $("#district").change(function()
+    {
+        var district_id = $("#district").val();
+        $("#orga_name").html('');
+        $("#course_name").html('');
+        $("#orga_name").html('<option value="0" selected></option>');
+        $("#course_name").html('<option value="0" selected></option>');
+        $("#table").html('');
+        $('#search').css("display", "");
+        $('#sendselected').css("display", "none");
+        if (district_id != '0') {
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            $("#loding").html('<br><br><img height="40%" width="20%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                        },
+                        type: "GET",
+                        url: "<?php echo Url('OJTGetOrganisationName'); ?>",
+                        data: {district_id: district_id},
+                        dataType: "json",
+                        success: function(result)
+                        {
+                            //  alert('dddddddddd');
+
+
+                            $("#orga_name").html("<option value=\"0\" selected>--Select Organization--</option>");
+                            $.each(result, function(i, item)
+                            {
+                                //  alert('dis');
+                                $("#orga_name").append("<option value=" + item.id + ">" + item.OrgaName + "</option>");
+
+                            });
+                            $("#orga_name.chzn-select").trigger("liszt:updated");
+
+                        },
+                        complete: function() {
+                            $("#loding").html('');
+                        }
+                    });
+        }
+
+    });
+
+    $("#orga_name").change(function()
+    {
+        var cid = $("#orga_name").val();
+        //alert(cid);
+        $("#course_name").html('');
+        $("#course_name").html('<option value="0" selected></option>');
+        $("#table").html('');
+        $('#search').css("display", "");
+        $('#sendselected').css("display", "none");
+        if (cid != '0') {
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            $("#loding").html('<br><br><img height="40%" width="20%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                        },
+                        type: "GET",
+                        url: "<?php echo Url('OJTCourseNameLoading'); ?>",
+                        data: {orga_id: cid},
+                        dataType: "json",
+                        success: function(result)
+                        {
+                            //alert('dddddddddd');
+
+                            $("#course_name").html("<option value=\"0\" selected>--Select Course--</option>");
+                            $.each(result, function(i, item)
+                            {
+                                //  alert('dis');
+                                $("#course_name").append("<option value=" + item.CS_ID + ">" + item.CourseListCode + "-" + item.CourseName + "</option>");
+
+                            });
+                            $("#course_name.chzn-select").trigger("liszt:updated");
+
+                        },
+                        complete: function() {
+                            $("#loding").html('');
+                        }
+                    });
+        }
+
+    })
+            ;
+    $("#course_name").change(function() {
+        $("#table").html('');
+        $('#search').css("display", "");
+        $('#sendselected').css("display", "none");
+    });
+
+
+</script>
+<script type="text/javascript">
+    function tableModify_1() {
+        $('#sample-table-2').dataTable({
+            "bPaginate": false,
+            "bLengthChange": false,
+            "aoColumns": [
+                {"bSortable": false},
+                null,
+                null,
+                null,
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+             
+               
+                null
+              
+               
+            ]});
+    }
+
+    function getDataTable() {
+        var GetTabale = false;
+        var cid = $("#district").val();
+        if (cid == '0') {
+            bootbox.alert('Please Select District !!');
+        } else {
+            var oid = $("#orga_name").val();
+            if (oid == '0') {
+                bootbox.alert('Please Select Organization !!');
+            } else {
+                var courselistcode = $("#course_name").val();
+                if (courselistcode == '0') {
+                    bootbox.alert('Please Select Course !!');
+                }
+                else {
+                    GetTabale = true;
+                }
+            }
+        }
+        if (GetTabale) {
+            var CS_ID = $("#course_name").val();
+            var OrgId = $("#orga_name").val();
+            //alert(courselistcode);
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            $("#loding").html('<br><br><img height="40%" width="20%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                            $('#search').css("display", "none");
+                        },
+                        type: "GET",
+                        url: "<?php echo Url('OJTSelectedStudentList'); ?>",
+                        data: {
+                            OrgId: OrgId ,CS_ID: CS_ID
+                        }
+                        ,
+                        success: function(result)
+                        {
+                            //alert('dddddddddd');
+                            $('#table').html(result);
+
+                            $('#sample-table-2 th input:checkbox').on('click', function() {
+                                var a = this;
+                                $(this).closest('table').find('tr td:nth-child(10) input:checkbox')
+                                        .each(function() {
+                                            this.checked = a.checked;
+                                            //$(this).closest('tr').troggleClass('selected');
+                                        });
+
+                            });
+                            tableModify_1();
+                            $('#search').css("display", "none");
+                            $('#sendselected').css("display", "");
+                        },
+                        complete: function() {
+                            $("#loding").html('');
+                        }
+                    }
+                    );
+        }
+    }
+
+    </script>
+    <script type="text/javascript">
+    
+     </script>
+    <script type="text/javascript">
+    function send_selected() {
+        // alert(1);
+        var ifOneSelected = false;
+        var selectedmodules = [];
+        selectedmodules = $('input[name="trainee_ids[]"]').serializeArray();
+        var already_selected = $('#already_exist_students').val();
+        var CS_ID = $("#course_name").val();
+       //alert(CS_ID);  
+
+        if (selectedmodules.length > 0) {
+            ifOneSelected = true;
+        }
+        else {
+            bootbox.alert('Please Select Student!');
+        }
+        // alert(selectedmodules);
+        if (ifOneSelected) {
+            $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            $('#table').css("display", "none");
+                            $('#sendselected').css("display", "none");
+                            $('#search').css("display", "none");
+                            $("#loding").html('<br><br><img height="50%" width="30%" src=\"<?php echo Url("assets/images/please_wait.gif"); ?>\"/>');
+                        },
+                        type: "POST",
+                        url: "<?php echo Url('AjaxTransferSelectedStudents'); ?>",
+                        data: {CS_ID: CS_ID, selectedmodules: selectedmodules, already_selected: already_selected},
+                        success: function(result)
+                        {
+                           // alert(result);
+                              if (result != 1) {
+                               // alert(2);
+                                bootbox.alert('An error occured !!');
+                                $('#table').css("display", "");
+                                $('#sendselected').css("display", "");
+                                $('#search').css("display", "");
+                                $("#loding").html('');
+                               // $('#table').css("display", "");
+                              //  $('#sendselected').css("display", "");
+                               // $('#search').css("display", "none");
+                            }
+                            else {
+                               // alert(3);
+                                bootbox.alert('Sucessfully transfered the Selected Students !!');
+                                //$("#loding").html('<br><br><img height="40%" width="20%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                                location.reload();
+                            }
+                        },
+                        complete: function() {
+
+                        }
+                    });
+        }
+    }
+
+
+
+</script>
+

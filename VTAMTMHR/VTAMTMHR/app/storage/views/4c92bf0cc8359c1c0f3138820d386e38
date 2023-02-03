@@ -1,0 +1,107 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/datepicker.css" />
+<link rel="stylesheet" href="assets/css/bootstrap-timepicker.css" />
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="page-header position-relative">
+                <h1>
+                    Electorate			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+            </div>
+            <form class="form-horizontal" method="POST" action="<?php echo url('Ele_actionCreate'); ?>" id="eventform">
+                <div class="control-group">
+                    <label class="control-label" for="ProvinceCode">Province Name</label>
+                    <div class="controls">
+                        <select name="ProvinceCode" id="ProvinceCode">
+                            <option></option>
+                            <?php foreach ($province as $c): ?>
+                                <option value="<?php echo $c->ProvinceCode; ?>"><?php echo $c->ProvinceName; ?></option>
+                            <?php endforeach; ?>
+                        </select> 
+                    </div>
+                </div>
+                <br/>
+                <div class="control-group">
+                    <label class="control-label" for="DistrictCode">District Name</label>
+                    <div class="controls">
+                        <select name="DistrictCode" id="DistrictCode">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+                <br/>
+                <div class="control-group">
+                    <label class="control-label" for="ElectorateCode">Electorate Code</label>
+                    <div class="controls">
+                        <input name="ElectorateCode" id="ElectorateCode"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="control-group">
+                    <label class="control-label" for="DistrictCode">Electorate Name</label>
+                    <div class="controls">
+                        <input name="ElectorateName" id="ElectorateName"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-small btn-primary">Save</button>
+                    </div>
+                </div>
+                <br/>
+            </form>                                
+        </div>
+    </div>
+    <div class="span4">
+        <?php if($errors->has()): ?>
+        <?php foreach($errors->all() as $msg): ?>
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="icon-remove"></i>
+            </button>
+            <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+        </div>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+</div>
+
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-timepicker.min.js"></script>
+
+<script>
+<?php if (isset($done)): ?>
+    $.gritter.add({title: "", text: "Record Added Successfully", class_name: "gritter-info gritter-center"});
+<?php endif; ?>
+$(function() {
+    $(".chzn-select").chosen();
+});
+$("#ProvinceCode").change(function(){
+    var prvnc = document.getElementById("ProvinceCode").value;
+    $.ajax({
+        url: "<?php echo url::to('Ele_getDistrict'); ?>",
+        data: {prvnc: prvnc},
+        dataType: "json",
+        success: function(result){
+            $("#DistrictCode").find('option:gt(0)').remove();
+            $.each(result, function(index, value) {
+                $("#DistrictCode").append('<option value="' + value.DistrictCode + '">' + value.DistrictName + '</option>');
+
+            })
+        }
+    });
+});
+                                  
+</script>

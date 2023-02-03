@@ -1,0 +1,181 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>    
+
+<link rel="stylesheet" href="assets/css/chosen.css" />
+<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.custom.min.css" />
+<link rel="stylesheet" href="assets/css/ace.min.css" />
+<link rel="stylesheet" href="assets/css/ace-responsive.min.css" />
+<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span14">
+         <div class="page-header position-relative">
+
+                <h1>
+                    Dropout		
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Dropout Report
+                    </small>			
+                </h1>
+
+            </div>
+
+    
+  <div>
+                <form name='search' action="" method="POST" id="searchstattendance"  action="">
+                    <table>
+                        <tr>
+                            <td>District : </td> 
+                           <td>
+                            <select name="district" id="district" style="margin: 0px;" required>
+                                <option value=""></option>
+                                <?php if($id==1): ?>
+                                <?php if($type == 'HO'): ?>
+                                     <option value="All">All Centers</option> 
+                                     <option value="AllNVTI">All NVTI Centers</option>
+                                <?php endif; ?>
+                                <?php foreach($district as $d): ?>
+                                    <option value="<?php echo $d->DistrictCode; ?>"><?php echo $d->DistrictName; ?></option>
+                                <?php endforeach; ?>
+                                <?php endif; ?>
+                                <?php if($id==2): ?>
+                                <?php if($type == 'NVTI'): ?>
+                                       <?php foreach($district as $d): ?>
+                                    <option value="<?php echo $d->id; ?>"><?php echo $d->OrgaName; ?></option>
+                                       <?php endforeach; ?>
+                                <?php endif; ?>
+                                <?php endif; ?>
+
+                                 
+                               
+
+                            </select>&nbsp;&nbsp;
+                        </td> 
+                            <td>Start Date : &nbsp;&nbsp;</td>
+                            
+                            <td> <input type='date' id="date1" name="date1" size="10px"   required/>&nbsp;&nbsp;</td>
+                            <td>End Date : &nbsp;&nbsp;</td>
+                            
+                            <td> <input type='date' id="date2" name="date2" size="10px"   required/>&nbsp;&nbsp;</td>
+                            
+                            <td style="text-align: center;">&nbsp;&nbsp;<input type='button' value='Search' style="height: 30px;" id="search" onclick="getDataTable()"/>&nbsp;&nbsp;</td>
+                            
+                        </tr>
+                    </table>
+                </form>
+            </div>
+
+            <div class="controls" id='table'>
+        
+                
+                            
+
+            </div>
+            <div id="loding">                    
+                </div>
+
+            
+                    </div>
+                    </div>
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+ </script>
+<script> 
+   $("#district").change(function() {
+        $("#table").html('');
+       
+    });
+
+
+
+
+function getDataTable(){
+    var district=$("#district").val();
+    var date1=$("#date1").val();
+    var date2=$("#date2").val();
+    $('#table').html('');
+    //alert(date2);
+
+    //alert(center);
+    if(district != "" && date1 != "" && date2!="" )
+                        {
+                              
+
+                                       $.ajax
+                    ({
+                        beforeSend: function()
+                        {
+                            $("#loding").html('<br><br><img height="40%" width="20%" src=\"<?php echo Url("assets/images/ajax-loader.gif"); ?>\"/>');
+                           
+                        },
+                        type: "GET",
+                        url: "<?php echo Url('dropoutreportSearch'); ?>",
+                        data: {district: district,date1: date1,date2: date2},
+                        
+                        success: function(result)
+                        {
+                            //alert('dddddddddd');
+                            $('#table').html(result);
+
+                           
+                            tableModify_1();
+                           
+                        },
+                        complete: function() {
+                            $("#loding").html('');
+                        }
+                    }
+                    );
+
+
+
+    }
+    if(district =="" && date1 != "" && date2!=""){
+        bootbox.alert("Please Enter District Name  !!!");
+    }
+    if(district !="" && date1 == "" && date2!=""){
+        bootbox.alert("Please Enter Start Date  !!!");
+    }
+     if(district !="" && date1 != "" && date2 ==""){
+        bootbox.alert("Please Enter End Date  !!!");
+    }
+    if(district !="" && date1 == "" && date2 ==""){
+       bootbox.alert("Please Enter Start Date and End Date  !!!"); 
+    }
+
+    if(district =="" && date1 == "" && date2=="")
+    {
+        bootbox.alert("Please Enter District Name , Start Date and End Date !!!");
+    }
+
+}
+   
+
+   function tableModify_1() {
+        $('#sample-table-2').dataTable({
+            "bPaginate": false,
+            "bLengthChange": false,
+            "aoColumns": [
+                {"bSortable": false},
+                
+                {"bSortable": false},
+                 {"bSortable": false},
+				{"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                
+                {"bSortable": false}
+               
+            ]});
+    }
+</script>

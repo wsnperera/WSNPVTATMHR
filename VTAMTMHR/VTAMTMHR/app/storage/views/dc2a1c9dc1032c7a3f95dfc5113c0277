@@ -1,0 +1,98 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<?php if(isset($Issearch)): ?>
+<a href=<?php echo url('Batch'); ?>> << Back to Batches </a> 
+<?php endif; ?>
+<div class="page-content">
+    <div class="page-header position-relative">
+        <h1>
+            Batch			
+            <small>
+                <i class="icon-double-angle-right"></i>
+                View
+            </small>			
+        </h1>
+    </div>
+    <div class="row-fluid">
+        <form name='search' action="<?php echo url('findBatch'); ?>" method='get'>
+            Search Batch <input type='text' name="serachkey" placeholder="Batch Code" style="margin: 0"/> <input type='submit' value='Search' style="height: 30px"/>
+          
+            <a href="<?php echo url('createBatch'); ?>"><input type='button' value='Create Batch' style="height: 30px;"/></a>
+           
+            <?php if(isset ($completed)): ?>
+            <a href=<?php echo url('batchstart'); ?>><input type='button' value='View Not Completed Batches' style="height: 30px;" /></a>
+            <?php else: ?>
+            <a href=<?php echo url('batchstart?Completed=Yes'); ?>><input type='button' value='View Completed Batches' style="height: 30px;"/></a>
+            <?php endif; ?>
+        </form>
+        <div class="span12">
+            <table class="table">
+                <tr>
+                    <th>Batch ID</th>
+                    <th>Institute Name</th>
+                    <th>Organization Name</th>
+                    <th>Course List Code</th>
+                    <th>Course Code</th>
+                    <th>Batch Code</th>
+                    <th>Start Date</th>
+                    <th>Completed</th>
+                    <th>Complete Date</th>
+                    <th>Year</th>
+					
+                </tr>
+                <?php if(isset ($Batchstart)): ?>
+                <?php foreach ($Batchstart as $b): ?>
+                <tr>
+                    <?php if(isset($completed)): ?>
+                        <td> <?php echo $b->BS_ID; ?></td>
+                    <?php else: ?>
+                        <?php
+                            $abc = Batchstart::where('BatchCode', '=', $b->BatchCode)->where('StartDate', '>=', date('Y-m-d'))->pluck('BatchCode');
+                            $count = Trainee::where('Deleted', '!=', 1)->where('BatchCode', '=', $b->BatchCode)->count('id');
+                            if ($count == 0) {
+                        ?>
+                      
+                            <td><a href="<?php echo url('editBatch?bid='.$b->BS_ID); ?>"><?php echo $b->BS_ID; ?></td>
+                        <?php
+                            } else {
+                        ?>
+                            <td> <?php echo $b->BS_ID; ?></td>
+                        <?php } 
+                        ?>
+                    <?php endif; ?>
+                    <td><?php echo $b->Institue->InstituteName; ?></td>
+                    <td><?php echo $b->organization->OrgaName; ?></td>
+                    <td><?php echo $b->CourseListCode; ?></td>
+                    <td><?php echo $b->CourseCode; ?></td>
+                    <td><?php echo $b->BatchCode; ?></td>
+                    <td><?php echo $b->StartDate; ?></td>
+                    <td><?php echo $b->Completed; ?></td>
+                    <td><?php echo $b->CompleteDate; ?></td>
+                    <td><?php echo $b->Year; ?></td>
+                    <td>
+                        <form id="deleteform"  action=<?php echo url('deleteBatch'); ?> method="POST" onsubmit="return doConfirm('<?php echo $b->BatchCode; ?>', this)">
+                            <input type="hidden" name='bid' value=<?php echo $b->BatchCode; ?> />
+                            <button type="submit" class="btn btn-grey btn-small"><i class="icon-trash icon-2x icon-only"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </table>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+<script type="text/javascript">
+            function doConfirm(batch, formobj)
+            {
+            bootbox.confirm("Are you sure you want to remove " + batch, function(result)
+            {
+            if (result)
+            {
+            formobj.submit();
+            }
+            });
+                    return false; // by default do nothing hack :D
+            }
+</script>

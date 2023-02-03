@@ -1,0 +1,155 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+<div class="page-content">
+
+    <div class="row-fluid">
+
+        <div class="span12">
+
+            <div class="page-header position-relative">
+
+                <h1>
+                    NVQ Package 	
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Result Calculation
+                    </small>			
+                </h1>
+            </div>
+            <?php if($issearch!="FALSE"): ?>            
+            <form class="form-horizontal" action="<?php echo url('viewPackageStudents'); ?>" method="POST">  
+
+                <div class="control-group">
+
+                    <label class="control-label" for="OrgaId">Course Code</label>
+
+                    <div class="controls">
+
+                        <select name="CCode">
+
+                            <?php foreach ($trades as $i): ?>
+
+                            <option value="<?php echo $i->CourseCode; ?>"><?php echo $i->CourseCode; ?></option>
+
+                            <?php endforeach; ?>
+
+
+                        </select>
+
+                    </div>
+                </div>    
+
+                <div class="control-group">
+
+                    <div class="controls">
+
+                        <button type="submit" class="btn btn-small btn-primary">View Students</button>
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
+            </form> 
+            <?php endif; ?>
+            <?php if($issearch=="TRUE"): ?>        
+            <form name='search' action="<?php echo url('CalculateLevel'); ?>" method='get'>
+
+                Search Student <input type='text' name="key"/>   <input type='submit' value='Search'/>
+
+
+
+
+
+            </form>
+
+
+
+
+
+            <div class="span12">
+                <!--PAGE CONTENT BEGINS-->
+
+
+
+
+                <table class="table">
+
+
+                    <tr>
+
+                        <th>Student Id</th>
+                        <th>Student Name</th>
+                        <th>Calculate</th>
+
+                    </tr>
+                    <?php if(isset ($students)): ?>
+
+                    <?php foreach ($students as $c): ?>
+
+                    <tr>
+                        <td><?php echo $c->StudentId; ?></td>
+
+                        <td><?php echo NvqStudentQualification::getname($c->StudentId,$c->Mode); ?></td>
+
+
+
+                        <td>
+                            <form id="deleteform"  action=<?php echo url('CalculateLevel'); ?> method="POST" onsubmit="return doConfirm('<?php echo $c->StudentID; ?>', this)">
+
+                                <input type="hidden" name='Sid' value= "<?php echo $c->StudentId; ?>"/>
+                                <input type="hidden" name='CCode' value= "<?php echo $ccode; ?>"/>
+                                <input type="hidden" name='Mode' value= "<?php echo $c->Mode; ?>"/>
+                                <button type="submit" class="btn btn-warning btn-small"><i class="icon-dashboard"></i></button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+
+                    <?php endforeach; ?>
+
+                    <?php endif; ?>
+
+                </table>    
+
+                <?php endif; ?>         
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?> 
+
+

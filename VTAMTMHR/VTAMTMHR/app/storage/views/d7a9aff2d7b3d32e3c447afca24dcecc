@@ -1,0 +1,145 @@
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>       
+<a href=<?php echo url('viewWelfareB'); ?>> << Back to Welfare Benefit </a> 
+<div class="page-content">
+    <div class="row-fluid">
+        <div class="span8">
+            <!--PAGE CONTENT BEGINS-->
+            <!--/.page-header-->
+            <div class="page-header position-relative">
+                <h1>
+                    Welfare Benefit			
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        Create
+                    </small>			
+                </h1>
+
+            </div><!--/.page-header-->
+
+            <div class="page-header position-relative"></div>
+            <form class="form-horizontal" action="<?php echo url('createWelfareB'); ?>" method="POST" />
+
+            <div class="control-group">
+                <label class="control-label" for="InstituteId">Institute Name</label>
+                <div class="controls">
+                    <input type="text"  readonly="readonly" value="<?php echo $institute; ?>"/>
+                    <input type="hidden" name="InstituteId" value="<?php echo $in_id; ?>"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="OrganisationId"> Center Name</label>
+                <div class="controls">
+                    <select name="OrganisationId" id="OrganisationId">
+                        <option></option>
+                        <?php foreach ($center as $c): ?>
+                        <option value="<?php echo $c->id; ?>"><?php echo $c->OrgaName; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="page-header position-relative"></div>
+            <div class="control-group">
+                <label class="control-label" for="NIC">NIC</label>
+                <div class="controls">
+                    <input type="text" name="NIC" id="NIC" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                
+                <div class="controls">
+                    <input type="hidden" name="EmpId" id="EmpId" readonly/>
+                </div>
+            </div>
+
+
+            <div class="control-group">
+                <label class="control-label" for="Reason">Reason</label>
+                <div class="controls">
+                    <textarea rows="6"name="Reason" id="Reason"></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="Amount">Amount</label>
+                <div class="controls">
+                    <input type="text" name="Amount" id="Amount" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="Date">Date</label>
+                <div class="controls">
+                    <input type="date" name="Date" id="Date"  />
+                </div>
+            </div>
+            
+            <div class="page-header position-relative"></div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-small btn-primary">Save</button>
+                </div>
+            </div>
+            </form>
+
+        </div><!--/.span-->
+
+        <!--/span 4 for error handling -->
+
+        <div class="span4">
+
+            <!-- Error Handling --!>
+                    <?php if($errors->has()): ?>
+                          <?php foreach($errors->all() as $msg): ?>
+            <!-- Error Message --!>
+              <div class="alert alert-error">
+                 <button type="button" class="close" data-dismiss="alert">
+                         <i class="icon-remove"></i>
+                 </button>
+                 <strong> <i class="icon-remove"></i><?php echo $msg; ?></strong>
+              </div>
+            <!-- Error Message --!>
+      <?php endforeach; ?>
+    <?php endif; ?>
+            <!-- Error Handling --!>
+    </div>
+            <!--/span 4-->
+            <!--PAGE CONTENT ENDS-->
+
+        </div><!--/.row-fluid-->
+    </div><!--/.page-content-->
+    <?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>  
+    <script>
+
+        <?php if (isset($done)): ?>
+                $.gritter.add({title: "", text: "WelfareB Added Successfully", class_name: "gritter-info gritter-center"});
+        <?php endif; ?>
+        
+        
+        $("#NIC").change(function() {
+
+        var wenic = document.getElementById('NIC').value;
+
+        $.ajax({
+            url: "<?php echo url::to('nicWBLoadajax'); ?>",
+            data: {wenic: wenic},
+            success: function(re) {
+                document.getElementById('EmpId').value = re;
+
+            }
+        });
+    });
+        
+    </script>
+
+
+
+
+
+
+
+
+
+

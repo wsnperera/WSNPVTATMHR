@@ -1,0 +1,119 @@
+
+<?php echo $__env->make('includes.bar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+        
+<?php if(isset($Issearch)): ?>
+
+<a href=<?php echo url('log'); ?>> << Back to Log </a> 
+
+<?php endif; ?>
+
+
+
+
+
+                
+
+
+<div class="page-content">
+                                    
+	<div class="row-fluid">
+            
+                            <form name='search' action="<?php echo url('findlog'); ?>" method='get'>
+                                                
+                                 Search Log    <select name="serachkey">
+
+                                                                <option></option>
+                                                                <option value="1">Create</option>
+                                                                <option value="2">Update</option>
+                                                                <option value="3">Delete</option>
+                                                                <option value="4">Search</option>
+                                                                <option value="5">View</option>
+
+                                                            </select>
+                                 <input type='submit' value='Search'/>
+                                 
+
+
+                                             
+                            </form>
+                                            
+                                           
+                                        
+                                            
+                                            
+                                    <div class="span12">
+				
+                                        
+                                            <div class="page-header position-relative">
+                                            
+                                                            <h1>
+                                                            Log			
+                                                            <small>
+                                                                    <i class="icon-double-angle-right"></i>
+                                                                    Data
+                                                            </small>			
+                                                            </h1>
+                                            </div>
+                                        
+                                            <div class="span12">
+                                                
+                                                <table class="table">
+                                                    
+                                                    <tr>
+                                                        
+                                                        <th>Log ID</th>
+                                                        <th>User ID</th>
+                                                        <th>Activity Name</th>
+                                                        <th>Model</th>
+                                                        <th>Date & Time</th>
+                                                        <th>Url</th>
+                                                       
+                                      
+                                                    </tr>
+                                                    <?php if(isset ($LogData)): ?>
+                                                    
+                                                    		<?php foreach ($LogData as $ld): ?>
+                                                                
+                                                                <tr>
+                                                                    
+                                                                    <td><?php echo $ld->LogID; ?></td>
+                                                                    <td><?php echo $ld->userID; ?></td>
+                                                                    <td><?php echo $ld->ActivityType->activity; ?></td>
+                                                                    <td><?php echo $ld->model; ?></td>
+                                                                    <td><?php echo $ld->time; ?></td>
+                                                                    <td><?php echo $ld->Url; ?></td>
+                                                                 
+                                                                </tr>
+                                                                
+                                                                <?php endforeach; ?>
+                                                                
+                                                    <?php endif; ?>
+                                                    
+                                                    
+                                                    
+                                                </table>
+
+                                            </div>
+                                                                                                                                     
+                                    </div>
+
+							
+						
+	</div>
+</div>
+
+
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>   
+
+
+<script type="text/javascript">
+    
+  
+         
+         
+        
+
+    
+</script>
