@@ -30,5 +30,7 @@ Instruction for the development tools for the project source code.
 9. User Google chrome as a browser to test the implemented project and user URL like localsot:port/VTAMTMHR/public
 10. Use the login details for the system login process.
 
+In this project folder contain Controllers,views and the models related to the project, And in addition to that all the css files, java scripts, ajax, images used for the UI/UX, database connections, and the other configaration files.
+
 
 
